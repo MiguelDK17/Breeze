@@ -14,10 +14,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,24 +30,23 @@ import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreezeTopAppBar(){
-    Card(modifier = Modifier.fillMaxWidth()
-        .height(120.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        )) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp)) {
-            Text("Bem Vindo !",
-                fontSize = 30.sp,
-                style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.size(20.dp))
+    MediumTopAppBar(
+        title = {
+
+            Text(
+                "Bem Vindo !",
+                    fontSize = 25.sp,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            /*Spacer(modifier = Modifier.size(20.dp))
             Row {
-                Text("Seu Saldo: R$ 3000,00",
-                    style = MaterialTheme.typography.titleMedium)
+                Text(
+                    "Seu Saldo: R$ 3000,00",
+                    style = MaterialTheme.typography.titleMedium
+                )
                 IconButton(
                     onClick = {
                         Log.d(TAG, "ToolbarBreeze: botão clicado")
@@ -58,10 +61,12 @@ fun BreezeTopAppBar(){
                         modifier = Modifier.size(30.dp)
                     )
                 }
-            }
-        }
-    }
+            }*/
+        })
+
+
 }
+
 @Composable
 @Preview
 private fun Preview(){
