@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIcons
@@ -21,7 +22,9 @@ import com.guru.fontawesomecomposelib.FaIcons
 @Composable
 fun BreezeBottomBar(){
     var selectedItem by remember { mutableIntStateOf(0) }
-    NavigationBar {
+    NavigationBar(
+
+    ) {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Home, contentDescription = "") },
             label = { Text("Página Inicial") },

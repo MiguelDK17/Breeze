@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.migueldk17.breeze.ui.components.BreezeBottomBar
 import com.migueldk17.breeze.ui.components.BreezeTopAppBar
 import com.migueldk17.breeze.ui.layouts.PaginaInicial
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -18,9 +19,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BreezeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PaginaInicial(modifier = Modifier.padding(innerPadding))
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        BreezeBottomBar()
+                    }){ innerPadding ->
                     BreezeTopAppBar()
+                    PaginaInicial(modifier = Modifier.padding(innerPadding))
+
+
                 }
             }
         }
