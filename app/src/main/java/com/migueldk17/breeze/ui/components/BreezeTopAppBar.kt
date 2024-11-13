@@ -35,36 +35,10 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 fun BreezeTopAppBar(){
     MediumTopAppBar(
         title = {
-
-            Text(
-                "Bem Vindo !",
-                    fontSize = 25.sp,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            /*Spacer(modifier = Modifier.size(20.dp))
-            Row {
-                Text(
-                    "Seu Saldo: R$ 3000,00",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                IconButton(
-                    onClick = {
-                        Log.d(TAG, "ToolbarBreeze: botão clicado")
-                    },
-                    modifier = Modifier
-                        .size(23.dp)
-                        .padding(0.dp)
-                ) {
-                    Icon(
-                        Icons.Default.Edit,
-                        "",
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
-            }*/
+            Text("Bem Vindo !",
+                fontSize = 25.sp,
+                style = MaterialTheme.typography.titleLarge)
         })
-
-
 }
 
 @Composable
