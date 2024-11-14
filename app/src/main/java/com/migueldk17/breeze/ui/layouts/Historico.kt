@@ -13,7 +13,7 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
 @Composable
-fun Histórico(){
+fun Historico(){
     Calendario()
 
 }
@@ -21,6 +21,6 @@ fun Histórico(){
 @Preview(showBackground = true)
 private fun Preview(){
     BreezeTheme {
-        Histórico()
+        Historico()
     }
 }

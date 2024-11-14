@@ -23,6 +23,7 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 @Composable
 fun Configuracoes(){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
