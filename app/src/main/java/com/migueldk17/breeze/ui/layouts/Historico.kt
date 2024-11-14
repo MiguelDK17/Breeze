@@ -9,18 +9,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.migueldk17.breeze.ui.components.Calendario
+import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
 @Composable
 fun Histórico(){
-    val context = LocalContext.current
-    var selectedMonth by remember { mutableStateOf("") }
-
     Calendario()
 
 }
 @Composable
 @Preview(showBackground = true)
 private fun Preview(){
-    Histórico()
+    BreezeTheme {
+        Histórico()
+    }
 }
