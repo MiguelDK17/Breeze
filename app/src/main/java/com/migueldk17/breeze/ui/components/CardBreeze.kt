@@ -64,7 +64,7 @@ fun BreezeCard(
 @Preview(showBackground = false)
 private fun Preview(){
     BreezeTheme {
-        val iconGlobe = painterResource(R.drawable.icon_globe)
+
         BreezeCard(FaIcons.Globe,"Internet")
     }
 }
