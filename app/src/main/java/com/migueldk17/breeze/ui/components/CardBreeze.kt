@@ -1,5 +1,8 @@
 package com.migueldk17.breeze.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,9 +10,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,42 +39,60 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 @Composable
 fun BreezeCard(
     imageVector: FaIconType,
-    categoria: String
+    categoria: String,
+    valorCategoria: Int,
+    baseColor: Color,
+    onClick: () -> Unit
 ){
     var text by remember {
         mutableStateOf("")
     }
     OutlinedCard (
         modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp)
-
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = baseColor.copy(alpha = 0.2f))
     ) {
-        Row(modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-           ) {
-            FaIcon(imageVector, size = 48.dp)
-            Spacer(Modifier.size(20.dp))
-            Text(categoria)
-            Spacer(modifier = Modifier.size(90.dp))
-            OutlinedTextField(
-                text, onValueChange = {value ->
-                text = value
-            },
-                modifier = Modifier.size(width = 197.dp, height = 56.dp),)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+
+        ){
+            //Linha de cima(com ícone, texto e etc)
+            Row(modifier = Modifier
+                .padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                FaIcon(imageVector, size = 48.dp)
+                Spacer(Modifier.size(20.dp))
+                Text(categoria)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(onClick = {
+                        onClick()
+                    }) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Filled.Add, "Add")
+                            Spacer(modifier = Modifier.size(10.dp))
+                            Text("Editar Valor")
+                        }
+                    }
+                }
+
+            }
+            //Linha de baixo com o valor monetário da categoria
+            Row(
+                modifier = Modifier.padding(10.dp)
+
+            ) {
+                Spacer(modifier = Modifier.width(68.dp))
+                Text("R$: $valorCategoria")
+            }
         }
+
 
     }
     Spacer(modifier = Modifier.size(10.dp))
-}
-// <a href="https://br.freepik.com/icone/internet_4538777">Ícone de Freepik</a>
-@Composable
-@Preview(showBackground = false)
-private fun Preview(){
-    BreezeTheme {
-
-        BreezeCard(FaIcons.Globe,"Internet")
-    }
 }

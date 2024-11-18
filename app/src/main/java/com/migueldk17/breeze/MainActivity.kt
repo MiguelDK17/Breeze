@@ -19,11 +19,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import com.migueldk17.breeze.ui.animation.OndasAnimadas
 import com.migueldk17.breeze.ui.components.BreezeBottomBar
 import com.migueldk17.breeze.ui.components.BreezeTopAppBar
 import com.migueldk17.breeze.ui.layouts.Configuracoes
 import com.migueldk17.breeze.ui.layouts.Historico
 import com.migueldk17.breeze.ui.layouts.PaginaInicial
+import com.migueldk17.breeze.ui.layouts.WaveScreen
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 class MainActivity : ComponentActivity() {
@@ -44,9 +46,10 @@ class MainActivity : ComponentActivity() {
                         BreezeBottomBar(navController)
                     }){ innerPadding ->
                     val navGraph = navController.createGraph(startDestination = Screen.PaginaInicial.route){
-                        composable(Screen.PaginaInicial.route) { PaginaInicial() }
+                        composable(Screen.PaginaInicial.route) { PaginaInicial(navController) }
                         composable(Screen.Historico.route) { Historico() }
                         composable(Screen.Configuracoes.route) { Configuracoes() }
+                        composable(Screen.WaveScreen.route) { WaveScreen(navController) }
                     }
                     NavHost(
                         navController = navController,
