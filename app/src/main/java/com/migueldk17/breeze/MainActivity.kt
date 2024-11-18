@@ -41,12 +41,12 @@ class MainActivity : ComponentActivity() {
                         BreezeTopAppBar()
                     },
                     bottomBar = {
-                        BreezeBottomBar()
-                    },){ innerPadding ->
+                        BreezeBottomBar(navController)
+                    }){ innerPadding ->
                     val navGraph = navController.createGraph(startDestination = Screen.PaginaInicial.route){
-                        composable<Screen.PaginaInicial> { PaginaInicial() }
-                        composable<Screen.Historico> { Historico() }
-                        composable<Screen.Configuracoes> { Configuracoes() }
+                        composable(Screen.PaginaInicial.route) { PaginaInicial() }
+                        composable(Screen.Historico.route) { Historico() }
+                        composable(Screen.Configuracoes.route) { Configuracoes() }
                     }
                     NavHost(
                         navController = navController,
@@ -64,10 +64,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-    @Composable
-    fun teste(){
-
     }
 
 }

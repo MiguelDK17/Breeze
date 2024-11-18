@@ -103,14 +103,16 @@ fun GridMes(){
         columns = GridCells.Fixed(3), // 3 colunas para os meses
         modifier = Modifier
             .fillMaxWidth()
+            .height(320.dp)
             .padding(8.dp) // padding para evitar que os meses fiquem colados nas bordas
     ) {
-        items(meses.size) {index ->
-            MesItem(
-                meses[index],
-                isSelected = meses[index] == mesSelecionado,
-                onClick = {mesSelecionado = meses[index]})
-        }
+        items(count = meses.size,
+            itemContent = {index ->
+                MesItem(
+                    meses[index],
+                    isSelected = meses[index] == mesSelecionado,
+                    onClick = {mesSelecionado = meses[index]})
+            })
     }
 
 }
@@ -122,8 +124,6 @@ fun MesItem(
     onClick: () -> Unit){
 
     val context = LocalContext.current
-
-
     Box(
         modifier = Modifier
             .padding(4.dp)

@@ -17,10 +17,3 @@ fun Historico(){
     Calendario()
 
 }
-@Composable
-@Preview(showBackground = true)
-private fun Preview(){
-    BreezeTheme {
-        Historico()
-    }
-}
