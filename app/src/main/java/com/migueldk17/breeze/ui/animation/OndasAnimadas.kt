@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.animation
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -9,6 +11,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,16 +26,18 @@ fun OndasAnimadas(
     baseColor: Color, //Cor base das ondas
     onWaveEnd: () -> Unit
 ) {
+    Log.d(TAG, "OndasAnimadas: Início")
     val waveRadius by animateFloatAsState(
         targetValue = 2000f,
         animationSpec = tween(1500, easing = FastOutSlowInEasing),
         label = "animateFloatWave"
     )
     val alphaTransition by animateFloatAsState(
-        targetValue = 0f,
+        targetValue = 0.9f,
         animationSpec = tween(1500, easing = LinearEasing),
         label = "alphaTransition"
     )
+    Log.d(TAG, "OndasAnimadas: $waveRadius")
     //Chamado ao final da animação
     LaunchedEffect(waveRadius) {
         if (waveRadius >= 2000f) onWaveEnd()
@@ -44,17 +49,14 @@ fun OndasAnimadas(
             radius = waveRadius
         )
     }
+    Log.d(TAG, "OndasAnimadas: Fim")
 
 }
 
 @Composable
 @Preview(showBackground = true)
 private fun Preview(){
-    Canvas(modifier = Modifier.fillMaxSize()){
-        drawCircle(
-            color = Color.Blue.copy(alpha = 1f),
-            center = center,
-            radius = 0f // Começa em 0 para simular o estado inicial
-        )
+    Column(modifier = Modifier.fillMaxSize()){
+        OndasAnimadas(Color.Blue) { Log.d(TAG, "Preview: Fim da animação Preview") }
     }
 }
