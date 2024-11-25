@@ -24,6 +24,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +38,11 @@ import com.migueldk17.breeze.ui.components.BreezeTopAppBar
 @Composable
 fun PaginaInicial(navController: NavController){
 
+    val internetColor = Color(0xFFD8EBF9)
+    val contaAguaColor = Color(0xFFD8EBF9)
+    val contaEnergiaColor = Color(0xFFD8EBF9)
+    val aluguelColor = Color(0xFFD8EBF9)
+    val supermercadoColor = Color(0xFFD8EBF9)
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
         ElevatedCard(modifier = Modifier
@@ -67,24 +74,45 @@ fun PaginaInicial(navController: NavController){
         Text("Contas Fixas:",
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
-        BreezeCard(FaIcons.Globe, "Internet", 150, Color.Gray,
+
+        BreezeCard(FaIcons.Globe,
+            "Internet",
+            150,
+            Color(0xFFD8EBF9),
+            Color(0xFF0288D1),
             onClick = {
                 navController.navigate(Screen.WaveScreen.route)
             })
-        BreezeCard(FaIcons.Water, "Conta de Água", 12, Color.Blue,
+
+        BreezeCard(FaIcons.Water, "Conta de Água",
+            12,
+            Color(0xFFE3F2FD),
+            Color(0xFF0288D1),
             onClick = {
                 navController.navigate(Screen.WaveScreen.route)
             })
-        BreezeCard(FaIcons.Bolt, "Conta de Energia", 100, Color.Yellow,
+        BreezeCard(
+            FaIcons.Bolt,
+            "Conta de Energia",
+            100,
+            Color(0xFFFFF9C4),
+            Color(0xFFFF9800),
             onClick = {
                 navController.navigate(Screen.WaveScreen.route)
             })
-        BreezeCard(FaIcons.Home, "Aluguel", 450,
-             Color.Transparent,
+        BreezeCard(FaIcons.Home,
+            "Aluguel",
+            450,
+            Color(0xFFDFF2E1),
+            Color(0xFF4CAF50),
             onClick = {
                 navController.navigate(Screen.WaveScreen.route)
             })
-        BreezeCard(FaIcons.ShoppingCart, "Supermercado", 350,Color.Red,
+        BreezeCard(FaIcons.ShoppingCart,
+            "Supermercado",
+            350,
+            Color(0xFFE8F5E9),
+            Color(0xFFF44336),
             onClick = {
                 navController.navigate(Screen.WaveScreen.route)
             })

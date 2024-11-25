@@ -42,6 +42,7 @@ fun BreezeCard(
     categoria: String,
     valorCategoria: Int,
     baseColor: Color,
+    cardColor: Color,
     onClick: () -> Unit
 ){
     var text by remember {
@@ -61,7 +62,7 @@ fun BreezeCard(
                 .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                FaIcon(imageVector, size = 48.dp)
+                FaIcon(imageVector, size = 48.dp, tint = cardColor)
                 Spacer(Modifier.size(20.dp))
                 Text(categoria)
                 Row(
