@@ -51,7 +51,7 @@ fun BreezeCard(
     OutlinedCard (
         modifier = Modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = baseColor.copy(alpha = 0.2f))
+        colors = CardDefaults.cardColors(containerColor = baseColor)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),

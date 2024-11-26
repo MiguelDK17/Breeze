@@ -1,7 +1,10 @@
 package com.migueldk17.breeze.ui.layouts
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,12 +37,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIcons
-import com.migueldk17.breeze.ui.animation.OndasAnimadas
+import com.migueldk17.breeze.ui.animation.ColorTransitionFromCenter
 
 @Composable
-fun EditarValorConta(/*navController: NavController*/){
+fun EditarValorConta(baseColor: Color){
+    Log.d(TAG, "EditarValorConta: $baseColor")
     var text by remember {
         mutableStateOf("")
+    }
+    Box {
+        ColorTransitionFromCenter(baseColor)
+
     }
     Column(
         modifier = Modifier
@@ -47,7 +55,47 @@ fun EditarValorConta(/*navController: NavController*/){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
-    ) {
+        ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            OutlinedTextField(text, onValueChange = { value ->
+                text = value
+            },
+                placeholder = {
+                    Text("Valor")
+                },
+                modifier = Modifier.size(width = 110.dp, height = 70.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+            Spacer(Modifier.width(10.dp))
+            OutlinedIconButton(onClick = {}) {
+                Icon(Icons.Outlined.Check, contentDescription = null)
+            }
+        }
+        Spacer(modifier = Modifier.height(150.dp))
+    }
+}
+
+@Composable
+fun EditarValorContaPreview(/*navController: NavController*/baseColor: Color){
+    Log.d(TAG, "EditarValorConta: $baseColor")
+    var text by remember {
+        mutableStateOf("")
+    }
+    Box {
+        ColorTransitionFromCenter(baseColor)
+
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -70,9 +118,10 @@ fun EditarValorConta(/*navController: NavController*/){
         Spacer(modifier = Modifier.height(150.dp))
     }
 
+
 }
 @Composable
 @Preview
 private fun Preview(){
-    EditarValorConta()
+    EditarValorContaPreview(Color.Yellow)
 }

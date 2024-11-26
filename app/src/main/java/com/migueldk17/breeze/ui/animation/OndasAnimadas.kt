@@ -44,85 +44,43 @@ import kotlin.math.pow
 import kotlin.math.sin
 
 @Composable
-fun OndasAnimadas(
-    baseColor: Color, //Cor base das ondas
-    percent: Float,
-    modifier: Modifier = Modifier,
-    waveAmplitude: Float = 15f, //Altura das ondas
-    waveFrequency: Int = 30, // número de ondas ao longo da circunferência
-
+fun ColorTransitionFromCenter(
+    targetColor: Color,
+    modifier: Modifier = Modifier
 ) {
-    var waveOffset by remember {
-        mutableFloatStateOf(0f)
+    //Estado inicial e final da cor
+    val animatedRadius = remember {
+        Animatable(0f)
     }
-    val infiniteTransition = rememberInfiniteTransition(label = "")
 
-    val animatedWaveOffset by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), ""
-    )
+    //Inicia a animação sempre que o targetColor mudar
+    LaunchedEffect(key1 = targetColor) {
+        animatedRadius.snapTo(0f) //Reincia o raio
+        animatedRadius.animateTo(1f, animationSpec = tween(1000, easing = LinearOutSlowInEasing)) //Anima até o raio total
+    }
 
-    waveOffset = animatedWaveOffset
+    //Desenhar com o Canvas para criar a transição radial
+    Canvas(modifier = modifier.fillMaxSize()) {
+        val canvasSize = size
+        val canvasCenter = Offset(canvasSize.width / 2, canvasSize.height / 2)
+        val maxRadius = hypot(canvasSize.width, canvasSize.height) / 2
 
-    if (percent > 0f) {
-        var canvasSize by remember {
-            mutableStateOf(Size.Zero)
-        }
-        var waveHeight by remember {
-            mutableFloatStateOf(0f)
-        }
-        var yoffset by remember {
-            mutableFloatStateOf(0f)
-        }
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        //Preencher gradualmente com a cor a partir do centro
+        drawCircle(
+            color = targetColor,
+            radius = maxRadius * animatedRadius.value, //Usando o valor animado
+            center = canvasCenter
+        )
 
-            Canvas(modifier = Modifier.fillMaxSize()) {
-                canvasSize = size
-                waveHeight = 0.01f * size.height
-                val lowFudge = 0.01f
-                val hightFudge = 0.18f
-                val adjustedPercent = lowFudge + (hightFudge - lowFudge) * percent.pow(0.34f)
-                yoffset = (1f - adjustedPercent) * size.height
-
-                val wavePath = Path().apply {
-                    moveTo(
-                        0f,
-                        yoffset + waveHeight * sin(toRadians(waveOffset.toDouble()).toFloat())
-                    )
-                    for (x in 0 until size.width.toInt()) {
-                        val angle = (x / size.width * 360f + waveOffset) % 360f
-                        val y = yoffset + waveHeight * sin(toRadians(angle.toDouble())).toFloat()
-                        lineTo(x.toFloat(), y)
-                    }
-                    lineTo(size.width, size.height)
-                    lineTo(0f, size.height)
-                    close()
-                }
-                drawPath(
-                    path = wavePath,
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xff014174), Color(0xff0196a5)),
-                        startY = yoffset,
-                        endY = size.height
-                    ),
-                    style = Fill
-                )
-            }
-        }
     }
 }
-
 @Composable
 @Preview(showBackground = true)
 private fun Preview(){
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally){
-        OndasAnimadas(MaterialTheme.colorScheme.primary,15f)
+        ColorTransitionFromCenter(Color.Blue)
     }
 }
