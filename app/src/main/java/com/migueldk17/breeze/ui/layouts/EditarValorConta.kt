@@ -2,7 +2,6 @@ package com.migueldk17.breeze.ui.layouts
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,13 +16,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,24 +31,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.guru.fontawesomecomposelib.FaIcon
-import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.ui.animation.ColorTransitionFromCenter
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun EditarValorConta(baseColor: Color){
-    Log.d(TAG, "EditarValorConta: $baseColor")
+fun EditarValorConta(viewModel: BreezeViewModel, modifier: Modifier = Modifier){
+    val cardColor = viewModel.cardColor.collectAsState().value
+    Log.d(TAG, "EditarValorConta: $cardColor")
+    val iconColor = viewModel.iconColor.collectAsState()
     var text by remember {
         mutableStateOf("")
     }
     Box {
-        ColorTransitionFromCenter(baseColor)
+        ColorTransitionFromCenter(cardColor)
 
     }
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 

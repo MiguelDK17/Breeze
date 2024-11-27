@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.layouts
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,23 +22,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import com.guru.fontawesomecomposelib.FaIcons
-import com.migueldk17.breeze.Screen
+import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.ui.components.BreezeCard
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel){
+fun PaginaInicial(navController: NavController){
 
-    val internetColor = Color(0xFF0288D1)
-    val contaAguaColor = Color(0xFF0288D1)
-    val contaEnergiaColor = Color(0xFFFF9800)
-    val aluguelColor = Color(0xFF4CAF50)
-    val supermercadoColor = Color(0xFFF44336)
+    //Cores dos cards
+    val cardInternetColor = Color(0xFFD8EBF9)
+    val cardAguaColor = Color(0xFFE3F2FD)
+    val cardEnergiaColor = Color(0xFFFFF9C4)
+    val cardAluguelColor = Color(0xFFDFF2E1)
+    val cardSupermercado = Color(0xFFE8F5E9)
+
+    //Cores dos icones
+    val iconInternetColor = Color(0xFF0288D1)
+    val iconContaAguaColor = Color(0xFF0288D1)
+    val iconContaEnergiaColor = Color(0xFFFF9800)
+    val iconAluguelColor = Color(0xFF4CAF50)
+    val iconSupermercadoColor = Color(0xFFF44336)
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
@@ -74,50 +83,58 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel){
         BreezeCard(FaIcons.Globe,
             "Internet",
             150,
-            Color(0xFFD8EBF9),
-            internetColor,
+            cardInternetColor,
+            iconInternetColor,
             onClick = {
-                viewModel.salvaCor(internetColor)
-                navController.navigate(Screen.EditarValorConta.route)
+                onClick(navController, cardInternetColor, iconInternetColor)
             })
 
         BreezeCard(FaIcons.Water, "Conta de Água",
             12,
-            Color(0xFFE3F2FD),
-            contaAguaColor,
+            cardAguaColor,
+            iconContaAguaColor,
             onClick = {
-                viewModel.salvaCor(contaAguaColor)
-                navController.navigate(Screen.EditarValorConta.route)
+                onClick(navController, cardAguaColor, iconContaAguaColor)
             })
         BreezeCard(
             FaIcons.Bolt,
             "Conta de Energia",
             100,
-            Color(0xFFFFF9C4),
-            contaEnergiaColor,
+            cardEnergiaColor,
+            iconContaEnergiaColor,
             onClick = {
-                viewModel.salvaCor(contaEnergiaColor)
-                navController.navigate(Screen.EditarValorConta.route)
+                onClick(navController, cardEnergiaColor, iconContaEnergiaColor)
             })
         BreezeCard(FaIcons.Home,
             "Aluguel",
             450,
-            Color(0xFFDFF2E1),
-            aluguelColor,
+            cardAluguelColor,
+            iconAluguelColor,
             onClick = {
-                viewModel.salvaCor(aluguelColor)
-                navController.navigate(Screen.EditarValorConta.route)
+                onClick(navController, cardAluguelColor, iconAluguelColor)
             })
         BreezeCard(FaIcons.ShoppingCart,
             "Supermercado",
             350,
-            Color(0xFFE8F5E9),
-            supermercadoColor,
+            cardSupermercado,
+            iconSupermercadoColor,
             onClick = {
-                viewModel.salvaCor(supermercadoColor)
-                navController.navigate(Screen.EditarValorConta.route)
+                onClick(navController, cardSupermercado, iconSupermercadoColor)
             })
     }
+}
+private fun onClick(navController: NavController, cardColor: Color, iconColor: Color){
+
+    val intent = Intent(navController.context, MainActivity2::class.java)
+    //Transforma a cor em Argb para passar para a intent
+    val transformaCorIcon = iconColor.toArgb()
+
+    //Transforma a cor em Argb para passar para a intent
+    val transformaCorCard = cardColor.toArgb()
+
+    val arrayList = intArrayOf(transformaCorCard, transformaCorIcon)
 
 
+    intent.putExtra("color", arrayList)
+    navController.context.startActivity(intent)
 }
