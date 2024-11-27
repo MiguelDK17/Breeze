@@ -20,7 +20,9 @@ class MainActivity2: ComponentActivity() {
         setContent {
             Scaffold { paddingValues ->
             val recuperaCor = intent.getIntArrayExtra("color")
+                val nome = intent.getStringExtra("nome")
                 viewModel.transformaCor(recuperaCor!!)
+                viewModel.setNome(nome!!)
                 EditarValorConta(viewModel, modifier = Modifier.padding(paddingValues))
 
             }

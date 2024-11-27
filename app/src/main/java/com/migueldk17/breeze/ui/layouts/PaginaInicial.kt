@@ -86,7 +86,7 @@ fun PaginaInicial(navController: NavController){
             cardInternetColor,
             iconInternetColor,
             onClick = {
-                onClick(navController, cardInternetColor, iconInternetColor)
+                onClick(navController, cardInternetColor, iconInternetColor, "Internet")
             })
 
         BreezeCard(FaIcons.Water, "Conta de Água",
@@ -94,7 +94,7 @@ fun PaginaInicial(navController: NavController){
             cardAguaColor,
             iconContaAguaColor,
             onClick = {
-                onClick(navController, cardAguaColor, iconContaAguaColor)
+                onClick(navController, cardAguaColor, iconContaAguaColor, "Conta de Água")
             })
         BreezeCard(
             FaIcons.Bolt,
@@ -103,7 +103,7 @@ fun PaginaInicial(navController: NavController){
             cardEnergiaColor,
             iconContaEnergiaColor,
             onClick = {
-                onClick(navController, cardEnergiaColor, iconContaEnergiaColor)
+                onClick(navController, cardEnergiaColor, iconContaEnergiaColor, "Conta de Energia")
             })
         BreezeCard(FaIcons.Home,
             "Aluguel",
@@ -111,7 +111,7 @@ fun PaginaInicial(navController: NavController){
             cardAluguelColor,
             iconAluguelColor,
             onClick = {
-                onClick(navController, cardAluguelColor, iconAluguelColor)
+                onClick(navController, cardAluguelColor, iconAluguelColor, "Aluguel")
             })
         BreezeCard(FaIcons.ShoppingCart,
             "Supermercado",
@@ -119,11 +119,11 @@ fun PaginaInicial(navController: NavController){
             cardSupermercado,
             iconSupermercadoColor,
             onClick = {
-                onClick(navController, cardSupermercado, iconSupermercadoColor)
+                onClick(navController, cardSupermercado, iconSupermercadoColor, "Supermercado")
             })
     }
 }
-private fun onClick(navController: NavController, cardColor: Color, iconColor: Color){
+private fun onClick(navController: NavController, cardColor: Color, iconColor: Color, nomeConta: String){
 
     val intent = Intent(navController.context, MainActivity2::class.java)
     //Transforma a cor em Argb para passar para a intent
@@ -136,5 +136,6 @@ private fun onClick(navController: NavController, cardColor: Color, iconColor: C
 
 
     intent.putExtra("color", arrayList)
+    intent.putExtra("nome", nomeConta)
     navController.context.startActivity(intent)
 }
