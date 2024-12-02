@@ -2,6 +2,9 @@ package com.migueldk17.breeze.ui.layouts
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +16,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,11 +36,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.guru.fontawesomecomposelib.FaIcon
+import com.guru.fontawesomecomposelib.FaIconType
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.ui.animation.ColorTransitionFromCenter
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
@@ -53,34 +63,66 @@ fun EditarValorConta(viewModel: BreezeViewModel, modifier: Modifier = Modifier){
 
         Column(modifier = Modifier
         .fillMaxWidth()
-            .height(400.dp)
+            .height(450.dp)
         .padding(horizontal = 16.dp), //Margem lateral
          verticalArrangement = Arrangement.SpaceAround,   // Espaçamento proporcional
         horizontalAlignment = Alignment.CenterHorizontally) {
         IconColumn(iconColor.value, nome.value)
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            OutlinedTextField(text, onValueChange = { value ->
-                text = value
-            },
-                placeholder = {
-                    Text("Valor")
-                },
-                modifier = Modifier.size(width = 210.dp, height = 56.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
-            Spacer(Modifier.width(10.dp))
-            OutlinedIconButton(onClick = {}) {
-                Icon(Icons.Outlined.Check, contentDescription = null)
+            Box(
+                modifier = Modifier
+                    .shadow(
+                        elevation = 4.dp, // Sombra externa
+                        shape = RoundedCornerShape(12.dp) // Mesma forma do Card
+                    )
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(cardColor)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+            ){
+                OutlinedCard(
+                    modifier = Modifier
+                        .size(width = 332.dp, height = 113.dp),
+                    colors = CardColors(
+                        containerColor = Color.Transparent.copy(alpha = 0.01f),
+                        contentColor = Color.Unspecified,
+                        disabledContentColor = Color.Unspecified,
+                        disabledContainerColor = Color.Unspecified),
+                    ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            OutlinedTextField(text, onValueChange = { value ->
+                                text = value
+                            },
+                                placeholder = {
+                                    Text("Valor")
+                                },
+                                modifier = Modifier.size(width = 210.dp, height = 56.dp),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            OutlinedIconButton(onClick = {}) {
+                                Icon(Icons.Outlined.Check, contentDescription = null)
+                            }
+                        }
+                    }
+                }
             }
+
+
         }
-    }
     }
 }
 @Composable
@@ -92,12 +134,31 @@ private fun IconColumn(iconColor: Color, nome: String){
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FaIcon(FaIcons.Car,
+        FaIcon(
+            retornaIcon(nome),
             size = 35.dp,
             tint = iconColor)
         Text(nome,
             style = MaterialTheme.typography.titleMedium)
     }
+}
+
+private fun retornaIcon(nome: String): FaIconType {
+    when(nome) {
+
+        "Aluguel" -> return FaIcons.Home
+
+        "Conta de Água" -> return FaIcons.Water
+
+        "Conta de Energia" -> return FaIcons.Bolt
+
+        "Internet" -> return FaIcons.Globe
+
+        "Supermercado" -> return FaIcons.ShoppingCart
+
+        else -> return FaIcons.Dev
+    }
+
 }
 
 @Composable
@@ -140,9 +201,4 @@ fun EditarValorContaPreview(/*navController: NavController*/baseColor: Color){
     }
 
 
-}
-@Composable
-@Preview
-private fun Preview(){
-    IconColumn(Color.Yellow, "Conta")
 }

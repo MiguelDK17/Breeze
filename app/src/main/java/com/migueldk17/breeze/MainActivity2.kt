@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.migueldk17.breeze.ui.layouts.EditarValorConta
+import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 class MainActivity2: ComponentActivity() {
@@ -18,13 +19,14 @@ class MainActivity2: ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            BreezeTheme {
             Scaffold { paddingValues ->
-            val recuperaCor = intent.getIntArrayExtra("color")
+                val recuperaCor = intent.getIntArrayExtra("color")
                 val nome = intent.getStringExtra("nome")
                 viewModel.transformaCor(recuperaCor!!)
                 viewModel.setNome(nome!!)
                 EditarValorConta(viewModel, modifier = Modifier.padding(paddingValues))
-
+            }
             }
         }
     }

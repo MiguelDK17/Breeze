@@ -89,7 +89,8 @@ fun PaginaInicial(navController: NavController){
                 onClick(navController, cardInternetColor, iconInternetColor, "Internet")
             })
 
-        BreezeCard(FaIcons.Water, "Conta de Água",
+        BreezeCard(FaIcons.Water,
+            "Conta de Água",
             12,
             cardAguaColor,
             iconContaAguaColor,
