@@ -94,6 +94,7 @@ fun Calendario(){
 
 @Composable
 fun GridMes(){
+    //Lista de meses
     val meses = listOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
     var mesSelecionado by remember { mutableStateOf<String?>(null) }
 
@@ -109,6 +110,7 @@ fun GridMes(){
                 MesItem(
                     meses[index],
                     isSelected = meses[index] == mesSelecionado,
+                    //Salva o mes clicado na variavel mesSelecionado
                     onClick = {mesSelecionado = meses[index]})
             })
     }
@@ -137,6 +139,7 @@ fun MesItem(
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable {
+                //Salva o mes clicado na variavel mesSelecionado
                 onClick()
                 Toast.makeText(
                     context, "Mês clicado: $mes", Toast.LENGTH_SHORT

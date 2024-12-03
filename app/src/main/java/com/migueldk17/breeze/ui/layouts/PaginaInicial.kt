@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -50,6 +49,7 @@ fun PaginaInicial(navController: NavController){
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
+        //Card de saldo disponível
         ElevatedCard(modifier = Modifier
             .size(width = 254.dp, height = 49.dp))
         {
@@ -60,6 +60,7 @@ fun PaginaInicial(navController: NavController){
                     "Seu Saldo: R$ 3000,00",
                     style = MaterialTheme.typography.titleMedium
                 )
+                 //Botão para editar o saldo
                 IconButton(
                     onClick = {
                         Log.d(TAG, "ToolbarBreeze: botão clicado")
@@ -83,8 +84,8 @@ fun PaginaInicial(navController: NavController){
         BreezeCard(FaIcons.Globe,
             "Internet",
             150,
-            cardInternetColor,
-            iconInternetColor,
+            cardInternetColor, //Cor do card
+            iconInternetColor,  //Cor do ícone
             onClick = {
                 onClick(navController, cardInternetColor, iconInternetColor, "Internet")
             })
@@ -92,8 +93,8 @@ fun PaginaInicial(navController: NavController){
         BreezeCard(FaIcons.Water,
             "Conta de Água",
             12,
-            cardAguaColor,
-            iconContaAguaColor,
+            cardAguaColor, //Cor do card
+            iconContaAguaColor,  //Cor do ícone
             onClick = {
                 onClick(navController, cardAguaColor, iconContaAguaColor, "Conta de Água")
             })
@@ -101,24 +102,24 @@ fun PaginaInicial(navController: NavController){
             FaIcons.Bolt,
             "Conta de Energia",
             100,
-            cardEnergiaColor,
-            iconContaEnergiaColor,
+            cardEnergiaColor, //Cor do card
+            iconContaEnergiaColor, //Cor do ícone
             onClick = {
                 onClick(navController, cardEnergiaColor, iconContaEnergiaColor, "Conta de Energia")
             })
         BreezeCard(FaIcons.Home,
             "Aluguel",
             450,
-            cardAluguelColor,
-            iconAluguelColor,
+            cardAluguelColor, //Cor do card
+            iconAluguelColor,  //Cor do ícone
             onClick = {
                 onClick(navController, cardAluguelColor, iconAluguelColor, "Aluguel")
             })
         BreezeCard(FaIcons.ShoppingCart,
             "Supermercado",
             350,
-            cardSupermercado,
-            iconSupermercadoColor,
+            cardSupermercado, //Cor do card
+            iconSupermercadoColor, //Cor do ícone
             onClick = {
                 onClick(navController, cardSupermercado, iconSupermercadoColor, "Supermercado")
             })
@@ -133,6 +134,7 @@ private fun onClick(navController: NavController, cardColor: Color, iconColor: C
     //Transforma a cor em Argb para passar para a intent
     val transformaCorCard = cardColor.toArgb()
 
+    //Manda as cores do card e do icone para um array
     val arrayList = intArrayOf(transformaCorCard, transformaCorIcon)
 
 

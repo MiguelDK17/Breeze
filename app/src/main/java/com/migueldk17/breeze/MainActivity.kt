@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -20,7 +19,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
-
 import com.migueldk17.breeze.ui.components.BreezeBottomBar
 import com.migueldk17.breeze.ui.components.BreezeTopAppBar
 import com.migueldk17.breeze.ui.layouts.Configuracoes
@@ -35,11 +33,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            //Tema do app
             BreezeTheme {
+                //Cria o navController
                 val navController = rememberNavController()
+                //Cria o scroll que será usado futuramente
                 val scroll = rememberScrollState()
+                //Pega a rota atual do navController
                 val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
+                //Caso a rota depender das barras de navegação elas irão aparecer, do contrário não
                 val showToolbarAndToolbar = when(currentRoute){
                     Screen.PaginaInicial.route,
                         Screen.Historico.route,
@@ -49,18 +52,22 @@ class MainActivity : ComponentActivity() {
                 }
                 Scaffold(modifier = Modifier
                     .fillMaxSize(),
+                    //Topbar do app usando o when anterior
                     topBar = {
                         if (showToolbarAndToolbar){
                             BreezeTopAppBar()
                         }
                     },
+                    //Bottombar do app usando o when anterior
                     bottomBar = {
                         if (showToolbarAndToolbar){
                             BreezeBottomBar(navController)
                         }
                     }){ innerPadding ->
+
+                    //Cria o navGraph com a rota inicial como a PaginaInicial
                     val navGraph = navController.createGraph(startDestination = Screen.PaginaInicial.route) {
-                        //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor
+                        //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor dos cards
                         composable(Screen.PaginaInicial.route) {
                             PaginaInicial(
                                 navController
@@ -69,6 +76,8 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Historico.route) { Historico() }
                         composable(Screen.Configuracoes.route) { Configuracoes() }
                     }
+                    //NavHost contendo o navController, as rotas, o scroll vertical e as animações, os layouts compose irão compertilhar dessas propriedades
+                    //Se estiverem na rota do navGraph
                     NavHost(
                         navController = navController,
                         graph = navGraph,

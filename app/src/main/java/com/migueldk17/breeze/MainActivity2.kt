@@ -21,9 +21,13 @@ class MainActivity2: ComponentActivity() {
         setContent {
             BreezeTheme {
             Scaffold { paddingValues ->
+                //Pega o array de colors enviado de PaginaInicial
                 val recuperaCor = intent.getIntArrayExtra("color")
+                //Pega o nome da conta enviado de PaginaInicial
                 val nome = intent.getStringExtra("nome")
+                //Envia o array de cores para o ViewModel
                 viewModel.transformaCor(recuperaCor!!)
+                //Envia o nome para o ViewModel
                 viewModel.setNome(nome!!)
                 EditarValorConta(viewModel, modifier = Modifier.padding(paddingValues))
             }
