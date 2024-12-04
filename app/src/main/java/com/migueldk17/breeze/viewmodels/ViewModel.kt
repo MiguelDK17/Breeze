@@ -3,11 +3,20 @@ package com.migueldk17.breeze.viewmodels
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.dao.SaldoDao
+import com.migueldk17.breeze.entity.Saldo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BreezeViewModel: ViewModel() {
+@HiltViewModel
+class BreezeViewModel @Inject constructor(
+    private val saldoDao: SaldoDao
+): ViewModel() {
     private val _arrayColor = MutableStateFlow(intArrayOf())
     //val arrayColor: StateFlow<IntArray> = _arrayColor.asStateFlow()
 
@@ -19,6 +28,15 @@ class BreezeViewModel: ViewModel() {
 
     private val _nomeConta = MutableStateFlow("")
     val nomeConta: StateFlow<String> = _nomeConta.asStateFlow()
+
+    private val _saldo = MutableStateFlow<Saldo?>(null)
+    val saldo: StateFlow<Saldo?> get() = _saldo
+
+    init {
+        viewModelScope.launch {
+            _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 3000.00) //Valor inicial
+        }
+    }
 
     //Transforma a cor de int para Color para manipulação
     fun transformaCor(array: IntArray){
@@ -37,4 +55,12 @@ class BreezeViewModel: ViewModel() {
     fun setNome(string: String){
         _nomeConta.value = string
     }
+    fun atualizaSaldo(double: Double){
+        viewModelScope.launch {
+            val saldoAtual = Saldo(valor = double)
+            saldoDao.inserirSaldo(saldoAtual)
+            _saldo.value = saldoAtual
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ navComposeVersion = "2.8.4"
 roomVersion = "2.6.1"
 ksp = "2.0.21-1.0.25"
 dagger-hilt = "2.51.1"
+hiltNavigationCompose = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,7 @@ androidx-room-compiler = {group = "androidx.room", name = "room-compiler", versi
 fontAwesomCompose = {group = "com.github.Gurupreet", name = "FontAwesomeCompose", version.ref = "fontAwesomeComposeVersion"}
 hilt-android = {group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt"}
 hilt-compiler = {group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger-hilt"}
+androidx-hilt-navigation-compose = {group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose"}
 
 
 

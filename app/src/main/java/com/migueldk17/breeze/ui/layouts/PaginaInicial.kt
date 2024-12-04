@@ -19,19 +19,24 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.ui.components.BreezeCard
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun PaginaInicial(navController: NavController){
+fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
+    val saldo by viewModel.saldo.collectAsState()
 
     //Cores dos cards
     val cardInternetColor = Color(0xFFD8EBF9)
@@ -57,7 +62,7 @@ fun PaginaInicial(navController: NavController){
                  verticalAlignment = Alignment.CenterVertically,
                  horizontalArrangement = Arrangement.Center) {
                 Text(
-                    "Seu Saldo: R$ 3000,00",
+                    "Seu Saldo: R$ ${saldo?.valor ?: "Carregando..."}",
                     style = MaterialTheme.typography.titleMedium
                 )
                  //Botão para editar o saldo
