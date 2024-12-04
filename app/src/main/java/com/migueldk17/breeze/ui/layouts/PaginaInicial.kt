@@ -14,13 +14,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,25 +35,26 @@ import androidx.navigation.NavController
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.ui.components.BreezeCard
+import com.migueldk17.breeze.ui.theme.cardAguaColor
+import com.migueldk17.breeze.ui.theme.cardAluguelColor
+import com.migueldk17.breeze.ui.theme.cardEnergiaColor
+import com.migueldk17.breeze.ui.theme.cardInternetColor
+import com.migueldk17.breeze.ui.theme.cardSupermercado
+import com.migueldk17.breeze.ui.theme.iconAluguelColor
+import com.migueldk17.breeze.ui.theme.iconContaAguaColor
+import com.migueldk17.breeze.ui.theme.iconContaEnergiaColor
+import com.migueldk17.breeze.ui.theme.iconInternetColor
+import com.migueldk17.breeze.ui.theme.iconSupermercadoColor
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     val saldo by viewModel.saldo.collectAsState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
 
-    //Cores dos cards
-    val cardInternetColor = Color(0xFFD8EBF9)
-    val cardAguaColor = Color(0xFFE3F2FD)
-    val cardEnergiaColor = Color(0xFFFFF9C4)
-    val cardAluguelColor = Color(0xFFDFF2E1)
-    val cardSupermercado = Color(0xFFE8F5E9)
-
-    //Cores dos icones
-    val iconInternetColor = Color(0xFF0288D1)
-    val iconContaAguaColor = Color(0xFF0288D1)
-    val iconContaEnergiaColor = Color(0xFFFF9800)
-    val iconAluguelColor = Color(0xFF4CAF50)
-    val iconSupermercadoColor = Color(0xFFF44336)
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
@@ -68,7 +72,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                  //Botão para editar o saldo
                 IconButton(
                     onClick = {
-                        Log.d(TAG, "ToolbarBreeze: botão clicado")
+                        scope.launch { sheetState.show() }
                     },
                     modifier = Modifier
                         .size(23.dp)
