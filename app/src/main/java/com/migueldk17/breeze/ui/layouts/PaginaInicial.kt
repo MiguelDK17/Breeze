@@ -11,23 +11,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,8 +60,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     val saldo by viewModel.saldo.collectAsState()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+
+
+
+    //Estado para armazenar o saldo
+    var novoSaldo by remember { mutableStateOf("") }
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -72,7 +87,8 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                  //Botão para editar o saldo
                 IconButton(
                     onClick = {
-                        scope.launch { sheetState.show() }
+                        Log.d(TAG, "PaginaInicial: clique no botão")
+                        showBottomSheet = true
                     },
                     modifier = Modifier
                         .size(23.dp)
@@ -132,6 +148,44 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             onClick = {
                 onClick(navController, cardSupermercado, iconSupermercadoColor, "Supermercado")
             })
+    }
+    if (showBottomSheet){
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = sheetState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
+                OutlinedTextField(
+                    value = novoSaldo,
+                    onValueChange = { novoSaldo = it },
+                    label = { Text("Novo Saldo") },
+                    //Aceita apenas números
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    //Apenas uma linha
+                    singleLine = true
+                )
+                Button(onClick = {
+                    viewModel.atualizaSaldo(novoSaldo.toDouble()) //Atualiza o saldo
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible){
+                            showBottomSheet = false  //Fecha o BottomSheet
+                        }
+                    }
+                }) {
+                    Text("Salvar")
+                }
+
+            }
+        }
     }
 }
 private fun onClick(navController: NavController, cardColor: Color, iconColor: Color, nomeConta: String){
