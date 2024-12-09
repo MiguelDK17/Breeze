@@ -3,6 +3,7 @@ package com.migueldk17.breeze.ui.layouts
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,11 +63,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     val saldo by viewModel.saldo.collectAsState()
+    val context = LocalContext.current
+
+    //Estados para controlar o ModalBottomSheet
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
-
-
 
 
     //Estado para armazenar o saldo
@@ -160,19 +164,36 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
                 OutlinedTextField(
                     value = novoSaldo,
-                    onValueChange = { novoSaldo = it },
+                    onValueChange = { value ->
+                       if (value.all { it.isDigit() } || value.isEmpty()){
+                           novoSaldo = value
+                       } else {
+                           Toast.makeText(
+                               context, "Insira apenas números", Toast.LENGTH_SHORT
+                           ).show()
+                       }
+                                    },
                     label = { Text("Novo Saldo") },
                     //Aceita apenas números
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     //Apenas uma linha
-                    singleLine = true
+                    singleLine = true,
+                    //Verificação de erro
+                    isError = novoSaldo.isNotEmpty() && (novoSaldo.toIntOrNull() ?: 0) !in 1..9999
                 )
+                if (novoSaldo.isNotEmpty() && (novoSaldo.toIntOrNull() ?: 0) !in 1..9999) {
+                    Text(
+                        text = "O saldo deve estar entre 1 e 9999",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
                 Button(onClick = {
                     viewModel.atualizaSaldo(novoSaldo.toDouble()) //Atualiza o saldo
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
@@ -204,4 +225,53 @@ private fun onClick(navController: NavController, cardColor: Color, iconColor: C
     intent.putExtra("color", arrayList)
     intent.putExtra("nome", nomeConta)
     navController.context.startActivity(intent)
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview(showBackground = true)
+private fun Preview(){
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    //Estado para armazenar o saldo
+    var novoSaldo by remember { mutableStateOf("") }
+
+
+    ModalBottomSheet(
+        onDismissRequest = {
+            showBottomSheet = false
+        },
+        sheetState = sheetState
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
+            OutlinedTextField(
+                value = novoSaldo,
+                onValueChange = { novoSaldo = it },
+                label = { Text("Novo Saldo") },
+                //Aceita apenas números
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                //Apenas uma linha
+                singleLine = true
+            )
+            Button(onClick = {
+                novoSaldo //Atualiza o saldo
+                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                    if (!sheetState.isVisible){
+                        showBottomSheet = false  //Fecha o BottomSheet
+                    }
+                }
+            }) {
+                Text("Salvar")
+            }
+
+        }
+    }
 }
