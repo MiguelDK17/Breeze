@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.viewmodels
 
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -57,9 +59,18 @@ class BreezeViewModel @Inject constructor(
     }
     fun atualizaSaldo(double: Double){
         viewModelScope.launch {
-            val saldoAtual = Saldo(valor = double)
-            saldoDao.inserirSaldo(saldoAtual)
-            _saldo.value = saldoAtual
+            if (saldoDao.getSaldo() == null) {
+                val saldoAtual = Saldo(id = 0, valor = double / 100)
+                saldoDao.inserirSaldo(saldoAtual)
+                Log.d(TAG, "atualizaSaldo: ${saldoDao.getSaldo()}")
+                _saldo.value = saldoAtual
+            } else {
+                Log.d(TAG, "atualizaSaldo: Caiu no update")
+                val saldoAtualizado = Saldo(id = 0, valor = double / 100)
+                saldoDao.atualizarSaldo(saldoAtualizado)
+                Log.d(TAG, "atualizaSaldo: ${saldoDao.getSaldo()}")
+                _saldo.value = saldoAtualizado
+            }
         }
     }
 

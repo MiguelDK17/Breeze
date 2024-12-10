@@ -68,6 +68,8 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     val saldo by viewModel.saldo.collectAsState()
     val context = LocalContext.current
 
+
+
     //Estados para controlar o ModalBottomSheet
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -176,7 +178,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                 OutlinedTextField(
                     value = saldoInput,
                     onValueChange = { value ->
-                        saldoInput = value.filter { it.isDigit() }
+                        saldoInput = value.filter { it.isLetterOrDigit() }
                         Log.d(TAG, "PaginaInicial: $saldoInput")
                     },
                     label = { Text("Novo Saldo") },
@@ -185,13 +187,13 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                     //Apenas uma linha
                     singleLine = true,
                     //Verificação de erro
-                    isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 10..9999999,
+                    isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999,
                     visualTransformation = MoneyVisualTransformation()
                 )
-                if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 10..9999999) {
+                if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999) {
                     isSaldoCorrectly = false
                     Text(
-                        text = "O saldo deve estar entre R$:1,00 e R$:99.999,00",
+                        text = "O saldo deve estar entre R$:10,00 e R$:99.999,00",
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall
                     )
