@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import com.migueldk17.breeze.ui.layouts.EditarValorConta
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity2: ComponentActivity() {
     private val viewModel by viewModels<BreezeViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {

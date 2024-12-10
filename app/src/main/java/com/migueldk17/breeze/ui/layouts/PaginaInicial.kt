@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.layouts
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
@@ -45,6 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity2
+import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.components.BreezeCard
 import com.migueldk17.breeze.ui.theme.cardAguaColor
 import com.migueldk17.breeze.ui.theme.cardAluguelColor
@@ -60,6 +62,7 @@ import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("DefaultLocale")
 @Composable
 fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     val saldo by viewModel.saldo.collectAsState()
@@ -72,7 +75,8 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 
     //Estado para armazenar o saldo
-    var novoSaldo by remember { mutableStateOf("") }
+    var saldoInput by remember { mutableStateOf("") }
+    var isSaldoCorrectly by remember { mutableStateOf(false) }
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -168,42 +172,46 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
+                //AQUI FICARÁ O OUTLINEDTEXTFIELD
                 OutlinedTextField(
-                    value = novoSaldo,
+                    value = saldoInput,
                     onValueChange = { value ->
-                       if (value.all { it.isDigit() } || value.isEmpty()){
-                           novoSaldo = value
-                       } else {
-                           Toast.makeText(
-                               context, "Insira apenas números", Toast.LENGTH_SHORT
-                           ).show()
-                       }
-                                    },
+                        saldoInput = value.filter { it.isDigit() }
+                        Log.d(TAG, "PaginaInicial: $saldoInput")
+                    },
                     label = { Text("Novo Saldo") },
                     //Aceita apenas números
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     //Apenas uma linha
                     singleLine = true,
                     //Verificação de erro
-                    isError = novoSaldo.isNotEmpty() && (novoSaldo.toIntOrNull() ?: 0) !in 1..9999
+                    isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 10..9999999,
+                    visualTransformation = MoneyVisualTransformation()
                 )
-                if (novoSaldo.isNotEmpty() && (novoSaldo.toIntOrNull() ?: 0) !in 1..9999) {
+                if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 10..9999999) {
+                    isSaldoCorrectly = false
                     Text(
-                        text = "O saldo deve estar entre 1 e 9999",
+                        text = "O saldo deve estar entre R$:1,00 e R$:99.999,00",
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
+                else {
+                    isSaldoCorrectly = true
+                }
                 Button(onClick = {
-                    viewModel.atualizaSaldo(novoSaldo.toDouble()) //Atualiza o saldo
+                    viewModel.atualizaSaldo(saldoInput.toDouble()) //Atualiza o saldo
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible){
                             showBottomSheet = false  //Fecha o BottomSheet
                         }
                     }
-                }) {
+                },
+                    enabled = isSaldoCorrectly && saldoInput != ""
+                ) {
                     Text("Salvar")
                 }
+
 
             }
         }
@@ -225,53 +233,4 @@ private fun onClick(navController: NavController, cardColor: Color, iconColor: C
     intent.putExtra("color", arrayList)
     intent.putExtra("nome", nomeConta)
     navController.context.startActivity(intent)
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-@Preview(showBackground = true)
-private fun Preview(){
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    //Estado para armazenar o saldo
-    var novoSaldo by remember { mutableStateOf("") }
-
-
-    ModalBottomSheet(
-        onDismissRequest = {
-            showBottomSheet = false
-        },
-        sheetState = sheetState
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
-            OutlinedTextField(
-                value = novoSaldo,
-                onValueChange = { novoSaldo = it },
-                label = { Text("Novo Saldo") },
-                //Aceita apenas números
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                //Apenas uma linha
-                singleLine = true
-            )
-            Button(onClick = {
-                novoSaldo //Atualiza o saldo
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible){
-                        showBottomSheet = false  //Fecha o BottomSheet
-                    }
-                }
-            }) {
-                Text("Salvar")
-            }
-
-        }
-    }
 }
