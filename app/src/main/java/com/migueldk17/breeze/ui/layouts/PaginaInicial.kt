@@ -67,6 +67,10 @@ import kotlinx.coroutines.launch
 fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     val saldo by viewModel.saldo.collectAsState()
     val context = LocalContext.current
+    val saldoFormatado = saldo?.valor
+
+
+
 
 
 
@@ -91,7 +95,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                  verticalAlignment = Alignment.CenterVertically,
                  horizontalArrangement = Arrangement.Center) {
                 Text(
-                    "Seu Saldo: R$ ${saldo?.valor ?: "Carregando..."}",
+                    formataSaldo(saldoFormatado),
                     style = MaterialTheme.typography.titleMedium
                 )
                  //Botão para editar o saldo
@@ -218,6 +222,14 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             }
         }
     }
+}
+
+private fun formataSaldo(saldo: Double?): String {
+    if (saldo != null) {
+        val formatacao = String.format("Seu Saldo: R$ %.2f", saldo)
+        Log.d(TAG, "PaginaInicial: saldo formatado = $formatacao")
+        return formatacao
+    } else return "Carregando..."
 }
 private fun onClick(navController: NavController, cardColor: Color, iconColor: Color, nomeConta: String){
 
