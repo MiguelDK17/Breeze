@@ -70,10 +70,6 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     val saldoFormatado = saldo?.valor
 
 
-
-
-
-
     //Estados para controlar o ModalBottomSheet
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -101,7 +97,6 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                  //Botão para editar o saldo
                 IconButton(
                     onClick = {
-                        Log.d(TAG, "PaginaInicial: clique no botão")
                         showBottomSheet = true
                     },
                     modifier = Modifier
@@ -227,7 +222,6 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 private fun formataSaldo(saldo: Double?): String {
     if (saldo != null) {
         val formatacao = String.format("Seu Saldo: R$ %.2f", saldo)
-        Log.d(TAG, "PaginaInicial: saldo formatado = $formatacao")
         return formatacao
     } else return "Carregando..."
 }
