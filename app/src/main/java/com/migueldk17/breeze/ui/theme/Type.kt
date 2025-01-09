@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.theme
 
+import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -77,6 +78,14 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = fontFamilyPoppins,
+        fontWeight = FontWeight.Light,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 1.sp,
+        color = blackPoppins
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

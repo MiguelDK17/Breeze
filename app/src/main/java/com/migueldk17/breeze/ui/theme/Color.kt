@@ -25,3 +25,6 @@ val iconContaEnergiaColor = Color(0xFFFF9800)
 val iconAluguelColor = Color(0xFF4CAF50)
 val iconSupermercadoColor = Color(0xFFF44336)
 
+//Cores de fontes
+val blackPoppins = Color(0xFF3A3A3A)
+
