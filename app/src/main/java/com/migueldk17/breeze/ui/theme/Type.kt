@@ -16,6 +16,7 @@ val provider = GoogleFont.Provider(
 )
 
 val roboto = GoogleFont("Roboto")
+val poppins = GoogleFont("Poppins")
 
 val robotoTitle = GoogleFont("Roboto Flex")
 
@@ -32,31 +33,51 @@ val fontFamilyRoboto = FontFamily(
         fontProvider = provider
     )
 )
+val fontFamilyPoppins = FontFamily(
+    Font(
+        googleFont = poppins,
+        fontProvider = provider
+    )
+)
 
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = fontFamilyRoboto,
+        fontFamily = fontFamilyPoppins,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
+    titleMedium = TextStyle(
+        fontFamily = fontFamilyPoppins,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 1.sp
+    ),
     labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = fontFamilyPoppins,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
-        fontFamily = fontFamilyRobotoTitle,
+        fontFamily = fontFamilyPoppins,
         fontWeight = FontWeight.Normal,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    bodyMedium = TextStyle(
+        fontFamily = fontFamilyPoppins,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp
+    )
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
