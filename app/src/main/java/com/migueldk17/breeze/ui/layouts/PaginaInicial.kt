@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.guru.fontawesomecomposelib.FaIconType
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MoneyVisualTransformation
@@ -79,6 +80,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     //Estado para armazenar o saldo
     var saldoInput by remember { mutableStateOf("") }
     var isSaldoCorrectly by remember { mutableStateOf(false) }
+
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
