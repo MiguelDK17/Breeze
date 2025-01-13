@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +31,8 @@ fun AdicionarContaOpcional(){
         Text(
             "Adicionar Conta Opcional",
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp)
+            fontSize = 18.sp,
+            color = Black)
         Spacer(modifier = Modifier.size(20.dp))
         Text("Passo 1 de 5",
             style = MaterialTheme.typography.bodyMedium,
