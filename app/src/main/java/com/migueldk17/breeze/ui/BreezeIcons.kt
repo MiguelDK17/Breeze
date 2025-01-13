@@ -26,4 +26,20 @@ object BreezeIcons {
     val GlobeLinear: ImageVector
     @Composable
     get() = ImageVector.vectorResource(R.drawable.ic_global)
+
+    val AirplaneLinear: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.ic_airplane)
+
+    val DiscoverLinear: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.ic_discover)
+
+    val DropLinear: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.ic_drop)
+
+    val KeyLinear: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.ic_key)
 }
