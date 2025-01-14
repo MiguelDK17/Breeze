@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Historico.route) { Historico() }
                         composable(Screen.Configuracoes.route) { Configuracoes() }
                     }
-                    //NavHost contendo o navController, as rotas, o scroll vertical e as animações, os layouts compose irão compertilhar dessas propriedades
+                    //NavHost contendo o navController, as rotas, o scroll vertical e as animações, os layouts compose irão compartilhar dessas propriedades
                     //Se estiverem na rota do navGraph
                     NavHost(
                         navController = navController,

@@ -59,6 +59,7 @@ class MainActivity3: ComponentActivity() {
                         exitTransition = { fadeOut(animationSpec = tween(700)) },
                         popEnterTransition = { fadeIn(animationSpec = tween(700)) },
                         popExitTransition = { fadeOut(animationSpec = tween(700)) }
+                    )
                 }
             }
         }

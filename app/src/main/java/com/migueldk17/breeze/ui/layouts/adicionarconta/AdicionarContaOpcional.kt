@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.layouts.adicionarconta
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -25,11 +26,12 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 @Composable
 fun AdicionarContaOpcional(
-    navController: NavController){
+    navController: NavController,
+    modifier : Modifier = Modifier
+){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(paddingValues)
             .padding(15.dp)
     ) {
         Text(
@@ -51,9 +53,12 @@ fun AdicionarContaOpcional(
             color = Green,
         )
         Spacer(modifier = Modifier.size(10.dp))
-        CardPrincipal(
-            firstText = "Parece que o card de sua nova conta está vazio:",
-            secondText = "Vamos começar adicionando um nome !"
-        )
+        Box {
+            CardPrincipal{
+                Passo1()
+            }
+            Text("teste")
+        }
+
     }
 }
