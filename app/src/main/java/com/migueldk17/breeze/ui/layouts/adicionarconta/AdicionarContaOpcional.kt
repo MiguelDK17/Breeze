@@ -53,12 +53,11 @@ fun AdicionarContaOpcional(
             color = Green,
         )
         Spacer(modifier = Modifier.size(10.dp))
-        Box {
-            CardPrincipal{
-                Passo1()
-            }
-            Text("teste")
+
+        CardPrincipal{
+            Passo1()
         }
+
 
     }
 }
