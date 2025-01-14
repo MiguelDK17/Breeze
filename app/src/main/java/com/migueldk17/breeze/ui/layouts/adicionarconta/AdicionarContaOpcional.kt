@@ -47,7 +47,10 @@ fun AdicionarContaOpcional(){
             color = Green,
         )
         Spacer(modifier = Modifier.size(10.dp))
-        CardPrincipal()
+        CardPrincipal(
+            firstText = "Parece que o card de sua nova conta está vazio:",
+            secondText = "Vamos começar adicionando um nome !"
+        )
     }
 }
 @Preview(showBackground = true)

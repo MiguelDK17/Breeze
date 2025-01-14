@@ -27,6 +27,9 @@
         <activity android:name=".MainActivity2"
             android:exported="false"
             android:theme="@style/Theme.Breeze"/>
+        <activity android:name=".MainActivity3"
+            android:exported="false"
+            android:theme="@style/Theme.Breeze"/>
     </application>
 
 </manifest>

@@ -36,7 +36,11 @@ import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
-fun CardPrincipal(){
+fun CardPrincipal(
+    firstText: String,
+    secondText: String,
+
+){
     var text by remember{
         mutableStateOf("")
     }
@@ -57,7 +61,7 @@ fun CardPrincipal(){
             .padding(25.dp),
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
-            Text("Parece que o card de sua nova conta está vazio:",
+            Text(firstText,
                 style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.size(25.dp))
             Card(
@@ -78,7 +82,7 @@ fun CardPrincipal(){
             }
             Spacer(modifier = Modifier.size(26.dp))
 
-            Text("Vamos começar adicionando um nome !",
+            Text(secondText,
                 style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.size(26.dp))
 

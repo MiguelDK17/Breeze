@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.components
 
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
@@ -33,9 +35,8 @@ fun BreezeTopAppBar(){
         actions = {
             IconButton(
                 onClick = {
-                    Toast.makeText(
-                        context, "Botão para adicionar contas", Toast.LENGTH_SHORT
-                    ).show()
+                    val intent = Intent(context, MainActivity3::class.java)
+                    context.startActivity(intent)
                 },
             ) {
                 Icon(Icons.Default.AddCircle,
