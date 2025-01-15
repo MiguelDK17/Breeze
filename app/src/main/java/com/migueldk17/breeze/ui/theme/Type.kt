@@ -86,7 +86,8 @@ val Typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = 1.sp,
         color = blackPoppins
-    )
+    ),
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,

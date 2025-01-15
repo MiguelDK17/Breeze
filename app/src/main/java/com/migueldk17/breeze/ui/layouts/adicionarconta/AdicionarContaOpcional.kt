@@ -55,7 +55,7 @@ fun AdicionarContaOpcional(
         Spacer(modifier = Modifier.size(10.dp))
 
         CardPrincipal{
-            Passo1()
+            Passo2()
         }
 
 

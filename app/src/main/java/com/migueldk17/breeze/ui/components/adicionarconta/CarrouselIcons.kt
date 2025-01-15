@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -44,13 +45,15 @@ fun CarrouselIcons(iconList: List<ImageVector>){
     }
     Column(
         modifier = Modifier
-            .size(width = 382.dp, height = 129.dp),
+            .fillMaxWidth()
+            ,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
             modifier = Modifier
-                .size(width = 382.dp, height = 68.dp),
+                .fillMaxWidth()
+                .size(68.dp),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White,
@@ -60,7 +63,7 @@ fun CarrouselIcons(iconList: List<ImageVector>){
                     modifier = Modifier.fillMaxSize(),
                     state = pagerState,
                     pageSize = PageSize.Fixed(100.dp),
-                contentPadding = PaddingValues(horizontal = 159.dp),
+                contentPadding = PaddingValues(horizontal = 150.dp),
                 pageSpacing = (-31).dp,
 
                 ) { page ->
