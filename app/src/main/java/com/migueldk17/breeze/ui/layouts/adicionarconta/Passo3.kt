@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -13,12 +12,7 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,17 +24,13 @@ import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
-fun Passo2(){
+fun Passo3(){
     val iconList = listOf(
-        BreezeIcons.BookLinear,
-        BreezeIcons.GroupLinear,
-        BreezeIcons.GlobeLinear,
-        BreezeIcons.CarLinear,
-        BreezeIcons.CloudLinear,
-        BreezeIcons.DropLinear,
-        BreezeIcons.AirplaneLinear,
-        BreezeIcons.DiscoverLinear,
-        BreezeIcons.KeyLinear)
+        BreezeIcons.IconOrange,
+        BreezeIcons.IconYellow,
+        BreezeIcons.IconGreen,
+        BreezeIcons.IconGreenCyan,
+        BreezeIcons.IconTurquoise)
     Column(
         modifier = Modifier
             .padding(25.dp),
@@ -49,7 +39,8 @@ fun Passo2(){
     ) {
         Text("Assim está ficando o card da sua nova conta:",
             style = MaterialTheme.typography.bodySmall,
-            color = blackPoppins)
+            color = blackPoppins
+        )
         Spacer(modifier = Modifier.size(25.dp))
         Card(
             modifier = Modifier
@@ -80,14 +71,10 @@ fun Passo2(){
         }
         Spacer(modifier = Modifier.size(26.dp))
 
-        Text("Agora escolha um nome para representar essa conta.",
+        Text("Escolha uma cor para o ícone que combine com o estilo da sua conta!",
             style = MaterialTheme.typography.bodySmall,
-            color = blackPoppins)
-        Spacer(Modifier.size(18.dp))
-        Text("Qual combina melhor ?",
-            style = MaterialTheme.typography.bodySmall,
-            color = blackPoppins)
-
+            color = blackPoppins
+        )
 
         Spacer(modifier = Modifier.size(8.dp))
     }
@@ -100,3 +87,4 @@ fun Passo2(){
         Text("Avançar")
     }
 }
+

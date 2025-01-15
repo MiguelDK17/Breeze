@@ -42,4 +42,27 @@ object BreezeIcons {
     val KeyLinear: ImageVector
     @Composable
     get() = ImageVector.vectorResource(R.drawable.ic_key)
+
+    val IconOrange: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.icon_orange)
+
+    val IconYellow: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.icon_yellow)
+
+    val IconGreen: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.icon_green)
+
+    val IconGreenCyan: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.icon_green_cian)
+
+    val IconTurquoise: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.icon_turquoise)
+
+
+
 }

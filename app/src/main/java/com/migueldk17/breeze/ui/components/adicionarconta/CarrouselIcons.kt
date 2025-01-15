@@ -97,6 +97,7 @@ fun CarrouselIcons(iconList: List<ImageVector>){
                             disabledContentColor = Color.Transparent,
                         )
                         ) {
+
                         Icon(
                             imageVector = iconList[page],
                             contentDescription = "",
