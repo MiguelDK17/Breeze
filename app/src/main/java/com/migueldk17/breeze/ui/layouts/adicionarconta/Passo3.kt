@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.BreezeIcons
+import com.migueldk17.breeze.ui.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
@@ -26,11 +26,11 @@ import com.migueldk17.breeze.ui.theme.blackPoppins
 @Composable
 fun Passo3(){
     val iconList = listOf(
-        BreezeIcons.IconOrange,
-        BreezeIcons.IconYellow,
-        BreezeIcons.IconGreen,
-        BreezeIcons.IconGreenCyan,
-        BreezeIcons.IconTurquoise)
+        BreezeIcons.Colors.IconOrange,
+        BreezeIcons.Colors.IconYellow,
+        BreezeIcons.Colors.IconGreen,
+        BreezeIcons.Colors.IconGreenCyan,
+        BreezeIcons.Colors.IconTurquoise)
     Column(
         modifier = Modifier
             .padding(25.dp),

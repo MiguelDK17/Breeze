@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -13,18 +12,13 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.BreezeIcons
+import com.migueldk17.breeze.ui.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
@@ -32,15 +26,15 @@ import com.migueldk17.breeze.ui.theme.blackPoppins
 @Composable
 fun Passo2(){
     val iconList = listOf(
-        BreezeIcons.BookLinear,
-        BreezeIcons.GroupLinear,
-        BreezeIcons.GlobeLinear,
-        BreezeIcons.CarLinear,
-        BreezeIcons.CloudLinear,
-        BreezeIcons.DropLinear,
-        BreezeIcons.AirplaneLinear,
-        BreezeIcons.DiscoverLinear,
-        BreezeIcons.KeyLinear)
+        BreezeIcons.Linear.BookLinear,
+        BreezeIcons.Linear.GroupLinear,
+        BreezeIcons.Linear.GlobeLinear,
+        BreezeIcons.Linear.CarLinear,
+        BreezeIcons.Linear.CloudLinear,
+        BreezeIcons.Linear.DropLinear,
+        BreezeIcons.Linear.AirplaneLinear,
+        BreezeIcons.Linear.DiscoverLinear,
+        BreezeIcons.Linear.KeyLinear)
     Column(
         modifier = Modifier
             .padding(25.dp),
@@ -91,7 +85,9 @@ fun Passo2(){
 
         Spacer(modifier = Modifier.size(8.dp))
     }
+
     CarrouselIcons(iconList)
+
     Spacer(modifier = Modifier.size(71.dp))
     Button(onClick = {
 

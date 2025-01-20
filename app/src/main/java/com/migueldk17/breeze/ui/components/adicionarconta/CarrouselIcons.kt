@@ -32,14 +32,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.BreezeIcons
+import com.migueldk17.breeze.ui.icons.BreezeIcon
+import com.migueldk17.breeze.ui.icons.BreezeIcons
+import com.migueldk17.breeze.ui.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
 import kotlin.math.absoluteValue
 
 @Composable
-fun CarrouselIcons(iconList: List<ImageVector>){
+fun CarrouselIcons(iconList: List<BreezeIconsType>){
     val pagerState = rememberPagerState(initialPage = 2) {
         iconList.size
     }
@@ -100,10 +102,9 @@ fun CarrouselIcons(iconList: List<ImageVector>){
                         )
                         ) {
 
-                        Icon(
-                            imageVector = iconList[page],
-                            contentDescription = "",
-
+                        BreezeIcon(
+                            iconList[page],
+                            contentDescription = "Ícone Laranja"
                         )
                     }
                 }
@@ -123,15 +124,15 @@ fun CarrouselIcons(iconList: List<ImageVector>){
 @Composable
 private fun Preview(){
     val iconList = listOf(
-        BreezeIcons.BookLinear,
-        BreezeIcons.GroupLinear,
-        BreezeIcons.GlobeLinear,
-        BreezeIcons.CarLinear,
-        BreezeIcons.CloudLinear,
-        BreezeIcons.DropLinear,
-        BreezeIcons.AirplaneLinear,
-        BreezeIcons.DiscoverLinear,
-        BreezeIcons.KeyLinear)
+        BreezeIcons.Linear.BookLinear,
+        BreezeIcons.Linear.GroupLinear,
+        BreezeIcons.Linear.GlobeLinear,
+        BreezeIcons.Linear.CarLinear,
+        BreezeIcons.Linear.CloudLinear,
+        BreezeIcons.Linear.DropLinear,
+        BreezeIcons.Linear.AirplaneLinear,
+        BreezeIcons.Linear.DiscoverLinear,
+        BreezeIcons.Linear.KeyLinear)
 
     BreezeTheme {
         Column(modifier = Modifier
