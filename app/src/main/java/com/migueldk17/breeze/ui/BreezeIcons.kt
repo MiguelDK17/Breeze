@@ -57,7 +57,7 @@ object BreezeIcons {
 
     val IconGreenCyan: ImageVector
     @Composable
-    get() = ImageVector.vectorResource(R.drawable.icon_green_cian)
+    get() = ImageVector.vectorResource(R.drawable.icon_green_cyan)
 
     val IconTurquoise: ImageVector
     @Composable

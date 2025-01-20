@@ -82,6 +82,8 @@ fun CarrouselIcons(iconList: List<ImageVector>){
 
                     val containerColor = if(isCentered) MaterialTheme.colorScheme.surface else Color.White
 
+
+
                     IconButton(onClick = { Log.d(TAG, "CarrouselIcons: $page")},
                         modifier = Modifier
                             .size(scale.value)
@@ -92,8 +94,8 @@ fun CarrouselIcons(iconList: List<ImageVector>){
                                 scaleY = scale.value / 30.dp
                             },
                         colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = containerColor,
-                            contentColor = MaterialTheme.colorScheme.onSurface,
+                            containerColor = Color.White,
+                            contentColor = Color.White,
                             disabledContentColor = Color.Transparent,
                         )
                         ) {
