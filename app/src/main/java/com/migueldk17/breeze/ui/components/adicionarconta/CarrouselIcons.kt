@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.components.adicionarconta
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.util.TypedValue
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -65,7 +66,7 @@ fun CarrouselIcons(iconList: List<BreezeIconsType>){
                     modifier = Modifier.fillMaxSize(),
                     state = pagerState,
                     pageSize = PageSize.Fixed(100.dp),
-                contentPadding = PaddingValues(horizontal = 150.dp),
+                contentPadding = PaddingValues(horizontal = 136.dp),
                 pageSpacing = (-31).dp,
 
                 ) { page ->
@@ -96,8 +97,8 @@ fun CarrouselIcons(iconList: List<BreezeIconsType>){
                                 scaleY = scale.value / 30.dp
                             },
                         colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = Color.White,
-                            contentColor = Color.White,
+                            containerColor = containerColor,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
                             disabledContentColor = Color.Transparent,
                         )
                         ) {
