@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.icons
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -12,8 +14,7 @@ fun BreezeIcon(
     breezeIcon: BreezeIconsType,
     modifier: Modifier = Modifier,
     contentDescription: String?,
-
-
+    color: Color = Color.Unspecified
     ) {
 
     val icon: ImageVector = when (breezeIcon) {
@@ -21,11 +22,20 @@ fun BreezeIcon(
         is BreezeIconsType.LinearIcon -> breezeIcon.icon
     }
 
-    val tint = if (breezeIcon is BreezeIconsType.ColorIcon){
-        Color.Unspecified // Mantém as cores originais
-    } else {
-        MaterialTheme.colorScheme.onSurface
+    val tint = when {
+        breezeIcon is BreezeIconsType.ColorIcon -> {
+            Color.Unspecified // Mantém as cores originais
+        }
+        breezeIcon is BreezeIconsType.LinearIcon && color != Color.Unspecified -> {
+            color
+        }
+        else -> {
+            MaterialTheme.colorScheme.onSurface
+        }
+
     }
+
+
     Icon(
         imageVector = icon,
         contentDescription = contentDescription,
