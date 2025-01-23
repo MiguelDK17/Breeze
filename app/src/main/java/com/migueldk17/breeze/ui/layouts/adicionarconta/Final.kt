@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -28,6 +27,7 @@ import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
 fun Final() {
+    //Column do Passo Final
     Column(
         modifier = Modifier
             .padding(25.dp),
@@ -40,6 +40,7 @@ fun Final() {
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.size(25.dp))
+        //Card já finalizado
         Card(
             modifier = Modifier
                 .size(width = 342.dp, height = 80.dp)
@@ -84,26 +85,22 @@ fun Final() {
         }
         Spacer(modifier = Modifier.size(35.dp))
 
+        //Botão para voltar ao Passo1 para adicionar uma nova conta
+        OutlinedButton(
+            onClick = {
 
-
-
-            OutlinedButton(
-                onClick = {
-
-                }
+            }
             ) {
                 Text("Adicionar nova conta")
             }
         Spacer(modifier = Modifier.size(20.dp))
-            Button(
-                onClick = {
 
-                }
+        //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
+            Button(onClick = {
+
+            }
             ) {
                 Text("Concluir")
             }
-
-
-
     }
 }

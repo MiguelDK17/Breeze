@@ -27,13 +27,15 @@ import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
 fun Passo5() {
+    //Lista de icones de tipo BreezeIcons
     val iconList = listOf(
         BreezeIcons.Colors.IconOrange,
         BreezeIcons.Colors.IconYellow,
         BreezeIcons.Colors.IconGreen,
         BreezeIcons.Colors.IconGreenCyan,
         BreezeIcons.Colors.IconTurquoise)
-    Column(
+    //Column do Passo5
+     Column(
         modifier = Modifier
             .padding(25.dp),
         verticalArrangement = Arrangement.Center,
@@ -45,7 +47,8 @@ fun Passo5() {
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.size(25.dp))
-        Card(
+         //Card que evolui conforme o usuario vai adicionando informações
+         Card(
             modifier = Modifier
                 .size(width = 342.dp, height = 80.dp)
             ,
@@ -94,11 +97,12 @@ fun Passo5() {
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.size(35.dp))
-
+        //Carrossel de icones
         CarrouselIcons(
             iconList
         )
         Spacer(modifier = Modifier.size(74.dp))
+        //Botão para avançar de tela
         Button(
             onClick = {
 

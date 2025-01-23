@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.layouts.adicionarconta
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,13 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
 import com.migueldk17.breeze.ui.icons.BreezeIcon
 import com.migueldk17.breeze.ui.icons.BreezeIcons
-import com.migueldk17.breeze.ui.theme.Blue
-import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
@@ -39,6 +34,7 @@ fun Passo4() {
     var text by remember{
         mutableStateOf("")
     }
+    //Column do Passo4
     Column(
         modifier = Modifier
             .padding(25.dp),
@@ -51,6 +47,7 @@ fun Passo4() {
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.size(25.dp))
+        //Card que evolui conforme o usuario vai adicionando informações
         Card(
             modifier = Modifier
                 .size(width = 342.dp, height = 80.dp)
@@ -99,7 +96,7 @@ fun Passo4() {
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.size(29.dp))
-
+        //TextField responsável por adicionar um valor a conta
         TextField(text, onValueChange = { value ->
             text = value
         },
@@ -108,6 +105,7 @@ fun Passo4() {
                 Text("Adicionar Valor")
             })
         Spacer(modifier = Modifier.size(74.dp))
+        //Botão para avançar de tela
         Button(
             onClick = {
 

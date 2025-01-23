@@ -28,6 +28,7 @@ fun Passo1(){
         Text("Parece que o card de sua nova conta está vazio:",
             style = MaterialTheme.typography.bodySmall)
         Spacer(modifier = Modifier.size(25.dp))
+        //Card que evolui conforme o usuario vai adicionando informações
         Card(
             modifier = Modifier
                 .size(width = 342.dp, height = 80.dp)
@@ -49,7 +50,7 @@ fun Passo1(){
         Text("Vamos começar adicionando um nome !",
             style = MaterialTheme.typography.bodySmall)
         Spacer(modifier = Modifier.size(26.dp))
-
+        //TextField responsável por adicionar um nome a conta
         TextField(text, onValueChange = { value ->
             text = value
         },
@@ -58,6 +59,7 @@ fun Passo1(){
                 Text("Adicionar nome")
             })
         Spacer(modifier = Modifier.size(74.dp))
+        //Botão para avançar de tela
         Button(onClick = {
 
         }, enabled = false

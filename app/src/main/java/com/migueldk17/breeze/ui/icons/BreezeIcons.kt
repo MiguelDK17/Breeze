@@ -5,8 +5,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.migueldk17.breeze.R
 
+//Object que usa os icones
 object BreezeIcons {
 
+    //Icones Lineares
     object Linear {
         val BookLinear: BreezeIconsType
             @Composable
@@ -45,6 +47,7 @@ object BreezeIcons {
             get() = BreezeIconsType.LinearIcon(ImageVector.vectorResource(R.drawable.ic_key))
     }
 
+    //Icones de Cores
     object Colors {
         val IconOrange: BreezeIconsType
             @Composable
