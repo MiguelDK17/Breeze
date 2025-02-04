@@ -19,14 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
-fun Passo5() {
+fun Passo5(navController: NavController) {
     //Lista de icones de tipo BreezeIcons
     val iconList = listOf(
         BreezeIcons.Colors.IconOrange,
@@ -105,8 +107,8 @@ fun Passo5() {
         //Botão para avançar de tela
         Button(
             onClick = {
-
-            }, enabled = false
+                navController.navigate(NavGraph2.Final.route)
+            }, enabled = true
         ) {
             Text("Avançar")
         }

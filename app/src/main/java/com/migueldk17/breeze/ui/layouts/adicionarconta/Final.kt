@@ -18,15 +18,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.layouts.avançaMainActivity
 import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
-fun Final() {
+fun Final(navController: NavController) {
+    val context = LocalContext.current
     //Column do Passo Final
     Column(
         modifier = Modifier
@@ -88,7 +93,7 @@ fun Final() {
         //Botão para voltar ao Passo1 para adicionar uma nova conta
         OutlinedButton(
             onClick = {
-
+                navController.navigate(NavGraph2.Passo1.route)
             }
             ) {
                 Text("Adicionar nova conta")
@@ -97,7 +102,7 @@ fun Final() {
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
             Button(onClick = {
-
+                avançaMainActivity(context)
             }
             ) {
                 Text("Concluir")

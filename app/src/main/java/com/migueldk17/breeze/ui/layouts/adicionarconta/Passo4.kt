@@ -24,13 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 
 @Composable
-fun Passo4() {
+fun Passo4(navController: NavController) {
     var text by remember{
         mutableStateOf("")
     }
@@ -108,8 +110,8 @@ fun Passo4() {
         //Botão para avançar de tela
         Button(
             onClick = {
-
-            }, enabled = false
+            navController.navigate(NavGraph2.Passo5.route)
+            }, enabled = true
         ) {
             Text("Avançar")
         }

@@ -7,5 +7,6 @@ sealed class NavGraph2(val route: String){
     data object Passo3: NavGraph2("passo3")
     data object Passo4: NavGraph2("passo4")
     data object Passo5: NavGraph2("passo5")
+    data object Final: NavGraph2("final")
 
 }

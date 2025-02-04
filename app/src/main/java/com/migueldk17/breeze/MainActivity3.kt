@@ -30,36 +30,9 @@ class MainActivity3: ComponentActivity() {
 
         setContent {
             BreezeTheme {
-                //Cria o navController
-                val navController = rememberNavController()
-                //Cria o scroll que será usado futuramente
-                val scroll = rememberScrollState()
-                //Pega a rota atual do navController
-                val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
                 Scaffold {paddingValues ->
-                    //Cria o navGraph com a rota inicial como a PaginaInicial
-                    val navGraph = navController.createGraph(startDestination = NavGraph2.Passo1.route) {
-                        //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor dos cards
-                        composable(NavGraph2.Passo1.route) {
-                            AdicionarContaOpcional(
-                                navController
-                            )
-                        }
-                    }
-                    //NavHost contendo o navController, as rotas, o scroll vertical e as animações, os layouts compose irão compertilhar dessas propriedades
-                    //Se estiverem na rota do navGraph
-                    NavHost(
-                        navController = navController,
-                        graph = navGraph,
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .verticalScroll(scroll),
-                        enterTransition = { fadeIn(animationSpec = tween(700)) },
-                        exitTransition = { fadeOut(animationSpec = tween(700)) },
-                        popEnterTransition = { fadeIn(animationSpec = tween(700)) },
-                        popExitTransition = { fadeOut(animationSpec = tween(700)) }
-                    )
+                    AdicionarContaOpcional(modifier = Modifier.padding(paddingValues))
                 }
             }
         }

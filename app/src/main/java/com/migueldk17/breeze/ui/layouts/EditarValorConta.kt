@@ -189,7 +189,7 @@ private fun retornaIcon(nome: String): FaIconType {
     }
 
 }
-private fun avançaMainActivity(context: Context){
+fun avançaMainActivity(context: Context){
     val intent = Intent(context, MainActivity::class.java)
     context.startActivity(intent)
 }

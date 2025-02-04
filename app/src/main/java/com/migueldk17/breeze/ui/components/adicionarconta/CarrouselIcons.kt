@@ -102,7 +102,7 @@ fun CarrouselIcons(iconList: List<BreezeIconsType>){
 
                         BreezeIcon(
                             iconList[page],
-                            contentDescription = "Ícone Laranja"
+                            contentDescription = null
                         )
                     }
                 }
