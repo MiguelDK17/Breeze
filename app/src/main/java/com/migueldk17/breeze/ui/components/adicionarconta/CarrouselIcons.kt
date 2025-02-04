@@ -30,23 +30,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlin.math.absoluteValue
 
 @Composable
-fun CarrouselIcons(iconList: List<BreezeIconsType>){
+fun CarrouselIcons(
+    iconList: List<BreezeIconsType>,
+    viewModel: BreezeViewModel = hiltViewModel()){
     val pagerState = rememberPagerState(initialPage = 2) {
         iconList.size
     }
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            ,
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -84,7 +87,11 @@ fun CarrouselIcons(iconList: List<BreezeIconsType>){
 
 
 
-                    IconButton(onClick = { Log.d(TAG, "CarrouselIcons: $page")},
+                    IconButton(onClick =
+                    {
+                        viewModel.guardaIconCard(iconList[page])
+                        Log.d(TAG, "CarrouselIcons: $page")
+                    },
                         modifier = Modifier
                             .size(scale.value)
                             .graphicsLayer {
@@ -106,10 +113,6 @@ fun CarrouselIcons(iconList: List<BreezeIconsType>){
                         )
                     }
                 }
-
-
-
-
         }
         Spacer(Modifier.height(15.dp))
         Text("Arraste para o lado para selecionar",
@@ -117,29 +120,4 @@ fun CarrouselIcons(iconList: List<BreezeIconsType>){
             color = greyTextMediumPoppins)
     }
 
-}
-@Preview(showBackground = true)
-@Composable
-private fun Preview(){
-    val iconList = listOf(
-        BreezeIcons.Linear.BookLinear,
-        BreezeIcons.Linear.GroupLinear,
-        BreezeIcons.Linear.GlobeLinear,
-        BreezeIcons.Linear.CarLinear,
-        BreezeIcons.Linear.CloudLinear,
-        BreezeIcons.Linear.DropLinear,
-        BreezeIcons.Linear.AirplaneLinear,
-        BreezeIcons.Linear.DiscoverLinear,
-        BreezeIcons.Linear.KeyLinear)
-
-    BreezeTheme {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(PastelLightBlue),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-         CarrouselIcons(iconList)
-        }
-    }
 }

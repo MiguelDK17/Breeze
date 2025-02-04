@@ -4,8 +4,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -57,7 +60,8 @@ fun AdicionarContaOpcional(
             color = Black)
         Spacer(modifier = Modifier.size(20.dp))
         //Contagem de passos
-        Text("Passo 1 de 5",
+        Text(
+            retornaPasso(currentRoute),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -65,7 +69,7 @@ fun AdicionarContaOpcional(
         //LinearProgressIndicator que evolui conforme os passos
         LinearProgressIndicator(
             progress = {
-                0.2f
+                progressIndicatorEvolution(currentRoute)
             },
             modifier = Modifier.fillMaxWidth(),
             color = Green,
@@ -80,6 +84,60 @@ fun AdicionarContaOpcional(
 
     }
 
+}
+
+private fun progressIndicatorEvolution(currentRoute: String?): Float{
+    val progress = when(currentRoute){
+        NavGraph2.Passo1.route -> {
+            0.2f
+        }
+        NavGraph2.Passo2.route -> {
+            0.4f
+        }
+        NavGraph2.Passo3.route -> {
+            0.6f
+        }
+        NavGraph2.Passo4.route -> {
+            0.8f
+        }
+        NavGraph2.Passo5.route -> {
+            0.9f
+        }
+        NavGraph2.Final.route -> {
+            1f
+        }
+        else -> {
+            0f
+        }
+    }
+    return progress
+}
+
+private fun retornaPasso(currentRoute: String?): String{
+    val text = when(currentRoute){
+        NavGraph2.Passo1.route -> {
+            "Passo 1 de 5"
+        }
+        NavGraph2.Passo2.route -> {
+            "Passo 2 de 5"
+        }
+        NavGraph2.Passo3.route -> {
+            "Passo 3 de 5"
+        }
+        NavGraph2.Passo4.route -> {
+            "Passo 4 de 5"
+        }
+        NavGraph2.Passo5.route -> {
+            "Passo 5 de 5"
+        }
+        NavGraph2.Final.route -> {
+            "Final"
+        }
+        else -> {
+            "Passo Inválido"
+        }
+    }
+    return text
 }
 @Composable
 private fun InstanciaRotasAdicionarConta(navController: NavHostController, scroll: ScrollState){
@@ -112,7 +170,8 @@ private fun InstanciaRotasAdicionarConta(navController: NavHostController, scrol
         graph = navGraph,
         modifier = Modifier
             .padding()
-            .verticalScroll(scroll),
+            .verticalScroll(scroll)
+            .fillMaxHeight(0.9f),
         enterTransition = { fadeIn(animationSpec = tween(700)) },
         exitTransition = { fadeOut(animationSpec = tween(700)) },
         popEnterTransition = { fadeIn(animationSpec = tween(700)) },

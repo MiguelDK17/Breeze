@@ -22,7 +22,9 @@ import com.migueldk17.breeze.ui.layouts.Historico
 import com.migueldk17.breeze.ui.layouts.PaginaInicial
 import com.migueldk17.breeze.ui.layouts.adicionarconta.AdicionarContaOpcional
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity3: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

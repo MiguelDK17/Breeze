@@ -35,63 +35,76 @@ fun Passo3(navController: NavController){
         BreezeIcons.Colors.IconGreenCyan,
         BreezeIcons.Colors.IconTurquoise)
     //Column do Passo3
-    Column(
-        modifier = Modifier
-            .padding(25.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Assim está ficando o card da sua nova conta:",
-            style = MaterialTheme.typography.bodySmall,
-            color = blackPoppins
-        )
-        Spacer(modifier = Modifier.size(25.dp))
-        //Card que evolui conforme o usuario vai adicionando informações
-        Card(
+    Column {
+
+
+        Column(
             modifier = Modifier
-                .size(width = 342.dp, height = 80.dp)
-            ,
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardColors(
-                containerColor = PastelLightBlue,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-
-
+                .padding(25.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier.padding(10.dp)
+            Text(
+                "Assim está ficando o card da sua nova conta:",
+                style = MaterialTheme.typography.bodySmall,
+                color = blackPoppins
+            )
+            Spacer(modifier = Modifier.size(25.dp))
+            //Card que evolui conforme o usuario vai adicionando informações
+            Card(
+                modifier = Modifier
+                    .size(width = 342.dp, height = 80.dp),
+                elevation = CardDefaults.cardElevation(8.dp),
+                colors = CardColors(
+                    containerColor = PastelLightBlue,
+                    contentColor = Color.Black,
+                    disabledContentColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent
+                )
+
+
             ) {
-                Spacer(Modifier.size(50.dp))
-                Column {
-                    Text("Nome da conta",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = blackPoppins
-                        ))
+                Row(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    Spacer(Modifier.size(50.dp))
+                    Column {
+                        Text(
+                            "Nome da conta",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.Normal,
+                                color = blackPoppins
+                            )
+                        )
+                    }
                 }
             }
+            Spacer(modifier = Modifier.size(26.dp))
+
+            Text(
+                "Escolha uma cor para o ícone que combine com o estilo da sua conta!",
+                style = MaterialTheme.typography.bodySmall,
+                color = blackPoppins
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+
+
         }
-        Spacer(modifier = Modifier.size(26.dp))
-
-        Text("Escolha uma cor para o ícone que combine com o estilo da sua conta!",
-            style = MaterialTheme.typography.bodySmall,
-            color = blackPoppins
-        )
-
-        Spacer(modifier = Modifier.size(8.dp))
-
-        //Carrossel de icones
-        CarrouselIcons(iconList)
-        Spacer(modifier = Modifier.size(71.dp))
-        //Botão para avançar de tela
-        Button(onClick = {
-            navController.navigate(NavGraph2.Passo4.route)
-        }, enabled = true
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Avançar")
+            //Carrossel de icones
+            CarrouselIcons(iconList)
+            Spacer(modifier = Modifier.size(71.dp))
+            //Botão para avançar de tela
+            Button(onClick = {
+                navController.navigate(NavGraph2.Passo4.route)
+            }, enabled = true
+            ) {
+                Text("Avançar")
+            }
         }
     }
 

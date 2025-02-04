@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.components.adicionarconta
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
@@ -47,8 +48,7 @@ fun CardPrincipal(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-               ,
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             content = content
         )

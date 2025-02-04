@@ -78,7 +78,7 @@ fun Passo1(navController: NavController){
         Button(
             onClick = {
                 navController.navigate(NavGraph2.Passo2.route)
-            }, enabled = true
+            }, enabled = text.length >= 4
         ) {
             Text("Avançar")
         }

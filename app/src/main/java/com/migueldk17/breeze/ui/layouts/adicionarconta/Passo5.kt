@@ -36,81 +36,91 @@ fun Passo5(navController: NavController) {
         BreezeIcons.Colors.IconGreen,
         BreezeIcons.Colors.IconGreenCyan,
         BreezeIcons.Colors.IconTurquoise)
-    //Column do Passo5
-     Column(
-        modifier = Modifier
-            .padding(25.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            "Assim está ficando o card da sua nova conta:",
-            style = MaterialTheme.typography.bodySmall
-        )
-        Spacer(modifier = Modifier.size(25.dp))
-         //Card que evolui conforme o usuario vai adicionando informações
-         Card(
+    Column {
+        //Column do Passo5
+        Column(
             modifier = Modifier
-                .size(width = 342.dp, height = 80.dp)
-            ,
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardColors(
-                containerColor = PastelLightBlue,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-
-
+                .padding(25.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
+
+            Text(
+                "Assim está ficando o card da sua nova conta:",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.size(25.dp))
+            //Card que evolui conforme o usuario vai adicionando informações
+            Card(
                 modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxSize(),
-            ) {
-                BreezeIcon(
-                    BreezeIcons.Linear.BookLinear,
-                    contentDescription = "Ícone de Livro",
-                    modifier = Modifier
-                        .size(50.dp)
+                    .size(width = 342.dp, height = 80.dp),
+                elevation = CardDefaults.cardElevation(8.dp),
+                colors = CardColors(
+                    containerColor = PastelLightBlue,
+                    contentColor = Color.Black,
+                    disabledContentColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent
                 )
-                Spacer(modifier = Modifier.size(15.dp))
-                Column {
-                    Text("Nome da conta",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = blackPoppins,
-                        ),
-                        modifier = Modifier.padding(5.dp))
-                    Text("Valor da Conta",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = blackPoppins
-                        ),
-                        modifier = Modifier.padding(5.dp))
+
+
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize(),
+                ) {
+                    BreezeIcon(
+                        BreezeIcons.Linear.BookLinear,
+                        contentDescription = "Ícone de Livro",
+                        modifier = Modifier
+                            .size(50.dp)
+                    )
+                    Spacer(modifier = Modifier.size(15.dp))
+                    Column {
+                        Text(
+                            "Nome da conta",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.Normal,
+                                color = blackPoppins,
+                            ),
+                            modifier = Modifier.padding(5.dp)
+                        )
+                        Text(
+                            "Valor da Conta",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.Normal,
+                                color = blackPoppins
+                            ),
+                            modifier = Modifier.padding(5.dp)
+                        )
+                    }
                 }
             }
-        }
-        Spacer(modifier = Modifier.size(26.dp))
+            Spacer(modifier = Modifier.size(26.dp))
 
-        Text(
-            "Último passo! Escolha a cor do card para deixar tudo com a sua cara!",
-            style = MaterialTheme.typography.bodySmall
-        )
-        Spacer(modifier = Modifier.size(35.dp))
-        //Carrossel de icones
-        CarrouselIcons(
-            iconList
-        )
-        Spacer(modifier = Modifier.size(74.dp))
-        //Botão para avançar de tela
-        Button(
-            onClick = {
-                navController.navigate(NavGraph2.Final.route)
-            }, enabled = true
+            Text(
+                "Último passo! Escolha a cor do card para deixar tudo com a sua cara!",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.size(35.dp))
+
+        }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Avançar")
+            //Carrossel de icones
+            CarrouselIcons(
+                iconList
+            )
+            Spacer(modifier = Modifier.size(74.dp))
+            //Botão para avançar de tela
+            Button(
+                onClick = {
+                    navController.navigate(NavGraph2.Final.route)
+                }, enabled = true
+            ) {
+                Text("Avançar")
+            }
         }
     }
 }
