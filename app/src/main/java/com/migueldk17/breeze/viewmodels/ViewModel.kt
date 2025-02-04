@@ -54,6 +54,7 @@ class BreezeViewModel @Inject constructor(
         }
     }
 
+
     //Transforma a cor de int para Color para manipulação
     fun transformaCor(array: IntArray){
         _arrayColor.value = array
