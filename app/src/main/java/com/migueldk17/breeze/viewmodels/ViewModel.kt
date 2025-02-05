@@ -3,8 +3,6 @@ package com.migueldk17.breeze.viewmodels
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -38,14 +36,17 @@ class BreezeViewModel @Inject constructor(
     private val _saldo = MutableStateFlow<Saldo?>(null)
     val saldo: StateFlow<Saldo?> get() = _saldo
 
-    private val _iconeCardConta = MutableStateFlow<BreezeIconsType>(BreezeIcons.Unspecified.IconUnspecified)
+    private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
     val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
 
-    val _iconeCorIcone = MutableStateFlow<BreezeIconsType>(BreezeIcons.Unspecified.IconUnspecified)
-    val iconeCorIcone: StateFlow<BreezeIconsType> get() = _iconeCorIcone.asStateFlow()
+    private val _corIcone = MutableStateFlow(Color.Unspecified)
+    val corIcone: StateFlow<Color> get() = _corIcone.asStateFlow()
 
-    val _iconeCorCard = MutableStateFlow<BreezeIconsType>(BreezeIcons.Unspecified.IconUnspecified)
-    val iconeCorCard: StateFlow<BreezeIconsType> get() = _iconeCorCard.asStateFlow()
+    private val _corCard = MutableStateFlow(Color.Unspecified)
+    val corCard: StateFlow<Color> get() = _corCard.asStateFlow()
+
+    private val _valorConta = MutableStateFlow("")
+    val valorConta: StateFlow<String> get() = _valorConta
 
 
     init {
@@ -69,7 +70,7 @@ class BreezeViewModel @Inject constructor(
         _iconColor.value = transformaCorIcon
     }
 
-    fun setNome(string: String){
+    fun setNomeConta(string: String){
         _nomeConta.value = string
     }
     //Atualiza o saldo do usuário
@@ -89,18 +90,24 @@ class BreezeViewModel @Inject constructor(
             }
         }
     }
+
     fun guardaIconCard(icon: BreezeIconsType){
         _iconeCardConta.value = icon
-        Log.d(TAG, "guardaIconEscolhido: icone selecionado")
+        if (iconeCardConta.value != BreezeIcons.Unspecified.IconUnspecified) {
+            Log.d(TAG, "guardaIconEscolhido: icone selecionado")
+        }
     }
 
     fun guardaCorIcone(icon: BreezeIconsType){
-        _iconeCorIcone.value = icon
+        _corIcone.value = icon.color
         Log.d(TAG, "guardaIconEscolhido: icone selecionado")
     }
     fun guardaIconCorCard(icon: BreezeIconsType){
-        _iconeCorCard.value = icon
+        _corCard.value = icon.color
         Log.d(TAG, "guardaIconEscolhido: icone selecionado")
+    }
+    fun guardaValorConta(text: String){
+        _valorConta.value = text
     }
 
 

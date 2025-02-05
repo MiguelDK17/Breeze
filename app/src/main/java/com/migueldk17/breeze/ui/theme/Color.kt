@@ -29,3 +29,5 @@ val iconSupermercadoColor = Color(0xFFF44336)
 val blackPoppins = Color(0xFF3A3A3A)
 val greyTextMediumPoppins = Color(0xFF5A5A5A)
 
+
+

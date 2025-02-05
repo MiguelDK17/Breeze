@@ -15,11 +15,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.NavGraph2
@@ -30,7 +32,8 @@ import com.migueldk17.breeze.ui.theme.blackPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun Passo2(navController: NavController){
+fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
+    val nomeConta = viewModel.nomeConta.collectAsState().value
     //Lista de icones de tipo BreezeIcons
     val iconList = listOf(
         BreezeIcons.Linear.BookLinear,
@@ -75,7 +78,7 @@ fun Passo2(navController: NavController){
                 ) {
                     Spacer(Modifier.size(50.dp))
                     Column {
-                        Text("Nome da conta",
+                        Text(nomeConta,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
                                 color = blackPoppins
@@ -99,7 +102,7 @@ fun Passo2(navController: NavController){
         )
         {
             //Carrossel de icones
-            CarrouselIcons(iconList, )
+            CarrouselIcons(iconList, navController, viewModel)
             Spacer(modifier = Modifier.size(71.dp))
             //Botão para avançar de tela
             Button(onClick = {

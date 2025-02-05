@@ -30,7 +30,7 @@ class MainActivity2: ComponentActivity() {
                 //Envia o array de cores para o ViewModel
                 viewModel.transformaCor(recuperaCor!!)
                 //Envia o nome para o ViewModel
-                viewModel.setNome(nome!!)
+                viewModel.setNomeConta(nome!!)
                 EditarValorConta(viewModel, modifier = Modifier.padding(paddingValues))
             }
             }

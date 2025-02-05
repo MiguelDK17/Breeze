@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -22,10 +23,12 @@ import com.migueldk17.breeze.ui.layouts.Historico
 import com.migueldk17.breeze.ui.layouts.PaginaInicial
 import com.migueldk17.breeze.ui.layouts.adicionarconta.AdicionarContaOpcional
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity3: ComponentActivity() {
+    private val viewModel by viewModels<BreezeViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,7 +37,7 @@ class MainActivity3: ComponentActivity() {
             BreezeTheme {
 
                 Scaffold {paddingValues ->
-                    AdicionarContaOpcional(modifier = Modifier.padding(paddingValues))
+                    AdicionarContaOpcional(modifier = Modifier.padding(paddingValues), viewModel)
                 }
             }
         }

@@ -31,9 +31,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
@@ -43,10 +46,12 @@ import kotlin.math.absoluteValue
 @Composable
 fun CarrouselIcons(
     iconList: List<BreezeIconsType>,
-    viewModel: BreezeViewModel = hiltViewModel()){
+    navController: NavController,
+    viewModel: BreezeViewModel ){
     val pagerState = rememberPagerState(initialPage = 2) {
         iconList.size
     }
+    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -89,8 +94,8 @@ fun CarrouselIcons(
 
                     IconButton(onClick =
                     {
-                        viewModel.guardaIconCard(iconList[page])
-                        Log.d(TAG, "CarrouselIcons: $page")
+                        verificaState(currentState, viewModel, iconList[page])
+                        Log.d(TAG, "CarrouselIcons: teste")
                     },
                         modifier = Modifier
                             .size(scale.value)
@@ -119,5 +124,20 @@ fun CarrouselIcons(
             style = MaterialTheme.typography.bodyMedium,
             color = greyTextMediumPoppins)
     }
-
+}
+private fun verificaState(currentState: String?, viewModel: BreezeViewModel, icone: BreezeIconsType){
+    when(currentState) {
+        NavGraph2.Passo2.route -> {
+            viewModel.guardaIconCard(icone)
+        }
+        NavGraph2.Passo3.route -> {
+            viewModel.guardaCorIcone(icone)
+        }
+        NavGraph2.Passo5.route -> {
+            viewModel.guardaIconCorCard(icone)
+        }
+        else -> {
+            Log.d(TAG, "verificaState: Passo inválido")
+        }
+    }
 }

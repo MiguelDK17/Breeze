@@ -14,11 +14,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
@@ -26,16 +28,23 @@ import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun Passo5(navController: NavController) {
+fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()) {
     //Lista de icones de tipo BreezeIcons
     val iconList = listOf(
         BreezeIcons.Colors.IconOrange,
         BreezeIcons.Colors.IconYellow,
         BreezeIcons.Colors.IconGreen,
         BreezeIcons.Colors.IconGreenCyan,
-        BreezeIcons.Colors.IconTurquoise)
+        BreezeIcons.Colors.IconTurquoise
+    )
+    val nomeConta = viewModel.nomeConta.collectAsState().value
+    val icone = viewModel.iconeCardConta.collectAsState().value
+    val corIcone = viewModel.corIcone.collectAsState().value
+    val valorConta = viewModel.valorConta.collectAsState().value
+
     Column {
         //Column do Passo5
         Column(
@@ -70,15 +79,16 @@ fun Passo5(navController: NavController) {
                         .fillMaxSize(),
                 ) {
                     BreezeIcon(
-                        BreezeIcons.Linear.BookLinear,
+                        icone,
                         contentDescription = "Ícone de Livro",
                         modifier = Modifier
-                            .size(50.dp)
+                            .size(50.dp),
+                        color = corIcone
                     )
                     Spacer(modifier = Modifier.size(15.dp))
                     Column {
                         Text(
-                            "Nome da conta",
+                            nomeConta,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
                                 color = blackPoppins,
@@ -86,7 +96,7 @@ fun Passo5(navController: NavController) {
                             modifier = Modifier.padding(5.dp)
                         )
                         Text(
-                            "Valor da Conta",
+                            valorConta,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
                                 color = blackPoppins
@@ -109,9 +119,7 @@ fun Passo5(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //Carrossel de icones
-            CarrouselIcons(
-                iconList
-            )
+            CarrouselIcons(iconList, navController, viewModel)
             Spacer(modifier = Modifier.size(74.dp))
             //Botão para avançar de tela
             Button(

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -13,31 +14,36 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun Passo3(navController: NavController){
+fun Passo3(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     //Lista de icones de tipo BreezeIcons
     val iconList = listOf(
         BreezeIcons.Colors.IconOrange,
         BreezeIcons.Colors.IconYellow,
         BreezeIcons.Colors.IconGreen,
         BreezeIcons.Colors.IconGreenCyan,
-        BreezeIcons.Colors.IconTurquoise)
+        BreezeIcons.Colors.IconTurquoise
+    )
+    val nomeConta = viewModel.nomeConta.collectAsState().value
+    val icone = viewModel.iconeCardConta.collectAsState().value
     //Column do Passo3
     Column {
-
-
         Column(
             modifier = Modifier
                 .padding(25.dp),
@@ -65,17 +71,24 @@ fun Passo3(navController: NavController){
 
             ) {
                 Row(
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize(),
                 ) {
-                    Spacer(Modifier.size(50.dp))
+                    BreezeIcon(
+                        icone,
+                        contentDescription = "Ícone de Livro",
+                        modifier = Modifier
+                            .size(50.dp)
+                    )
+                    Spacer(modifier = Modifier.size(15.dp))
                     Column {
-                        Text(
-                            "Nome da conta",
+                        Text(nomeConta,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
-                                color = blackPoppins
-                            )
-                        )
+                                color = blackPoppins,
+                            ),
+                            modifier = Modifier.padding(5.dp))
                     }
                 }
             }
@@ -96,7 +109,7 @@ fun Passo3(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //Carrossel de icones
-            CarrouselIcons(iconList)
+            CarrouselIcons(iconList, navController, viewModel)
             Spacer(modifier = Modifier.size(71.dp))
             //Botão para avançar de tela
             Button(onClick = {

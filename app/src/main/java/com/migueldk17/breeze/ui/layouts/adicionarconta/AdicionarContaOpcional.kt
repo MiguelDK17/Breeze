@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,10 +35,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.adicionarconta.CardPrincipal
+import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
 fun AdicionarContaOpcional(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    viewModel: BreezeViewModel = hiltViewModel()
 ){
     //Cria o navController
     val navController = rememberNavController()
@@ -78,7 +81,7 @@ fun AdicionarContaOpcional(
         //Card Principal que abriga os passos que serão gerenciados pelo NavigationCompose
 
         CardPrincipal{
-            InstanciaRotasAdicionarConta(navController, scroll)
+            InstanciaRotasAdicionarConta(navController, scroll, viewModel)
         }
 
 
@@ -140,27 +143,27 @@ private fun retornaPasso(currentRoute: String?): String{
     return text
 }
 @Composable
-private fun InstanciaRotasAdicionarConta(navController: NavHostController, scroll: ScrollState){
+private fun InstanciaRotasAdicionarConta(navController: NavHostController, scroll: ScrollState, viewModel: BreezeViewModel){
     //Cria o navGraph com a rota inicial como a PaginaInicial
     val navGraph = navController.createGraph(startDestination = NavGraph2.Passo1.route) {
         //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor dos cards
         composable(NavGraph2.Passo1.route) {
-            Passo1(navController)
+            Passo1(navController, viewModel)
         }
         composable(NavGraph2.Passo2.route) {
-            Passo2(navController)
+            Passo2(navController, viewModel)
         }
         composable(NavGraph2.Passo3.route){
-            Passo3(navController)
+            Passo3(navController, viewModel)
         }
         composable(NavGraph2.Passo4.route){
-            Passo4(navController)
+            Passo4(navController, viewModel)
         }
         composable(NavGraph2.Passo5.route){
-            Passo5(navController)
+            Passo5(navController, viewModel)
         }
         composable(NavGraph2.Final.route){
-            Final(navController)
+            Final(navController, viewModel)
         }
     }
     //NavHost contendo o navController, as rotas, o scroll vertical e as animações, os layouts compose irão compertilhar dessas propriedades
