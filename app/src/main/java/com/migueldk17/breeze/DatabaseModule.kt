@@ -2,6 +2,7 @@ package com.migueldk17.breeze
 
 import android.content.Context
 import androidx.room.Room
+import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.dao.SaldoDao
 import dagger.Module
 import dagger.Provides
@@ -25,5 +26,9 @@ object DatabaseModule {
     @Provides
     fun provideSaldoDao(database: BreezeDatabase): SaldoDao {
         return database.saldoDao()
+    }
+    @Provides
+    fun provideContaDao(database: BreezeDatabase): ContaDao {
+        return database.contaDao()
     }
 }

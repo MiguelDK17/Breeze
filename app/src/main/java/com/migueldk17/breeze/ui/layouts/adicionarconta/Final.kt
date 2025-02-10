@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.layouts.adicionarconta
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -114,6 +116,11 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
             Button(onClick = {
+                try {
+                    viewModel.salvaContaDatabase()
+                } catch (e: IllegalStateException){
+                    Log.d(TAG, "Final: $e")
+                }
                 avançaMainActivity(context)
             }
             ) {

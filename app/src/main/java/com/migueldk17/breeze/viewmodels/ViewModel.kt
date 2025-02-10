@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.dao.SaldoDao
+import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Saldo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +21,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BreezeViewModel @Inject constructor(
-    private val saldoDao: SaldoDao
+    private val saldoDao: SaldoDao,
+    private val contaDao: ContaDao
 ): ViewModel() {
+    //Banco de dados
+    private val _saldo = MutableStateFlow<Saldo?>(null)
+    val saldo: StateFlow<Saldo?> get() = _saldo
+    private val _conta = MutableStateFlow<Conta?>(null)
+    val conta: StateFlow<Conta?> get() = _conta
+
+
     private val _arrayColor = MutableStateFlow(intArrayOf())
     //val arrayColor: StateFlow<IntArray> = _arrayColor.asStateFlow()
 
@@ -33,9 +43,7 @@ class BreezeViewModel @Inject constructor(
     private val _nomeConta = MutableStateFlow("")
     val nomeConta: StateFlow<String> = _nomeConta.asStateFlow()
 
-    private val _saldo = MutableStateFlow<Saldo?>(null)
-    val saldo: StateFlow<Saldo?> get() = _saldo
-
+    
     private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
     val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
 
@@ -45,13 +53,14 @@ class BreezeViewModel @Inject constructor(
     private val _corCard = MutableStateFlow(Color.Unspecified)
     val corCard: StateFlow<Color> get() = _corCard.asStateFlow()
 
-    private val _valorConta = MutableStateFlow<Double?>(null)
-    val valorConta: StateFlow<Double?> get() = _valorConta.asStateFlow()
+    private val _valorConta = MutableStateFlow(1.0)
+    val valorConta: StateFlow<Double> get() = _valorConta.asStateFlow()
 
 
     init {
         viewModelScope.launch {
             _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 3000.00) //Valor inicial
+            _conta.value = contaDao.getConta()
         }
     }
 
@@ -108,6 +117,19 @@ class BreezeViewModel @Inject constructor(
     }
     fun guardaValorConta(valor: Double){
         _valorConta.value = valor/100
+    }
+    fun salvaContaDatabase(){
+        viewModelScope.launch {
+            val conta = Conta(name = _nomeConta.value,
+                valor = _valorConta.value,
+                icon = _iconeCardConta.value,
+                colorIcon = _iconColor.value,
+                colorCard = _corCard.value)
+            contaDao.insertConta(conta)
+            Log.d(TAG, "salvaContaDatabase: ${contaDao.getConta()}")
+            
+            
+        }
     }
 
 }
