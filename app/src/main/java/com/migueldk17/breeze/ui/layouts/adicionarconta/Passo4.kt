@@ -38,7 +38,7 @@ import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
 fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()) {
-    var text by remember{
+    var valorConta by remember{
         mutableStateOf("")
     }
     val nomeConta = viewModel.nomeConta.collectAsState().value
@@ -108,8 +108,8 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         )
         Spacer(modifier = Modifier.size(29.dp))
         //TextField responsável por adicionar um valor a conta
-        TextField(text, onValueChange = { value ->
-            text = value
+        TextField(valorConta, onValueChange = { value ->
+            valorConta = value
         },
             modifier = Modifier.size(width = 210.dp, height = 56.dp),
             placeholder = {
@@ -121,7 +121,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         //Botão para avançar de tela
         Button(
             onClick = {
-                viewModel.guardaValorConta(text)
+                viewModel.guardaValorConta(valorConta.toDouble())
                 navController.navigate(NavGraph2.Passo5.route)
             }, enabled = true
         ) {

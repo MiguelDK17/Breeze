@@ -1,8 +1,8 @@
 package com.migueldk17.breeze.ui.layouts.adicionarconta
 
-import androidx.compose.foundation.background
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
-import com.migueldk17.breeze.ui.theme.Blue
+import com.migueldk17.breeze.ui.components.adicionarconta.carrouselIcons
+import com.migueldk17.breeze.ui.components.adicionarconta.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
@@ -34,18 +36,9 @@ import com.migueldk17.breeze.viewmodels.BreezeViewModel
 @Composable
 fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
     val nomeConta = viewModel.nomeConta.collectAsState().value
-    //Lista de icones de tipo BreezeIcons
-    val iconList = listOf(
-        BreezeIcons.Linear.BookLinear,
-        BreezeIcons.Linear.GroupLinear,
-        BreezeIcons.Linear.GlobeLinear,
-        BreezeIcons.Linear.CarLinear,
-        BreezeIcons.Linear.CloudLinear,
-        BreezeIcons.Linear.DropLinear,
-        BreezeIcons.Linear.AirplaneLinear,
-        BreezeIcons.Linear.DiscoverLinear,
-        BreezeIcons.Linear.KeyLinear
-    )
+    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
+
+
     //Column do Passo2
     Column {
         Column(
@@ -102,10 +95,11 @@ fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         )
         {
             //Carrossel de icones
-            CarrouselIcons(iconList, navController, viewModel)
+            val iconCarrousel = carrouselIcons(BreezeIconLists.getLinearIcons())
             Spacer(modifier = Modifier.size(71.dp))
             //Botão para avançar de tela
             Button(onClick = {
+                insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
                 navController.navigate(NavGraph2.Passo3.route)
             }, enabled = true
             ) {

@@ -28,9 +28,9 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.layouts.avançaMainActivity
-import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import java.util.Locale
 
 @Composable
 fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()) {
@@ -39,7 +39,10 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
     val corCard = viewModel.corCard.collectAsState().value
+    //valor da conta armazenado no viewModel
     val valorConta = viewModel.valorConta.collectAsState().value
+    //Pega o valor da conta do viewModel e formata para valores monetários
+    val valorMascarado = String.format(Locale.getDefault(),"R$: %.2f", valorConta)
 
     //Column do Passo Final
     Column(
@@ -48,7 +51,6 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(
             "Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar.",
             style = MaterialTheme.typography.bodySmall
@@ -76,7 +78,7 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
             ) {
                 BreezeIcon(
                     icone,
-                    contentDescription = "Ícone de Livro",
+                    contentDescription = null,
                     modifier = Modifier
                         .size(50.dp),
                     color = corIcone
@@ -89,7 +91,7 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
                             color = blackPoppins,
                         ),
                         modifier = Modifier.padding(5.dp))
-                    Text(valorConta,
+                    Text(valorMascarado,
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Normal,
                             color = blackPoppins

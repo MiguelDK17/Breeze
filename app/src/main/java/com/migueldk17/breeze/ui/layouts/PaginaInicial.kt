@@ -61,6 +61,7 @@ import com.migueldk17.breeze.ui.theme.iconInternetColor
 import com.migueldk17.breeze.ui.theme.iconSupermercadoColor
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("DefaultLocale")
@@ -223,7 +224,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 private fun formataSaldo(saldo: Double?): String {
     if (saldo != null) {
-        val formatacao = String.format("Seu Saldo: R$ %.2f", saldo)
+        val formatacao = String.format(Locale.getDefault(),"Seu Saldo: R$ %.2f", saldo)
         return formatacao
     } else return "Carregando..."
 }

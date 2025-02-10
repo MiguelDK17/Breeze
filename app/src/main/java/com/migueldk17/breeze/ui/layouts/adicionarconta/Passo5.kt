@@ -22,28 +22,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.components.adicionarconta.CarrouselIcons
+import com.migueldk17.breeze.ui.components.adicionarconta.carrouselIcons
+import com.migueldk17.breeze.ui.components.adicionarconta.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import java.util.Locale
 
 @Composable
 fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()) {
-    //Lista de icones de tipo BreezeIcons
-    val iconList = listOf(
-        BreezeIcons.Colors.IconOrange,
-        BreezeIcons.Colors.IconYellow,
-        BreezeIcons.Colors.IconGreen,
-        BreezeIcons.Colors.IconGreenCyan,
-        BreezeIcons.Colors.IconTurquoise
-    )
+
     val nomeConta = viewModel.nomeConta.collectAsState().value
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
     val valorConta = viewModel.valorConta.collectAsState().value
+    //Pega o valor da conta do viewModel e formata para valores monetários
+    val valorMascarado = String.format(Locale.getDefault(),"R$: %.2f", valorConta)
+
+    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
+
 
     Column {
         //Column do Passo5
@@ -80,7 +82,7 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                 ) {
                     BreezeIcon(
                         icone,
-                        contentDescription = "Ícone de Livro",
+                        contentDescription = null,
                         modifier = Modifier
                             .size(50.dp),
                         color = corIcone
@@ -96,7 +98,7 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                             modifier = Modifier.padding(5.dp)
                         )
                         Text(
-                            valorConta,
+                            valorMascarado,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
                                 color = blackPoppins
@@ -119,11 +121,12 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //Carrossel de icones
-            CarrouselIcons(iconList, navController, viewModel)
+            val iconCarrousel =carrouselIcons(BreezeIconLists.getColorIcons())
             Spacer(modifier = Modifier.size(74.dp))
             //Botão para avançar de tela
             Button(
                 onClick = {
+                    insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
                     navController.navigate(NavGraph2.Final.route)
                 }, enabled = true
             ) {

@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,31 +27,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
-import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.theme.BreezeTheme
-import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlin.math.absoluteValue
 
 @Composable
-fun CarrouselIcons(
-    iconList: List<BreezeIconsType>,
-    navController: NavController,
-    viewModel: BreezeViewModel ){
+//Pega uma lista de icones e retorna o icone selecionado
+fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
+    //PagerState pega a lista de ícones que será mandado para o horizontalPager
+    //Começando pela página 2
     val pagerState = rememberPagerState(initialPage = 2) {
         iconList.size
     }
-    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
-    Column(
+     Column(
         modifier = Modifier
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -67,21 +58,28 @@ fun CarrouselIcons(
                 containerColor = Color.White,
             )
         ) {
+            //HorizontalPager responsável pela seleção de ícones
             HorizontalPager(
-                    modifier = Modifier.fillMaxSize(),
-                    state = pagerState,
-                    pageSize = PageSize.Fixed(100.dp),
+                modifier = Modifier.fillMaxSize(),
+                state = pagerState,
+                //Tamanho de cada página do HorizontalPager, pega um tamanho fixo
+                pageSize = PageSize.Fixed(100.dp),
+                //Padding para deixar o ícone selecionado no centro
                 contentPadding = PaddingValues(horizontal = 136.dp),
+                //Espaço de cada pagina, negativo para que não fique muito longe uma da outra
                 pageSpacing = (-31).dp,
 
-                ) { page ->
+                ) { page -> //Página selecionada
+                    //Tamanho máximo do ícone
                     val maxSize = 40.dp
+                    //Tamanho mínimo do ícone
                     val minSize = 30.dp
                     // Calcula a proximidade do ícone ao centro
                     val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
                     val tolerance = 0.50f //Ajuste de tolerância para o scroll (quanto menor mais sensível)
                     val isCentered = pageOffset.absoluteValue < tolerance
 
+                    //Scale reponsável por animar a troca dos ícones, entre selecionado e não selecionado
                     val scale = animateDpAsState(
                         targetValue = if (isCentered) maxSize else minSize,
                         animationSpec = tween(durationMillis = 300),
@@ -90,12 +88,9 @@ fun CarrouselIcons(
 
                     val containerColor = if(isCentered) MaterialTheme.colorScheme.surface else Color.White
 
-
-
                     IconButton(onClick =
                     {
-                        verificaState(currentState, viewModel, iconList[page])
-                        Log.d(TAG, "CarrouselIcons: teste")
+
                     },
                         modifier = Modifier
                             .size(scale.value)
@@ -116,6 +111,7 @@ fun CarrouselIcons(
                             iconList[page],
                             contentDescription = null
                         )
+
                     }
                 }
         }
@@ -124,18 +120,26 @@ fun CarrouselIcons(
             style = MaterialTheme.typography.bodyMedium,
             color = greyTextMediumPoppins)
     }
+    //Retorna o ícone selecionado
+    return iconList[pagerState.currentPage]
 }
-private fun verificaState(currentState: String?, viewModel: BreezeViewModel, icone: BreezeIconsType){
+
+//Função que verifica o passo em que o navController está e apartir disso adiciona o ícone para a função correta do ViewModel
+fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, icone: BreezeIconsType){
     when(currentState) {
+        //Caso passo 2 adiciona um icone a conta
         NavGraph2.Passo2.route -> {
             viewModel.guardaIconCard(icone)
         }
+        //Caso passo 3 adiciona a cor do icone
         NavGraph2.Passo3.route -> {
             viewModel.guardaCorIcone(icone)
         }
+        //Caso passo 5 adiciona a cor do card da conta
         NavGraph2.Passo5.route -> {
             viewModel.guardaIconCorCard(icone)
         }
+        //Passo inválido
         else -> {
             Log.d(TAG, "verificaState: Passo inválido")
         }

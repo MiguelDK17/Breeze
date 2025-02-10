@@ -45,8 +45,8 @@ class BreezeViewModel @Inject constructor(
     private val _corCard = MutableStateFlow(Color.Unspecified)
     val corCard: StateFlow<Color> get() = _corCard.asStateFlow()
 
-    private val _valorConta = MutableStateFlow("")
-    val valorConta: StateFlow<String> get() = _valorConta
+    private val _valorConta = MutableStateFlow<Double?>(null)
+    val valorConta: StateFlow<Double?> get() = _valorConta.asStateFlow()
 
 
     init {
@@ -106,10 +106,8 @@ class BreezeViewModel @Inject constructor(
         _corCard.value = icon.color
         Log.d(TAG, "guardaIconEscolhido: icone selecionado")
     }
-    fun guardaValorConta(text: String){
-        _valorConta.value = text
+    fun guardaValorConta(valor: Double){
+        _valorConta.value = valor/100
     }
-
-
 
 }
