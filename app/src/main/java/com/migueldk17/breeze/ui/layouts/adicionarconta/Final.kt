@@ -41,6 +41,7 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
     val corCard = viewModel.corCard.collectAsState().value
+
     //valor da conta armazenado no viewModel
     val valorConta = viewModel.valorConta.collectAsState().value
     //Pega o valor da conta do viewModel e formata para valores monetários

@@ -129,7 +129,7 @@ fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, ic
     when(currentState) {
         //Caso passo 2 adiciona um icone a conta
         NavGraph2.Passo2.route -> {
-            viewModel.guardaIconCard(icone.enum)
+            viewModel.guardaIconCard(icone)
         }
         //Caso passo 3 adiciona a cor do icone
         NavGraph2.Passo3.route -> {

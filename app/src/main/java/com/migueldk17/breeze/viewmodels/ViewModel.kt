@@ -45,8 +45,8 @@ class BreezeViewModel @Inject constructor(
     val nomeConta: StateFlow<String> = _nomeConta.asStateFlow()
 
     
-    private val _iconeCardConta = MutableStateFlow(BreezeIconsEnum.ICON_UNSPECIFIED)
-    val iconeCardConta: StateFlow<BreezeIconsEnum> get() = _iconeCardConta.asStateFlow()
+    private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
+    val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
 
     private val _corIcone = MutableStateFlow(Color.Unspecified)
     val corIcone: StateFlow<Color> get() = _corIcone.asStateFlow()
@@ -101,9 +101,9 @@ class BreezeViewModel @Inject constructor(
         }
     }
 
-    fun guardaIconCard(icon: BreezeIconsEnum){
+    fun guardaIconCard(icon: BreezeIconsType){
         _iconeCardConta.value = icon
-        if (iconeCardConta.value != BreezeIconsEnum.ICON_UNSPECIFIED) {
+        if (iconeCardConta.value != BreezeIcons.Unspecified.IconUnspecified) {
             Log.d(TAG, "guardaIconEscolhido: icone selecionado")
         }
     }
