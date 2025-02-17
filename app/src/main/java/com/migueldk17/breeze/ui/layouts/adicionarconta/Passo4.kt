@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.layouts.adicionarconta
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,6 +46,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
     val nomeConta = viewModel.nomeConta.collectAsState().value
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
+    Log.d(TAG, "Passo4: $corIcone")
     //Column do Passo4
     Column(
         modifier = Modifier

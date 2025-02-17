@@ -13,6 +13,7 @@ import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.dao.SaldoDao
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Saldo
+import com.migueldk17.breeze.toDatabaseValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,7 +61,7 @@ class BreezeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 3000.00) //Valor inicial
+            _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 0.00) //Valor inicial
             _conta.value = contaDao.getConta()
         }
     }
@@ -121,14 +122,22 @@ class BreezeViewModel @Inject constructor(
     }
     fun salvaContaDatabase(){
         viewModelScope.launch {
+            val name = _nomeConta.value
+            val valor = _valorConta.value
+            val icon = _iconeCardConta.value.enum.toDatabaseValue()
+            val colorIcon = _corIcone.value.toDatabaseValue()
+            val colorCard = _corCard.value.toDatabaseValue()
+
             val conta = Conta(
-                name = _nomeConta.value,
-                valor = _valorConta.value,
-                colorIcon = _corIcone.value)
+                name = name,
+                valor = valor,
+                icon = icon,
+                colorIcon = colorIcon,
+                colorCard = colorCard
+            )
             contaDao.insertConta(conta)
             Log.d(TAG, "salvaContaDatabase: ${contaDao.getConta()}")
-            
-            
+
         }
     }
 

@@ -133,10 +133,12 @@ fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, ic
         }
         //Caso passo 3 adiciona a cor do icone
         NavGraph2.Passo3.route -> {
+            Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
             viewModel.guardaCorIcone(icone)
         }
         //Caso passo 5 adiciona a cor do card da conta
         NavGraph2.Passo5.route -> {
+            Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
             viewModel.guardaIconCorCard(icone)
         }
         //Passo inválido
