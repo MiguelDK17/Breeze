@@ -22,7 +22,6 @@ data class Conta(
     @ColumnInfo(name = "valor")
     val valor: Double,
 
-    @TypeConverters(ColorConverter::class)
     @ColumnInfo(name = "color_icon")
     val colorIcon: Color,
 

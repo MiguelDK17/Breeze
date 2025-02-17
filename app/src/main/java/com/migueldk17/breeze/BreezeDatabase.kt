@@ -9,6 +9,7 @@ import com.migueldk17.breeze.dao.SaldoDao
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Saldo
 
+
 @Database(entities = [Conta::class, Saldo::class], version = 2, exportSchema = false)
 @TypeConverters(ColorConverter::class)
 abstract class BreezeDatabase: RoomDatabase() {

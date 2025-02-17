@@ -21,7 +21,8 @@ object DatabaseModule {
             context,
             BreezeDatabase::class.java,
             "breeze_database"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
     @Provides
     fun provideSaldoDao(database: BreezeDatabase): SaldoDao {

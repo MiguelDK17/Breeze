@@ -121,8 +121,10 @@ class BreezeViewModel @Inject constructor(
     }
     fun salvaContaDatabase(){
         viewModelScope.launch {
-            val conta = Conta(name = _nomeConta.value,
-                valor = _valorConta.value,)
+            val conta = Conta(
+                name = _nomeConta.value,
+                valor = _valorConta.value,
+                colorIcon = _corIcone.value)
             contaDao.insertConta(conta)
             Log.d(TAG, "salvaContaDatabase: ${contaDao.getConta()}")
             
