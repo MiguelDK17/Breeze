@@ -31,6 +31,9 @@ import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.ui.theme.PastelLightBlue
+import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlin.math.absoluteValue
@@ -134,16 +137,29 @@ fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, ic
         //Caso passo 3 adiciona a cor do icone
         NavGraph2.Passo3.route -> {
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
-            viewModel.guardaCorIcone(icone)
+            viewModel.guardaCorIconeEscolhida(icone)
         }
         //Caso passo 5 adiciona a cor do card da conta
         NavGraph2.Passo5.route -> {
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
-            viewModel.guardaIconCorCard(icone)
+            viewModel.guardaIconCorCardEscolhida(icone)
         }
         //Passo inválido
         else -> {
             Log.d(TAG, "verificaState: Passo inválido")
+        }
+    }
+}
+
+fun adicionaCorPadrao(currentState: String?, viewModel: BreezeViewModel){
+    val colorIconDefault = NavyBlue
+    val colorCardDefault = PastelLightBlue
+    when(currentState) {
+        NavGraph2.Passo3.route -> {
+            viewModel.guardaCorIconePadrao(colorIconDefault)
+        }
+        NavGraph2.Passo5.route -> {
+            viewModel.guardaCorCardPadrao(colorCardDefault)
         }
     }
 }

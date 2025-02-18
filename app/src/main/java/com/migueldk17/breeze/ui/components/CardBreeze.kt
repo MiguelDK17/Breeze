@@ -19,26 +19,23 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.guru.fontawesomecomposelib.FaIcon
-import com.guru.fontawesomecomposelib.FaIconType
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.converters.toColor
 
 
 //Card de PaginaInicial
 @Composable
 fun BreezeCard(
-    imageVector: FaIconType,
-    categoria: String,
-    valorCategoria: Int,
-    baseColor: Color,
-    cardColor: Color,
+    conta: Conta,
     onClick: () -> Unit
 ){
     OutlinedCard (
         modifier = Modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = baseColor)
+        colors = CardDefaults.cardColors(containerColor = conta.colorCard.toColor())
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -49,9 +46,13 @@ fun BreezeCard(
                 .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                FaIcon(imageVector, size = 48.dp, tint = cardColor)
+                BreezeIcon(
+                    breezeIcon = conta.icon.toBreezeIconsType(conta.icon),
+                    contentDescription = null,
+                    color = conta.colorIcon.toColor()
+                )
                 Spacer(Modifier.size(20.dp))
-                Text(categoria, style = MaterialTheme.typography.bodyLarge)
+                Text(conta.name, style = MaterialTheme.typography.bodyLarge)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
@@ -76,7 +77,7 @@ fun BreezeCard(
 
             ) {
                 Spacer(modifier = Modifier.width(68.dp))
-                Text("R$: $valorCategoria")
+                Text("R$: ${conta.valor}")
             }
         }
 

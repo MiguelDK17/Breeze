@@ -1,7 +1,6 @@
-package com.migueldk17.breeze
+package com.migueldk17.breeze.converters
 
 import androidx.compose.runtime.Composable
-import androidx.room.TypeConverter
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
@@ -11,8 +10,8 @@ fun BreezeIconsEnum.toDatabaseValue(): String {
 }
 
 @Composable
-fun BreezeIconsEnum.toBreezeIconsType(enum: BreezeIconsEnum) : BreezeIconsType {
-    val icon = when(enum.name){
+fun String.toBreezeIconsType(string: String) : BreezeIconsType {
+    val icon = when(string){
 
         BreezeIconsEnum.BOOK_LINEAR.name -> {
             BreezeIcons.Linear.BookLinear

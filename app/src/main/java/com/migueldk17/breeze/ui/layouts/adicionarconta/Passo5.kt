@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +28,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.components.adicionarconta.adicionaCorPadrao
 import com.migueldk17.breeze.ui.components.adicionarconta.carrouselIcons
 import com.migueldk17.breeze.ui.components.adicionarconta.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
@@ -121,14 +123,22 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //Carrossel de icones
-            val iconCarrousel =carrouselIcons(BreezeIconLists.getColorIcons())
+            val iconCarrousel = carrouselIcons(BreezeIconLists.getColorIcons())
             Spacer(modifier = Modifier.size(74.dp))
-            //Botão para avançar de tela
-            Button(
+            OutlinedButton(
                 onClick = {
-                    insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
+                    adicionaCorPadrao(currentState, viewModel)
                     navController.navigate(NavGraph2.Final.route)
-                }, enabled = true
+                }
+            ){
+                Text("Ou usar a cor padrão")
+            }
+            Spacer(modifier = Modifier.size(30.dp))
+            //Botão para avançar de tela
+            Button(onClick = {
+                insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
+                navController.navigate(NavGraph2.Final.route)
+            }, enabled = true
             ) {
                 Text("Avançar")
             }

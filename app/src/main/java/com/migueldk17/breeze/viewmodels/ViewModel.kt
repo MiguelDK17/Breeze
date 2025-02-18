@@ -7,17 +7,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.dao.SaldoDao
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Saldo
-import com.migueldk17.breeze.toDatabaseValue
+import com.migueldk17.breeze.converters.toDatabaseValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,8 +30,9 @@ class BreezeViewModel @Inject constructor(
     //Banco de dados
     private val _saldo = MutableStateFlow<Saldo?>(null)
     val saldo: StateFlow<Saldo?> get() = _saldo
-    private val _conta = MutableStateFlow<Conta?>(null)
-    val conta: StateFlow<Conta?> get() = _conta
+
+    val conta: StateFlow<List<Conta>> = contaDao.getConta()
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
 
     private val _arrayColor = MutableStateFlow(intArrayOf())
@@ -62,7 +64,6 @@ class BreezeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 0.00) //Valor inicial
-            _conta.value = contaDao.getConta()
         }
     }
 
@@ -109,17 +110,26 @@ class BreezeViewModel @Inject constructor(
         }
     }
 
-    fun guardaCorIcone(icon: BreezeIconsType){
+    fun guardaCorIconeEscolhida(icon: BreezeIconsType){
         _corIcone.value = icon.color
         Log.d(TAG, "guardaIconEscolhido: icone selecionado")
     }
-    fun guardaIconCorCard(icon: BreezeIconsType){
+    fun guardaCorIconePadrao(color: Color){
+        _corIcone.value = color
+        Log.d(TAG, "guardaCorIconePadrao: cor padrão para icone escolhida")
+    }
+    fun guardaIconCorCardEscolhida(icon: BreezeIconsType){
         _corCard.value = icon.color
         Log.d(TAG, "guardaIconEscolhido: icone selecionado")
+    }
+    fun guardaCorCardPadrao(color: Color){
+        _corCard.value = color
     }
     fun guardaValorConta(valor: Double){
         _valorConta.value = valor/100
     }
+
+
     fun salvaContaDatabase(){
         viewModelScope.launch {
             val name = _nomeConta.value
@@ -140,5 +150,4 @@ class BreezeViewModel @Inject constructor(
 
         }
     }
-
 }

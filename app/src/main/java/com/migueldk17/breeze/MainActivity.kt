@@ -38,8 +38,6 @@ class MainActivity : ComponentActivity() {
             BreezeTheme {
                 //Cria o navController
                 val navController = rememberNavController()
-                //Cria o scroll que será usado futuramente
-                val scroll = rememberScrollState()
                 //Pega a rota atual do navController
                 val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
@@ -83,15 +81,11 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         graph = navGraph,
                         modifier = Modifier
-                            .padding(innerPadding)
-                            .verticalScroll(scroll),
+                            .padding(innerPadding),
                         enterTransition = { fadeIn(animationSpec = tween(700)) },
                         exitTransition = { fadeOut(animationSpec = tween(700)) },
                         popEnterTransition = { fadeIn(animationSpec = tween(700)) },
                         popExitTransition = { fadeOut(animationSpec = tween(700)) }
-
-
-
                     )
                 }
             }

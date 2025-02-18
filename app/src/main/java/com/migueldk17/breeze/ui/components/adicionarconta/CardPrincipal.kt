@@ -35,7 +35,7 @@ fun CardPrincipal(
 
     Card(
         modifier = Modifier
-            .size(width = 383.dp, height = 571.dp)
+            .size(width = 383.dp, height = 620.dp)
             .padding(5.dp),
         border = BorderStroke(1.dp, SkyBlue),
         shape = RoundedCornerShape(10.dp),

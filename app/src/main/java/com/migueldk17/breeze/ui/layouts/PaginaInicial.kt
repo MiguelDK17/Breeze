@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -70,6 +72,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     val saldo by viewModel.saldo.collectAsState()
     val context = LocalContext.current
     val saldoFormatado = saldo?.valor
+    val contas by viewModel.conta.collectAsState()
 
 
     //Estados para controlar o ModalBottomSheet
@@ -118,49 +121,15 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
-        BreezeCard(FaIcons.Globe,
-            "Internet",
-            150,
-            cardInternetColor, //Cor do card
-            iconInternetColor,  //Cor do ícone
-            onClick = {
-                onClick(navController, cardInternetColor, iconInternetColor, "Internet")
-            })
+        LazyColumn {
+            items(contas) { conta ->
+                BreezeCard(conta) { }
 
-        BreezeCard(FaIcons.Water,
-            "Conta de Água",
-            12,
-            cardAguaColor, //Cor do card
-            iconContaAguaColor,  //Cor do ícone
-            onClick = {
-                onClick(navController, cardAguaColor, iconContaAguaColor, "Conta de Água")
-            })
-        BreezeCard(
-            FaIcons.Bolt,
-            "Conta de Energia",
-            100,
-            cardEnergiaColor, //Cor do card
-            iconContaEnergiaColor, //Cor do ícone
-            onClick = {
-                onClick(navController, cardEnergiaColor, iconContaEnergiaColor, "Conta de Energia")
-            })
-        BreezeCard(FaIcons.Home,
-            "Aluguel",
-            450,
-            cardAluguelColor, //Cor do card
-            iconAluguelColor,  //Cor do ícone
-            onClick = {
-                onClick(navController, cardAluguelColor, iconAluguelColor, "Aluguel")
-            })
-        BreezeCard(FaIcons.ShoppingCart,
-            "Supermercado",
-            350,
-            cardSupermercado, //Cor do card
-            iconSupermercadoColor, //Cor do ícone
-            onClick = {
-                onClick(navController, cardSupermercado, iconSupermercadoColor, "Supermercado")
-            })
+            }
+        }
+
     }
+
     if (showBottomSheet){
         ModalBottomSheet(
             onDismissRequest = {
@@ -220,6 +189,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             }
         }
     }
+
 }
 
 private fun formataSaldo(saldo: Double?): String {
