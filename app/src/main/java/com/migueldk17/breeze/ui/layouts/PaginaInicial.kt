@@ -50,6 +50,7 @@ import com.guru.fontawesomecomposelib.FaIconType
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MoneyVisualTransformation
+import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.ui.components.BreezeCard
 import com.migueldk17.breeze.ui.theme.cardAguaColor
 import com.migueldk17.breeze.ui.theme.cardAluguelColor
@@ -73,6 +74,8 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     val context = LocalContext.current
     val saldoFormatado = saldo?.valor
     val contas by viewModel.conta.collectAsState()
+    Log.d(TAG, "PaginaInicial: ${contas.size}")
+
 
 
     //Estados para controlar o ModalBottomSheet
@@ -123,7 +126,13 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
         LazyColumn {
             items(contas) { conta ->
-                BreezeCard(conta) { }
+                BreezeCard(conta) {
+                    Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
+                    val intent = Intent(navController.context, MainActivity2::class.java)
+                    intent.putExtra("id", conta.id)
+                    navController.context.startActivity(intent)
+                }
+
 
             }
         }
@@ -197,21 +206,4 @@ private fun formataSaldo(saldo: Double?): String {
         val formatacao = String.format(Locale.getDefault(),"Seu Saldo: R$ %.2f", saldo)
         return formatacao
     } else return "Carregando..."
-}
-private fun onClick(navController: NavController, cardColor: Color, iconColor: Color, nomeConta: String){
-
-    val intent = Intent(navController.context, MainActivity2::class.java)
-    //Transforma a cor em Argb para passar para a intent
-    val transformaCorIcon = iconColor.toArgb()
-
-    //Transforma a cor em Argb para passar para a intent
-    val transformaCorCard = cardColor.toArgb()
-
-    //Manda as cores do card e do icone para um array
-    val arrayList = intArrayOf(transformaCorCard, transformaCorIcon)
-
-
-    intent.putExtra("color", arrayList)
-    intent.putExtra("nome", nomeConta)
-    navController.context.startActivity(intent)
 }

@@ -47,19 +47,35 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIconType
 import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity
+import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.converters.toColor
+import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.animation.ColorTransitionFromCenter
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
-fun EditarValorConta(viewModel: BreezeViewModel, modifier: Modifier = Modifier){
-    val cardColor = viewModel.cardColor.collectAsState().value
+fun EditarValorConta(
+    viewModel: BreezeViewModel = hiltViewModel(),
+    id: Int
+){
+    val contas by viewModel.conta.collectAsState()
+    Log.d(TAG, "EditarValorConta: ${contas.size}")
+    val conta = remember(contas) {
+        contas.getOrNull(id)
+    }
+    if (conta == null){
+        Text("Carregando")
+        return
+    }
+    val cardColor = conta.colorCard.toColor()
     Log.d(TAG, "EditarValorConta: $cardColor")
-    val iconColor = viewModel.iconColor.collectAsState()
-    val nome = viewModel.nomeConta.collectAsState()
     var text by remember {
         mutableStateOf("")
     }
@@ -69,12 +85,12 @@ fun EditarValorConta(viewModel: BreezeViewModel, modifier: Modifier = Modifier){
         ColorTransitionFromCenter(cardColor)
 
         Column(modifier = Modifier
-        .fillMaxWidth()
+            .fillMaxWidth()
             .height(450.dp)
-        .padding(horizontal = 16.dp), //Margem lateral
+            .padding(horizontal = 16.dp), //Margem lateral
          verticalArrangement = Arrangement.SpaceAround,   // Espaçamento proporcional
         horizontalAlignment = Alignment.CenterHorizontally) {
-        IconColumn(iconColor.value, nome.value)
+        IconColumn(conta)
 
             Box(
                 modifier = Modifier
@@ -135,7 +151,7 @@ fun EditarValorConta(viewModel: BreezeViewModel, modifier: Modifier = Modifier){
     }
 }
 @Composable
-private fun IconColumn(iconColor: Color, nome: String){
+private fun IconColumn(conta: Conta ){
     //Estado para controlar a animação
     val animatedAlpha = remember { Animatable(0f) }
     val animatedOffset = remember { Animatable(50f) }
@@ -155,7 +171,7 @@ private fun IconColumn(iconColor: Color, nome: String){
         modifier = Modifier
             .fillMaxWidth()
             .height(110.dp)
-        //Aplica animações de opacidade e deslocamento
+            //Aplica animações de opacidade e deslocamento
             .graphicsLayer {
                 alpha = animatedAlpha.value
                 translationY = animatedOffset.value
@@ -163,32 +179,17 @@ private fun IconColumn(iconColor: Color, nome: String){
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FaIcon(
-            retornaIcon(nome),
-            size = 35.dp,
-            tint = iconColor)
-        Text(nome,
-            style = MaterialTheme.typography.titleMedium)
+        BreezeIcon(
+            conta.icon.toBreezeIconsType(conta.icon),
+            contentDescription = null,
+            color = conta.colorIcon.toColor()
+        )
+        Text(conta.name,
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
-private fun retornaIcon(nome: String): FaIconType {
-    when(nome) {
-
-        "Aluguel" -> return FaIcons.Home
-
-        "Conta de Água" -> return FaIcons.Water
-
-        "Conta de Energia" -> return FaIcons.Bolt
-
-        "Internet" -> return FaIcons.Globe
-
-        "Supermercado" -> return FaIcons.ShoppingCart
-
-        else -> return FaIcons.Dev
-    }
-
-}
 fun avançaMainActivity(context: Context){
     val intent = Intent(context, MainActivity::class.java)
     context.startActivity(intent)

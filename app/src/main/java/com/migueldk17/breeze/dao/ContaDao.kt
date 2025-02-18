@@ -13,6 +13,8 @@ interface ContaDao {
     @Query("SELECT * FROM conta_table")
      fun getConta(): Flow<List<Conta>>
 
+     @Query("SELECT ")
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConta(conta: Conta)
 

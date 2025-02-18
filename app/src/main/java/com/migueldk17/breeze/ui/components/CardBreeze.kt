@@ -49,7 +49,8 @@ fun BreezeCard(
                 BreezeIcon(
                     breezeIcon = conta.icon.toBreezeIconsType(conta.icon),
                     contentDescription = null,
-                    color = conta.colorIcon.toColor()
+                    color = conta.colorIcon.toColor(),
+                    modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.size(20.dp))
                 Text(conta.name, style = MaterialTheme.typography.bodyLarge)
