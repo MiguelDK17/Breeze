@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,31 +36,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.guru.fontawesomecomposelib.FaIconType
-import com.guru.fontawesomecomposelib.FaIcons
+import com.airbnb.lottie.compose.LottieConstants
+import com.migueldk17.breeze.R
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MoneyVisualTransformation
-import com.migueldk17.breeze.converters.toColor
+import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.components.BreezeCard
-import com.migueldk17.breeze.ui.theme.cardAguaColor
-import com.migueldk17.breeze.ui.theme.cardAluguelColor
-import com.migueldk17.breeze.ui.theme.cardEnergiaColor
-import com.migueldk17.breeze.ui.theme.cardInternetColor
-import com.migueldk17.breeze.ui.theme.cardSupermercado
-import com.migueldk17.breeze.ui.theme.iconAluguelColor
-import com.migueldk17.breeze.ui.theme.iconContaAguaColor
-import com.migueldk17.breeze.ui.theme.iconContaEnergiaColor
-import com.migueldk17.breeze.ui.theme.iconInternetColor
-import com.migueldk17.breeze.ui.theme.iconSupermercadoColor
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -124,19 +110,24 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
-        LazyColumn {
-            items(contas) { conta ->
-                BreezeCard(conta) {
-                    Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
-                    val intent = Intent(navController.context, MainActivity2::class.java)
-                    intent.putExtra("id", conta.id)
-                    navController.context.startActivity(intent)
+        if (contas.size == 0){
+            LottieAnimation(
+                animationRes = R.raw.loading_breeze,
+                isPlaying = true,
+                iterations = LottieConstants.IterateForever
+            )
+        } else {
+            LazyColumn {
+                items(contas) { conta ->
+                    BreezeCard(conta) {
+                        Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
+                        val intent = Intent(navController.context, MainActivity2::class.java)
+                        intent.putExtra("id", conta.id)
+                        navController.context.startActivity(intent)
+                    }
                 }
-
-
             }
         }
-
     }
 
     if (showBottomSheet){

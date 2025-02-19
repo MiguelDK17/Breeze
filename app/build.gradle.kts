@@ -72,6 +72,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui)
     implementation(libs.breeze.icons)
+    implementation(libs.airbnb.android.lottie)
+    implementation(libs.airbnb.android.lottie.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

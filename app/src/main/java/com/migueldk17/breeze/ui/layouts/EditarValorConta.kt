@@ -49,31 +49,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
-import com.github.migueldk17.breezeicons.icons.BreezeIconsType
-import com.guru.fontawesomecomposelib.FaIcon
-import com.guru.fontawesomecomposelib.FaIconType
-import com.guru.fontawesomecomposelib.FaIcons
 import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.animation.ColorTransitionFromCenter
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
 fun EditarValorConta(
-    viewModel: BreezeViewModel = hiltViewModel(),
+    conta: Conta,
     id: Int
 ){
-    val contas by viewModel.conta.collectAsState()
-    Log.d(TAG, "EditarValorConta: ${contas.size}")
-    val conta = remember(contas) {
-        contas.getOrNull(id)
-    }
-    if (conta == null){
-        Text("Carregando")
-        return
-    }
     val cardColor = conta.colorCard.toColor()
     Log.d(TAG, "EditarValorConta: $cardColor")
     var text by remember {
