@@ -110,7 +110,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
-        if (contas.size == 0){
+        if (contas.isEmpty()){
             LottieAnimation(
                 animationRes = R.raw.loading_breeze,
                 isPlaying = true,

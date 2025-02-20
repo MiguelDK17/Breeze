@@ -7,15 +7,15 @@ object BreezeIconLists {
     //Lista de icones de tipo BreezeIcons
     @Composable
     fun getLinearIcons() = listOf(
-        BreezeIcons.Linear.BookLinear,
-        BreezeIcons.Linear.GroupLinear,
-        BreezeIcons.Linear.GlobeLinear,
-        BreezeIcons.Linear.CarLinear,
-        BreezeIcons.Linear.CloudLinear,
-        BreezeIcons.Linear.DropLinear,
-        BreezeIcons.Linear.AirplaneLinear,
-        BreezeIcons.Linear.DiscoverLinear,
-        BreezeIcons.Linear.KeyLinear
+        BreezeIcons.Linear.SchoolLearning.BookLinear,
+        BreezeIcons.Linear.Delivery.GroupLinear,
+        BreezeIcons.Linear.Location.GlobeLinear,
+        BreezeIcons.Linear.Mobility.CarLinear,
+        BreezeIcons.Linear.Weather.CloudLinear,
+        BreezeIcons.Linear.Weather.DropLinear,
+        BreezeIcons.Linear.Mobility.AirplaneLinear,
+        BreezeIcons.Linear.Essetional.DiscoverLinear,
+        BreezeIcons.Linear.Security.KeyLinear
     )
     //Lista de icones de cores de tipo BreezeIcons
     @Composable

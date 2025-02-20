@@ -14,39 +14,39 @@ fun String.toBreezeIconsType(string: String) : BreezeIconsType {
     val icon = when(string){
 
         BreezeIconsEnum.BOOK_LINEAR.name -> {
-            BreezeIcons.Linear.BookLinear
+            BreezeIcons.Linear.SchoolLearning.BookLinear
         }
 
         BreezeIconsEnum.GROUP_LINEAR.name -> {
-            BreezeIcons.Linear.GroupLinear
+            BreezeIcons.Linear.Delivery.GroupLinear
         }
 
         BreezeIconsEnum.CAR_LINEAR.name -> {
-            BreezeIcons.Linear.CarLinear
+            BreezeIcons.Linear.Mobility.CarLinear
         }
 
         BreezeIconsEnum.CLOUD_LINEAR.name -> {
-            BreezeIcons.Linear.CloudLinear
+            BreezeIcons.Linear.Weather.CloudLinear
         }
 
         BreezeIconsEnum.GLOBE_LINEAR.name -> {
-            BreezeIcons.Linear.GlobeLinear
+            BreezeIcons.Linear.Location.GlobeLinear
         }
 
         BreezeIconsEnum.AIRPLANE_LINEAR.name -> {
-            BreezeIcons.Linear.AirplaneLinear
+            BreezeIcons.Linear.Mobility.AirplaneLinear
         }
 
         BreezeIconsEnum.DISCOVER_LINEAR.name -> {
-            BreezeIcons.Linear.DiscoverLinear
+            BreezeIcons.Linear.Essetional.DiscoverLinear
         }
 
         BreezeIconsEnum.DROP_LINEAR.name -> {
-            BreezeIcons.Linear.DropLinear
+            BreezeIcons.Linear.Weather.DropLinear
         }
 
         BreezeIconsEnum.KEY_LINEAR.name -> {
-            BreezeIcons.Linear.KeyLinear
+            BreezeIcons.Linear.Security.KeyLinear
         }
 
         else -> {

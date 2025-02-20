@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.guru.fontawesomecomposelib.FaIcon
-import com.guru.fontawesomecomposelib.FaIcons
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 @Composable
@@ -36,7 +36,10 @@ fun Configuracoes(){
                 style = TextStyle(color = MaterialTheme.colorScheme.secondary)
             )
             Spacer(modifier = Modifier.size(15.dp))
-            FaIcon(FaIcons.Google, tint = MaterialTheme.colorScheme.secondary)
+            BreezeIcon(
+                BreezeIcons.Linear.Company.GoogleLinear,
+                contentDescription = "Google",
+                color = MaterialTheme.colorScheme.secondary)
         }
     }
 }

@@ -26,8 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.guru.fontawesomecomposelib.FaIcon
-import com.guru.fontawesomecomposelib.FaIcons
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.Screen
 
 @Composable
@@ -55,9 +55,9 @@ fun BreezeBottomBar(navController: NavController){
             )
             NavigationBarItem(
                 icon = {
-                    FaIcon(
-                        FaIcons.CalendarRegular,
-                        tint = MaterialTheme.colorScheme.secondary
+                    BreezeIcon(
+                        BreezeIcons.Linear.Time.CalendarLinear,
+                        contentDescription = null
                     )
                 },
                 label = { Text("Histórico") },
@@ -112,7 +112,7 @@ fun BreezeBottomBarModel(){
             }
         )
         NavigationBarItem(
-            icon = { FaIcon(FaIcons.CalendarRegular) },
+            icon = { BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = null) },
             label = { Text("Histórico") },
             selected = selectedItem == 1,
             onClick = {
