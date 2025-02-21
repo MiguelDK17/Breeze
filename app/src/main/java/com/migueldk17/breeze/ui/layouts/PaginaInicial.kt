@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
@@ -65,6 +67,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     val contas by viewModel.conta.collectAsStateWithLifecycle()
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
     var showLoading by remember { mutableStateOf(true) }
+    val scroll = rememberScrollState()
     Log.d(TAG, "PaginaInicial: ${contas.size}")
     LaunchedEffect(contas) {
         if (contas.isNotEmpty()) {
@@ -87,7 +90,8 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
         //Card de saldo disponível
         ElevatedCard(modifier = Modifier
@@ -122,7 +126,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
         Spacer(modifier = Modifier.size(10.dp))
 
         when{
-            showLoading -> {
+             showLoading -> {
                 LottieAnimation(
                     animationRes = R.raw.loading_breeze,
                     isPlaying = true,
@@ -133,6 +137,8 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             contas.isEmpty() -> {
                 ContaNaoEncontrada()
             }
+
+
             else -> {
                 LazyColumn {
                     items(contas) { conta ->
@@ -148,6 +154,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
         }
 
     }
+
 
     if (showBottomSheet){
         ModalBottomSheet(

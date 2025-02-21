@@ -36,15 +36,8 @@ class BreezeViewModel @Inject constructor(
     private val _carregando = MutableStateFlow(true)
     val carregando: StateFlow<Boolean> = _carregando
 
-    val conta: StateFlow<List<Conta>> = contaDao.getConta()
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-        .also { flow ->
-            viewModelScope.launch {
-                flow.collectLatest { contas ->
-                    _carregando.value = contas.isEmpty()
-                }
-            }
-        }
+    private val _conta = MutableStateFlow<List<Conta>>(emptyList())
+    val conta: StateFlow<List<Conta>> = _conta
 
 
 
@@ -73,6 +66,12 @@ class BreezeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 0.00) //Valor inicial
+            contaDao.getConta()
+                .collectLatest { lista ->
+                    _conta.value = lista
+                    _carregando.value = false
+
+                }
         }
     }
 

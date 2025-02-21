@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,14 +38,15 @@ fun ContaNaoEncontrada(){
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LottieAnimation(
             animationRes = R.raw.animation_account_not_found,
             isPlaying = true,
             iterations = LottieConstants.IterateForever,
-            modifier = Modifier.size(300.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
 
