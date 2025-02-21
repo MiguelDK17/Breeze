@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieConstants
 import com.migueldk17.breeze.R
@@ -49,6 +51,7 @@ import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.components.BreezeCard
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -56,11 +59,19 @@ import java.util.Locale
 @SuppressLint("DefaultLocale")
 @Composable
 fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
-    val saldo by viewModel.saldo.collectAsState()
+    val saldo by viewModel.saldo.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val saldoFormatado = saldo?.valor
-    val contas by viewModel.conta.collectAsState()
+    val contas by viewModel.conta.collectAsStateWithLifecycle()
+    val carregando by viewModel.carregando.collectAsStateWithLifecycle()
+    var showLoading by remember { mutableStateOf(true) }
     Log.d(TAG, "PaginaInicial: ${contas.size}")
+    LaunchedEffect(contas) {
+        if (contas.isNotEmpty()) {
+            delay(500)
+            showLoading = false
+        }
+    }
 
 
 
@@ -110,24 +121,32 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
-        if (contas.isEmpty()){
-            LottieAnimation(
-                animationRes = R.raw.loading_breeze,
-                isPlaying = true,
-                iterations = LottieConstants.IterateForever
-            )
-        } else {
-            LazyColumn {
-                items(contas) { conta ->
-                    BreezeCard(conta) {
-                        Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
-                        val intent = Intent(navController.context, MainActivity2::class.java)
-                        intent.putExtra("id", conta.id)
-                        navController.context.startActivity(intent)
+        when{
+            showLoading -> {
+                LottieAnimation(
+                    animationRes = R.raw.loading_breeze,
+                    isPlaying = true,
+                    iterations = LottieConstants.IterateForever
+                )
+
+            }
+            contas.isEmpty() -> {
+                ContaNaoEncontrada()
+            }
+            else -> {
+                LazyColumn {
+                    items(contas) { conta ->
+                        BreezeCard(conta) {
+                            Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
+                            val intent = Intent(navController.context, MainActivity2::class.java)
+                            intent.putExtra("id", conta.id)
+                            navController.context.startActivity(intent)
+                        }
                     }
                 }
             }
         }
+
     }
 
     if (showBottomSheet){

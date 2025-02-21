@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -32,11 +33,24 @@ class BreezeViewModel @Inject constructor(
     private val _saldo = MutableStateFlow<Saldo?>(null)
     val saldo: StateFlow<Saldo?> get() = _saldo
 
+    private val _carregando = MutableStateFlow(true)
+    val carregando: StateFlow<Boolean> = _carregando
+
     val conta: StateFlow<List<Conta>> = contaDao.getConta()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        .also { flow ->
+            viewModelScope.launch {
+                flow.collectLatest { contas ->
+                    _carregando.value = contas.isEmpty()
+                }
+            }
+        }
+
+
 
     private val _contaSelecionada = MutableStateFlow<Conta?>(null)
     val contaSelecionada: StateFlow<Conta?> = _contaSelecionada.asStateFlow()
+
 
 
     private val _nomeConta = MutableStateFlow("")

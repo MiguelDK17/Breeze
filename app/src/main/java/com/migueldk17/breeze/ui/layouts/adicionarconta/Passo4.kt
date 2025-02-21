@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -118,7 +119,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             placeholder = {
                 Text("Adicionar Valor")
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             visualTransformation = MoneyVisualTransformation())
         Spacer(modifier = Modifier.size(74.dp))
         //Botão para avançar de tela

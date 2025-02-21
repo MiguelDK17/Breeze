@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -74,7 +76,9 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             modifier = Modifier.size(width = 210.dp, height = 56.dp),
             placeholder = {
                 Text("Adicionar nome")
-            })
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+        )
         Spacer(modifier = Modifier.size(74.dp))
         //Botão para avançar de tela
         Button(
