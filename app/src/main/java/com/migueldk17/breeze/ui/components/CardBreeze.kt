@@ -50,6 +50,7 @@ fun BreezeCard(
     viewModel: BreezeViewModel,
     onClick: () -> Unit,
 ){
+    //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
 
     OutlinedCard (

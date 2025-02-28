@@ -33,7 +33,6 @@ import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlin.math.absoluteValue
@@ -142,7 +141,7 @@ fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, ic
         //Caso passo 5 adiciona a cor do card da conta
         NavGraph2.Passo5.route -> {
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
-            viewModel.guardaIconCorCardEscolhida(icone)
+            viewModel.guardaCorCardEscolhida(icone)
         }
         //Passo inválido
         else -> {
