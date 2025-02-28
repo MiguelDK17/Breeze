@@ -41,9 +41,9 @@ fun ContaNaoEncontrada(){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LottieAnimation(
-            animationRes = R.raw.animation_account_not_found,
+            animationRes = R.raw.animation_account_not_found, //Recurso de animação JSON
             isPlaying = true,
-            iterations = LottieConstants.IterateForever,
+            iterations = LottieConstants.IterateForever,    //Irá tocar pra sempre
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)

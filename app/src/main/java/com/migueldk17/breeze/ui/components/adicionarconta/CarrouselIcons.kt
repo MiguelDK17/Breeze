@@ -150,13 +150,16 @@ fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, ic
     }
 }
 
+//Adiciona a cor padrão(Surface) baseado em qual rota o usuário está
 fun adicionaCorPadrao(currentState: String?, viewModel: BreezeViewModel){
     val colorIconDefault = NavyBlue
     val colorCardDefault = PastelLightBlue
     when(currentState) {
+        //Caso esteja no Passo3 adiciona a cor ao icone
         NavGraph2.Passo3.route -> {
             viewModel.guardaCorIconePadrao(colorIconDefault)
         }
+        //Caso esteja no Passo5 adiciona a cor ao card
         NavGraph2.Passo5.route -> {
             viewModel.guardaCorCardPadrao(colorCardDefault)
         }

@@ -130,11 +130,16 @@ fun BreezeCard(
                     Column(modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.SpaceAround
                         ) {
+
+                        //Título do BasicAlertDialog
                         Text("Excluir Conta",
                             style = MaterialTheme.typography.titleMedium,
                             fontSize = 23.sp)
+
+                        //Texto do BasicAlertDialog
                         Text("Você está prestes a excluir esta conta, esta ação será irreversível. Prosseguir ?",
                             style = MaterialTheme.typography.bodyMedium)
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.End

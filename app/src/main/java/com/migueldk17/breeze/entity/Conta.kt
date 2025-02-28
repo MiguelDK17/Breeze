@@ -1,6 +1,6 @@
 package com.migueldk17.breeze.entity
 
-import androidx.compose.ui.graphics.Color
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,19 +12,19 @@ data class Conta(
     val id: Int = 0,
 
     @ColumnInfo(name = "name")
-    val name: String,
+    val name: String, //Nome da conta
 
     @ColumnInfo(name = "valor")
-    val valor: Double,
+    val valor: Double, //Valor monetário da conta
 
     @ColumnInfo(name = "icon")
-    val icon: String,
+    val icon: String, //Referencia do icone de tipo BreezeIconsType
 
     @ColumnInfo(name = "color_icon")
-    val colorIcon: Int,
+    val colorIcon: Int, //Cor do icone já transformada em Int
 
     @ColumnInfo(name = "color_card")
-    val colorCard: Int
+    val colorCard: Int //Cor do card já transformada em Int
 
 )
 

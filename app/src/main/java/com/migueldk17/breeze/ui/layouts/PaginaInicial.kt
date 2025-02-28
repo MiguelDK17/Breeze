@@ -126,6 +126,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
         Log.d(TAG, "PaginaInicial: Quase dentro do when")
         when{
+            //Caso o ViewModel passe carregando como true
              carregando -> {
                  Log.d(TAG, "PaginaInicial: Carregando conta")
                 LottieAnimation(
@@ -135,12 +136,14 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                 )
 
             }
+            //Caso não haja nenhuma conta registrada no Room
             contas.isEmpty() -> {
                 Log.d(TAG, "PaginaInicial: Não há conta")
                 ContaNaoEncontrada()
             }
 
-
+            //Caso nenhuma das condições anteriores forem atendidas é entendido que
+            //Há contas registradas no Room
             else -> {
                 Log.d(TAG, "PaginaInicial: Conta encontrada")
                 LazyColumn {
