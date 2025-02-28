@@ -5,10 +5,12 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 
+//Converter Manual de BreezeIconsEnum para String para evitar bugs com o Room e o KSP
 fun BreezeIconsEnum.toDatabaseValue(): String {
     return this.name
 }
 
+//Converte String para BreezeIconsType
 @Composable
 fun String.toBreezeIconsType(string: String) : BreezeIconsType {
     val icon = when(string){
