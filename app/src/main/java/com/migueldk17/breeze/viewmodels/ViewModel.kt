@@ -14,6 +14,7 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Saldo
 import com.migueldk17.breeze.converters.toDatabaseValue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,8 +34,7 @@ class BreezeViewModel @Inject constructor(
     private val _saldo = MutableStateFlow<Saldo?>(null)
     val saldo: StateFlow<Saldo?> get() = _saldo
 
-    private val _carregando = MutableStateFlow(true)
-    val carregando: StateFlow<Boolean> = _carregando
+   val carregando = MutableStateFlow(true)
 
     private val _conta = MutableStateFlow<List<Conta>>(emptyList())
     val conta: StateFlow<List<Conta>> = _conta
@@ -68,8 +68,11 @@ class BreezeViewModel @Inject constructor(
             _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 0.00) //Valor inicial
             contaDao.getConta()
                 .collectLatest { lista ->
+                    Log.d(TAG, "tentando buscar: ")
                     _conta.value = lista
-                    _carregando.value = false
+                    delay(500)
+                    carregando.value = false
+                    Log.d(TAG, "conta buscada: ")
 
                 }
         }
@@ -152,6 +155,12 @@ class BreezeViewModel @Inject constructor(
     fun pegaContaSelecionada(id: Int){
         viewModelScope.launch {
             _contaSelecionada.value = contaDao.getContaById(id)
+        }
+    }
+
+    fun apagaConta(conta: Conta) {
+        viewModelScope.launch {
+            contaDao.apagarConta(conta)
         }
     }
 

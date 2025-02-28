@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -21,4 +22,7 @@ interface ContaDao {
 
     @Update
     suspend fun atualizarConta(conta: Conta)
+
+    @Delete
+    suspend fun apagarConta(conta: Conta)
 }

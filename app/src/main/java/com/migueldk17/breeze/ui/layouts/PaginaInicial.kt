@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
@@ -31,7 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,6 +76,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 
 
+
     //Estados para controlar o ModalBottomSheet
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -101,7 +100,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                  verticalAlignment = Alignment.CenterVertically,
                  horizontalArrangement = Arrangement.Center) {
                 Text(
-                    formataSaldo(saldoFormatado),
+                    "Seu Saldo: ${formataValor(saldoFormatado)}",
                     style = MaterialTheme.typography.titleMedium
                 )
                  //Botão para editar o saldo
@@ -125,8 +124,10 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
+        Log.d(TAG, "PaginaInicial: Quase dentro do when")
         when{
-             showLoading -> {
+             carregando -> {
+                 Log.d(TAG, "PaginaInicial: Carregando conta")
                 LottieAnimation(
                     animationRes = R.raw.loading_breeze,
                     isPlaying = true,
@@ -135,14 +136,16 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
             }
             contas.isEmpty() -> {
+                Log.d(TAG, "PaginaInicial: Não há conta")
                 ContaNaoEncontrada()
             }
 
 
             else -> {
+                Log.d(TAG, "PaginaInicial: Conta encontrada")
                 LazyColumn {
                     items(contas) { conta ->
-                        BreezeCard(conta) {
+                        BreezeCard(conta, viewModel) {
                             Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
                             val intent = Intent(navController.context, MainActivity2::class.java)
                             intent.putExtra("id", conta.id)
@@ -218,9 +221,10 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 }
 
-private fun formataSaldo(saldo: Double?): String {
-    if (saldo != null) {
-        val formatacao = String.format(Locale.getDefault(),"Seu Saldo: R$ %.2f", saldo)
+fun formataValor(valor: Double?): String {
+    if (valor != null) {
+        val formatacao = String.format(Locale.getDefault(),"R$ %.2f", valor)
         return formatacao
-    } else return "Carregando..."
+    }
+    return "Carregando..."
 }

@@ -36,7 +36,12 @@ fun BreezeBottomBar(navController: NavController){
 
     NavigationBar {
             NavigationBarItem(
-                icon = { Icon(Icons.Filled.Home, contentDescription = "Página Inicial") },
+                icon = {
+                    BreezeIcon(
+                        breezeIcon = BreezeIcons.Linear.Building.HomeLinear,
+                        contentDescription = "Página Inicial"
+                    )
+                },
                 label = { Text("Página Inicial") },
                 selected = selectedItem == 0,
                 onClick = {
@@ -77,7 +82,12 @@ fun BreezeBottomBar(navController: NavController){
                 )
             )
             NavigationBarItem(
-                icon = { Icon(Icons.Filled.Settings, contentDescription = "") },
+                icon = {
+                    BreezeIcon(
+                        breezeIcon = BreezeIcons.Linear.Settings.SettingsLinear,
+                        contentDescription = "Configurções"
+                    )
+                },
                 label = { Text("Configurações") },
                 selected = selectedItem == 2,
                 onClick = {
