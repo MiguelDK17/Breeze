@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -67,9 +68,11 @@ fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
 
             ) {
                 Row(
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize()
                 ) {
-                    Spacer(Modifier.size(50.dp))
+                    Spacer(Modifier.size(70.dp))
                     Column {
                         Text(nomeConta,
                             style = MaterialTheme.typography.bodySmall.copy(
