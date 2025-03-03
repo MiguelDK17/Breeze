@@ -33,7 +33,7 @@ Currently, Breeze is under development  and not yet available for public install
 As of now, Breeze is in its early stages  of development and not open for contributions. However, feedback  and suggestions  are always welcome!
 
 ## 📜 License
-Breeze is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
+Breeze is licensed under the MIT License. See [LICENSE](https://github.com/MiguelDK17/Breeze/blob/master/LICENSE) for more details.
 
 ---
 
