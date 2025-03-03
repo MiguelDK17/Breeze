@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
-import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.adicionarconta.adicionaCorPadrao
@@ -123,7 +122,7 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //Carrossel de icones
-            val iconCarrousel = carrouselIcons(BreezeIconLists.getColorIcons())
+            val iconCarrousel = carrouselIcons(BreezeIconLists.getSoftColorIcons())
             Spacer(modifier = Modifier.size(74.dp))
             OutlinedButton(
                 onClick = {
