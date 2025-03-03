@@ -31,6 +31,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -77,8 +79,10 @@ fun BreezeCard(
                 Text(conta.name, style = MaterialTheme.typography.bodyLarge)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.End
                 ) {
+
+
                     TextButton(onClick = {
                         onClick()
                     }) {
@@ -91,6 +95,7 @@ fun BreezeCard(
                         }
                     }
                 }
+
 
             }
             //Linha de baixo com o valor monetário da categoria

@@ -20,10 +20,10 @@ object BreezeIconLists {
     //Lista de icones de cores de tipo BreezeIcons
     @Composable
     fun getColorIcons() = listOf(
-        BreezeIcons.Colors.IconOrange,
-        BreezeIcons.Colors.IconYellow,
-        BreezeIcons.Colors.IconGreen,
-        BreezeIcons.Colors.IconGreenCyan,
-        BreezeIcons.Colors.IconTurquoise
+        BreezeIcons.Colors.Vibrant.IconOrange,
+        BreezeIcons.Colors.Vibrant.IconYellow,
+        BreezeIcons.Colors.Vibrant.IconGreen,
+        BreezeIcons.Colors.Vibrant.IconGreenCyan,
+        BreezeIcons.Colors.Vibrant.IconTurquoise
     )
 }

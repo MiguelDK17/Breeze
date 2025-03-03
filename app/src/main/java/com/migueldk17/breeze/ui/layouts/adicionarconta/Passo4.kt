@@ -127,7 +127,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             onClick = {
                 viewModel.guardaValorConta(valorConta.toDouble())
                 navController.navigate(NavGraph2.Passo5.route)
-            }, enabled = true
+            }, enabled = valorConta.isNotEmpty()
         ) {
             Text("Avançar")
         }

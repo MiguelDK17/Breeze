@@ -3,6 +3,7 @@ package com.migueldk17.breeze.ui.layouts.adicionarconta
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
@@ -34,6 +36,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
     var text by remember{
         mutableStateOf("")
     }
+
 
     Column(
         modifier = Modifier
@@ -69,25 +72,44 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.size(26.dp))
-        //TextField responsável por adicionar um nome a conta
-        TextField(text, onValueChange = { value ->
-            text = value
-        },
-            modifier = Modifier.size(width = 210.dp, height = 56.dp),
-            placeholder = {
-                Text("Adicionar nome")
-            },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
-        )
+        Column(modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            //TextField responsável por adicionar um nome a conta
+            TextField(
+                text,
+                onValueChange = { value ->
+                    text = value
+                },
+                modifier = Modifier.size(width = 210.dp, height = 56.dp),
+                placeholder = {
+                    Text("Adicionar nome")
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                isError = !textoCorreto(text)
+            )
+            if (!textoCorreto(text)) {
+                Text(
+                    "O nome da conta deve ter menos de 15 caracteres",
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp
+                )
+            }
+        }
         Spacer(modifier = Modifier.size(74.dp))
         //Botão para avançar de tela
         Button(
             onClick = {
-                viewModel.setNomeConta(text)
-                navController.navigate(NavGraph2.Passo2.route)
-            }, enabled = text.length >= 4
+                    viewModel.setNomeConta(text)
+                    navController.navigate(NavGraph2.Passo2.route)
+
+            }, enabled = text.isNotEmpty() && textoCorreto(text)
         ) {
             Text("Avançar")
         }
     }
+}
+private fun textoCorreto(text: String): Boolean {
+    return text.length <= 14
 }
