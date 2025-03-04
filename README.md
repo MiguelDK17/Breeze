@@ -25,11 +25,13 @@ Currently, Breeze is under development  and not yet available for public install
 
 
 ## 🖼️ Screenshots
-<img src="screenshots/Screenshot_20250303_204024.png" width="250">
+<div align="center">
+<img src="screenshots/Screenshot_20250303_204024.png" width="300">
 <img src="screenshots/Screenshot_20250303_204310.png"
-width="250">
+width="300">
 <img src="screenshots/Screenshot_20250303_204334.png"
-width="250">
+width="300">
+</div>
 
 ## 🤝 Contribution
 As of now, Breeze is in its early stages  of development and not open for contributions. However, feedback  and suggestions  are always welcome!
