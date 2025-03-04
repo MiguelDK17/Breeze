@@ -1,4 +1,4 @@
-# Breeze
+# 🌬️Breeze
 
 Breeze is a modern and visually appealing  financial organization app designed to provide a smooth  and intuitive  user experience. Built with Jetpack Compose, Breeze ensures fluid animations  and a seamless navigation experience.
 
