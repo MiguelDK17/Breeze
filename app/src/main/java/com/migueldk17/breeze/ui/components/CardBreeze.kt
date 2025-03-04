@@ -76,7 +76,7 @@ fun BreezeCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BreezeIcon(
-                    breezeIcon = conta.icon.toBreezeIconsType(conta.icon),
+                    breezeIcon = conta.icon.toBreezeIconsType(),
                     contentDescription = null,
                     color = conta.colorIcon.toColor(),
                     modifier = Modifier.size(48.dp)

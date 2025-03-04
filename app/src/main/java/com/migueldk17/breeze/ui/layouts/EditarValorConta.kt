@@ -166,7 +166,7 @@ private fun IconColumn(conta: Conta ){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BreezeIcon(
-            conta.icon.toBreezeIconsType(conta.icon),
+            conta.icon.toBreezeIconsType(),
             contentDescription = null,
             color = conta.colorIcon.toColor()
         )

@@ -12,8 +12,8 @@ fun BreezeIconsEnum.toDatabaseValue(): String {
 
 //Converte String para BreezeIconsType
 @Composable
-fun String.toBreezeIconsType(string: String) : BreezeIconsType {
-    val icon = when(string){
+fun String.toBreezeIconsType() : BreezeIconsType {
+    val icon = when(this){
 
         BreezeIconsEnum.BOOK_LINEAR.name -> {
             BreezeIcons.Linear.SchoolLearning.BookLinear
