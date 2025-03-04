@@ -21,7 +21,7 @@ object DatabaseModule {
             context,
             BreezeDatabase::class.java,
             "breeze_database"
-        ).fallbackToDestructiveMigration()
+        ).addMigrations()
             .build()
     }
     @Provides

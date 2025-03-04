@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -138,13 +139,15 @@ class BreezeViewModel @Inject constructor(
             val icon = _iconeCardConta.value.enum.toDatabaseValue()
             val colorIcon = _corIcone.value.toDatabaseValue()
             val colorCard = _corCard.value.toDatabaseValue()
+            val dateTime = LocalDateTime.now().toDatabaseValue()
 
             val conta = Conta(
                 name = name,
                 valor = valor,
                 icon = icon,
                 colorIcon = colorIcon,
-                colorCard = colorCard
+                colorCard = colorCard,
+                dateTime = dateTime
             )
             contaDao.insertConta(conta)
         }

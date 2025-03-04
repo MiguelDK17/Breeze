@@ -10,7 +10,7 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Saldo
 
 
-@Database(entities = [Conta::class, Saldo::class], version = 1, exportSchema = false)
+@Database(entities = [Conta::class, Saldo::class], version = 2, exportSchema = false)
 abstract class BreezeDatabase: RoomDatabase() {
     abstract fun saldoDao(): SaldoDao
 

@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,8 +42,10 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.ui.layouts.formataValor
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import java.time.format.DateTimeFormatter
 
 
 //Card de PaginaInicial
@@ -54,6 +58,7 @@ fun BreezeCard(
 ){
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
+    Log.d(TAG, "BreezeCard: ${conta.dateTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}")
 
     OutlinedCard (
         modifier = Modifier
@@ -65,7 +70,8 @@ fun BreezeCard(
 
         ){
             //Linha de cima(com ícone, texto e etc)
-            Row(modifier = Modifier.fillMaxWidth()
+            Row(modifier = Modifier
+                .fillMaxWidth()
                 .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {

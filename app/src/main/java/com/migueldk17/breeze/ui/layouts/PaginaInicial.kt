@@ -64,16 +64,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
     val saldoFormatado = saldo?.valor
     val contas by viewModel.conta.collectAsStateWithLifecycle()
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
-    var showLoading by remember { mutableStateOf(true) }
-    val scroll = rememberScrollState()
-    Log.d(TAG, "PaginaInicial: ${contas.size}")
-    LaunchedEffect(contas) {
-        if (contas.isNotEmpty()) {
-            delay(500)
-            showLoading = false
-        }
-    }
-
+    
 
 
 
@@ -124,12 +115,10 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
-        Log.d(TAG, "PaginaInicial: Quase dentro do when")
         when{
             //Caso o ViewModel passe carregando como true
              carregando -> {
-                 Log.d(TAG, "PaginaInicial: Carregando conta")
-                LottieAnimation(
+                 LottieAnimation(
                     animationRes = R.raw.loading_breeze,
                     isPlaying = true,
                     iterations = LottieConstants.IterateForever
@@ -138,18 +127,15 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
             }
             //Caso não haja nenhuma conta registrada no Room
             contas.isEmpty() -> {
-                Log.d(TAG, "PaginaInicial: Não há conta")
                 ContaNaoEncontrada()
             }
 
             //Caso nenhuma das condições anteriores forem atendidas é entendido que
             //Há contas registradas no Room
             else -> {
-                Log.d(TAG, "PaginaInicial: Conta encontrada")
                 LazyColumn {
                     items(contas) { conta ->
                         BreezeCard(conta, viewModel) {
-                            Log.d(TAG, "PaginaInicial: id da conta em PaginaInicial: ${conta.id}")
                             val intent = Intent(navController.context, MainActivity2::class.java)
                             intent.putExtra("id", conta.id)
                             navController.context.startActivity(intent)

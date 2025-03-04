@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "conta_table")
 data class Conta(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int = 0, //Id da conta
 
     @ColumnInfo(name = "name")
     val name: String, //Nome da conta
@@ -24,8 +24,10 @@ data class Conta(
     val colorIcon: Int, //Cor do icone já transformada em Int
 
     @ColumnInfo(name = "color_card")
-    val colorCard: Int //Cor do card já transformada em Int
+    val colorCard: Int, //Cor do card já transformada em Int
 
+    @ColumnInfo(name = "date_time")
+    val dateTime: String
 )
 
 
