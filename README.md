@@ -25,9 +25,11 @@ Currently, Breeze is under development  and not yet available for public install
 
 
 ## 🖼️ Screenshots
-![Home Screen](screenshots/Screenshot_20250303_204024.png)
-![Add Account](screenshots/Screenshot_20250303_204310.png)
-![Account Added](screenshots/Screenshot_20250303_204334.png)
+<img src="screenshots/Screenshot_20250303_204024.png" width="250">
+<img src="screenshots/Screenshot_20250303_204310.png"
+width="250">
+<img src="screenshots/Screenshot_20250303_204334.png"
+width="250">
 
 ## 🤝 Contribution
 As of now, Breeze is in its early stages  of development and not open for contributions. However, feedback  and suggestions  are always welcome!
