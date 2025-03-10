@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.layouts
+package com.migueldk17.breeze.features.configuracoes.ui.layouts
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

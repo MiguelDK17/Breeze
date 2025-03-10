@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.layouts.adicionarconta
+package com.migueldk17.breeze.features.adicionarconta.ui.layouts
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

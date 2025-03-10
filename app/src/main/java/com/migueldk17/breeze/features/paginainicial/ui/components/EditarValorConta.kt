@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.layouts
+package com.migueldk17.breeze.features.paginainicial.ui.components
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -33,7 +33,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,13 +46,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.ui.animation.ColorTransitionFromCenter
+import com.migueldk17.breeze.features.paginainicial.ui.animation.ColorTransitionFromCenter
 
 @Composable
 fun EditarValorConta(

@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.layouts.adicionarconta
+package com.migueldk17.breeze.features.adicionarconta.ui.layouts
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,9 +27,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.components.adicionarconta.adicionaCorPadrao
-import com.migueldk17.breeze.ui.components.adicionarconta.carrouselIcons
-import com.migueldk17.breeze.ui.components.adicionarconta.insereIconeNoViewModel
+import com.migueldk17.breeze.features.adicionarconta.ui.components.adicionaCorPadrao
+import com.migueldk17.breeze.features.adicionarconta.ui.components.carrouselIcons
+import com.migueldk17.breeze.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel

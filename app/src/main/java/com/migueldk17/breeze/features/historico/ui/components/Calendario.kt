@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.components
+package com.migueldk17.breeze.features.historico.ui.components
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke

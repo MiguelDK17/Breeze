@@ -1,7 +1,6 @@
-package com.migueldk17.breeze.ui.layouts
+package com.migueldk17.breeze.features.paginainicial.ui.layouts
 
 import android.content.Intent
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize

@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.components.adicionarconta
+package com.migueldk17.breeze.features.adicionarconta.ui.components
 
 import android.content.ContentValues.TAG
 import android.util.Log

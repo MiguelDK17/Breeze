@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.layouts
+package com.migueldk17.breeze.features.paginainicial.ui.layouts
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -29,7 +28,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,9 +47,8 @@ import com.migueldk17.breeze.R
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.animation.LottieAnimation
-import com.migueldk17.breeze.ui.components.BreezeCard
+import com.migueldk17.breeze.features.paginainicial.ui.components.BreezeCard
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 

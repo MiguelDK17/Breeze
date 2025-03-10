@@ -10,8 +10,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -21,9 +19,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.migueldk17.breeze.ui.components.BreezeBottomBar
 import com.migueldk17.breeze.ui.components.BreezeTopAppBar
-import com.migueldk17.breeze.ui.layouts.Configuracoes
-import com.migueldk17.breeze.ui.layouts.Historico
-import com.migueldk17.breeze.ui.layouts.PaginaInicial
+import com.migueldk17.breeze.features.configuracoes.ui.layouts.Configuracoes
+import com.migueldk17.breeze.features.historico.ui.layouts.Historico
+import com.migueldk17.breeze.features.paginainicial.ui.layouts.PaginaInicial
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
