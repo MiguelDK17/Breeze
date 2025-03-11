@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.features.historico.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -18,6 +20,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,11 +52,10 @@ fun GraficoDeBarras(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .horizontalScroll(scrollState),
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Column(
+            /*Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(210.dp),
@@ -79,22 +82,38 @@ fun GraficoDeBarras(
                     start = Offset(0f, 430f),
                     end = Offset(455f, 430f)
                 )
-            }
-            data.forEach { (day, value) ->
-                val animatedHeight by animateFloatAsState(
-                    targetValue = (value / maxValue) * 200f,
-                    label = "BarAnimation"
-                )
-                Box(modifier = Modifier
-                    .size(width = barWidth, height = 200.dp),
-                    contentAlignment = Alignment.BottomCenter
-
-                ) {
-                    Text("R$ ${value.toInt()}", style = TextStyle(fontSize = 12.sp))
-                    Spacer(modifier = Modifier.size(100.dp).background(Color.Yellow))
+            }*/
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(data) { (day, value) ->
+                    val animatedHeight by animateFloatAsState(
+                        targetValue = (value / maxValue) * 200f,
+                        label = "BarAnimation"
+                    )
+                    Column(
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(200.dp)
+                            .background(PastelLightBlue),
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        // Divide o valor da barra pela metade e adiciona um extra para que o texto fique um pouco acima
+                        val tamanhoPosicaoTexto = animatedHeight / 2 + 20
+                        Log.d(TAG, "GraficoDeBarras: tamanho em float: $tamanhoPosicaoTexto")
+                        Log.d(TAG, "GraficoDeBarras: tamanho em dp: ${animatedHeight.dp}")
+                        Text("R$ $value",
+                            style = TextStyle(fontSize = 12.sp),
+                            modifier = Modifier
+                                .size(tamanhoPosicaoTexto.dp)
+                                .background(Color.Yellow),
+                            textAlign = TextAlign.Center)
                         Canvas(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .width(40.dp)
+                                .height(150.dp)
                         ) {
                             //Retangulos do gráfico
                             drawRect(
@@ -105,9 +124,13 @@ fun GraficoDeBarras(
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                         Text(text = "$day", style = TextStyle(fontSize = 12.sp))
+
+
                     }
-                Spacer(modifier = Modifier.width(16.dp))
+
+                }
             }
+
         }
     }
 }
@@ -115,7 +138,8 @@ fun GraficoDeBarras(
 @Composable
 @Preview(showBackground = true)
 private fun Preview(){
-    val list : List<Pair<Int, Float>> = listOf(Pair(10, 65f), Pair(12, 103f), Pair(15, 55f), Pair(18, 134f))
+    //Lista contendo dia e preco da conta(direita o dia, e esquerda o valor da conta)
+    val list : List<Pair<Int, Float>> = listOf(Pair(10, 120.00f), Pair(12, 200.00f), Pair(15, 80.00f), Pair(18, 220.00f))
     val modifier = Modifier.size(width = 360.dp, height = 295.dp)
 
     GraficoDeBarras(list, modifier)
