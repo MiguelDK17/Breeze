@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.migueldk17.breeze.features.adicionarconta.ui.layouts.AdicionarContaOpcional
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts.AdicionarContaOpcional
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import dagger.hilt.android.AndroidEntryPoint

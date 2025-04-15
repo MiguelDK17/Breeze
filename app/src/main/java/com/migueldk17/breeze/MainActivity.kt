@@ -19,9 +19,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.migueldk17.breeze.ui.components.BreezeBottomBar
 import com.migueldk17.breeze.ui.components.BreezeTopAppBar
-import com.migueldk17.breeze.features.configuracoes.ui.layouts.Configuracoes
-import com.migueldk17.breeze.features.historico.ui.layouts.Historico
-import com.migueldk17.breeze.features.paginainicial.ui.layouts.PaginaInicial
+import com.migueldk17.breeze.ui.features.configuracoes.ui.layouts.Configuracoes
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.Historico
+import com.migueldk17.breeze.ui.features.paginainicial.ui.layouts.PaginaInicial
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
