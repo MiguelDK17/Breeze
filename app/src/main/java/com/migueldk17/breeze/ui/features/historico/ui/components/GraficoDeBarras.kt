@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,19 +48,15 @@ fun GraficoDeBarras(
     modifier: Modifier = Modifier
 ){
     val maxValue = data.maxOfOrNull { it.second } ?: 1f
-    val barWidth = 40.dp // Largura das barras
-    val scrollState = rememberScrollState()
+    val density = LocalDensity.current
+    val deslocamento = with(density) { 35.dp.toPx()}
+    val larguraPx = with(density) { 290.dp.toPx()}
 
     Column(
         modifier = modifier
             .background(Color.White)
             .padding(8.dp)
     ) {
-        Text(
-            "Total gasto",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -71,7 +69,6 @@ fun GraficoDeBarras(
                 modifier = Modifier
                     .width(60.dp)
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Total gasto", fontSize = 12.sp)
@@ -82,22 +79,23 @@ fun GraficoDeBarras(
             // Linha vertical e base
             Canvas(
                 modifier = Modifier
-                    .height(200.dp)
-                    .background(Color.Gray)
+                    .height(300.dp)
+                    .background(Color.Red)
             ) {
-                val startY = 0f
                 val endY = size.height
+                val linhaFinal = endY - deslocamento
+                Log.d(TAG, "GraficoDeBarras: valor atualizado de endY $endY")
                 //Linha de cima
                 drawLine(
                     color = Color.Black,
-                    start = Offset(0f, 0f),
-                    end = Offset(0f, endY)
+                    start = Offset(0f, 50f),
+                    end = Offset(0f, linhaFinal)
                 )
                 //Linha de baixo
                 drawLine(
                     color = Color.Black,
-                    start = Offset(0f, endY),
-                    end = Offset(455f, endY)
+                    start = Offset(0f, linhaFinal),
+                    end = Offset(larguraPx, linhaFinal)
                 )
             }
             LazyRow(
@@ -111,7 +109,7 @@ fun GraficoDeBarras(
                         label = "BarAnimation"
                     )
                     Column(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.wrapContentHeight()
 
                     ) {
                         Box(
@@ -123,8 +121,6 @@ fun GraficoDeBarras(
                         ) {
                             // Divide o valor da barra pela metade e adiciona um extra para que o texto fique um pouco acima
                             val tamanhoPosicaoTexto = animatedHeight / 2 + 20
-                            Log.d(TAG, "GraficoDeBarras: tamanho em float: $tamanhoPosicaoTexto")
-                            Log.d(TAG, "GraficoDeBarras: tamanho em dp: ${animatedHeight.dp}")
                             Text(
                                 formataSaldo(value.toDouble()),
                                 style = TextStyle(fontSize = 12.sp),
