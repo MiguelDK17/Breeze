@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -114,7 +115,7 @@ fun GridMes(viewModel: HistoricoViewModel){
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
                         mesSelecionado = meses[index]
-                        viewModel.filtraContasPorMes(mesSelecionado!!)
+                        viewModel.filtraContasPorMes(meses[index])
                     })
             })
     }

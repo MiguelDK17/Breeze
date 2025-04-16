@@ -30,11 +30,10 @@ import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCorPadrao
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
-import com.migueldk17.breeze.ui.formataValorConta
+import com.migueldk17.breeze.ui.utils.formataValorConta
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppins
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
-import java.util.Locale
 
 @Composable
 fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()) {

@@ -8,7 +8,6 @@ fun LocalDateTime.toDatabaseValue(): String {
     return this.toString()
 }
 fun String.toLocalDateTime(): LocalDateTime {
-    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
-    return LocalDateTime.parse(this, formatter)
+    return LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
 
 }
