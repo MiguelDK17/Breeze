@@ -36,11 +36,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
 @Composable
-fun Calendario(){
+fun Calendario(viewModel: HistoricoViewModel){
     val context = LocalContext.current
     Card(
         modifier = Modifier
@@ -63,7 +64,7 @@ fun Calendario(){
             Spacer(modifier = Modifier.height(16.dp))
 
             //Grid com os meses
-            GridMes()
+            GridMes(viewModel)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -93,7 +94,7 @@ fun Calendario(){
 }
 
 @Composable
-fun GridMes(){
+fun GridMes(viewModel: HistoricoViewModel){
     //Lista de meses
     val meses = listOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
     var mesSelecionado by remember { mutableStateOf<String?>(null) }
@@ -111,7 +112,10 @@ fun GridMes(){
                     meses[index],
                     isSelected = meses[index] == mesSelecionado,
                     //Salva o mes clicado na variavel mesSelecionado
-                    onClick = {mesSelecionado = meses[index]})
+                    onClick = {
+                        mesSelecionado = meses[index]
+                        viewModel.filtraContasPorMes(mesSelecionado!!)
+                    })
             })
     }
 
@@ -157,12 +161,5 @@ fun MesItem(
                )
            }
 
-    }
-}
-@Composable
-@Preview(showBackground = true)
-private fun Preview(){
-    BreezeTheme {
-        Calendario()
     }
 }
