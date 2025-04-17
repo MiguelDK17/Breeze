@@ -23,15 +23,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.utils.formataSaldo
@@ -106,14 +110,23 @@ fun GraficoDeBarras(
                 LazyRow(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(contas) { (_, _, value,_,_,_,dateTime) ->
+                    items(contas) { (_, _, value,_,colorIcon,colorCard,dateTime) ->
+
                         val animatedHeight by animateFloatAsState(
-                            targetValue = (value.toFloat() / maxValue) * 200f,
+                            targetValue = (value.toFloat() / maxValue) * 230f,
                             label = "BarAnimation"
                         )
+
                         val day = dateTime.toLocalDateTime().dayOfMonth
+
+                        val colorCard = colorCard.toColor()
+                        val colorIcon = colorIcon.toColor()
+
+                        val brush = Brush.verticalGradient(
+                            colors = listOf(colorIcon, colorCard)
+                        )
                         Column(
                             modifier = Modifier.wrapContentHeight()
 
@@ -129,7 +142,7 @@ fun GraficoDeBarras(
                                 val texto = formataSaldo(value.toDouble())
 
                                 //Caso o tamanho do texto for maior que 7 adiciona um pouco a mais de espaço para que o Text não fique dentro das barras
-                                val tamanhoExtra = if (texto.length > 7) 10f else 0f
+                                val tamanhoExtra = if (texto.length > 6) 10f else 0f
 
                                 // Divide o valor da barra pela metade e adiciona um extra para que o texto fique um pouco acima
                                 val tamanhoPosicaoTexto = animatedHeight / 2 + 20 + tamanhoExtra
@@ -147,10 +160,11 @@ fun GraficoDeBarras(
                                         .height(150.dp)
                                 ) {
                                     //Retangulos do gráfico
-                                    drawRect(
-                                        color = Color.Gray,
+                                    drawRoundRect(
+                                        brush = brush,
                                         topLeft = Offset(0f, size.height - animatedHeight),
-                                        size = Size(size.width, animatedHeight)
+                                        size = Size(size.width, animatedHeight),
+                                        cornerRadius = CornerRadius(x = 20f, y = 20f)
                                     )
                                 }
 

@@ -23,11 +23,10 @@ import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewMo
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
     val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(initialValue = emptyList()).value
 
-        Column(
-            modifier = modifier
-        ) {
-            val modifier = Modifier.size(width = 360.dp, height = 295.dp)
-            GraficoDeBarras(contas, modifier)
-
-        }
+    Column(
+        modifier = modifier
+    ) {
+        val modifier = Modifier.size(width = 360.dp, height = 295.dp)
+        GraficoDeBarras(contas, modifier)
+    }
 }
