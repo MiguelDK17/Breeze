@@ -48,7 +48,7 @@ import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCard
-import com.migueldk17.breeze.ui.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlinx.coroutines.launch
 

@@ -67,7 +67,7 @@ class BreezeViewModel @Inject constructor(
             _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 0.00) //Valor inicial
 
             //Pega todas as contas registradas no Room
-            contaDao.getConta()
+            contaDao.getContas()
                 .collectLatest { lista ->
                     //Manda a lista de contas pra variavel _conta
                     _conta.value = lista

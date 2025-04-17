@@ -37,7 +37,7 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.ui.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataSaldo
 
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import java.time.format.DateTimeFormatter
@@ -53,7 +53,6 @@ fun BreezeCard(
 ){
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
-    Log.d(TAG, "BreezeCard: ${conta.dateTime.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}")
 
     OutlinedCard (
         modifier = Modifier

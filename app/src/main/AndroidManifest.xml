@@ -30,6 +30,8 @@
         <activity android:name=".MainActivity3"
             android:exported="true"
             android:theme="@style/Theme.Breeze"/>
+        <activity android:name=".MainActivity4"
+            android:theme="@style/Theme.Breeze"/>
     </application>
 
 </manifest>
