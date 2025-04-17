@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ContaDao {
     @Query("SELECT * FROM conta_table")
-     fun getConta(): Flow<List<Conta>>
+     fun getContas(): Flow<List<Conta>>
      //Terminar comando SQL e partir pro ViewModel
      @Query("SELECT * FROM conta_table WHERE id = :id LIMIT 1")
      suspend fun getContaById(id: Int): Conta

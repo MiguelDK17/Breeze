@@ -32,15 +32,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.converters.toLocalDateTime
+import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
 @Composable
 fun GraficoDeBarras(
-    data: List<Pair<Int, Float>>,
+    contas: List<Conta>,
     modifier: Modifier = Modifier
 ){
     //Adiciona um valor máximo que a barra pode chegar
-    val maxValue = data.maxOfOrNull { it.second } ?: 1f
+    val maxValue = contas.maxOfOrNull { it.valor.toFloat() } ?: 1f
     //Pega a densidade da tela
     val density = LocalDensity.current
     //Adiciona um deslocamento baseado na densidade da tela em pixels
@@ -76,7 +78,7 @@ fun GraficoDeBarras(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text("Total gasto", fontSize = 12.sp)
-                    Spacer(modifier = Modifier.height(150.dp))
+                    Spacer(modifier = Modifier.height(110.dp))
                     Text("Dias do mês", fontSize = 12.sp)
                 }
 
@@ -106,11 +108,12 @@ fun GraficoDeBarras(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(data) { (day, value) ->
+                    items(contas) { (_, _, value,_,_,_,dateTime) ->
                         val animatedHeight by animateFloatAsState(
-                            targetValue = (value / maxValue) * 200f,
+                            targetValue = (value.toFloat() / maxValue) * 200f,
                             label = "BarAnimation"
                         )
+                        val day = dateTime.toLocalDateTime().dayOfMonth
                         Column(
                             modifier = Modifier.wrapContentHeight()
 
@@ -169,14 +172,4 @@ fun GraficoDeBarras(
             }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-private fun Preview(){
-    //Lista contendo dia e preco da conta(direita o dia, e esquerda o valor da conta)
-    val list : List<Pair<Int, Float>> = listOf(Pair(10, 120.00f), Pair(12, 200.00f), Pair(15, 80.00f), Pair(18, 220.00f), Pair(25, 500.00f))
-    val modifier = Modifier.size(width = 360.dp, height = 295.dp)
-
-    GraficoDeBarras(list, modifier)
 }

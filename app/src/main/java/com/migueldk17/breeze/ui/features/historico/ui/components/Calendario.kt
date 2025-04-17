@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,10 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
-import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
 @Composable
@@ -69,26 +62,6 @@ fun Calendario(viewModel: HistoricoViewModel){
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                TextButton(onClick = {
-                    Toast.makeText(
-                        context,"Vc cancelou a ação kkkkkkk", Toast.LENGTH_SHORT
-                    ).show()
-                }
-                ) {
-                    Text("Cancelar")
-                }
-                Button(onClick = {
-                    Toast.makeText(
-                        context, "Vc confirmou a ação, boa", Toast.LENGTH_SHORT
-                    ).show()
-                }) {
-                    Text("Confirmar")
-                }
-            }
 
         }
     }
@@ -115,7 +88,7 @@ fun GridMes(viewModel: HistoricoViewModel){
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
                         mesSelecionado = meses[index]
-                        viewModel.filtraContasPorMes(meses[index])
+                        viewModel.observarContasPorMes(meses[index])
                     })
             })
     }
@@ -146,9 +119,6 @@ fun MesItem(
             .clickable {
                 //Salva o mes clicado na variavel mesSelecionado
                 onClick()
-                Toast.makeText(
-                    context, "Mês clicado: $mes", Toast.LENGTH_SHORT
-                ).show()
             }
     ){
         Column(modifier = Modifier.fillMaxSize(),
