@@ -22,15 +22,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toLocalDateTime
+import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
     val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(initialValue = emptyList()).value
+
+    val contasAgrupadas: Map<LocalDate, List<Conta>> = contas.groupBy {
+        it.dateTime.toLocalDateTime().toLocalDate()
+    }
+
+    val contasOrdenadas = contasAgrupadas.toSortedMap(compareByDescending { it })
 
     Column(
         modifier = modifier
@@ -48,11 +56,11 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
             }
         Spacer(modifier = Modifier.height(15.dp))
         LazyColumn {
-            items(contas) { conta ->
-                HistoricoItem(date = conta.dateTime.toLocalDateTime(),
-                    breezeIcon = conta.icon.toBreezeIconsType(),
-                    nameAccount = conta.name,
-                    price = conta.valor)
+            items(contasOrdenadas.entries.toList()) { (data, contasDoDia) ->
+                HistoricoItem(
+                    date = data,
+                    contas = contasDoDia
+                )
             }
 
         }
