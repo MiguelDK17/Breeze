@@ -24,8 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formatarNomeConta
 import java.time.LocalDate
@@ -33,6 +35,9 @@ import java.time.LocalDate
 @Composable
 fun HistoricoItem(
     date: LocalDate,
+    nameAccountFirst: String,
+    breezeIconFirst: BreezeIconsType,
+    princeFirst: Double,
     contas: List<Conta>
 ){
     val expanded = remember{ mutableStateOf(false) }
@@ -40,33 +45,24 @@ fun HistoricoItem(
    Column(
        horizontalAlignment = Alignment.CenterHorizontally
    )  {
-       contasParaExibir.forEachIndexed { index, conta ->
-           val isLast = index == contasParaExibir.lastIndex
-           val nameAccount = conta.name
-           val breezeIcon = conta.icon.toBreezeIconsType()
-           val price = conta.valor
+
 
                 Row(
                    modifier = Modifier
-                       .fillMaxWidth(),
+                       .fillMaxWidth()
+                       .background(PastelLightBlue),
                    verticalAlignment = Alignment.Top,
                ) {
-                   Text("-",
-                       modifier = Modifier.padding(horizontal = 15.dp, vertical = 24.dp))
+                       Text(
+                           "-",
+                           modifier = Modifier.padding(horizontal = 15.dp, vertical = 24.dp)
+                       )
                    Column(
                        horizontalAlignment = Alignment.CenterHorizontally,
                        modifier = Modifier.width(60.dp)
                    ) {
 
-                       BoxDate(date)
-                       if(isLast) {
-                           Spacer(
-                               modifier = Modifier
-                                   .width(2.dp)
-                                   .height(71.dp)
-                                   .background(Color.Black)
-                           )
-                       }
+                           BoxDate(date)
                    }
                    Row(
                        modifier = Modifier
@@ -74,13 +70,13 @@ fun HistoricoItem(
                            .height(71.dp),
                        verticalAlignment = Alignment.CenterVertically
                    ) {
-                       BreezeIcon(breezeIcon = breezeIcon,
+                       BreezeIcon(breezeIcon = breezeIconFirst,
                            contentDescription = null,
                            modifier = Modifier
                                .padding(horizontal = 15.dp)
                                .size(25.dp))
                        Text(
-                           formatarNomeConta(nome = nameAccount, maxChar = nameAccount.length),
+                           formatarNomeConta(nome = nameAccountFirst, maxChar = nameAccountFirst.length),
                            style = MaterialTheme.typography.bodySmall,
                            fontSize = 15.sp
                        )
@@ -88,7 +84,7 @@ fun HistoricoItem(
                            modifier = Modifier.fillMaxWidth()
                        ) {
                            Text(
-                               formataSaldo(price),
+                               formataSaldo(princeFirst),
                                style = MaterialTheme.typography.bodySmall,
                                fontSize = 14.sp,
                                modifier = Modifier
@@ -102,12 +98,16 @@ fun HistoricoItem(
 
                }
 
-
        }
-       TextButton(onClick = {}){
-           Icon(Icons.Filled.ArrowDropDown,
-               contentDescription = null)
-           Text("Ver mais 2 contas...")
-       }
+    if (contasParaExibir.isNotEmpty()) {
+        if (contas.size > 1 && !expanded.value) {
+            TextButton(onClick = { expanded.value = true }) {
+                Icon(
+                    Icons.Filled.ArrowDropDown,
+                    contentDescription = null
+                )
+                Text("Ver mais ${contas.size - 1} contas...")
+            }
+        }
+    }
    }
-}

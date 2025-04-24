@@ -15,7 +15,14 @@ object BreezeIconLists {
         BreezeIcons.Linear.Weather.DropLinear,
         BreezeIcons.Linear.Mobility.AirplaneLinear,
         BreezeIcons.Linear.Essetional.DiscoverLinear,
-        BreezeIcons.Linear.Security.KeyLinear
+        BreezeIcons.Linear.Security.KeyLinear,
+        BreezeIcons.Linear.VideoAudioImage.VideoCircleLinear,
+        BreezeIcons.Linear.VideoAudioImage.ForwardLinear,
+        BreezeIcons.Linear.Messages.ChatLinear,
+        BreezeIcons.Linear.Shop.Bag2,
+        BreezeIcons.Linear.Settings.SettingsLinear,
+        BreezeIcons.Linear.Mobility.BusLinear,
+        BreezeIcons.Linear.Mobility.GasStationLinear
     )
     //Lista de icones de cores de tipo BreezeIcons
     @Composable

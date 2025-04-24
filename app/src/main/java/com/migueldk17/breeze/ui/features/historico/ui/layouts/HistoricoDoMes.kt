@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +42,8 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
 
     val contasOrdenadas = contasAgrupadas.toSortedMap(compareByDescending { it })
 
+    val primeiraConta = contasOrdenadas.entries.first()
+
     Column(
         modifier = modifier
     ) {
@@ -56,11 +60,18 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
             }
         Spacer(modifier = Modifier.height(15.dp))
         LazyColumn {
-            items(contasOrdenadas.entries.toList()) { (data, contasDoDia) ->
-                HistoricoItem(
-                    date = data,
-                    contas = contasDoDia
-                )
+            items(primeiraConta.value) { contaFirst ->
+                val contasFiltradas = contasOrdenadas.toList().drop(1)
+                contasFiltradas.forEach { (data, contasDoDia) ->
+                    HistoricoItem(
+                        date = data,
+                        nameAccountFirst = contaFirst.name,
+                        breezeIconFirst = contaFirst.icon.toBreezeIconsType(),
+                        princeFirst = contaFirst.valor,
+                        contas = contasDoDia
+                    )
+                }
+
             }
 
         }
