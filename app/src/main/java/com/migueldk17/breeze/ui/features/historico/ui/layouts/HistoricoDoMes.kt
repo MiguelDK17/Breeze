@@ -30,20 +30,30 @@ import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
     val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(initialValue = emptyList()).value
+    val contasOrdenadas = viewModel.contasOrdenadas.collectAsStateWithLifecycle(initialValue = mapOf()).value
 
-    val contasAgrupadas: Map<LocalDate, List<Conta>> = contas.groupBy {
-        it.dateTime.toLocalDateTime().toLocalDate()
+    val contasAgrupadas: Map<LocalDateTime, List<Conta>> = contas.groupBy {
+        it.dateTime.toLocalDateTime()
     }
 
-    val contasOrdenadas = contasAgrupadas.toSortedMap(compareByDescending { it })
+    viewModel.setContasAgrupadas(contasAgrupadas)
 
-    val primeiraConta = contasOrdenadas.entries.first()
+    val mapa = mapOf("a" to 1, "b" to 2, "c" to 3)
+    val primeiraEntrada = mapa.entries.first()
 
+    println(primeiraEntrada.key)   // "a"
+    println(primeiraEntrada.value) // 1
+
+
+
+    
+    
     Column(
         modifier = modifier
     ) {
@@ -59,22 +69,43 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
                 )
             }
         Spacer(modifier = Modifier.height(15.dp))
-        LazyColumn {
-            items(primeiraConta.value) { contaFirst ->
-                val contasFiltradas = contasOrdenadas.toList().drop(1)
-                contasFiltradas.forEach { (data, contasDoDia) ->
-                    HistoricoItem(
-                        date = data,
-                        nameAccountFirst = contaFirst.name,
-                        breezeIconFirst = contaFirst.icon.toBreezeIconsType(),
-                        princeFirst = contaFirst.valor,
-                        contas = contasDoDia
-                    )
+
+        val datasVisitadas = mutableSetOf<LocalDate>()
+        val primeirasContasPorDia = mutableListOf<Conta>()
+
+
+        if (contasOrdenadas.isNotEmpty()) {
+
+                for ((_, contasDoMomento) in contasOrdenadas) {
+                    val conta = contasDoMomento.firstOrNull() ?: continue
+                    val data = conta.dateTime.toLocalDateTime().toLocalDate()
+
+                    if (data !in datasVisitadas) {
+                        datasVisitadas.add(data)
+                        primeirasContasPorDia.add(conta)
+                    }
                 }
+                }
+        Log.d(TAG, "HistoricoDoMes: valor de data $datasVisitadas")
+        Log.d(TAG, "HistoricoDoMes: valor de conta $primeirasContasPorDia")
+
+                /*LazyColumn {
+                    items(primeiraConta.value) { contaFirst ->
+                        val contasFiltradas = contasOrdenadas.toList().drop(1)
+                        contasFiltradas.forEach { (data, contasDoDia) ->
+                            HistoricoItem(
+                                date = data.toLocalDate(),
+                                nameAccountFirst = contaFirst.name,
+                                breezeIconFirst = contaFirst.icon.toBreezeIconsType(),
+                                princeFirst = contaFirst.valor,
+                                contas = contasDoDia
+                            )
+                        }
+
+                    }
+
+                }*/
 
             }
-
-        }
-
-    }
 }
+
