@@ -45,7 +45,7 @@ fun formatarNomeConta(nome: String, maxChar: Int): String {
         palavras.size == 1 -> {
             //Nome simples: Limitar até 11 letras
 
-            if (palavras[0].length >= 5) palavras[0].take(5) else palavras[0].take(3)
+            if (palavras[0].length >= 5) palavras[0].take(5) else palavras[0].take(5)
         }
         palavras.size == 2 && maxChar >= 11-> {
             //Nome composto: abreviar a primeira palavra

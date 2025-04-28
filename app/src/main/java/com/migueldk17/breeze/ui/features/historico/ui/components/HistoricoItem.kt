@@ -1,6 +1,9 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.utils.formataSaldo
@@ -41,13 +47,10 @@ fun HistoricoItem(
     contas: List<Conta>
 ){
     val expanded = remember{ mutableStateOf(false) }
-    val contasParaExibir = if (expanded.value || contas.size == 1) contas else listOf(contas.first())
-   Column(
+    Column(
        horizontalAlignment = Alignment.CenterHorizontally
    )  {
-
-
-                Row(
+            Row(
                    modifier = Modifier
                        .fillMaxWidth()
                        .background(PastelLightBlue),
@@ -97,17 +100,49 @@ fun HistoricoItem(
                    }
 
                }
-
-       }
-    if (contasParaExibir.isNotEmpty()) {
-        if (contas.size > 1 && !expanded.value) {
+        if (contas.isNotEmpty()) {
             TextButton(onClick = { expanded.value = true }) {
                 Icon(
-                    Icons.Filled.ArrowDropDown,
+                    if (expanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                     contentDescription = null
                 )
-                Text("Ver mais ${contas.size - 1} contas...")
+                Text(if (expanded.value) "Ver menos" else "Ver mais ${contas.size} contas...")
             }
         }
-    }
-   }
+
+        if(expanded.value){
+            contas.forEach { conta ->
+                Row {
+                    Spacer(modifier = Modifier
+                        .width(45.dp)
+                        .background(Color.Cyan))
+                    Box(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .width(60.dp)
+                            .background(Color.Black)
+                    )
+                    BreezeIcon(
+                        breezeIcon = conta.icon.toBreezeIconsType(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 10.dp)
+                            .size(20.dp)
+                    )
+                    Text(
+                        conta.name,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        formataSaldo(conta.valor),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp
+                    )
+                }
+            }
+        }
+
+       }
+}

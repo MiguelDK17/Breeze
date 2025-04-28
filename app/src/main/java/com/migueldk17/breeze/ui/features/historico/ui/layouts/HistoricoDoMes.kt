@@ -44,13 +44,6 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
 
     viewModel.setContasAgrupadas(contasAgrupadas)
 
-    val mapa = mapOf("a" to 1, "b" to 2, "c" to 3)
-    val primeiraEntrada = mapa.entries.first()
-
-    println(primeiraEntrada.key)   // "a"
-    println(primeiraEntrada.value) // 1
-
-
 
     
     
@@ -72,39 +65,56 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
 
         val datasVisitadas = mutableSetOf<LocalDate>()
         val primeirasContasPorDia = mutableListOf<Conta>()
+        val outrasContas = mutableListOf<Conta>()
 
 
         if (contasOrdenadas.isNotEmpty()) {
 
                 for ((_, contasDoMomento) in contasOrdenadas) {
-                    val conta = contasDoMomento.firstOrNull() ?: continue
+                    for (conta in contasDoMomento) {
                     val data = conta.dateTime.toLocalDateTime().toLocalDate()
 
                     if (data !in datasVisitadas) {
                         datasVisitadas.add(data)
                         primeirasContasPorDia.add(conta)
+                    } else {
+                        outrasContas.add(conta)
+                    }
                     }
                 }
                 }
         Log.d(TAG, "HistoricoDoMes: valor de data $datasVisitadas")
         Log.d(TAG, "HistoricoDoMes: valor de conta $primeirasContasPorDia")
 
-                /*LazyColumn {
-                    items(primeiraConta.value) { contaFirst ->
-                        val contasFiltradas = contasOrdenadas.toList().drop(1)
-                        contasFiltradas.forEach { (data, contasDoDia) ->
-                            HistoricoItem(
-                                date = data.toLocalDate(),
-                                nameAccountFirst = contaFirst.name,
-                                breezeIconFirst = contaFirst.icon.toBreezeIconsType(),
-                                princeFirst = contaFirst.valor,
-                                contas = contasDoDia
-                            )
+
+        val lista : List<Pair<MutableSet<LocalDate>, MutableList<Conta>>> = listOf(Pair(datasVisitadas, primeirasContasPorDia))
+
+        val datasVisitadasList = datasVisitadas.toList()
+        val primeirasContasDoDiaList = primeirasContasPorDia.toList()
+        Log.d(TAG, "HistoricoDoMes tamanho da lista: ${datasVisitadasList.size}")
+        Log.d(TAG, "HistoricoDoMes tamanho da lista: ${primeirasContasDoDiaList.size}")
+        Log.d(TAG, "HistoricoDoMes: as outras contas: $outrasContas")
+
+
+                LazyColumn {
+                    items(primeirasContasDoDiaList) { conta ->
+
+                        val dataContaPrimeira = conta.dateTime.toLocalDateTime().toLocalDate()
+
+                        val outrasContasDoMesmoDia = outrasContas.filter { outraConta ->
+                            outraConta.dateTime.toLocalDateTime().toLocalDate() == dataContaPrimeira
                         }
+                            HistoricoItem(
+                                date = conta.dateTime.toLocalDateTime().toLocalDate(),
+                                nameAccountFirst = conta.name,
+                                breezeIconFirst = conta.icon.toBreezeIconsType(),
+                                princeFirst = conta.valor,
+                                contas = outrasContasDoMesmoDia
+                            )
 
                     }
 
-                }*/
+                }
 
             }
 }
