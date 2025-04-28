@@ -3,6 +3,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.components
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,8 +53,7 @@ fun HistoricoItem(
    )  {
             Row(
                    modifier = Modifier
-                       .fillMaxWidth()
-                       .background(PastelLightBlue),
+                       .fillMaxWidth(),
                    verticalAlignment = Alignment.Top,
                ) {
                        Text(
@@ -84,7 +84,8 @@ fun HistoricoItem(
                            fontSize = 15.sp
                        )
                        Column(
-                           modifier = Modifier.fillMaxWidth()
+                           modifier = Modifier
+                               .fillMaxWidth()
                        ) {
                            Text(
                                formataSaldo(princeFirst),
@@ -112,34 +113,42 @@ fun HistoricoItem(
 
         if(expanded.value){
             contas.forEach { conta ->
-                Row {
-                    Spacer(modifier = Modifier
-                        .width(45.dp)
-                        .background(Color.Cyan))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    Box(modifier = Modifier
+                        .padding(horizontal = 15.dp, vertical = 24.dp)
+                        .size(0.dp))
                     Box(
                         modifier = Modifier
-                            .height(1.dp)
                             .width(60.dp)
-                            .background(Color.Black)
+                            .height(24.dp)
                     )
+                    Spacer(modifier = Modifier.width(40.dp))
                     BreezeIcon(
                         breezeIcon = conta.icon.toBreezeIconsType(),
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(end = 10.dp)
                             .size(20.dp)
+
                     )
+                    Spacer(modifier = Modifier.width(20.dp))
                     Text(
                         conta.name,
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         modifier = Modifier.weight(1f)
                     )
-                    Text(
-                        formataSaldo(conta.valor),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 14.sp
-                    )
+
+                        Text(
+                            formataSaldo(conta.valor),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(end = 15.dp)
+
+                        )
+
                 }
             }
         }
