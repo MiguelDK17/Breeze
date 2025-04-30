@@ -85,12 +85,13 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                 placeholder = {
                     Text("Adicionar nome")
                 },
+                minLines = 1,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 isError = !textoCorreto(text)
             )
             if (!textoCorreto(text)) {
                 Text(
-                    "O nome da conta deve ter menos de 15 caracteres",
+                    "O nome da conta deve ter mais de dois caracteres e menos de 15 caracteres",
                     color = Color.Red,
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 12.sp
@@ -110,6 +111,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         }
     }
 }
+
 private fun textoCorreto(text: String): Boolean {
-    return text.length <= 14
+    return  text.length <= 14
 }
