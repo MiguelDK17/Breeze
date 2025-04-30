@@ -1,8 +1,8 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
@@ -27,16 +26,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.utils.formataSaldo
-import com.migueldk17.breeze.ui.utils.formatarNomeConta
 import java.time.LocalDate
 
 @Composable
@@ -79,13 +79,14 @@ fun HistoricoItem(
                                .padding(horizontal = 15.dp)
                                .size(25.dp))
                        Text(
-                           formatarNomeConta(nome = nameAccountFirst, maxChar = nameAccountFirst.length),
+                           nameAccountFirst,
                            style = MaterialTheme.typography.bodySmall,
                            fontSize = 15.sp
                        )
                        Column(
                            modifier = Modifier
                                .fillMaxWidth()
+                               .weight(1f)
                        ) {
                            Text(
                                formataSaldo(princeFirst),
@@ -101,8 +102,9 @@ fun HistoricoItem(
                    }
 
                }
+
         if (contas.isNotEmpty()) {
-            TextButton(onClick = { expanded.value = true }) {
+            TextButton(onClick = { expanded.value = !expanded.value }) {
                 Icon(
                     if (expanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                     contentDescription = null
@@ -111,47 +113,72 @@ fun HistoricoItem(
             }
         }
 
-        if(expanded.value){
-            contas.forEach { conta ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                ) {
-                    Box(modifier = Modifier
-                        .padding(horizontal = 15.dp, vertical = 24.dp)
-                        .size(0.dp))
-                    Box(
-                        modifier = Modifier
-                            .width(60.dp)
-                            .height(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(40.dp))
-                    BreezeIcon(
-                        breezeIcon = conta.icon.toBreezeIconsType(),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(20.dp)
+        AnimatedVisibility(
+            visible = expanded.value,
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
+            Column {
+                if (expanded.value) {
+                    contas.forEach { conta ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 15.dp, vertical = 24.dp)
+                                    .size(0.dp)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .width(60.dp)
+                                    .height(24.dp)
+                            )
+                            BreezeIcon(
+                                breezeIcon = conta.icon.toBreezeIconsType(),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(horizontal = 20.dp)
 
-                    )
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(
-                        conta.name,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 14.sp,
-                        modifier = Modifier.weight(1f)
-                    )
+                            )
+                            Spacer(modifier = Modifier.width(20.dp))
 
-                        Text(
-                            formataSaldo(conta.valor),
-                            style = MaterialTheme.typography.bodySmall,
-                            fontSize = 14.sp,
-                            modifier = Modifier.padding(end = 15.dp)
+                            Text(
+                                conta.name,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 14.sp,
+                                modifier = Modifier.weight(1f)
+                            )
 
-                        )
+                            Text(
+                                formataSaldo(conta.valor),
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 14.sp,
+                                modifier = Modifier.padding(end = 15.dp)
 
+                            )
+
+                        }
+                    }
                 }
             }
         }
 
+
+
        }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview(){
+    val date = LocalDate.now()
+    val nameAccount = "Barbeiro de Fortuna de Minas cujo nome é Julho"
+    val breezeIcon = BreezeIcons.Linear.Shop.Bag2
+    val price = 25.00
+    val listContas = listOf<Conta>()
+    HistoricoItem(date = date, nameAccountFirst = nameAccount, breezeIconFirst = breezeIcon, princeFirst = price, contas = listContas)
 }

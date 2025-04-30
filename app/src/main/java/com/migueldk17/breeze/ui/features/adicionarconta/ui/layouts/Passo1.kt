@@ -85,6 +85,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                 placeholder = {
                     Text("Adicionar nome")
                 },
+                minLines = 1,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 isError = !textoCorreto(text)
             )

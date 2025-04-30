@@ -50,6 +50,27 @@ fun String.toBreezeIconsType() : BreezeIconsType {
         BreezeIconsEnum.KEY_LINEAR.name -> {
             BreezeIcons.Linear.Security.KeyLinear
         }
+        BreezeIcons.Linear.VideoAudioImage.VideoCircleLinear.enum.name -> {
+            BreezeIcons.Linear.VideoAudioImage.VideoCircleLinear
+        }
+        BreezeIcons.Linear.VideoAudioImage.ForwardLinear.enum.name -> {
+            BreezeIcons.Linear.VideoAudioImage.ForwardLinear
+        }
+        BreezeIcons.Linear.Messages.ChatLinear.enum.name -> {
+            BreezeIcons.Linear.Messages.ChatLinear
+        }
+        BreezeIcons.Linear.Shop.Bag2.enum.name -> {
+            BreezeIcons.Linear.Shop.Bag2
+        }
+        BreezeIcons.Linear.Settings.SettingsLinear.enum.name -> {
+            BreezeIcons.Linear.Settings.SettingsLinear
+        }
+        BreezeIcons.Linear.Mobility.BusLinear.enum.name -> {
+            BreezeIcons.Linear.Mobility.BusLinear
+        }
+        BreezeIcons.Linear.Mobility.GasStationLinear.enum.name -> {
+            BreezeIcons.Linear.Mobility.GasStationLinear
+        }
 
         else -> {
             BreezeIcons.Unspecified.IconUnspecified

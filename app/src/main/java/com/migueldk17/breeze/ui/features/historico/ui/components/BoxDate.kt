@@ -18,13 +18,13 @@ import java.time.LocalDate
 fun BoxDate(date: LocalDate){
     Box(
         modifier = Modifier
-            .width(71.dp)
+            .width(81.dp)
             .height(71.dp),
         contentAlignment = Alignment.Center
     ) {
         Canvas(
             modifier = Modifier
-                .width(71.dp)
+                .width(81.dp)
                 .height(71.dp)
         ) {
             drawCircle(
