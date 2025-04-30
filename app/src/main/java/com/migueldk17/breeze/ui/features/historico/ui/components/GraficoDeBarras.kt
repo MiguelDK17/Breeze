@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,6 +35,7 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -143,16 +147,26 @@ fun GraficoDeBarras(
 
                                 //Caso o tamanho do texto for maior que 7 adiciona um pouco a mais de espaço para que o Text não fique dentro das barras
                                 val tamanhoExtra = if (texto.length > 6) 10f else 0f
+                                Log.d(TAG, "GraficoDeBarras: tamanhoExtra: $tamanhoExtra")
 
                                 // Divide o valor da barra pela metade e adiciona um extra para que o texto fique um pouco acima
                                 val tamanhoPosicaoTexto = animatedHeight / 2 + 20 + tamanhoExtra
+
+                                Log.d(TAG, "GraficoDeBarras: tamanhoPosicaoTextp: $tamanhoPosicaoTexto")
+
+                                val tamanhoEmPx = with(density) { animatedHeight.toDp() }
+
+                                val offsetY = tamanhoEmPx / 2 + 20.dp + tamanhoExtra.dp
 
                                 Text(
                                     texto,
                                     style = TextStyle(fontSize = 12.sp),
                                     modifier = Modifier
-                                        .size(tamanhoPosicaoTexto.dp),
-                                    textAlign = TextAlign.Center
+                                        .offset( y = (-offsetY)) //Sobe o texto
+                                        ,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Canvas(
                                     modifier = Modifier
