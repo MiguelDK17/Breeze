@@ -34,87 +34,41 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
-    val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(initialValue = emptyList()).value
-    val contasOrdenadas = viewModel.contasOrdenadas.collectAsStateWithLifecycle(initialValue = mapOf()).value
+fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
+    val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(emptyList()).value
+    val historico = viewModel.historico.collectAsStateWithLifecycle().value
 
-    val contasAgrupadas: Map<LocalDateTime, List<Conta>> = contas.groupBy {
-        it.dateTime.toLocalDateTime()
-    }
-
-    viewModel.setContasAgrupadas(contasAgrupadas)
-
-
-    
-    
     Column(
         modifier = modifier
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
         GraficoDeBarras(contas, modifier)
         Spacer(modifier = Modifier.height(30.dp))
-            Row(
-                modifier = Modifier.padding(horizontal = 10.dp)
-            ) {
-                Text("Linha do Tempo",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 14.sp,
-                )
-            }
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp)
+        ) {
+            Text(
+                "Linha do Tempo",
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+            )
+        }
         Spacer(modifier = Modifier.height(15.dp))
 
-        val datasVisitadas = mutableSetOf<LocalDate>()
-        val primeirasContasPorDia = mutableListOf<Conta>()
-        val outrasContas = mutableListOf<Conta>()
 
+        LazyColumn {
+            items(historico) { dia ->
 
-        if (contasOrdenadas.isNotEmpty()) {
-
-                for ((_, contasDoMomento) in contasOrdenadas) {
-                    for (conta in contasDoMomento) {
-                    val data = conta.dateTime.toLocalDateTime().toLocalDate()
-
-                    if (data !in datasVisitadas) {
-                        datasVisitadas.add(data)
-                        primeirasContasPorDia.add(conta)
-                    } else {
-                        outrasContas.add(conta)
-                    }
-                    }
-                }
-                }
-        Log.d(TAG, "HistoricoDoMes: valor de data $datasVisitadas")
-        Log.d(TAG, "HistoricoDoMes: valor de conta $primeirasContasPorDia")
-
-
-        val lista : List<Pair<MutableSet<LocalDate>, MutableList<Conta>>> = listOf(Pair(datasVisitadas, primeirasContasPorDia))
-
-        val datasVisitadasList = datasVisitadas.toList()
-        val primeirasContasDoDiaList = primeirasContasPorDia.toList()
-        Log.d(TAG, "HistoricoDoMes tamanho da lista: ${datasVisitadasList.size}")
-        Log.d(TAG, "HistoricoDoMes tamanho da lista: ${primeirasContasDoDiaList.size}")
-        Log.d(TAG, "HistoricoDoMes: as outras contas: $outrasContas")
-
-
-                LazyColumn {
-                    items(primeirasContasDoDiaList) { conta ->
-
-                        val dataContaPrimeira = conta.dateTime.toLocalDateTime().toLocalDate()
-
-                        val outrasContasDoMesmoDia = outrasContas.filter { outraConta ->
-                            outraConta.dateTime.toLocalDateTime().toLocalDate() == dataContaPrimeira
-                        }
-                            HistoricoItem(
-                                date = conta.dateTime.toLocalDateTime().toLocalDate(),
-                                nameAccountFirst = conta.name,
-                                breezeIconFirst = conta.icon.toBreezeIconsType(),
-                                princeFirst = conta.valor,
-                                contas = outrasContasDoMesmoDia
-                            )
-
-                    }
-
-                }
+                HistoricoItem(
+                    date = dia.data,
+                    nameAccountFirst = dia.contaPrincipal.name,
+                    breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
+                    princeFirst = dia.contaPrincipal.valor,
+                    contas = dia.outrasContas
+                )
 
             }
+
+        }
+    }
 }
