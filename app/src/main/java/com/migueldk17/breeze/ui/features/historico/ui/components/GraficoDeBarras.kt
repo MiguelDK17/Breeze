@@ -156,7 +156,7 @@ fun GraficoDeBarras(
 
                                 val tamanhoEmPx = with(density) { animatedHeight.toDp() }
 
-                                val offsetY = tamanhoEmPx / 2 + 20.dp + tamanhoExtra.dp
+                                val offsetY = tamanhoEmPx + tamanhoExtra.dp
 
                                 Text(
                                     texto,
