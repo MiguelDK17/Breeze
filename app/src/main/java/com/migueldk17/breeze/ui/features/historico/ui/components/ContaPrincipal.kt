@@ -32,8 +32,7 @@ fun ContaPrincipal(
 ){
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Blue),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.Top,
     ) {
         Text(

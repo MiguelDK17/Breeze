@@ -42,7 +42,11 @@ import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import java.time.LocalDate
 import android.content.ContentValues.TAG
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.ui.geometry.Offset
 
 import com.migueldk17.breeze.ui.theme.Blue
 
@@ -55,25 +59,50 @@ fun HistoricoItem(
     contas: List<Conta>
 ){
     val expanded = remember{ mutableStateOf(false) }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-   )  {
-        ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst)
 
-        if (contas.isNotEmpty()) {
-            VerMaisButton(contas, expanded)
-        }
 
-        AnimatedVisibility(
-            visible = expanded.value,
-            enter = expandVertically(),
-            exit = shrinkVertically()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+
         ) {
-            ContaSecundaria(contas, expanded)
-        }
+            Canvas(
+                modifier = Modifier
+                    .width(2.dp)
+                    .matchParentSize()
+                    .align(Alignment.CenterStart)
+                    .padding(start = 70.dp)
+            ) {
+                Log.d(TAG, "HistoricoItem: ${size.height}")
+                drawLine(
+                    color = Color.LightGray,
+                    start = Offset(0f, 12f),
+                    end = Offset(0f, size.height + 5f ),
+                    strokeWidth = 4f
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst)
 
-       }
-}
+                if (contas.isNotEmpty()) {
+                    VerMaisButton(contas, expanded)
+                }
+
+                AnimatedVisibility(
+                    visible = expanded.value,
+                    enter = expandVertically(),
+                    exit = shrinkVertically()
+                ) {
+                    ContaSecundaria(contas, expanded)
+                }
+
+            }
+        }
+    }
+
 
 @Preview(showBackground = true)
 @Composable

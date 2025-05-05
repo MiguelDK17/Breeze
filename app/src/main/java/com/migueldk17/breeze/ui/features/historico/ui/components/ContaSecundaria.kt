@@ -30,12 +30,9 @@ fun ContaSecundaria(contas: List<Conta>, expanded: MutableState<Boolean>){
     Column {
         if (expanded.value) {
             contas.forEach { conta ->
-                Log.d(TAG, "HistoricoItem: ${conta.icon} sem o BreezeIconsType")
-                Log.d(TAG, "HistoricoItem: ${conta.icon.toBreezeIconsType()} com o BreezeIconsType")
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(PastelLightBlue)
                 ) {
                     Box(
                         modifier = Modifier

@@ -147,13 +147,6 @@ fun GraficoDeBarras(
 
                                 //Caso o tamanho do texto for maior que 7 adiciona um pouco a mais de espaço para que o Text não fique dentro das barras
                                 val tamanhoExtra = if (texto.length > 6) 10f else 0f
-                                Log.d(TAG, "GraficoDeBarras: tamanhoExtra: $tamanhoExtra")
-
-                                // Divide o valor da barra pela metade e adiciona um extra para que o texto fique um pouco acima
-                                val tamanhoPosicaoTexto = animatedHeight / 2 + 20 + tamanhoExtra
-
-                                Log.d(TAG, "GraficoDeBarras: tamanhoPosicaoTextp: $tamanhoPosicaoTexto")
-
                                 val tamanhoEmPx = with(density) { animatedHeight.toDp() }
 
                                 val offsetY = tamanhoEmPx + tamanhoExtra.dp
