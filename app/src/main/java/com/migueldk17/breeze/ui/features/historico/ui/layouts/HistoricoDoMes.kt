@@ -58,15 +58,17 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
 
         LazyColumn {
             items(historico) { dia ->
+                val size = historico.indexOf(dia)
+                val isLastItem = size == historico.lastIndex
 
                 HistoricoItem(
                     date = dia.data,
                     nameAccountFirst = dia.contaPrincipal.name,
                     breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
                     princeFirst = dia.contaPrincipal.valor,
+                    lastIndex = isLastItem,
                     contas = dia.outrasContas
                 )
-
             }
 
         }

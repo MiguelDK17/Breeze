@@ -47,6 +47,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalDensity
 
 import com.migueldk17.breeze.ui.theme.Blue
 
@@ -56,12 +57,14 @@ fun HistoricoItem(
     nameAccountFirst: String,
     breezeIconFirst: BreezeIconsType,
     princeFirst: Double,
+    lastIndex: Boolean,
     contas: List<Conta>
 ){
     val expanded = remember{ mutableStateOf(false) }
+    val density = LocalDensity.current
 
 
-        Box(
+    Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -72,13 +75,23 @@ fun HistoricoItem(
                     .width(2.dp)
                     .matchParentSize()
                     .align(Alignment.CenterStart)
-                    .padding(start = 70.dp)
+                    .padding(start = 69.dp)
             ) {
-                Log.d(TAG, "HistoricoItem: ${size.height}")
+                val startY = with(density) { 15.dp.toPx()}
+                val endOffset = with(density) { 5.dp.toPx() }
+
+                val finalHeight = if (lastIndex) {
+                    0f
+                } else {
+                    size.height + endOffset
+                }
+                Log.d(TAG, "HistoricoItem: finalHeight: $finalHeight")
+                Log.d(TAG, "HistoricoItem: startY: $startY")
+
                 drawLine(
                     color = Color.LightGray,
-                    start = Offset(0f, 12f),
-                    end = Offset(0f, size.height + 5f ),
+                    start = Offset(0f, startY),
+                    end = Offset(0f, finalHeight ),
                     strokeWidth = 4f
                 )
             }
@@ -100,6 +113,7 @@ fun HistoricoItem(
                 }
 
             }
+
         }
     }
 
@@ -112,5 +126,5 @@ private fun Preview(){
     val breezeIcon = BreezeIcons.Linear.Shop.Bag2
     val price = 25.00
     val listContas = listOf<Conta>()
-    HistoricoItem(date = date, nameAccountFirst = nameAccount, breezeIconFirst = breezeIcon, princeFirst = price, contas = listContas)
+    HistoricoItem(date = date, nameAccountFirst = nameAccount, breezeIconFirst = breezeIcon, princeFirst = price,lastIndex = false, contas = listContas)
 }
