@@ -91,7 +91,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             )
             if (!textoCorreto(text)) {
                 Text(
-                    "O nome da conta deve ter mais de dois caracteres e menos de 15 caracteres",
+                    "O nome da conta deve ter entre dois caracteres e 15 caracteres",
                     color = Color.Red,
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 12.sp

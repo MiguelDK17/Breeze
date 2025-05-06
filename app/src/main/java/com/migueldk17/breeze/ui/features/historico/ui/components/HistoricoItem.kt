@@ -102,15 +102,24 @@ fun HistoricoItem(
 
                 if (contas.isNotEmpty()) {
                     VerMaisButton(contas, expanded)
+
+                    AnimatedVisibility(
+                        visible = expanded.value,
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
+                    ) {
+                        ContaSecundaria(contas, expanded)
+                    }
+                }
+                else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                    ) {  }
                 }
 
-                AnimatedVisibility(
-                    visible = expanded.value,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
-                    ContaSecundaria(contas, expanded)
-                }
+
 
             }
 
