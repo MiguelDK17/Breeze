@@ -62,6 +62,7 @@ fun HistoricoItem(
 ){
     val expanded = remember{ mutableStateOf(false) }
     val density = LocalDensity.current
+    Log.d(TAG, "HistoricoItem: nome: $nameAccountFirst, data: $date")
 
 
     Box(
@@ -108,6 +109,7 @@ fun HistoricoItem(
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
+
                         ContaSecundaria(contas, expanded)
                     }
                 }
@@ -118,7 +120,6 @@ fun HistoricoItem(
                             .height(48.dp)
                     ) {  }
                 }
-
 
 
             }

@@ -30,6 +30,8 @@ fun ContaSecundaria(contas: List<Conta>, expanded: MutableState<Boolean>){
     Column {
         if (expanded.value) {
             contas.forEach { conta ->
+
+                Log.d(TAG, "HistoricoItem: outras contas, nome: ${conta.name}, data: ${conta.dateTime}")
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
