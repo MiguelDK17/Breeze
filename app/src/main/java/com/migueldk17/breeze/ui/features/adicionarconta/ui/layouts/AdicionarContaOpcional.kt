@@ -56,8 +56,7 @@ fun AdicionarContaOpcional(
         Text(
             "Adicionar Conta Opcional",
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp,
-            color = Black)
+            fontSize = 18.sp)
         Spacer(modifier = Modifier.size(20.dp))
         //Contagem de passos
         Text(

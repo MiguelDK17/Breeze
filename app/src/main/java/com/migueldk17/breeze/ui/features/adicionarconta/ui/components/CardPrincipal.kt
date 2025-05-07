@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,11 +27,11 @@ fun CardPrincipal(
         modifier = Modifier
             .size(width = 383.dp, height = 620.dp)
             .padding(5.dp),
-        border = BorderStroke(1.dp, SkyBlue),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(10.dp),
         colors = CardColors(
             contentColor = Color.Transparent,
-            containerColor = PastelLightBlue,
+            containerColor = MaterialTheme.colorScheme.surface,
             disabledContentColor = Color.Transparent,
             disabledContainerColor = Color.Transparent
         )

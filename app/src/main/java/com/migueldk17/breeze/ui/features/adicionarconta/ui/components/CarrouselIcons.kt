@@ -33,7 +33,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.ui.theme.greyTextMediumPoppins
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlin.math.absoluteValue
 
@@ -120,7 +120,7 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
         Spacer(Modifier.height(15.dp))
         Text("Arraste para o lado para selecionar",
             style = MaterialTheme.typography.bodyMedium,
-            color = greyTextMediumPoppins)
+            color = greyTextMediumPoppinsLightMode)
     }
     //Retorna o ícone selecionado
     return iconList[pagerState.currentPage]
