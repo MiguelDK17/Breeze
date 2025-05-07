@@ -28,8 +28,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity
-import com.migueldk17.breeze.ui.theme.blackPoppins
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import java.util.Locale
 
@@ -53,10 +54,7 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            "Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar.",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar.",)
         Spacer(modifier = Modifier.size(25.dp))
         //Card já finalizado
         Card(
@@ -90,13 +88,13 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
                     Text(nomeConta,
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Normal,
-                            color = blackPoppins,
+                            color = blackPoppinsLightMode,
                         ),
                         modifier = Modifier.padding(5.dp))
                     Text(valorMascarado,
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Normal,
-                            color = blackPoppins
+                            color = blackPoppinsLightMode
                         ),
                         modifier = Modifier.padding(5.dp))
                 }

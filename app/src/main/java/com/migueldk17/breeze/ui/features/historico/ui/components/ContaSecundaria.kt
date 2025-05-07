@@ -55,7 +55,6 @@ fun ContaSecundaria(contas: List<Conta>, expanded: MutableState<Boolean>){
 
                     )
                     Spacer(modifier = Modifier.width(20.dp))
-
                     Text(
                         conta.name,
                         style = MaterialTheme.typography.bodySmall,

@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
@@ -44,10 +46,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            "Parece que o card de sua nova conta está vazio:",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Parece que o card de sua nova conta está vazio:")
         Spacer(modifier = Modifier.size(25.dp))
         //Card que evolui conforme o usuario vai adicionando informações
         Card(
@@ -55,7 +54,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                 .size(width = 342.dp, height = 80.dp),
             elevation = CardDefaults.cardElevation(8.dp),
             colors = CardColors(
-                containerColor = PastelLightBlue,
+                containerColor = MaterialTheme.colorScheme.surface,
                 contentColor = Color.Transparent,
                 disabledContentColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent
@@ -67,10 +66,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         }
         Spacer(modifier = Modifier.size(26.dp))
 
-        Text(
-            "Vamos começar adicionando um nome !",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Vamos começar adicionando um nome !")
         Spacer(modifier = Modifier.size(26.dp))
         Column(modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
