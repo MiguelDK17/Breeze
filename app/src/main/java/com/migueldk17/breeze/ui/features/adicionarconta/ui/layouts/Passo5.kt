@@ -27,12 +27,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCorPadrao
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.utils.formataValorConta
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.ui.theme.blackPoppins
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
@@ -57,10 +58,8 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(
-                "Assim está ficando o card da sua nova conta:",
-                style = MaterialTheme.typography.bodySmall
-            )
+            DescriptionText("Assim está ficando o card da sua nova conta:")
+
             Spacer(modifier = Modifier.size(25.dp))
             //Card que evolui conforme o usuario vai adicionando informações
             Card(
@@ -94,7 +93,7 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                             nomeConta,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
-                                color = blackPoppins,
+                                color = blackPoppinsLightMode,
                             ),
                             modifier = Modifier.padding(5.dp)
                         )
@@ -102,7 +101,7 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                             valorMascarado,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
-                                color = blackPoppins
+                                color = blackPoppinsLightMode
                             ),
                             modifier = Modifier.padding(5.dp)
                         )
@@ -111,10 +110,7 @@ fun Passo5(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             }
             Spacer(modifier = Modifier.size(26.dp))
 
-            Text(
-                "Último passo! Escolha a cor do card para deixar tudo com a sua cara!",
-                style = MaterialTheme.typography.bodySmall
-            )
+            DescriptionText("Último passo! Escolha a cor do card para deixar tudo com a sua cara!",)
             Spacer(modifier = Modifier.size(35.dp))
 
         }

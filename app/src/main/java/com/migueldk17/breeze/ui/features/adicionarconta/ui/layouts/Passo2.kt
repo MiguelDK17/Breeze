@@ -25,10 +25,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.ui.theme.blackPoppins
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
@@ -45,9 +46,7 @@ fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Assim está ficando o card da sua nova conta:",
-                style = MaterialTheme.typography.bodySmall,
-                color = blackPoppins)
+            DescriptionText("Assim está ficando o card da sua nova conta:")
             Spacer(modifier = Modifier.size(25.dp))
             //Card que evolui conforme o usuario vai adicionando informações
             Card(
@@ -74,20 +73,19 @@ fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                         Text(nomeConta,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Normal,
-                                color = blackPoppins
+                                color = blackPoppinsLightMode
                             ))
                     }
                 }
             }
+
             Spacer(modifier = Modifier.size(26.dp))
 
-            Text("Agora escolha um nome para representar essa conta.",
-                style = MaterialTheme.typography.bodySmall,
-                color = blackPoppins)
+            DescriptionText("Agora escolha um nome para representar essa conta.")
             Spacer(Modifier.size(18.dp))
             Text("Qual combina melhor ?",
                 style = MaterialTheme.typography.bodySmall,
-                color = blackPoppins)
+                color = blackPoppinsLightMode)
             Spacer(modifier = Modifier.size(8.dp))
         }
         Column(

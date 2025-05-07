@@ -35,8 +35,9 @@ import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.ui.theme.blackPoppins
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
@@ -56,10 +57,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
-            "Assim está ficando o card da sua nova conta:",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Assim está ficando o card da sua nova conta:")
         Spacer(modifier = Modifier.size(25.dp))
         //Card que evolui conforme o usuario vai adicionando informações
         Card(
@@ -93,7 +91,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
                     Text(nomeConta,
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Normal,
-                            color = blackPoppins,
+                            color = blackPoppinsLightMode,
                         ),
                         modifier = Modifier.padding(5.dp))
                 }
@@ -101,15 +99,10 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         }
         Spacer(modifier = Modifier.size(26.dp))
 
-        Text(
-            "Quanto você planeja gastar com esta conta ?",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Quanto você planeja gastar com esta conta ?")
         Spacer(modifier = Modifier.size(5.dp))
 
-        Text("Defina o valor aqui!",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Defina o valor aqui!")
         Spacer(modifier = Modifier.size(29.dp))
         //TextField responsável por adicionar um valor a conta
         TextField(valorConta, onValueChange = { value ->
