@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
@@ -57,49 +58,7 @@ fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewMod
         DescriptionText("Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar.",)
         Spacer(modifier = Modifier.size(25.dp))
         //Card já finalizado
-        Card(
-            modifier = Modifier
-                .size(width = 342.dp, height = 80.dp)
-            ,
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardColors(
-                containerColor = corCard,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-
-
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxSize(),
-            ) {
-                BreezeIcon(
-                    icone,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(50.dp),
-                    color = corIcone
-                )
-                Spacer(modifier = Modifier.size(15.dp))
-                Column {
-                    Text(nomeConta,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = blackPoppinsLightMode,
-                        ),
-                        modifier = Modifier.padding(5.dp))
-                    Text(valorMascarado,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = blackPoppinsLightMode
-                        ),
-                        modifier = Modifier.padding(5.dp))
-                }
-            }
-        }
+        PersonalizationCard(nomeConta = nomeConta, icone = icone, corIcone = corIcone, valorMascarado = valorMascarado, corCard = corCard)
         Spacer(modifier = Modifier.size(35.dp))
 
         //Botão para voltar ao Passo1 para adicionar uma nova conta

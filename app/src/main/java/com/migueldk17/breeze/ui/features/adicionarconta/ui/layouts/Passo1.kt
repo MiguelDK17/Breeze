@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
@@ -49,21 +50,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         DescriptionText("Parece que o card de sua nova conta está vazio:")
         Spacer(modifier = Modifier.size(25.dp))
         //Card que evolui conforme o usuario vai adicionando informações
-        Card(
-            modifier = Modifier
-                .size(width = 342.dp, height = 80.dp),
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = Color.Transparent,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-
-
-        ) {
-
-        }
+        PersonalizationCard()
         Spacer(modifier = Modifier.size(26.dp))
 
         DescriptionText("Vamos começar adicionando um nome !")

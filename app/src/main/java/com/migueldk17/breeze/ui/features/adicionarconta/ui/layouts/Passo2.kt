@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
@@ -49,35 +50,7 @@ fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             DescriptionText("Assim está ficando o card da sua nova conta:")
             Spacer(modifier = Modifier.size(25.dp))
             //Card que evolui conforme o usuario vai adicionando informações
-            Card(
-                modifier = Modifier
-                    .size(width = 342.dp, height = 80.dp)
-                ,
-                elevation = CardDefaults.cardElevation(8.dp),
-                colors = CardColors(
-                    containerColor = PastelLightBlue,
-                    contentColor = Color.Black,
-                    disabledContentColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent
-                )
-
-
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxSize()
-                ) {
-                    Spacer(Modifier.size(70.dp))
-                    Column {
-                        Text(nomeConta,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.Normal,
-                                color = blackPoppinsLightMode
-                            ))
-                    }
-                }
-            }
+            PersonalizationCard(nomeConta = nomeConta)
 
             Spacer(modifier = Modifier.size(26.dp))
 

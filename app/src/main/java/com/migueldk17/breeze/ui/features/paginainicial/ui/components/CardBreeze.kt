@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,11 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDateTime
+import com.migueldk17.breeze.ui.theme.Blue
+import com.migueldk17.breeze.ui.theme.DeepSkyBlue
+import com.migueldk17.breeze.ui.theme.MediumGrey
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
@@ -76,7 +82,10 @@ fun BreezeCard(
                     modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.size(20.dp))
-                Text(conta.name, style = MaterialTheme.typography.bodyLarge)
+                Text(conta.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -104,7 +113,10 @@ fun BreezeCard(
 
             ) {
                 Spacer(modifier = Modifier.width(68.dp))
-                Text(formataSaldo(conta.valor))
+                Text(
+                    formataSaldo(conta.valor),
+                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
+                )
                 Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterEnd){
                     IconButton(onClick = {

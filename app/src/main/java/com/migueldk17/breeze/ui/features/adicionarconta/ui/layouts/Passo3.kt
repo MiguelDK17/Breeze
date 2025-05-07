@@ -28,6 +28,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCorPadrao
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
@@ -55,41 +56,7 @@ fun Passo3(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             DescriptionText("Assim está ficando o card da sua nova conta:")
             Spacer(modifier = Modifier.size(25.dp))
             //Card que evolui conforme o usuario vai adicionando informações
-            Card(
-                modifier = Modifier
-                    .size(width = 342.dp, height = 80.dp),
-                elevation = CardDefaults.cardElevation(8.dp),
-                colors = CardColors(
-                    containerColor = PastelLightBlue,
-                    contentColor = Color.Black,
-                    disabledContentColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent
-                )
-
-
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxSize(),
-                ) {
-                    BreezeIcon(
-                        icone,
-                        contentDescription = "Ícone de Livro",
-                        modifier = Modifier
-                            .size(50.dp)
-                    )
-                    Spacer(modifier = Modifier.size(15.dp))
-                    Column {
-                        Text(nomeConta,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.Normal,
-                                color = blackPoppinsLightMode,
-                            ),
-                            modifier = Modifier.padding(5.dp))
-                    }
-                }
-            }
+            PersonalizationCard(nomeConta = nomeConta, icone = icone)
             Spacer(modifier = Modifier.size(26.dp))
 
             DescriptionText("Escolha uma cor para o ícone que combine com o estilo da sua conta!")

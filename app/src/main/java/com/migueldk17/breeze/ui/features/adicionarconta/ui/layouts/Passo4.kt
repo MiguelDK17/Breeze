@@ -36,6 +36,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
@@ -60,43 +61,7 @@ fun Passo4(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         DescriptionText("Assim está ficando o card da sua nova conta:")
         Spacer(modifier = Modifier.size(25.dp))
         //Card que evolui conforme o usuario vai adicionando informações
-        Card(
-            modifier = Modifier
-                .size(width = 342.dp, height = 80.dp)
-            ,
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardColors(
-                containerColor = PastelLightBlue,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-
-
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxSize(),
-            ) {
-                BreezeIcon(
-                    icone,
-                    contentDescription = "Ícone de Livro",
-                    modifier = Modifier
-                        .size(50.dp),
-                    color = corIcone
-                )
-                Spacer(modifier = Modifier.size(15.dp))
-                Column {
-                    Text(nomeConta,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = blackPoppinsLightMode,
-                        ),
-                        modifier = Modifier.padding(5.dp))
-                }
-            }
-        }
+        PersonalizationCard(nomeConta = nomeConta, icone = icone, corIcone = corIcone)
         Spacer(modifier = Modifier.size(26.dp))
 
         DescriptionText("Quanto você planeja gastar com esta conta ?")
