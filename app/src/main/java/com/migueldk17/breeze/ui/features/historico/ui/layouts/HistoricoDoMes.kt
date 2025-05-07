@@ -2,12 +2,18 @@ package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,7 +22,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,87 +43,63 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel){
-    val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(initialValue = emptyList()).value
-    val contasOrdenadas = viewModel.contasOrdenadas.collectAsStateWithLifecycle(initialValue = mapOf()).value
+fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
+    val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(emptyList()).value
+    val historico = viewModel.historico.collectAsStateWithLifecycle().value
 
-    val contasAgrupadas: Map<LocalDateTime, List<Conta>> = contas.groupBy {
-        it.dateTime.toLocalDateTime()
-    }
-
-    viewModel.setContasAgrupadas(contasAgrupadas)
-
-
-    
-    
     Column(
         modifier = modifier
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
         GraficoDeBarras(contas, modifier)
         Spacer(modifier = Modifier.height(30.dp))
-            Row(
-                modifier = Modifier.padding(horizontal = 10.dp)
-            ) {
-                Text("Linha do Tempo",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 14.sp,
-                )
-            }
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp)
+        ) {
+            Text(
+                "Linha do Tempo",
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+            )
+        }
         Spacer(modifier = Modifier.height(15.dp))
 
-        val datasVisitadas = mutableSetOf<LocalDate>()
-        val primeirasContasPorDia = mutableListOf<Conta>()
-        val outrasContas = mutableListOf<Conta>()
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
 
+            ) {
+                items(historico) { dia ->
+                    val size = historico.indexOf(dia)
+                    val isLastItem = size == historico.lastIndex
 
-        if (contasOrdenadas.isNotEmpty()) {
-
-                for ((_, contasDoMomento) in contasOrdenadas) {
-                    for (conta in contasDoMomento) {
-                    val data = conta.dateTime.toLocalDateTime().toLocalDate()
-
-                    if (data !in datasVisitadas) {
-                        datasVisitadas.add(data)
-                        primeirasContasPorDia.add(conta)
-                    } else {
-                        outrasContas.add(conta)
-                    }
-                    }
-                }
-                }
-        Log.d(TAG, "HistoricoDoMes: valor de data $datasVisitadas")
-        Log.d(TAG, "HistoricoDoMes: valor de conta $primeirasContasPorDia")
-
-
-        val lista : List<Pair<MutableSet<LocalDate>, MutableList<Conta>>> = listOf(Pair(datasVisitadas, primeirasContasPorDia))
-
-        val datasVisitadasList = datasVisitadas.toList()
-        val primeirasContasDoDiaList = primeirasContasPorDia.toList()
-        Log.d(TAG, "HistoricoDoMes tamanho da lista: ${datasVisitadasList.size}")
-        Log.d(TAG, "HistoricoDoMes tamanho da lista: ${primeirasContasDoDiaList.size}")
-        Log.d(TAG, "HistoricoDoMes: as outras contas: $outrasContas")
-
-
-                LazyColumn {
-                    items(primeirasContasDoDiaList) { conta ->
-
-                        val dataContaPrimeira = conta.dateTime.toLocalDateTime().toLocalDate()
-
-                        val outrasContasDoMesmoDia = outrasContas.filter { outraConta ->
-                            outraConta.dateTime.toLocalDateTime().toLocalDate() == dataContaPrimeira
-                        }
-                            HistoricoItem(
-                                date = conta.dateTime.toLocalDateTime().toLocalDate(),
-                                nameAccountFirst = conta.name,
-                                breezeIconFirst = conta.icon.toBreezeIconsType(),
-                                princeFirst = conta.valor,
-                                contas = outrasContasDoMesmoDia
-                            )
-
-                    }
+                    HistoricoItem(
+                        date = dia.data,
+                        nameAccountFirst = dia.contaPrincipal.name,
+                        breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
+                        princeFirst = dia.contaPrincipal.valor,
+                        lastIndex = isLastItem,
+                        contas = dia.outrasContas
+                    )
 
                 }
-
             }
-}
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.White)
+                        )
+                    )
+            )
+
+        }
+    }
+    }
+

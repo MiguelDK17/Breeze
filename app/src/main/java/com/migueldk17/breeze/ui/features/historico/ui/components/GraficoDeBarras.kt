@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,12 +13,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +36,7 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,73 +117,19 @@ fun GraficoDeBarras(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(contas) { (_, _, value,_,colorIcon,colorCard,dateTime) ->
-
-                        val animatedHeight by animateFloatAsState(
-                            targetValue = (value.toFloat() / maxValue) * 230f,
-                            label = "BarAnimation"
-                        )
-
-                        val day = dateTime.toLocalDateTime().dayOfMonth
-
-                        val colorCard = colorCard.toColor()
-                        val colorIcon = colorIcon.toColor()
-
+                    itemsIndexed(contas) { index, conta ->
+                        val alturaMaxima = contas.maxOfOrNull { it.valor.toFloat() } ?: 1f
+                        val texto = formataSaldo(conta.valor.toDouble())
                         val brush = Brush.verticalGradient(
-                            colors = listOf(colorIcon, colorCard)
+                            colors = listOf(conta.colorIcon.toColor(), conta.colorCard.toColor())
                         )
-                        Column(
-                            modifier = Modifier.wrapContentHeight()
-
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .width(60.dp)
-                                    .height(200.dp),
-                                contentAlignment = Alignment.BottomCenter
-
-                            ) {
-                                //Pega o valor passado pra função e manda para formataSaldo, para que retorne o valor em moeda
-                                val texto = formataSaldo(value.toDouble())
-
-                                //Caso o tamanho do texto for maior que 7 adiciona um pouco a mais de espaço para que o Text não fique dentro das barras
-                                val tamanhoExtra = if (texto.length > 6) 10f else 0f
-
-                                // Divide o valor da barra pela metade e adiciona um extra para que o texto fique um pouco acima
-                                val tamanhoPosicaoTexto = animatedHeight / 2 + 20 + tamanhoExtra
-
-                                Text(
-                                    texto,
-                                    style = TextStyle(fontSize = 12.sp),
-                                    modifier = Modifier
-                                        .size(tamanhoPosicaoTexto.dp),
-                                    textAlign = TextAlign.Center
-                                )
-                                Canvas(
-                                    modifier = Modifier
-                                        .width(40.dp)
-                                        .height(150.dp)
-                                ) {
-                                    //Retangulos do gráfico
-                                    drawRoundRect(
-                                        brush = brush,
-                                        topLeft = Offset(0f, size.height - animatedHeight),
-                                        size = Size(size.width, animatedHeight),
-                                        cornerRadius = CornerRadius(x = 20f, y = 20f)
-                                    )
-                                }
-
-
-                            }
-                            Text(
-                                text = "$day",
-                                style = TextStyle(fontSize = 12.sp),
-                                modifier = Modifier
-                                    .align(Alignment.CenterHorizontally)
-                                    .padding(vertical = 10.dp)
-                            )
-
-                        }
+                        BarraAnimada(
+                            valor = conta.valor.toFloat(),
+                            maxValue = alturaMaxima,
+                            cor = brush,
+                            dia = conta.dateTime.toLocalDateTime().dayOfMonth,
+                            delayAnimacao = index * 100, //delay em milissegundos
+                            formatado = texto)
 
                     }
                 }

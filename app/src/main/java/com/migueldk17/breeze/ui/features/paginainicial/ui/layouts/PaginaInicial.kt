@@ -108,7 +108,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                 }
             } }
         Spacer(modifier = Modifier.size(15.dp))
-        Text("Contas Fixas:",
+        Text("Suas Contas:",
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
