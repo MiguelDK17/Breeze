@@ -49,7 +49,7 @@ fun BreezeBottomBar(navController: NavController){
                     navController.navigate(Screen.PaginaInicial.route)
                 },
                 colors = NavigationBarItemColors(
-                    selectedIconColor = MaterialTheme.colorScheme.secondary,
+                    selectedIconColor = Color.Transparent,
                     selectedTextColor = MaterialTheme.colorScheme.secondary,
                     selectedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = MaterialTheme.colorScheme.secondary,
@@ -72,7 +72,7 @@ fun BreezeBottomBar(navController: NavController){
                     navController.navigate(Screen.Historico.route)
                 },
                 colors = NavigationBarItemColors(
-                    selectedIconColor = Color.Unspecified, //Cor do icone aqui não afeta icones da biblioteca FAIcon
+                    selectedIconColor = Color.Unspecified,
                     selectedTextColor = MaterialTheme.colorScheme.secondary,
                     selectedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = Color.Unspecified,

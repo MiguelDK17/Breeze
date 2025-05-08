@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,8 +51,6 @@ fun GraficoDeBarras(
     contas: List<Conta>,
     modifier: Modifier = Modifier
 ){
-    //Adiciona um valor máximo que a barra pode chegar
-    val maxValue = contas.maxOfOrNull { it.valor.toFloat() } ?: 1f
     //Pega a densidade da tela
     val density = LocalDensity.current
     //Adiciona um deslocamento baseado na densidade da tela em pixels
@@ -68,7 +67,7 @@ fun GraficoDeBarras(
 
         Column(
             modifier = modifier
-                .background(Color.White)
+                .background(if (!isSystemInDarkTheme()) Color.White else Color.Transparent)
                 .padding(8.dp),
             verticalArrangement = Arrangement.Center
         ) {
@@ -95,7 +94,6 @@ fun GraficoDeBarras(
                 Canvas(
                     modifier = Modifier
                         .height(300.dp)
-                        .background(Color.Red)
                 ) {
                     val endY = size.height
                     val linhaFinal = endY - deslocamento //Calcula a posição da linha com base na densidade de pixels calculada acima e o height da Canvas para que fique responsivo

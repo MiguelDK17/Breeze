@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,10 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.Personaliz
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
+import com.migueldk17.breeze.ui.theme.blackPoppinsDarkMode
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 
 @Composable
@@ -58,7 +62,8 @@ fun Passo2(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             Spacer(Modifier.size(18.dp))
             Text("Qual combina melhor ?",
                 style = MaterialTheme.typography.bodySmall,
-                color = blackPoppinsLightMode)
+                color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else blackPoppinsDarkMode
+            )
             Spacer(modifier = Modifier.size(8.dp))
         }
         Column(

@@ -9,6 +9,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,8 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.ui.features.paginainicial.ui.animation.ColorTransitionFromCenter
+import com.migueldk17.breeze.ui.theme.DeepSkyBlue
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 
 @Composable
 fun EditarValorConta(
@@ -114,7 +117,9 @@ fun EditarValorConta(
                                 text = value
                             },
                                 placeholder = {
-                                    Text("Valor")
+                                    Text("Valor",
+                                        color = if (isSystemInDarkTheme()) DeepSkyBlue else blackPoppinsLightMode
+                                    )
                                 },
                                 modifier = Modifier.size(width = 210.dp, height = 56.dp),
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -169,7 +174,8 @@ private fun IconColumn(conta: Conta ){
             color = conta.colorIcon.toColor()
         )
         Text(conta.name,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            color = if (isSystemInDarkTheme()) DeepSkyBlue else blackPoppinsLightMode
         )
     }
 }

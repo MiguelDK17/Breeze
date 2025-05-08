@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,8 +32,11 @@ import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.theme.DarkBlue
+import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import kotlin.math.absoluteValue
@@ -57,7 +61,7 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
                 .size(68.dp),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White,
+                containerColor = if (!isSystemInDarkTheme()) Color.White else Color.Transparent,
             )
         ) {
             //HorizontalPager responsável pela seleção de ícones
@@ -88,7 +92,7 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
                         label = "iconAnimation"
                     )
 
-                    val containerColor = if(isCentered) MaterialTheme.colorScheme.surface else Color.White
+                    val containerColor = verifyDarkMode(isCentered)
 
                     IconButton(onClick =
                     {
@@ -120,7 +124,8 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
         Spacer(Modifier.height(15.dp))
         Text("Arraste para o lado para selecionar",
             style = MaterialTheme.typography.bodyMedium,
-            color = greyTextMediumPoppinsLightMode)
+            color = if (!isSystemInDarkTheme()) greyTextMediumPoppinsLightMode else greyTextMediumPoppinsDarkMode
+        )
     }
     //Retorna o ícone selecionado
     return iconList[pagerState.currentPage]
@@ -162,6 +167,18 @@ fun adicionaCorPadrao(currentState: String?, viewModel: BreezeViewModel){
         //Caso esteja no Passo5 adiciona a cor ao card
         NavGraph2.Passo5.route -> {
             viewModel.guardaCorCardPadrao(colorCardDefault)
+        }
+    }
+}
+@Composable
+private fun verifyDarkMode(isCentered: Boolean): Color {
+    return when {
+        !isSystemInDarkTheme() -> {
+            if (isCentered) MaterialTheme.colorScheme.surface else Color.White
+        }
+        else -> {
+            if (isCentered) DeepSkyBlue else Color.Transparent
+
         }
     }
 }

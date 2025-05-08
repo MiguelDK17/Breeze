@@ -3,6 +3,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.components
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,10 +17,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.ui.theme.MidnightBlue
 import java.time.LocalDate
 
 @Composable
 fun BoxDate(date: LocalDate){
+    val isSystemInDarkTheme = isSystemInDarkTheme()
     Box(
         modifier = Modifier
             .width(81.dp)
@@ -32,7 +35,7 @@ fun BoxDate(date: LocalDate){
                 .height(71.dp)
         ) {
             drawCircle(
-                color = Color(0xFFF3F3F3)
+                color = if (!isSystemInDarkTheme) Color(0xFFF3F3F3) else MidnightBlue
             )
         }
         Text("${date.dayOfMonth}/${date.month.value}",
