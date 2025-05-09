@@ -38,7 +38,7 @@ fun BoxDate(date: LocalDate){
                 color = if (!isSystemInDarkTheme) Color(0xFFF3F3F3) else MidnightBlue
             )
         }
-        Text("${date.dayOfMonth}/${date.month.value}",
+        Text("${date.dayOfMonth}/${date.month.value}", //Dia do mes e numero do mes
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 20.sp)
 

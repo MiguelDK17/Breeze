@@ -29,21 +29,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
-import kotlin.math.max
-
 @Composable
 fun BarraAnimada(
-    valor: Float,
-    maxValue: Float,
-    cor: Brush,
-    dia: Int,
-    delayAnimacao: Int,
-    formatado: String
+    valor: Float, //Valor da conta
+    maxValue: Float, //Valor máximo até onde a barra pode ir
+    cor: Brush, //Cor em gradiente
+    dia: Int, //Dia do mes
+    delayAnimacao: Int, //Delay que cada barra terá para aparecer
+    valorFormatado: String //Valor da conta já formatado para monetário
 ){
     val alturaAnimada = remember { Animatable(0f) }
     val density = LocalDensity.current
 
-    val alturaFinal = (valor / maxValue) * 230f
+    val alturaFinal = (valor / maxValue) * 230f //Altura final calculada apartir do valor da conta e o valor máximo
 
     LaunchedEffect(Unit) {
         delay(delayAnimacao.toLong())
@@ -57,9 +55,10 @@ fun BarraAnimada(
             )
         )
     }
-
+    //Calcula a altura animada
     val alturaEmDp = with(density) { alturaAnimada.value.toDp()}
-    val offsetY = alturaEmDp + if (formatado.length > 6) 10.dp else 0.dp
+    //Offset que serve pra calcular a posição do Text de valor baseado na altura da barra
+    val offsetY = alturaEmDp + if (valorFormatado.length > 6) 10.dp else 0.dp
 
     Column(
         modifier = Modifier.wrapContentHeight()
@@ -71,12 +70,12 @@ fun BarraAnimada(
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(
-                text = formatado,
+                text = valorFormatado,
                 style = TextStyle(fontSize = 12.sp),
                 modifier = Modifier.offset(y = -offsetY),
                 textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                maxLines = 1, //No máximo 1 linha
+                overflow = TextOverflow.Ellipsis //Caso o texto seja grande demais adiciona no final ...
             )
 
             Canvas(
