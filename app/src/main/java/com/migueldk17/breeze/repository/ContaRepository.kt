@@ -21,4 +21,8 @@ class ContaRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun apagaConta(conta: Conta) {
+        return contaDao.apagarConta(conta)
+    }
 }

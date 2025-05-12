@@ -4,39 +4,29 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
+import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity
-import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
 import java.util.Locale
 
 @Composable
-fun Final(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()) {
+fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val nomeConta = viewModel.nomeConta.collectAsState().value
     val icone = viewModel.iconeCardConta.collectAsState().value

@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.theme.DarkBlue
+import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import kotlin.math.absoluteValue
 
 @Composable
@@ -132,7 +132,7 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
 }
 
 //Função que verifica o passo em que o navController está e apartir disso adiciona o ícone para a função correta do ViewModel
-fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, icone: BreezeIconsType){
+fun insereIconeNoViewModel(currentState: String?, viewModel: AdicionarContaViewModel, icone: BreezeIconsType){
     when(currentState) {
         //Caso passo 2 adiciona um icone a conta
         NavGraph2.Passo2.route -> {
@@ -156,7 +156,7 @@ fun insereIconeNoViewModel(currentState: String?, viewModel: BreezeViewModel, ic
 }
 
 //Adiciona a cor padrão(Surface) baseado em qual rota o usuário está
-fun adicionaCorPadrao(currentState: String?, viewModel: BreezeViewModel){
+fun adicionaCorPadrao(currentState: String?, viewModel: AdicionarContaViewModel){
     val colorIconDefault = NavyBlue
     val colorCardDefault = PastelLightBlue
     when(currentState) {
