@@ -17,9 +17,10 @@ import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewMo
 
 @Composable
 fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
+    //Contas encontradas do mes
     val contasEncontradas = viewModel.contasEncontradas.collectAsStateWithLifecycle().value
+    //Data já traduzida pro português
     val dataTraduzida = viewModel.dataTraduzida.collectAsStateWithLifecycle().value
-    val context = LocalContext.current
     when (contasEncontradas){
         null -> Log.d(TAG, "Historico: deu null")
         true -> {

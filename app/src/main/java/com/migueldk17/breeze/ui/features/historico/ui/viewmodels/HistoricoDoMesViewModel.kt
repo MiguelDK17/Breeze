@@ -27,7 +27,7 @@ class HistoricoDoMesViewModel @Inject constructor(
     //Pega a data do mes
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
-
+    //Pega as contas do mes sem filtro
     fun getContasDoMes(): Flow<List<Conta>> {
         return repository.getContasPorMes(_data.value)
     }
@@ -35,27 +35,26 @@ class HistoricoDoMesViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val historico: StateFlow<List<HistoricoDoDia>> = _data
         .flatMapLatest { mes -> 
-            repository.getContasPorMes(mes.take(3))
+            repository.getContasPorMes(mes.take(3)) //Pega as contas do mes
         }
         .map { contas ->
             contas
-                .sortedBy { it.dateTime.toLocalDateTime() }
-                .groupBy { it.dateTime.toLocalDateTime().toLocalDate() }
+                .sortedBy { it.dateTime.toLocalDateTime() } //Filtra por data e hora
+                .groupBy { it.dateTime.toLocalDateTime().toLocalDate() } //Agrupa por data
                 .mapNotNull { (data, contasDoDia) ->
-                    val contasOrdenadas = contasDoDia.sortedByDescending { it.dateTime }
-                    val primeira = contasOrdenadas.first()
-                    val outras = contasOrdenadas.drop(1)
+                    val contasOrdenadas = contasDoDia.sortedByDescending { it.dateTime } //Pega da mais recente a mais antiga
+                    val primeira = contasOrdenadas.first() //Pega a primeira, que é a Conta Principal
+                    val outras = contasOrdenadas.drop(1) //Remove a Conta Principal das outras contas
                         HistoricoDoDia(
-                            data = data,
-                            contaPrincipal = primeira,
-                            outrasContas = outras
+                            data = data, //Data
+                            contaPrincipal = primeira, //Conta Principal
+                            outrasContas = outras //Outras Contas
                         )
                 }
-                .sortedByDescending { it.data }
+                .sortedByDescending { it.data } //Pega da mais recente a mais antiga
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    
-
+    //Pega as primeiras três letras do mês
     fun setData(mes: String){
         _data.value = mes.take(3)
     }

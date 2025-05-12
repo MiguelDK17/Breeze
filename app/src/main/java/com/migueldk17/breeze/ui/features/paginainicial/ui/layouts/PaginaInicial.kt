@@ -47,6 +47,7 @@ import com.migueldk17.breeze.R
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.animation.LottieAnimation
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.AdicionarReceitaBottomSheet
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.viewmodels.BreezeViewModel
@@ -65,15 +66,10 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 
 
-    //Estados para controlar o ModalBottomSheet
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
+
     var showBottomSheet by remember { mutableStateOf(false) }
 
 
-    //Estado para armazenar o saldo
-    var saldoInput by remember { mutableStateOf("") }
-    var isSaldoCorrectly by remember { mutableStateOf(false) }
 
 
 
@@ -146,63 +142,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
 
 
     if (showBottomSheet){
-        ModalBottomSheet(
-            onDismissRequest = {
-                showBottomSheet = false
-            },
-            sheetState = sheetState
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
-                //AQUI FICARÁ O OUTLINEDTEXTFIELD
-                OutlinedTextField(
-                    value = saldoInput,
-                    onValueChange = { value ->
-                        saldoInput = value.filter { it.isLetterOrDigit() }
-                        Log.d(TAG, "PaginaInicial: $saldoInput")
-                    },
-                    label = { Text("Novo Saldo") },
-                    //Aceita apenas números
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    //Apenas uma linha
-                    singleLine = true,
-                    //Verificação de erro
-                    isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999,
-                    visualTransformation = MoneyVisualTransformation()
-                )
-                if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999) {
-                    isSaldoCorrectly = false
-                    Text(
-                        text = "O saldo deve estar entre R$:10,00 e R$:99.999,00",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-                else {
-                    isSaldoCorrectly = true
-                }
-                Button(onClick = {
-                    viewModel.atualizaSaldo(saldoInput.toDouble()) //Atualiza o saldo
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible){
-                            showBottomSheet = false  //Fecha o BottomSheet
-                        }
-                    }
-                },
-                    enabled = isSaldoCorrectly && saldoInput != ""
-                ) {
-                    Text("Salvar")
-                }
-
-
-            }
-        }
+        AdicionarReceitaBottomSheet(viewModel)
     }
 
 }
