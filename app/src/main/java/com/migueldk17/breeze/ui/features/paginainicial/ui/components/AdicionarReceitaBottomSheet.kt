@@ -2,17 +2,21 @@ package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,27 +28,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MoneyVisualTransformation
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdicionarReceitaBottomSheet(viewModel: BreezeViewModel){
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-
+fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
+    var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
     //Estados para controlar o ModalBottomSheet
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     //Estado para armazenar o saldo
     var saldoInput by remember { mutableStateOf("") }
+
     var isSaldoCorrectly by remember { mutableStateOf(false) }
+
+    var descricaoInput by remember { mutableStateOf("")}
+
+    var showDatePicker by remember { mutableStateOf(false)}
+
+    var selectedDate by remember { mutableStateOf(LocalDateTime.now())}
 
     ModalBottomSheet(
         onDismissRequest = {
-            showBottomSheet = false
+            viewModel.atualizaBottomSheet(false)
         },
         sheetState = sheetState
     ) {
@@ -55,49 +68,82 @@ fun AdicionarReceitaBottomSheet(viewModel: BreezeViewModel){
             verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Editar Saldo", style = MaterialTheme.typography.titleMedium)
-            //AQUI FICARÁ O OUTLINEDTEXTFIELD
+            Text("Adicionar Receita", style = MaterialTheme.typography.titleMedium)
+
+            // Valor
             OutlinedTextField(
                 value = saldoInput,
                 onValueChange = { value ->
                     saldoInput = value.filter { it.isLetterOrDigit() }
                     Log.d(TAG, "PaginaInicial: $saldoInput")
                 },
-                label = { Text("Novo Saldo") },
-                //Aceita apenas números
+                label = { Text("Valor") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                //Apenas uma linha
                 singleLine = true,
-                //Verificação de erro
                 isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999,
                 visualTransformation = MoneyVisualTransformation()
             )
+
             if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999) {
                 isSaldoCorrectly = false
                 Text(
-                    text = "O saldo deve estar entre R$:10,00 e R$:99.999,00",
+                    text = "O saldo deve ser superior a R$ 10,00",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
-            }
-            else {
+            } else {
                 isSaldoCorrectly = true
             }
-            Button(onClick = {
-                viewModel.atualizaSaldo(saldoInput.toDouble()) //Atualiza o saldo
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible){
-                        showBottomSheet = false  //Fecha o BottomSheet
+
+            // Descrição opcional
+            OutlinedTextField(
+                value = descricaoInput,
+                onValueChange = { descricaoInput = it },
+                label = { Text("Descrição (opcional)") },
+                singleLine = true
+            )
+
+            // Data
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showDatePicker = true },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Data:", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            ReceitaDatePicker(
+                showDialog = showDatePicker,
+                onDismiss = {showDatePicker = false},
+                onDateSelected = { selectedDate = it}
+            )
+
+            // Botão salvar
+            Button(
+                onClick = {
+                    /*viewModel.adicionaReceita(
+                        valor = saldoInput.toDouble(),
+                        descricao = descricaoInput,
+                        data = selectedDate
+                    )*/
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            viewModel.atualizaBottomSheet(false)
+                        }
                     }
-                }
-            },
-                enabled = isSaldoCorrectly && saldoInput != ""
+                },
+                enabled = isSaldoCorrectly && saldoInput.isNotEmpty()
             ) {
                 Text("Salvar")
             }
-
-
         }
     }
+
 
 }

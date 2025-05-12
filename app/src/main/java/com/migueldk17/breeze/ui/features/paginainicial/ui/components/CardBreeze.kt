@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,16 +35,11 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
-import com.migueldk17.breeze.ui.theme.MediumGrey
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
-import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
-import java.time.format.DateTimeFormatter
+import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 
 
 //Card de PaginaInicial
@@ -54,7 +47,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun BreezeCard(
     conta: Conta,
-    viewModel: BreezeViewModel,
+    viewModel: PaginaInicialViewModel,
     onClick: () -> Unit,
 ){
     //Variavel que controla o estado do BasicAlertDialog
