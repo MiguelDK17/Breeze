@@ -11,5 +11,5 @@ data class Saldo(
     val id: Int = 0,
     //Nome da coluna do SQLite
     @ColumnInfo(name = "valor")
-    val valor: Double
+    val valor: Double,
 )
