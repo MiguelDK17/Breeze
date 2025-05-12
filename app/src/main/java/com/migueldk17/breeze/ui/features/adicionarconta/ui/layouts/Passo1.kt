@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,9 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,11 +27,10 @@ import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
-import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
+fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()){
     var text by remember{
         mutableStateOf("")
     }

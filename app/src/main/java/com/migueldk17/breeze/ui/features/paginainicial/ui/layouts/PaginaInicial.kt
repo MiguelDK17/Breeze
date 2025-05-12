@@ -1,9 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.layouts
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,29 +12,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,32 +36,23 @@ import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieConstants
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.MainActivity2
-import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.AdicionarReceitaBottomSheet
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
-import kotlinx.coroutines.launch
+import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("DefaultLocale")
 @Composable
-fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
+fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewModel = hiltViewModel()){
     val saldo by viewModel.saldo.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val saldoFormatado = saldo?.valor
     val contas by viewModel.conta.collectAsStateWithLifecycle()
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
-    
 
-
-
-
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-
-
+    var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
 
 
     Column(modifier = Modifier
@@ -90,7 +72,7 @@ fun PaginaInicial(navController: NavController, viewModel: BreezeViewModel = hil
                  //Botão para editar o saldo
                 IconButton(
                     onClick = {
-                        showBottomSheet = true
+                        viewModel.atualizaBottomSheet(true)
                     },
                     modifier = Modifier
                         .size(23.dp)
