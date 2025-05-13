@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.theme
 
-import androidx.compose.material3.Text
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -9,6 +10,7 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
+import com.migueldk17.breeze.ui.utils.textPrimary
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
@@ -79,13 +81,14 @@ val Typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
+
     bodySmall = TextStyle(
         fontFamily = fontFamilyPoppins,
         fontWeight = FontWeight.Light,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 1.sp,
-        color = blackPoppins
+
     ),
 
     /* Other default text styles to override

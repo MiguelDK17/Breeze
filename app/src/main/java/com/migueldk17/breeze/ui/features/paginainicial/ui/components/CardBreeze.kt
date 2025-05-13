@@ -1,7 +1,6 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -36,11 +36,11 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.converters.toLocalDateTime
+import com.migueldk17.breeze.ui.theme.DeepSkyBlue
+import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
-import java.time.format.DateTimeFormatter
+import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 
 
 //Card de PaginaInicial
@@ -48,7 +48,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun BreezeCard(
     conta: Conta,
-    viewModel: BreezeViewModel,
+    viewModel: PaginaInicialViewModel,
     onClick: () -> Unit,
 ){
     //Variavel que controla o estado do BasicAlertDialog
@@ -76,9 +76,17 @@ fun BreezeCard(
                     modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.size(20.dp))
-                Text(conta.name, style = MaterialTheme.typography.bodyLarge)
+                Text(conta.name,
+                    modifier = Modifier
+                        .weight(1f),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue,
+                    //Caso o texto suma provavelmente deve ter algum elemento com fillMaxWidth na Row/Column
+                    overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
+                    maxLines = 1 //Limita o texto a 1 linha para evitar quebra
+
+                )
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
 
@@ -104,7 +112,10 @@ fun BreezeCard(
 
             ) {
                 Spacer(modifier = Modifier.width(68.dp))
-                Text(formataSaldo(conta.valor))
+                Text(
+                    formataSaldo(conta.valor),
+                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
+                )
                 Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterEnd){
                     IconButton(onClick = {

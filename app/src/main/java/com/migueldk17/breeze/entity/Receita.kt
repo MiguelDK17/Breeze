@@ -5,11 +5,17 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "saldo_table")
-data class Saldo(
+data class Receita(
     //Chave primária do banco de dados
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     //Nome da coluna do SQLite
     @ColumnInfo(name = "valor")
-    val valor: Double
+    val valor: Double,
+
+    @ColumnInfo(name = "descricao")
+    val descricao: String,
+
+    @ColumnInfo(name = "data")
+    val data: String
 )

@@ -24,17 +24,20 @@ class HistoricoViewModel @Inject constructor(
     private val repository: ContaRepository,
     @ApplicationContext private val context: Context
 ): ViewModel(){
+    //Pega as contas registradas no Room
     private val _contas = MutableStateFlow<List<Conta>>(emptyList())
     val contas: StateFlow<List<Conta>> = _contas.asStateFlow()
-
+    //Verifica se houve contas encontradas
     private val _contasEncontradas = MutableStateFlow<Boolean>(false)
     val contasEncontradas: StateFlow<Boolean?> = _contasEncontradas.asStateFlow()
-
+    //Armazena a data já traduzida
     private val _dataTraduzida = MutableStateFlow<String>("")
     val dataTraduzida: StateFlow<String> = _dataTraduzida.asStateFlow()
-
+    //Filtra as contas
     private val _contasFiltradas = MutableStateFlow<List<Conta>>(emptyList())
     val contasFiltradas: StateFlow<List<Conta>> = _contasFiltradas.asStateFlow()
+
+    //Busca as contas registradas no Room e manda pro ViewModel
     init {
         viewModelScope.launch {
             contaDao.getContas()
@@ -49,13 +52,16 @@ class HistoricoViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getContasPorMes(mes)
                 .collect { contasFiltradas ->
+                    //Se houver contas o estado é atualizado
                     if (contasFiltradas.isNotEmpty()) {
                         _contasFiltradas.value = contasFiltradas
+                        //Salva a data já traduzida
                         salvaDataTraduzida(
                             traduzData(contasFiltradas.first().dateTime.toLocalDateTime().month.name)
 
                         )
                         _contasEncontradas.value = true
+                        //Caso não houver atualiza o estado como false e uma mensagem é dispadada
                     } else {
                         _contasEncontradas.value = false
                         Toast.makeText(context, "Não há nenhuma conta registrada neste mês", Toast.LENGTH_LONG).show()
@@ -64,7 +70,7 @@ class HistoricoViewModel @Inject constructor(
         }
 
     }
-
+    //Função que salva a data já traduzida
     fun salvaDataTraduzida(string: String){
         _dataTraduzida.value = string
     }

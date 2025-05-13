@@ -11,6 +11,7 @@ import javax.inject.Inject
 class ContaRepository @Inject constructor(
     private val contaDao: ContaDao
 ){
+    //Pega as contas por mes
     fun getContasPorMes(mes: String): Flow<List<Conta>> {
         return contaDao.getContas().map { contas ->
             contas.filter { conta ->
@@ -19,5 +20,9 @@ class ContaRepository @Inject constructor(
                 mesTraduzido == mes
             }
         }
+    }
+
+    suspend fun apagaConta(conta: Conta) {
+        return contaDao.apagarConta(conta)
     }
 }

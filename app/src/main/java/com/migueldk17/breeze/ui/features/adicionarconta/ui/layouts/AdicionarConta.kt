@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,12 +31,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrincipal
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun AdicionarContaOpcional(
+fun AdicionarConta(
     modifier : Modifier = Modifier,
-    viewModel: BreezeViewModel = hiltViewModel()
+    viewModel: AdicionarContaViewModel = hiltViewModel()
 ){
     //Cria o navController
     val navController = rememberNavController()
@@ -54,10 +53,9 @@ fun AdicionarContaOpcional(
     ) {
         //Text de título
         Text(
-            "Adicionar Conta Opcional",
+            "Adicionar Conta",
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp,
-            color = Black)
+            fontSize = 18.sp)
         Spacer(modifier = Modifier.size(20.dp))
         //Contagem de passos
         Text(
@@ -140,7 +138,7 @@ private fun retornaPasso(currentRoute: String?): String{
     return text
 }
 @Composable
-private fun InstanciaRotasAdicionarConta(navController: NavHostController, scroll: ScrollState, viewModel: BreezeViewModel){
+private fun InstanciaRotasAdicionarConta(navController: NavHostController, scroll: ScrollState, viewModel: AdicionarContaViewModel){
     //Cria o navGraph com a rota inicial como a PaginaInicial
     val navGraph = navController.createGraph(startDestination = NavGraph2.Passo1.route) {
         //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor dos cards

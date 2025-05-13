@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,11 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.theme.PastelLightBlue
-import com.migueldk17.breeze.viewmodels.BreezeViewModel
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
+import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewModel()){
+fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()){
     var text by remember{
         mutableStateOf("")
     }
@@ -44,33 +42,13 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            "Parece que o card de sua nova conta está vazio:",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Parece que o card de sua nova conta está vazio:")
         Spacer(modifier = Modifier.size(25.dp))
         //Card que evolui conforme o usuario vai adicionando informações
-        Card(
-            modifier = Modifier
-                .size(width = 342.dp, height = 80.dp),
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardColors(
-                containerColor = PastelLightBlue,
-                contentColor = Color.Transparent,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-
-
-        ) {
-
-        }
+        PersonalizationCard()
         Spacer(modifier = Modifier.size(26.dp))
 
-        Text(
-            "Vamos começar adicionando um nome !",
-            style = MaterialTheme.typography.bodySmall
-        )
+        DescriptionText("Vamos começar adicionando um nome !")
         Spacer(modifier = Modifier.size(26.dp))
         Column(modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
@@ -91,7 +69,7 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
             )
             if (!textoCorreto(text)) {
                 Text(
-                    "O nome da conta deve ter entre dois caracteres e 15 caracteres",
+                    "O nome da conta deve ter entre dois caracteres e 20 caracteres",
                     color = Color.Red,
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 12.sp
@@ -113,5 +91,5 @@ fun Passo1(navController: NavController, viewModel: BreezeViewModel = hiltViewMo
 }
 
 private fun textoCorreto(text: String): Boolean {
-    return  text.length <= 14
+    return  text.length <= 20
 }

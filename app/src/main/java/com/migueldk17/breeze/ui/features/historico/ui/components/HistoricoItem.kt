@@ -53,16 +53,16 @@ import com.migueldk17.breeze.ui.theme.Blue
 
 @Composable
 fun HistoricoItem(
-    date: LocalDate,
-    nameAccountFirst: String,
-    breezeIconFirst: BreezeIconsType,
-    princeFirst: Double,
-    lastIndex: Boolean,
-    contas: List<Conta>
+    date: LocalDate, //Data de crição da conta
+    nameAccountFirst: String, //Nome da conta principal
+    breezeIconFirst: BreezeIconsType, //Icone da conta principal
+    princeFirst: Double, //Valor da conta principal
+    lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
+    contas: List<Conta> //Lista de outras contas que ficam escondidas sob o estado
 ){
+    //Controla a expanção/contração das outras contas
     val expanded = remember{ mutableStateOf(false) }
     val density = LocalDensity.current
-    Log.d(TAG, "HistoricoItem: nome: $nameAccountFirst, data: $date")
 
 
     Box(
@@ -86,9 +86,7 @@ fun HistoricoItem(
                 } else {
                     size.height + endOffset
                 }
-                Log.d(TAG, "HistoricoItem: finalHeight: $finalHeight")
-                Log.d(TAG, "HistoricoItem: startY: $startY")
-
+                //Linha da linha do tempo que inicia abaixo da BoxDate
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(0f, startY),
@@ -99,17 +97,19 @@ fun HistoricoItem(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                //Conta principal, a última adicionada em um mesmo dia
                 ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst)
 
                 if (contas.isNotEmpty()) {
-                    VerMaisButton(contas, expanded)
+                    VerMaisButton(contas.size, expanded)
 
+                    //Adiciona uma animação ao expandir a lista
                     AnimatedVisibility(
                         visible = expanded.value,
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
-
+                        //Conta Secundária, caso haja mais de uma outra conta no mesmo dia as contas mais antigas são mandadas pra cá
                         ContaSecundaria(contas, expanded)
                     }
                 }
@@ -126,15 +126,3 @@ fun HistoricoItem(
 
         }
     }
-
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview(){
-    val date = LocalDate.now()
-    val nameAccount = "Barbeiro de Fortuna de Minas cujo nome é Julho"
-    val breezeIcon = BreezeIcons.Linear.Shop.Bag2
-    val price = 25.00
-    val listContas = listOf<Conta>()
-    HistoricoItem(date = date, nameAccountFirst = nameAccount, breezeIconFirst = breezeIcon, princeFirst = price,lastIndex = false, contas = listContas)
-}

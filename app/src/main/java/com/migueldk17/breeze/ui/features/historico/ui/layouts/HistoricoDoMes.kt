@@ -44,7 +44,9 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
+    //Pega as contas já criadas do mes sem formatação
     val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(emptyList()).value
+    //Pega as contas já filtradas por data da mais recente a mais antiga
     val historico = viewModel.historico.collectAsStateWithLifecycle().value
 
     Column(
@@ -73,7 +75,9 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
 
             ) {
                 items(historico) { dia ->
+                    //Paga o tamanho da lista
                     val size = historico.indexOf(dia)
+                    //Verifica se a conta é a última
                     val isLastItem = size == historico.lastIndex
 
                     HistoricoItem(
@@ -87,6 +91,7 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
 
                 }
             }
+            //Fade do final da lista
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -94,7 +99,8 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     .height(40.dp)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.White)
+                            colors = listOf(Color.Transparent,
+                                MaterialTheme.colorScheme.background)
                         )
                     )
             )

@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import com.migueldk17.breeze.entity.Conta
 
 @Composable
-fun VerMaisButton(contas: List<Conta>,expanded: MutableState<Boolean>){
+fun VerMaisButton(size: Int,expanded: MutableState<Boolean>){
     TextButton(onClick = { expanded.value = !expanded.value }) {
         Icon(
             if (expanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
             contentDescription = null
         )
-        Text(if (expanded.value) "Ver menos" else "Ver mais ${contas.size} contas...")
+        Text(if (expanded.value) "Ver menos" else "Ver mais $size contas...")
     }
 }

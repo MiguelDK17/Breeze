@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -31,7 +32,6 @@ fun ContaSecundaria(contas: List<Conta>, expanded: MutableState<Boolean>){
         if (expanded.value) {
             contas.forEach { conta ->
 
-                Log.d(TAG, "HistoricoItem: outras contas, nome: ${conta.name}, data: ${conta.dateTime}")
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -55,12 +55,13 @@ fun ContaSecundaria(contas: List<Conta>, expanded: MutableState<Boolean>){
 
                     )
                     Spacer(modifier = Modifier.width(20.dp))
-
                     Text(
                         conta.name,
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
+                        maxLines = 1 //Limita o texto a 1 linha para evitar quebra
                     )
 
                     Text(

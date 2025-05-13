@@ -25,10 +25,10 @@ import java.time.LocalDate
 
 @Composable
 fun ContaPrincipal(
-    date: LocalDate,
-    nameAccount: String,
-    breezeIcon: BreezeIconsType,
-    price: Double
+    date: LocalDate, //Data de criação da conta
+    nameAccount: String, //Nome da conta
+    breezeIcon: BreezeIconsType, //Icone BreezeIcon
+    price: Double //Valor da conta
 ){
     Row(
         modifier = Modifier
@@ -44,7 +44,7 @@ fun ContaPrincipal(
             modifier = Modifier.width(60.dp)
         ) {
 
-            BoxDate(date)
+            BoxDate(date) //Box de data
         }
         Row(
             modifier = Modifier
@@ -62,10 +62,10 @@ fun ContaPrincipal(
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 15.sp,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f) //Adiciona peso ao Text
                     .padding(end = 8.dp),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
+                maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
             )
 
