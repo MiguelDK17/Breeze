@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter
 fun ReceitaDatePicker(
     showDialog: Boolean,
     onDismiss: () -> Unit,
-    onDateSelected: (LocalDateTime) -> Unit
+    onDateSelected: (LocalDate) -> Unit
 ) {
     if (showDialog) {
         val datePickerState = rememberDatePickerState()
@@ -33,7 +33,7 @@ fun ReceitaDatePicker(
                         datePickerState.selectedDateMillis?.let { millis ->
                             val selectedDate = Instant.ofEpochMilli(millis)
                                 .atZone(ZoneOffset.UTC)
-                                .toLocalDateTime()
+                                .toLocalDate()
                             onDateSelected(selectedDate)
                         }
                         onDismiss()
