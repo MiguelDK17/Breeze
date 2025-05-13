@@ -1,13 +1,11 @@
 package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
-import android.content.ContentValues
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.dao.ContaDao
-import com.migueldk17.breeze.dao.SaldoDao
+import com.migueldk17.breeze.dao.ReceitaDao
 import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.Saldo
+import com.migueldk17.breeze.entity.Receita
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,17 +13,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
-    private val saldoDao: SaldoDao,
+    private val receitaDao: ReceitaDao,
     private val contaDao: ContaDao
 ): ViewModel() {
     //Banco de dados
-    private val _saldo = MutableStateFlow<Saldo?>(null)
-    val saldo: StateFlow<Saldo?> get() = _saldo
+    private val _receita = MutableStateFlow<Double?>(null)
+    val receita: StateFlow<Double?> = _receita.asStateFlow()
 
     //Variavwl que controla o estado de carregamente em PaginaInicial
     val carregando = MutableStateFlow(true)
@@ -42,8 +40,12 @@ class PaginaInicialViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _saldo.value = saldoDao.getSaldo() ?: Saldo(valor = 0.00) //Valor inicial
+            receitaDao.getSaldoTotal().collect { receita ->
+                _receita.value = receita ?: 0.00 //Valor inicial
+            }
+        }
 
+        viewModelScope.launch {
             //Pega todas as contas registradas no Room
             contaDao.getContas()
                 .collectLatest { lista ->
@@ -62,22 +64,16 @@ class PaginaInicialViewModel @Inject constructor(
 
 
     //Atualiza o saldo do usuário
-    fun adicionaReceita(double: Double,
-                        description: String = "",
-                        date: LocalDateTime) {
+    fun adicionaReceita(valor: Double,
+                        descricao: String,
+                        data: LocalDate) {
         viewModelScope.launch {
-            if (saldoDao.getSaldo() == null) {
-                val saldoAtual = Saldo(id = 0, valor = double / 100)
-                saldoDao.inserirSaldo(saldoAtual)
-                Log.d(ContentValues.TAG, "atualizaSaldo: ${saldoDao.getSaldo()}")
-                _saldo.value = saldoAtual
-            } else {
-                Log.d(ContentValues.TAG, "atualizaSaldo: Caiu no update")
-                val saldoAtualizado = Saldo(id = 0, valor = double / 100)
-                saldoDao.atualizarSaldo(saldoAtualizado)
-                Log.d(ContentValues.TAG, "atualizaSaldo: ${saldoDao.getSaldo()}")
-                _saldo.value = saldoAtualizado
-            }
+        val receita = Receita(
+            valor = valor / 100,
+            descricao = descricao,
+            data = data.toString()
+        )
+            receitaDao.inserirReceita(receita)
         }
     }
 

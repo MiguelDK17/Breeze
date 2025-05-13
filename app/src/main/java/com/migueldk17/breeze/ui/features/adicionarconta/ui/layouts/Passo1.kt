@@ -69,7 +69,7 @@ fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hi
             )
             if (!textoCorreto(text)) {
                 Text(
-                    "O nome da conta deve ter entre dois caracteres e 15 caracteres",
+                    "O nome da conta deve ter entre dois caracteres e 20 caracteres",
                     color = Color.Red,
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 12.sp
@@ -91,5 +91,5 @@ fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hi
 }
 
 private fun textoCorreto(text: String): Boolean {
-    return  text.length <= 14
+    return  text.length <= 20
 }

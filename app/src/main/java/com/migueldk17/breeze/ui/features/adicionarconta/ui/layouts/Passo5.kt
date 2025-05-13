@@ -25,14 +25,15 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselI
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.utils.formataValorConta
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
 
-    val nomeConta = viewModel.nomeConta.collectAsState().value
-    val icone = viewModel.iconeCardConta.collectAsState().value
-    val corIcone = viewModel.corIcone.collectAsState().value
-    val valorConta = viewModel.valorConta.collectAsState().value
+    val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
+    val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
+    val corIcone = viewModel.corIcone.collectAsStateWithLifecycle().value
+    val valorConta = viewModel.valorConta.collectAsStateWithLifecycle().value
     //Pega o valor da conta do viewModel e formata para valores monetários
     val valorMascarado = formataValorConta(valorConta)
 
