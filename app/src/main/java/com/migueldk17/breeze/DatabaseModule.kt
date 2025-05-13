@@ -3,7 +3,7 @@ package com.migueldk17.breeze
 import android.content.Context
 import androidx.room.Room
 import com.migueldk17.breeze.dao.ContaDao
-import com.migueldk17.breeze.dao.SaldoDao
+import com.migueldk17.breeze.dao.ReceitaDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,11 +22,13 @@ object DatabaseModule {
             BreezeDatabase::class.java,
             "breeze_database"
         ).addMigrations()
+            .fallbackToDestructiveMigration(true)
             .build()
+
     }
     @Provides
-    fun provideSaldoDao(database: BreezeDatabase): SaldoDao {
-        return database.saldoDao()
+    fun provideSaldoDao(database: BreezeDatabase): ReceitaDao {
+        return database.receitaDao()
     }
     @Provides
     fun provideContaDao(database: BreezeDatabase): ContaDao {

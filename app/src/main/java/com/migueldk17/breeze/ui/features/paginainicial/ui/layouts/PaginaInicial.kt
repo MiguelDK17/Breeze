@@ -22,9 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -41,14 +38,16 @@ import com.migueldk17.breeze.ui.features.paginainicial.ui.components.AdicionarRe
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
+import android.content.ContentValues.TAG
+import android.util.Log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("DefaultLocale")
 @Composable
 fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewModel = hiltViewModel()){
-    val saldo by viewModel.saldo.collectAsStateWithLifecycle()
+    val saldo by viewModel.receita.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val saldoFormatado = saldo?.valor
+    val saldoFormatado = saldo
     val contas by viewModel.conta.collectAsStateWithLifecycle()
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
 

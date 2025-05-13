@@ -99,7 +99,8 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     .height(40.dp)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.White)
+                            colors = listOf(Color.Transparent,
+                                MaterialTheme.colorScheme.background)
                         )
                     )
             )
