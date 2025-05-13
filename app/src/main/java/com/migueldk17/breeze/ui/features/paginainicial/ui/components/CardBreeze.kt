@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -76,11 +77,16 @@ fun BreezeCard(
                 )
                 Spacer(Modifier.size(20.dp))
                 Text(conta.name,
+                    modifier = Modifier
+                        .weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
+                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue,
+                    //Caso o texto suma provavelmente deve ter algum elemento com fillMaxWidth na Row/Column
+                    overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
+                    maxLines = 1 //Limita o texto a 1 linha para evitar quebra
+
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
 

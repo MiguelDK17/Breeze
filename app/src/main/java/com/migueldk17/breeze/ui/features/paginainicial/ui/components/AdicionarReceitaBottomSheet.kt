@@ -53,7 +53,7 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
 
     var showDatePicker by remember { mutableStateOf(false)}
 
-    var selectedDate by remember { mutableStateOf(LocalDateTime.now())}
+    var selectedDate by remember { mutableStateOf(LocalDate.now())}
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -75,19 +75,18 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
                 value = saldoInput,
                 onValueChange = { value ->
                     saldoInput = value.filter { it.isLetterOrDigit() }
-                    Log.d(TAG, "PaginaInicial: $saldoInput")
                 },
                 label = { Text("Valor") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
-                isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999,
+                isError = saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 500..9999999,
                 visualTransformation = MoneyVisualTransformation()
             )
 
-            if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 1000..9999999) {
+            if (saldoInput.isNotEmpty() && (saldoInput.toIntOrNull() ?: 0) !in 500..9999999) {
                 isSaldoCorrectly = false
                 Text(
-                    text = "O saldo deve ser superior a R$ 10,00",
+                    text = "O saldo deve ser superior a R$ 5,00",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -127,11 +126,12 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
             // Botão salvar
             Button(
                 onClick = {
-                    /*viewModel.adicionaReceita(
+                    Log.d(TAG, "AdicionarReceitaBottomSheet: valor: ${saldoInput}, descrição: $descricaoInput, data: $selectedDate" )
+                    viewModel.adicionaReceita(
                         valor = saldoInput.toDouble(),
                         descricao = descricaoInput,
                         data = selectedDate
-                    )*/
+                    )
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
                             viewModel.atualizaBottomSheet(false)

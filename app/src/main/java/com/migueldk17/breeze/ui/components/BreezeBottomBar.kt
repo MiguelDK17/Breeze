@@ -95,7 +95,7 @@ fun BreezeBottomBar(navController: NavController){
                     navController.navigate(Screen.Configuracoes.route)
                 },
                 colors = NavigationBarItemColors(
-                    selectedIconColor = MaterialTheme.colorScheme.secondary,
+                    selectedIconColor = Color.Transparent,
                     selectedTextColor = MaterialTheme.colorScheme.secondary,
                     selectedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = MaterialTheme.colorScheme.secondary,
@@ -122,7 +122,7 @@ fun BreezeBottomBarModel(){
             }
         )
         NavigationBarItem(
-            icon = { BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = null) },
+            icon = { BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = "Histórico") },
             label = { Text("Histórico") },
             selected = selectedItem == 1,
             onClick = {
@@ -130,7 +130,7 @@ fun BreezeBottomBarModel(){
             }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Settings, contentDescription = "") },
+            icon = { Icon(Icons.Filled.Settings, contentDescription = "Configurações") },
             label = { Text("Configurações") },
             selected = selectedItem == 2,
             onClick = {
