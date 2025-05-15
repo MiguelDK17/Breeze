@@ -4,9 +4,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.layouts
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
