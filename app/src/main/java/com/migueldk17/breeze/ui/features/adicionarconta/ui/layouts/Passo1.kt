@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,8 +36,10 @@ import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import java.nio.file.WatchEvent
 
 @Composable
 fun Passo1(navController: NavController = rememberNavController(), viewModel: AdicionarContaViewModel = hiltViewModel()){
@@ -120,7 +123,19 @@ fun Passo1Preview(){
         "Pessoais",
         "Outros")
     var selectedCategory by remember { mutableStateOf("Selecione uma categoria") }
-    var onCategorySelected by remember { mutableStateOf("") }
+    var selectedSubCategory by remember { mutableStateOf("") }
+    val categorySubcategories = mapOf(
+        "Alimentação" to listOf("Supermercado", "Restaurante", "Lanches", "Delivery"),
+        "Transporte" to listOf("Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
+        "Educação" to listOf("Escola", "Faculdade", "Cursos online", "Material escolar"),
+        "Moradia" to listOf("Aluguel", "Condomínio", "Água", "Energia", "Internet"),
+        "Lazer" to listOf("Cinema", "Viagens", "Assinaturas(Netflix, Spotify...)", "Jogos"),
+        "Saúde" to listOf("Plano de saúde", "Farmácia", "Consulta médica", "Exames"),
+        "Trabalho/Negócios" to listOf("Ferramentas de trabalho", "Marketing", "Transporte a trabalho", "Assinaturas por trabalho"),
+        "Pets" to listOf("Ração", "Veterinário", "Higiene", "Brinquedos"),
+        "Pessoais" to listOf("Roupas", "Cabelo/Beleza", "Presentes", "Academia"),
+        "Outros" to listOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
+    )
 
 
 
@@ -173,7 +188,13 @@ fun Passo1Preview(){
             selectedCategory = selectedCategory,
             onCategorySelected = { selectedCategory = it }
         )
-        Log.d(TAG, "Passo1Preview: $selectedCategory")
+        Spacer(modifier = Modifier.height(16.dp))
+        SubcategoryChipGroup(
+            selectedCategory = selectedCategory,
+            subCategoriesMap = categorySubcategories,
+            selectedSubcategory = selectedSubCategory,
+            onSubCategorySelected = { selectedSubCategory = it}
+        )
         //Botão para avançar de tela
         BreezeButton(
             modifier = Modifier.padding(vertical = 30.dp),
