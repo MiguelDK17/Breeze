@@ -26,6 +26,11 @@ class AdicionarContaViewModel @Inject constructor(
     private val _nomeConta = MutableStateFlow("")
     val nomeConta: StateFlow<String> = _nomeConta.asStateFlow()
 
+    private val _categoriaConta = MutableStateFlow("")
+    val categoriaConta: StateFlow<String> = _categoriaConta.asStateFlow()
+
+    private val _subcategoriaConta = MutableStateFlow("")
+    val subcategoriaConta: StateFlow<String> = _subcategoriaConta.asStateFlow()
 
     private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
     val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
@@ -41,6 +46,12 @@ class AdicionarContaViewModel @Inject constructor(
 
     fun setNomeConta(string: String) {
         _nomeConta.value = string
+    }
+    fun setCategoria(string: String) {
+        _categoriaConta.value = string
+    }
+    fun setSubcategoria(text: String){
+        _subcategoriaConta.value = text
     }
 
     //Guarda o icone que será usado no card de conta no ViewModel

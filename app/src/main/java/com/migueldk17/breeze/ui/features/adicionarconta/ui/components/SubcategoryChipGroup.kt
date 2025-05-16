@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SubcategoryChipGroup(
+    modifier: Modifier = Modifier,
     selectedCategory: String,
     subCategoriesMap: Map<String, List<String>>,
     selectedSubcategory: String,
@@ -27,7 +28,9 @@ fun SubcategoryChipGroup(
     val subCategories = subCategoriesMap[selectedCategory] ?: emptyList()
 
     if (subCategories.isNotEmpty()) {
-        Column {
+        Column(
+            modifier = modifier
+        ) {
             Text(
                 "Escolha uma subcategoria",
                 fontSize = 14.sp,
