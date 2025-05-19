@@ -4,11 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +35,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ParcelamentoColumn(){
+fun ParcelamentoColumn(isSmallScreen: Boolean){
     var selectedCategory by remember { mutableStateOf("1x") }
     val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
     var textParcelas by remember { mutableStateOf("") }
@@ -42,68 +49,88 @@ fun ParcelamentoColumn(){
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            Box(
-                modifier = Modifier
-                    .height(47.dp),
-                contentAlignment = Alignment.Center
-            ){
-                DescriptionText("Número de parcelas:")
-            }
-            Column(
-                modifier = Modifier,
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.End
-            ) {
-                BreezeDropdownMenu(
-                    categoryName = "",
-                    categories = categories,
-                    selectedCategory = selectedCategory,
-                    onCategorySelected = { selectedCategory = it},
-                    showDescriptionText = false
-                )
-
-                if (selectedCategory == "Outro...") {
-                    TextField(
-                        value = textParcelas,
-                        onValueChange = {
-                            textParcelas = it
-                        },
-                        placeholder = {
-                            DescriptionText("Parcelas")
-                        },
-                        modifier = Modifier.padding(vertical = 20.dp)
-                    )
+                Box(
+                    modifier = Modifier
+                        .height(47.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    DescriptionText("Número de parcelas:")
                 }
+                Column(
+                    modifier = Modifier,
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.End
+                ) {
+                    BreezeDropdownMenu(
+                        modifier = if(isSmallScreen)Modifier.width(162.dp) else Modifier.width(2.dp),
+                        categoryName = "",
+                        categories = categories,
+                        selectedCategory = selectedCategory,
+                        onCategorySelected = { selectedCategory = it },
+                        showDescriptionText = false
+                    )
+
+                    if (selectedCategory == "Outro...") {
+                        TextField(
+                            value = textParcelas,
+                            onValueChange = {
+                                textParcelas = it
+                            },
+                            placeholder = {
+                                DescriptionText("Parcelas")
+                            },
+                            modifier = Modifier.padding(vertical = 20.dp)
+                        )
+                    }
+                }
+
             }
 
-        }
-        Spacer(modifier = Modifier.height(50.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            DescriptionText("Qual a porcentagem de juros?")
-            TextField(
-                value = textJuros,
-                onValueChange = {
-                    textJuros = it
-                },
-                placeholder = {
-                    DescriptionText("2% ao mês")
-                },
-                modifier = Modifier
-                    .width(121.dp)
-                    .height(56.dp),
-
-            )
             Row(
-                modifier = Modifier.padding(vertical = 30.dp)
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DescriptionText("Qual a porcentagem de juros?")
+                TextField(
+                    value = textJuros,
+                    onValueChange = {
+                        textJuros = it
+                    },
+                    placeholder = {
+                        DescriptionText("2% ao mês")
+                    },
+                    modifier = Modifier
+                        .width(121.dp)
+                        .height(56.dp),
+
+                    )
+            }
+
+            Row(
+                modifier = Modifier.padding(vertical = 30.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = null)
-                DescriptionText("Data da primeira parcela: ${selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}")
+                DescriptionText(
+                    "Data da primeira parcela: ${
+                        selectedDate.format(
+                            DateTimeFormatter.ofPattern(
+                                "dd/MM/yyyy"
+                            )
+                        )
+                    }", size = 12.9.sp
+                )
+
+                Icon(
+                    Icons.Default.Edit,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 0.dp)
+                )
+
+
             }
-        }
 
     }
 }

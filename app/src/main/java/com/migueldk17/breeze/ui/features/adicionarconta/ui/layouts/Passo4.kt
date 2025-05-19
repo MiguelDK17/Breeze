@@ -1,8 +1,10 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -86,6 +88,8 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
     }
 }
 
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun Passo4Preview() {
     var valorConta by remember{
@@ -98,64 +102,71 @@ private fun Passo4Preview() {
 //    val icone = viewModel.iconeCardConta.collectAsState().value
 //    val corIcone = viewModel.corIcone.collectAsState().value
     //Column do Passo4
-    Column(
-        modifier = Modifier
-            .padding(25.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
-        DescriptionText("Assim está ficando o card da sua nova conta:")
-        Spacer(modifier = Modifier.size(25.dp))
+    BoxWithConstraints{
+        val horizontalPadding = if (maxWidth < 380.dp) 16.dp else 25.dp
+        val isSmallScreen = maxWidth < 380.dp
+
+        Column(
+            modifier = Modifier
+                .padding(horizontalPadding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            DescriptionText("Assim está ficando o card da sua nova conta:")
+            Spacer(modifier = Modifier.size(25.dp))
 //        //Card que evolui conforme o usuario vai adicionando informações
 //        PersonalizationCard(nomeConta = nomeConta, icone = icone, corIcone = corIcone)
-        Spacer(modifier = Modifier.size(26.dp))
+            Spacer(modifier = Modifier.size(26.dp))
 
-        DescriptionText("Quanto você planeja gastar com esta conta ?")
-        Spacer(modifier = Modifier.size(5.dp))
+            DescriptionText("Quanto você planeja gastar com esta conta ?")
+            Spacer(modifier = Modifier.size(5.dp))
 
-        DescriptionText("Defina o valor aqui!")
-        Spacer(modifier = Modifier.size(29.dp))
-        //TextField responsável por adicionar um valor a conta
-        TextField(valorConta, onValueChange = { value ->
-            valorConta = value
-        },
-            modifier = Modifier
-                .fillMaxWidth(),
-            placeholder = {
-                Text("Adicionar Valor")
+            DescriptionText("Defina o valor aqui!")
+            Spacer(modifier = Modifier.size(29.dp))
+            //TextField responsável por adicionar um valor a conta
+            TextField(valorConta, onValueChange = { value ->
+                valorConta = value
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-            visualTransformation = MoneyVisualTransformation())
-        Row(
-            modifier = Modifier.padding(vertical = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            DescriptionText("Essa conta é parcelada ?")
-            Checkbox(
-                enabled = true,
-                onCheckedChange = {
-                    isChecked = it
+                modifier = Modifier
+                    .fillMaxWidth(),
+                placeholder = {
+                    Text("Adicionar Valor")
                 },
-                checked = isChecked
-            )
-        }
-        if (isChecked) {
-            ParcelamentoColumn()
-        }
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                visualTransformation = MoneyVisualTransformation())
+            Row(
+                modifier = Modifier.padding(vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DescriptionText("Essa conta é parcelada ?")
+                Checkbox(
+                    enabled = true,
+                    onCheckedChange = {
+                        isChecked = it
+                    },
+                    checked = isChecked
+                )
+            }
+            if (isChecked) {
+                ParcelamentoColumn(isSmallScreen)
+            }
 
-        //Botão para avançar de tela
-        Button(
-            modifier = Modifier
-                .padding(vertical = 74.dp),
-            onClick = {
+            //Botão para avançar de tela
+            Button(
+                modifier = Modifier
+                    .padding(vertical = 74.dp),
+                onClick = {
 //                viewModel.guardaValorConta(valorConta.toDouble())
 //                navController.navigate(NavGraph2.Passo5.route)
-            }, enabled = valorConta.isNotEmpty()
-        ) {
-            Text("Avançar")
+                }, enabled = valorConta.isNotEmpty()
+            ) {
+                Text("Avançar")
+            }
         }
     }
+
 }
 
 @Composable
