@@ -40,6 +40,7 @@ fun BreezeDropdownMenu(
     categories: List<String>,
     selectedCategory: String,
     onCategorySelected: (String) -> Unit,
+    showDescriptionText: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     Log.d(TAG, "BreezeDropdownMenu: $selectedCategory")
@@ -47,14 +48,16 @@ fun BreezeDropdownMenu(
     Column(
         modifier = modifier
     ) {
-        Text(
-            text = categoryName,
-            fontSize = 15.sp,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.W300
-        )
+        if (showDescriptionText) {
+            Text(
+                text = categoryName,
+                fontSize = 15.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.W300
+            )
 
-        Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
+        }
 
         Box(
             modifier = Modifier

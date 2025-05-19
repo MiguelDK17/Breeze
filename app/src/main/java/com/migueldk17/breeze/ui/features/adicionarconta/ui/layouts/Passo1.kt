@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -39,7 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
-import com.migueldk17.breeze.ui.components.InfoIconWithTooltip
+import com.migueldk17.breeze.ui.components.InfoIconWithPopup
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
@@ -129,7 +131,14 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
             selectedCategory = selectedCategory,
             onCategorySelected = { selectedCategory = it }
         )
-        DescriptionText("Agora, adicione uma sub-categoria!")
+        if (selectedCategory != "Selecione uma categoria") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DescriptionText("Agora, adicione uma sub-categoria!")
+                InfoIconWithPopup("Se não tiver uma opção ideal, pode usar 'Outros' e 'Sem subcategoria'!")
+            }
+        }
         SubcategoryChipGroup(
             modifier = Modifier.padding(vertical = 16.dp),
             selectedCategory = selectedCategory,
@@ -141,10 +150,10 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
         BreezeButton(
             modifier = Modifier.padding(vertical = 30.dp),
             text = "Avançar", onClick = {
-                    viewModel.setNomeConta(text)
-                    viewModel.setCategoria(selectedCategory)
-                    viewModel.setSubcategoria(selectedSubCategory)
-                    navController.navigate(NavGraph2.Passo2.route)
+                viewModel.setNomeConta(text)
+                viewModel.setCategoria(selectedCategory)
+                viewModel.setSubcategoria(selectedSubCategory)
+                navController.navigate(NavGraph2.Passo2.route)
 
             },
             enabled = isBreezeButtonEnabled(text, selectedCategory, selectedSubCategory))
@@ -239,9 +248,13 @@ private fun Passo1Preview(){
             selectedCategory = selectedCategory,
             onCategorySelected = { selectedCategory = it }
         )
-        Row {
-            DescriptionText("Agora, adicione uma sub-categoria!")
-            InfoIconWithTooltip("Teste")
+        if (selectedCategory != "Selecione uma categoria") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DescriptionText("Agora, adicione uma sub-categoria!")
+                InfoIconWithPopup("Se não tiver uma opção ideal, pode usar 'Outros' e 'Sem subcategoria'!")
+            }
         }
          SubcategoryChipGroup(
             modifier = Modifier.padding(vertical = 16.dp),
