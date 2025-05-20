@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,9 +46,11 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
     var showDatePicker by remember { mutableStateOf(false)}
 
     var selectedDate by remember { mutableStateOf(LocalDate.now())}
+    Log.d(TAG, "ParcelamentoColumn: $isSmallScreen")
 
     Column {
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
@@ -62,7 +67,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                     horizontalAlignment = Alignment.End
                 ) {
                     BreezeDropdownMenu(
-                        modifier = if(isSmallScreen)Modifier.width(162.dp) else Modifier.width(2.dp),
+                        modifier = if(isSmallScreen) Modifier.width(120.dp) else Modifier.width(162.dp),
                         categoryName = "",
                         categories = categories,
                         selectedCategory = selectedCategory,
@@ -85,25 +90,22 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                 }
 
             }
+            if (isSmallScreen) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    ResponsiveLabelField(textJuros = textJuros, onValueChange = { textJuros = it })
+                }
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ResponsiveLabelField(textJuros = textJuros, onValueChange = { textJuros = it })
+                }
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                DescriptionText("Qual a porcentagem de juros?")
-                TextField(
-                    value = textJuros,
-                    onValueChange = {
-                        textJuros = it
-                    },
-                    placeholder = {
-                        DescriptionText("2% ao mês")
-                    },
-                    modifier = Modifier
-                        .width(121.dp)
-                        .height(56.dp),
-
-                    )
             }
 
             Row(
@@ -132,5 +134,26 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
 
             }
 
+    }
+}
+
+@Composable
+private fun ResponsiveLabelField(textJuros: String, onValueChange: (String) -> Unit){
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        DescriptionText("Qual a porcentagem de juros?")
+        TextField(
+            value = textJuros,
+            onValueChange = onValueChange,
+            placeholder = {
+                DescriptionText("2% ao mês")
+            },
+            modifier = Modifier
+                .width(121.dp)
+                .height(56.dp),
+
+            )
     }
 }

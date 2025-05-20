@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -45,9 +46,7 @@ fun BreezeDropdownMenu(
     var expanded by remember { mutableStateOf(false) }
     Log.d(TAG, "BreezeDropdownMenu: $selectedCategory")
 
-    Column(
-        modifier = modifier
-    ) {
+    Column {
         if (showDescriptionText) {
             Text(
                 text = categoryName,
@@ -60,8 +59,7 @@ fun BreezeDropdownMenu(
         }
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color(0xFFF5F5F5))
                 .clickable { expanded = true }
