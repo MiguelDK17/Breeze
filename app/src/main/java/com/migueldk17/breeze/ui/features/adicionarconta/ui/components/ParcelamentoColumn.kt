@@ -17,8 +17,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,6 +45,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
     var selectedCategory by remember { mutableStateOf("1x") }
     val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
     var textParcelas by remember { mutableStateOf("") }
+    var checked by remember { mutableStateOf(false) }
     var textJuros by remember { mutableStateOf("") }
     var showDatePicker by remember { mutableStateOf(false)}
 
@@ -90,23 +94,25 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                 }
 
             }
-            if (isSmallScreen) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    ResponsiveLabelField(textJuros = textJuros, onValueChange = { textJuros = it })
-                }
-            } else {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    ResponsiveLabelField(textJuros = textJuros, onValueChange = { textJuros = it })
-                }
-
-            }
+        Spacer(modifier = Modifier.height(25.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DescriptionText("As parcelas têm juros ?")
+            Checkbox(
+                enabled = true,
+                onCheckedChange = {
+                    checked = it
+                },
+                checked = checked
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        if (checked) {
+            ResponsiveJurosSection(isSmallScreen, textJuros) { textJuros = it }
+        }
 
             Row(
                 modifier = Modifier.padding(vertical = 30.dp),
@@ -114,6 +120,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = null)
+
                 DescriptionText(
                     "Data da primeira parcela: ${
                         selectedDate.format(
@@ -121,29 +128,57 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                                 "dd/MM/yyyy"
                             )
                         )
-                    }", size = 12.9.sp
+                    }", size = if (isSmallScreen) 13.sp else 14.sp
                 )
 
                 Icon(
                     Icons.Default.Edit,
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(horizontal = 0.dp)
+                        .padding(vertical = 10.dp)
                 )
 
 
             }
+        Row {
+            Text("Parcelado em com juros")
+        }
+
+    }
+}
+@Composable
+private fun ResponsiveJurosSection(
+    isSmallScreen: Boolean,
+    textJuros: String,
+    onValueChange: (String) -> Unit
+) {
+    if (isSmallScreen) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ResponsiveLabelField(textJuros = textJuros, onValueChange = onValueChange)
+        }
+    } else {
+        Log.d(TAG, "ParcelamentoColumn: caiu no else $isSmallScreen")
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ResponsiveLabelField(textJuros = textJuros, onValueChange = onValueChange)
+        }
 
     }
 }
 
 @Composable
 private fun ResponsiveLabelField(textJuros: String, onValueChange: (String) -> Unit){
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+
         DescriptionText("Qual a porcentagem de juros?")
+        Spacer(modifier = Modifier.size(25.dp))
         TextField(
             value = textJuros,
             onValueChange = onValueChange,
@@ -155,5 +190,5 @@ private fun ResponsiveLabelField(textJuros: String, onValueChange: (String) -> U
                 .height(56.dp),
 
             )
-    }
+
 }
