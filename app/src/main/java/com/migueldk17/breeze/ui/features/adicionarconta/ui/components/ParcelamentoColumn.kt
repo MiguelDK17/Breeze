@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +32,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -42,6 +45,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ParcelamentoColumn(isSmallScreen: Boolean){
+    val fillMaxWidth = Modifier.fillMaxWidth()
     var selectedCategory by remember { mutableStateOf("1x") }
     val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
     var textParcelas by remember { mutableStateOf("") }
@@ -54,7 +58,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
 
     Column {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = fillMaxWidth,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
@@ -96,7 +100,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
             }
         Spacer(modifier = Modifier.height(25.dp))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = fillMaxWidth,
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -130,18 +134,31 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                         )
                     }", size = if (isSmallScreen) 13.sp else 14.sp
                 )
-
-                Icon(
-                    Icons.Default.Edit,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(vertical = 10.dp)
-                )
+                IconButton(onClick = {}) {
+                    BreezeIcon(
+                        BreezeIcons.Linear.Software.EditLinear,
+                        contentDescription = "Editar data da primeira parcela"
+                    )
+                }
 
 
             }
-        Row {
-            Text("Parcelado em com juros")
+        Row(
+            modifier = fillMaxWidth,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text("Parcelado em 7x com juros",
+                fontStyle = FontStyle.Italic,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(horizontal = 5.dp)
+            )
+            BreezeIcon(
+                BreezeIcons.Linear.Essetional.InfoCircle,
+                contentDescription = "Botão de informções",
+                modifier = Modifier.padding(horizontal = 5.dp)
+
+            )
         }
 
     }

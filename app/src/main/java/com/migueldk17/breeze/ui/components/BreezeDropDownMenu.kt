@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,7 +62,7 @@ fun BreezeDropdownMenu(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFF5F5F5))
+                .background(if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else Color.Transparent)
                 .clickable { expanded = true }
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             contentAlignment = Alignment.CenterStart
