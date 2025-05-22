@@ -39,7 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.ReceitaDatePicker
 import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import java.time.LocalDate
@@ -119,14 +121,22 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
         if (checked) {
             ResponsiveJurosSection(isSmallScreen, textJuros) { textJuros = it }
         }
-
             ResponsiveDateParcelaSection(isSmallScreen, selectedDate)
+
+        ReceitaDatePicker(
+            showDialog = showDatePicker,
+            onDismiss = { showDatePicker = false},
+        ) { selectedDate = it }
+
+
         Row(
             modifier = fillMaxWidth,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Text("Parcelado em $selectedCategory com juros",
+            val text = if (checked) "Parcelado em $selectedCategory com juros" else "Parcelado em $selectedCategory sem juros"
+            Text(
+                text,
                 fontStyle = FontStyle.Italic,
                 color = Color.Black,
                 fontSize = 14.sp,
