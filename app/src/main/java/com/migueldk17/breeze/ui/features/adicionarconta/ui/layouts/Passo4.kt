@@ -42,6 +42,7 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.Parcelamen
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import java.time.LocalDate
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
