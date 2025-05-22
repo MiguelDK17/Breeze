@@ -21,8 +21,12 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,9 +34,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,7 +53,10 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.Descriptio
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import java.nio.file.WatchEvent
 
 @Composable
@@ -101,18 +111,23 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
             //TextField responsável por adicionar um nome a conta
-            TextField(
+            OutlinedTextField(
                 text,
                 onValueChange = { value ->
                     text = value
                 },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {
+                label = {
                     Text("Adicionar nome")
                 },
                 minLines = 1,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                isError = !textoCorreto(text)
+                isError = !textoCorreto(text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    unfocusedBorderColor = Color(0xFFF5F5F5)
+                )
             )
             if (!textoCorreto(text)) {
                 Text(

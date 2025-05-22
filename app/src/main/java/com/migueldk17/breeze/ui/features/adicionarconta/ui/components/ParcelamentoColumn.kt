@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
+import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -120,35 +122,47 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
 
             Row(
                 modifier = Modifier.padding(vertical = 30.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
-                BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = null)
-
-                DescriptionText(
-                    "Data da primeira parcela: ${
-                        selectedDate.format(
-                            DateTimeFormatter.ofPattern(
-                                "dd/MM/yyyy"
+                val iconSize = if (isSmallScreen) 24.dp else 26.dp
+                Column(
+                    verticalArrangement = Arrangement.Center) {
+                    DescriptionText(
+                        "Data da primeira parcela: ${
+                            selectedDate.format(
+                                DateTimeFormatter.ofPattern(
+                                    "dd/MM/yyyy"
+                                )
                             )
-                        )
-                    }", size = if (isSmallScreen) 13.sp else 14.sp
-                )
-                IconButton(onClick = {}) {
-                    BreezeIcon(
-                        BreezeIcons.Linear.Software.EditLinear,
-                        contentDescription = "Editar data da primeira parcela"
+                        }", size = if (isSmallScreen) 14.sp else 14.sp
                     )
                 }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Red),
+                    verticalArrangement = Arrangement.Top
+                ) {
 
+                    IconButton(onClick = {},
+                        modifier = Modifier
+                            .size(iconSize)) {
+                        BreezeIcon(
+                            BreezeIcons.Linear.Software.EditLinear,
+                            contentDescription = "Editar data da primeira parcela",
+                            modifier = Modifier
 
+                        )
+                    }
+                }
             }
         Row(
             modifier = fillMaxWidth,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Text("Parcelado em 7x com juros",
+            Text("Parcelado em $selectedCategory com juros",
                 fontStyle = FontStyle.Italic,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(horizontal = 5.dp)
