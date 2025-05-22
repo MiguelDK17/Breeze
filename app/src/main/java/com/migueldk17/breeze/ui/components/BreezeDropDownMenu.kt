@@ -34,6 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.ui.theme.MidnightBlue
+import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.ui.theme.NavyPetrol
 
 @Composable
 fun BreezeDropdownMenu(
@@ -62,7 +65,7 @@ fun BreezeDropdownMenu(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else Color.Transparent)
+                .background(if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol)
                 .clickable { expanded = true }
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             contentAlignment = Alignment.CenterStart
