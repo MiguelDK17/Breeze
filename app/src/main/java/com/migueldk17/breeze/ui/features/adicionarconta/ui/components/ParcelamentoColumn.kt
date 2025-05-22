@@ -120,43 +120,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
             ResponsiveJurosSection(isSmallScreen, textJuros) { textJuros = it }
         }
 
-            Row(
-                modifier = Modifier.padding(vertical = 30.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
-            ) {
-                val iconSize = if (isSmallScreen) 24.dp else 26.dp
-                Column(
-                    verticalArrangement = Arrangement.Center) {
-                    DescriptionText(
-                        "Data da primeira parcela: ${
-                            selectedDate.format(
-                                DateTimeFormatter.ofPattern(
-                                    "dd/MM/yyyy"
-                                )
-                            )
-                        }", size = if (isSmallScreen) 14.sp else 14.sp
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Red),
-                    verticalArrangement = Arrangement.Top
-                ) {
-
-                    IconButton(onClick = {},
-                        modifier = Modifier
-                            .size(iconSize)) {
-                        BreezeIcon(
-                            BreezeIcons.Linear.Software.EditLinear,
-                            contentDescription = "Editar data da primeira parcela",
-                            modifier = Modifier
-
-                        )
-                    }
-                }
-            }
+            ResponsiveDateParcelaSection(isSmallScreen, selectedDate)
         Row(
             modifier = fillMaxWidth,
             verticalAlignment = Alignment.CenterVertically,
@@ -164,6 +128,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
         ) {
             Text("Parcelado em $selectedCategory com juros",
                 fontStyle = FontStyle.Italic,
+                color = Color.Black,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(horizontal = 5.dp)
             )
@@ -202,6 +167,88 @@ private fun ResponsiveJurosSection(
             ResponsiveLabelField(textJuros = textJuros, onValueChange = onValueChange)
         }
 
+    }
+}
+
+@Composable
+private fun ResponsiveDateParcelaSection(
+    isSmallScreen: Boolean,
+    selectedDate: LocalDate){
+    val iconSize = if (isSmallScreen) 24.dp else 26.dp
+    val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+
+    val layoutModifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 30.dp)
+
+    if (isSmallScreen) {
+        Row(
+            modifier = layoutModifier,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            Column{
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BreezeIcon(
+                    BreezeIcons.Linear.Time.CalendarLinear,
+                    contentDescription = null
+                )
+                DescriptionText(
+                    "Data da primeira parcela:",
+                    size = 12.9.sp,
+                    modifier = Modifier.padding(horizontal = 5.dp)
+                )
+            }
+                Spacer(modifier = Modifier.height(15.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    DescriptionText(
+                        formattedDate
+                    )
+                    IconButton(
+                        onClick = {},
+                        modifier = Modifier
+                            .size(iconSize)
+                            .padding(start = 5.dp)
+                    ) {
+                        BreezeIcon(
+                            BreezeIcons.Linear.Software.EditLinear,
+                            contentDescription = "Editar data da primeira parcela"
+                        )
+                    }
+                }
+            }
+        }
+    }
+    else {
+        Row(
+            modifier = layoutModifier,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DescriptionText(
+                "Data da primeira parcela: ${
+                    selectedDate.format(
+                        DateTimeFormatter.ofPattern(
+                            "dd/MM/yyyy"
+                        )
+                    )
+                }"
+            )
+            IconButton(
+                    onClick = {},
+                    modifier = Modifier
+                        .size(iconSize)
+                ) {
+                    BreezeIcon(
+                        BreezeIcons.Linear.Software.EditLinear,
+                        contentDescription = "Editar data da primeira parcela",
+                        modifier = Modifier
+
+                    )
+                }
+        }
     }
 }
 
