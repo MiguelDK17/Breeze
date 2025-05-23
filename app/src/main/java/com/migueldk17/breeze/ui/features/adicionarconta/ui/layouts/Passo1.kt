@@ -48,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
+import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.InfoIconWithPopup
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
@@ -111,23 +112,14 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
             //TextField responsável por adicionar um nome a conta
-            OutlinedTextField(
-                text,
-                onValueChange = { value ->
-                    text = value
-                },
+            BreezeOutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = {
-                    Text("Adicionar nome")
-                },
-                minLines = 1,
+                text = text,
+                onValueChange = { text = it},
+                textLabel = "Adicionar nome",
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                isError = !textoCorreto(text),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    unfocusedBorderColor = Color(0xFFF5F5F5)
-                )
+                isError = !textoCorreto(text)
+
             )
             if (!textoCorreto(text)) {
                 Text(

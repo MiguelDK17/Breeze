@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.features.adicionarconta.viewmodels
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,6 +36,12 @@ class AdicionarContaViewModel @Inject constructor(
 
     private val _dataDaConta = MutableStateFlow(LocalDate.now())
     val dataDaConta: StateFlow<LocalDate> = _dataDaConta.asStateFlow()
+
+    private val _quantidadeDeParcelas = MutableStateFlow(1)
+    val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
+
+    private val _valorDasParcelas = MutableStateFlow(1.0)
+    val valorDasParcelas: StateFlow<Double> = _valorDasParcelas.asStateFlow()
 
     private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
     val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
@@ -89,6 +96,14 @@ class AdicionarContaViewModel @Inject constructor(
     fun guardaDataConta(data: LocalDate){
         _dataDaConta.value = data
     }
+
+    //Guarda a quantidade de parcelas
+    fun guardaQtdParcelas(string: String){
+        val valor = string.filter { it.isDigit() }.toInt()
+        _quantidadeDeParcelas.value = valor
+    }
+
+
 
     //Guarda a Conta no Room
     fun salvaContaDatabase() {

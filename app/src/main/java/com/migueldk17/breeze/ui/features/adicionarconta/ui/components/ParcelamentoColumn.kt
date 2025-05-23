@@ -40,6 +40,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,6 +48,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
+import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.InfoIconWithPopup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.ReceitaDatePicker
@@ -57,17 +59,20 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ParcelamentoColumn(isSmallScreen: Boolean,
-                       viewModel: AdicionarContaViewModel,
+                       selectedDate: LocalDate,
+                       onEditDate: (LocalDate) -> Unit,
+                       textJuros: String,
+                       onEditTextJuros: (String) -> Unit,
                        isParcelamentoChecked: Boolean,
-                       onCheckedChange: (Boolean) -> Unit){
+                       onCheckedChange: (Boolean) -> Unit,
+                       categoriesParcelamento: List<String>,
+                       selectedCategory: String,
+                       onChangeCategoriesParcelamento: (String) -> Unit,
+                       textParcelas: String,
+                       onChangeTextParcelas: (String) -> Unit
+                       ){
     val fillMaxWidth = Modifier.fillMaxWidth()
-    var selectedCategory by remember { mutableStateOf("1x") }
-    val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
-    var textParcelas by remember { mutableStateOf("") }
-    var textJuros by remember { mutableStateOf("") }
     var showDatePicker by remember { mutableStateOf(false)}
-
-    var selectedDate by remember { mutableStateOf(LocalDate.now())}
 
     Column {
         Row(
@@ -90,18 +95,23 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
                     BreezeDropdownMenu(
                         modifier = if(isSmallScreen) Modifier.width(120.dp) else Modifier.width(162.dp),
                         categoryName = "",
-                        categories = categories,
+                        categories = categoriesParcelamento,
                         selectedCategory = selectedCategory,
-                        onCategorySelected = { selectedCategory = it },
+                        onCategorySelected = onChangeCategoriesParcelamento,
                         showDescriptionText = false
                     )
 
                     if (selectedCategory == "Outro...") {
+                        BreezeOutlinedTextField(
+                            modifier = Modifier.padding(vertical = 20.dp),
+                            text = textParcelas.toString(),
+                            onValueChange = onChangeTextParcelas,
+                            textLabel = "Parcelas",
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
                         TextField(
-                            value = textParcelas,
-                            onValueChange = {
-                                textParcelas = it
-                            },
+                            value = textParcelas.toString(),
+                            onValueChange = onChangeTextParcelas,
                             placeholder = {
                                 DescriptionText("Parcelas")
                             },
@@ -126,7 +136,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
         }
         Spacer(modifier = Modifier.height(20.dp))
         if (isParcelamentoChecked) {
-            ResponsiveJurosSection(isSmallScreen, textJuros) { textJuros = it }
+            ResponsiveJurosSection(isSmallScreen, textJuros, onValueChange = onEditTextJuros)
         }
             ResponsiveDateParcelaSection(isSmallScreen, selectedDate, showDatePicker = {
                 showDatePicker = true
@@ -135,7 +145,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
         ReceitaDatePicker(
             showDialog = showDatePicker,
             onDismiss = { showDatePicker = false},
-        ) { selectedDate = it }
+        ) { onEditDate }
 
 
         Row(
@@ -144,7 +154,6 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
             horizontalArrangement = Arrangement.Center
         ) {
             val text = if (isParcelamentoChecked) "Parcelado em $selectedCategory com juros" else "Parcelado em $selectedCategory sem juros"
-            viewModel.guardaDataConta(selectedDate)
             Text(
                 text,
                 fontStyle = FontStyle.Italic,

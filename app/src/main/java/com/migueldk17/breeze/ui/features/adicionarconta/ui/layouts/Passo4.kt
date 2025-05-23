@@ -1,21 +1,15 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
@@ -30,19 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrincipal
+import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.ParcelamentoColumn
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
-import com.migueldk17.breeze.ui.theme.BreezeTheme
 import java.time.LocalDate
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -51,12 +42,23 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
     var valorConta by remember{
         mutableStateOf("")
     }
+    var textJuros by remember {
+        mutableStateOf("")
+    }
     var isChecked by remember {
         mutableStateOf(false)
     }
     var isCheckedParcelamento by remember {
         mutableStateOf(false)
     }
+    var selectedDate by remember {
+        mutableStateOf(LocalDate.now())
+    }
+
+    var selectedCategory by remember { mutableStateOf("1x") }
+    val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
+    var textParcelas by remember { mutableStateOf("") }
+
     val nomeConta = viewModel.nomeConta.collectAsState().value
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
@@ -84,16 +86,15 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
             DescriptionText("Defina o valor aqui!")
             Spacer(modifier = Modifier.size(29.dp))
             //TextField responsável por adicionar um valor a conta
-            TextField(valorConta, onValueChange = { value ->
-                valorConta = value
-            },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                placeholder = {
-                    Text("Adicionar Valor")
-                },
+            BreezeOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                text = valorConta,
+                onValueChange = { valorConta = it},
+                textLabel = "Adicionar Valor",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-                visualTransformation = MoneyVisualTransformation())
+                visualTransformation = MoneyVisualTransformation()
+
+            )
             Row(
                 modifier = Modifier.padding(vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -108,7 +109,20 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                 )
             }
             if (isChecked) {
-                ParcelamentoColumn(isSmallScreen, viewModel, isCheckedParcelamento, { isCheckedParcelamento = it})
+                ParcelamentoColumn(
+                    isSmallScreen,
+                    selectedDate = selectedDate,
+                    onEditDate = { selectedDate = it},
+                    textJuros = textJuros,
+                    onEditTextJuros = { textJuros = it},
+                    isCheckedParcelamento,
+                    { isCheckedParcelamento = it},
+                    categoriesParcelamento = categories,
+                    selectedCategory = selectedCategory,
+                    onChangeCategoriesParcelamento = { selectedCategory = it},
+                    textParcelas = textParcelas,
+                    onChangeTextParcelas = { textParcelas = it}
+                    )
             }
 
             //Botão para avançar de tela
@@ -116,9 +130,14 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                 modifier = Modifier
                     .padding(vertical = 74.dp),
                 onClick = {
-                viewModel.guardaValorConta(valorConta.toDouble())
-                navController.navigate(NavGraph2.Passo5.route)
-                }, enabled = valorConta.isNotEmpty()
+                    viewModel.guardaValorConta(valorConta.toDouble())
+                    navController.navigate(NavGraph2.Passo5.route)
+                }, enabled = buttonAvancaEnabled(
+                    valorConta = valorConta,
+                    textJuros,
+                    isChecked,
+                    isCheckedParcelamento
+                )
             ) {
                 Text("Avançar")
             }
