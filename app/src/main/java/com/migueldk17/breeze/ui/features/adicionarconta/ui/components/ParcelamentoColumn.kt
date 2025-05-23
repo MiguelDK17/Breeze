@@ -16,12 +16,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -33,8 +36,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -50,17 +56,18 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ParcelamentoColumn(isSmallScreen: Boolean, viewModel: AdicionarContaViewModel){
+fun ParcelamentoColumn(isSmallScreen: Boolean,
+                       viewModel: AdicionarContaViewModel,
+                       isParcelamentoChecked: Boolean,
+                       onCheckedChange: (Boolean) -> Unit){
     val fillMaxWidth = Modifier.fillMaxWidth()
     var selectedCategory by remember { mutableStateOf("1x") }
     val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
     var textParcelas by remember { mutableStateOf("") }
-    var checked by remember { mutableStateOf(false) }
     var textJuros by remember { mutableStateOf("") }
     var showDatePicker by remember { mutableStateOf(false)}
 
     var selectedDate by remember { mutableStateOf(LocalDate.now())}
-    Log.d(TAG, "ParcelamentoColumn: $isSmallScreen")
 
     Column {
         Row(
@@ -113,14 +120,12 @@ fun ParcelamentoColumn(isSmallScreen: Boolean, viewModel: AdicionarContaViewMode
             DescriptionText("As parcelas têm juros ?")
             Checkbox(
                 enabled = true,
-                onCheckedChange = {
-                    checked = it
-                },
-                checked = checked
+                onCheckedChange = onCheckedChange,
+                checked = isParcelamentoChecked
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
-        if (checked) {
+        if (isParcelamentoChecked) {
             ResponsiveJurosSection(isSmallScreen, textJuros) { textJuros = it }
         }
             ResponsiveDateParcelaSection(isSmallScreen, selectedDate, showDatePicker = {
@@ -138,7 +143,8 @@ fun ParcelamentoColumn(isSmallScreen: Boolean, viewModel: AdicionarContaViewMode
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            val text = if (checked) "Parcelado em $selectedCategory com juros" else "Parcelado em $selectedCategory sem juros"
+            val text = if (isParcelamentoChecked) "Parcelado em $selectedCategory com juros" else "Parcelado em $selectedCategory sem juros"
+            viewModel.guardaDataConta(selectedDate)
             Text(
                 text,
                 fontStyle = FontStyle.Italic,
@@ -267,16 +273,28 @@ private fun ResponsiveLabelField(textJuros: String, onValueChange: (String) -> U
 
         DescriptionText("Qual a porcentagem de juros?")
         Spacer(modifier = Modifier.size(25.dp))
-        TextField(
-            value = textJuros,
-            onValueChange = onValueChange,
-            placeholder = {
-                DescriptionText("2% ao mês")
-            },
-            modifier = Modifier
-                .width(121.dp)
-                .height(56.dp),
-
-            )
+    OutlinedTextField(
+        textJuros,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .width(130.dp)
+            .height(80.dp),
+        label = {
+            Text("Porcentagem",
+                fontSize = 12.4.sp)
+        },
+        minLines = 1,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        isError = textJuros.length > 2,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = Color(0xFFF5F5F5),
+            unfocusedContainerColor = Color(0xFFF5F5F5),
+            unfocusedBorderColor = Color(0xFFF5F5F5)
+        ),
+        textStyle = TextStyle(
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center
+        )
+    )
 
 }

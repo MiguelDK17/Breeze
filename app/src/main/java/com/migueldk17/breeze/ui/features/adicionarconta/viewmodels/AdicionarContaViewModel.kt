@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -31,6 +32,9 @@ class AdicionarContaViewModel @Inject constructor(
 
     private val _subcategoriaConta = MutableStateFlow("")
     val subcategoriaConta: StateFlow<String> = _subcategoriaConta.asStateFlow()
+
+    private val _dataDaConta = MutableStateFlow(LocalDate.now())
+    val dataDaConta: StateFlow<LocalDate> = _dataDaConta.asStateFlow()
 
     private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
     val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
@@ -79,6 +83,11 @@ class AdicionarContaViewModel @Inject constructor(
     //Guarda o valor da conta
     fun guardaValorConta(valor: Double) {
         _valorConta.value = valor / 100
+    }
+
+    //Guarda a data da primeira parcela da conta
+    fun guardaDataConta(data: LocalDate){
+        _dataDaConta.value = data
     }
 
     //Guarda a Conta no Room
