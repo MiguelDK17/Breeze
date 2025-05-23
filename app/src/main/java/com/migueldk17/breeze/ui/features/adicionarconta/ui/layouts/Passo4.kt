@@ -104,7 +104,7 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                 )
             }
             if (isChecked) {
-                ParcelamentoColumn(isSmallScreen)
+                ParcelamentoColumn(isSmallScreen, viewModel)
             }
 
             //Botão para avançar de tela
@@ -184,7 +184,7 @@ private fun Passo4Preview() {
                 )
             }
             if (isChecked) {
-                ParcelamentoColumn(isSmallScreen)
+                //ParcelamentoColumn(isSmallScreen, )
             }
 
             //Botão para avançar de tela

@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import kotlinx.coroutines.delay
 
 
@@ -34,7 +36,9 @@ fun InfoIconWithPopup(message: String) {
             showPopup = true
 
         }) {
-            Icon(Icons.Default.Info, contentDescription = "Botão de informação")
+            BreezeIcon(
+                BreezeIcons.Linear.Essetional.InfoCircle, contentDescription = "Botão de informação"
+            )
         }
 
         if (showPopup) {

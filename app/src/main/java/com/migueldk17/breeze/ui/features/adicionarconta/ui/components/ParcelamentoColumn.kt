@@ -41,6 +41,8 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
+import com.migueldk17.breeze.ui.components.InfoIconWithPopup
+import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.ReceitaDatePicker
 import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
@@ -48,7 +50,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ParcelamentoColumn(isSmallScreen: Boolean){
+fun ParcelamentoColumn(isSmallScreen: Boolean, viewModel: AdicionarContaViewModel){
     val fillMaxWidth = Modifier.fillMaxWidth()
     var selectedCategory by remember { mutableStateOf("1x") }
     val categories = listOf("1x", "3x", "6x", "12x", "Outro...")
@@ -121,7 +123,9 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
         if (checked) {
             ResponsiveJurosSection(isSmallScreen, textJuros) { textJuros = it }
         }
-            ResponsiveDateParcelaSection(isSmallScreen, selectedDate)
+            ResponsiveDateParcelaSection(isSmallScreen, selectedDate, showDatePicker = {
+                showDatePicker = true
+            })
 
         ReceitaDatePicker(
             showDialog = showDatePicker,
@@ -142,12 +146,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean){
                 fontSize = 14.sp,
                 modifier = Modifier.padding(horizontal = 5.dp)
             )
-            BreezeIcon(
-                BreezeIcons.Linear.Essetional.InfoCircle,
-                contentDescription = "Botão de informções",
-                modifier = Modifier.padding(horizontal = 5.dp)
 
-            )
         }
 
     }
@@ -183,7 +182,8 @@ private fun ResponsiveJurosSection(
 @Composable
 private fun ResponsiveDateParcelaSection(
     isSmallScreen: Boolean,
-    selectedDate: LocalDate){
+    selectedDate: LocalDate,
+    showDatePicker: () -> Unit){
     val iconSize = if (isSmallScreen) 24.dp else 26.dp
     val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
@@ -217,7 +217,7 @@ private fun ResponsiveDateParcelaSection(
                         formattedDate
                     )
                     IconButton(
-                        onClick = {},
+                        onClick = showDatePicker,
                         modifier = Modifier
                             .size(iconSize)
                             .padding(start = 5.dp)
