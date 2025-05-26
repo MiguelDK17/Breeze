@@ -32,7 +32,17 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
     val corCard = viewModel.corCard.collectAsState().value
+    val dataConta = viewModel.dataDaConta.collectAsState().value
+    val isContaParcelada = viewModel.isContaParcelada.collectAsState().value
+    val qtdParcela = viewModel.quantidadeDeParcelas.collectAsState().value
+    val taxaDeJuros = viewModel.taxaDeJurosMensal.collectAsState().value
+    val valorDasParcelas = viewModel.valorDasParcelas.collectAsState().value
 
+    Log.d(TAG, "Final: é conta parcelada: $isContaParcelada")
+    Log.d(TAG, "Final: data de parcelamento da conta salva: $dataConta")
+    Log.d(TAG, "Final: A taxa de juros é de: $taxaDeJuros")
+    Log.d(TAG, "Final: quantidade de parcelas: $qtdParcela")
+    Log.d(TAG, "Final: valor das parcelas: $valorDasParcelas")
     //valor da conta armazenado no viewModel
     val valorConta = viewModel.valorConta.collectAsState().value
     //Pega o valor da conta do viewModel e formata para valores monetários

@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.math.pow
 
 @HiltViewModel
 class AdicionarContaViewModel @Inject constructor(
@@ -34,11 +35,17 @@ class AdicionarContaViewModel @Inject constructor(
     private val _subcategoriaConta = MutableStateFlow("")
     val subcategoriaConta: StateFlow<String> = _subcategoriaConta.asStateFlow()
 
-    private val _dataDaConta = MutableStateFlow(LocalDate.now())
-    val dataDaConta: StateFlow<LocalDate> = _dataDaConta.asStateFlow()
+    private val _isContaParcelada = MutableStateFlow(false)
+    val isContaParcelada: StateFlow<Boolean> = _isContaParcelada.asStateFlow()
 
-    private val _quantidadeDeParcelas = MutableStateFlow(1)
+    private val _dataDaConta = MutableStateFlow(LocalDate.now())
+    val dataDaConta: StateFlow<LocalDate?> = _dataDaConta.asStateFlow()
+
+    private val _quantidadeDeParcelas = MutableStateFlow(0)
     val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
+
+    private val _taxaDeJurosMensal = MutableStateFlow(0.0)
+    val taxaDeJurosMensal: StateFlow<Double> = _taxaDeJurosMensal.asStateFlow()
 
     private val _valorDasParcelas = MutableStateFlow(1.0)
     val valorDasParcelas: StateFlow<Double> = _valorDasParcelas.asStateFlow()
@@ -92,15 +99,48 @@ class AdicionarContaViewModel @Inject constructor(
         _valorConta.value = valor / 100
     }
 
+    fun guardaIsContaParcelada(boolean: Boolean){
+        _isContaParcelada.value = boolean
+    }
+
     //Guarda a data da primeira parcela da conta
     fun guardaDataConta(data: LocalDate){
         _dataDaConta.value = data
+    }
+
+    fun guardaPorcentagemJuros(string: String){
+        val valor = string.toDoubleOrNull()?.div(100) ?: 0.0
+        _taxaDeJurosMensal.value = valor
     }
 
     //Guarda a quantidade de parcelas
     fun guardaQtdParcelas(string: String){
         val valor = string.filter { it.isDigit() }.toInt()
         _quantidadeDeParcelas.value = valor
+
+        guardaValorDaParcela()
+    }
+
+    private fun guardaValorDaParcela(){
+        if (_taxaDeJurosMensal.value == 0.0) calculaParcelasSemJuros() else calculaParcelasComJuros()
+    }
+
+    private fun calculaParcelasSemJuros(): Double{
+        return if (_quantidadeDeParcelas.value > 0){
+            _valorConta.value / quantidadeDeParcelas.value
+        }
+        else {
+            0.0
+        }
+    }
+
+    private fun calculaParcelasComJuros(): Double {
+        if (_quantidadeDeParcelas.value <= 0 || _taxaDeJurosMensal.value < 0) return 0.0
+
+        val i = _taxaDeJurosMensal.value
+        val n = _quantidadeDeParcelas.value
+
+        return (_valorConta.value * i) / (1 - (1 + i).pow(-n))
     }
 
 
@@ -114,6 +154,7 @@ class AdicionarContaViewModel @Inject constructor(
             val colorIcon = _corIcone.value.toDatabaseValue()
             val colorCard = _corCard.value.toDatabaseValue()
             val dateTime = LocalDateTime.now().toDatabaseValue()
+            val dataDaConta = _dataDaConta.value.toString()
 
             val conta = Conta(
                 name = name,

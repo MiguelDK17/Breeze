@@ -69,7 +69,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
                        selectedCategory: String,
                        onChangeCategoriesParcelamento: (String) -> Unit,
                        textParcelas: String,
-                       onChangeTextParcelas: (String) -> Unit
+                       onChangeTextParcelas: (String) -> Unit,
                        ){
     val fillMaxWidth = Modifier.fillMaxWidth()
     var showDatePicker by remember { mutableStateOf(false)}
@@ -280,8 +280,8 @@ private fun ResponsiveDateParcelaSection(
 @Composable
 private fun ResponsiveLabelField(textJuros: String, onValueChange: (String) -> Unit){
 
-        DescriptionText("Qual a porcentagem de juros?")
-        Spacer(modifier = Modifier.size(25.dp))
+    DescriptionText("Qual a porcentagem de juros?")
+    Spacer(modifier = Modifier.size(25.dp))
     OutlinedTextField(
         textJuros,
         onValueChange = onValueChange,

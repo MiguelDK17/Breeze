@@ -104,6 +104,7 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                     enabled = true,
                     onCheckedChange = {
                         isChecked = it
+                        viewModel.guardaIsContaParcelada(it)
                     },
                     checked = isChecked
                 )
@@ -131,8 +132,12 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                     .padding(vertical = 74.dp),
                 onClick = {
                     viewModel.guardaValorConta(valorConta.toDouble())
+                    viewModel.guardaDataConta(selectedDate)
+                    viewModel.guardaQtdParcelas(selectedCategory)
+                    if (textJuros.isNotEmpty()) viewModel.guardaPorcentagemJuros(textJuros)
                     navController.navigate(NavGraph2.Passo5.route)
-                }, enabled = buttonAvancaEnabled(
+                },
+                enabled = buttonAvancaEnabled(
                     valorConta = valorConta,
                     textJuros,
                     isChecked,
