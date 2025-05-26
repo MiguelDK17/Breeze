@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -39,9 +41,11 @@ import java.time.LocalDate
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
+    //Valor bruto da conta em reais
     var valorConta by remember{
         mutableStateOf("")
     }
+
     var textJuros by remember {
         mutableStateOf("")
     }
@@ -133,7 +137,7 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                 onClick = {
                     viewModel.guardaValorConta(valorConta.toDouble())
                     viewModel.guardaDataConta(selectedDate)
-                    viewModel.guardaQtdParcelas(selectedCategory)
+                    if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas)
                     if (textJuros.isNotEmpty()) viewModel.guardaPorcentagemJuros(textJuros)
                     navController.navigate(NavGraph2.Passo5.route)
                 },

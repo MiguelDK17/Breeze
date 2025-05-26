@@ -109,14 +109,6 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
                             textLabel = "Parcelas",
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
-                        TextField(
-                            value = textParcelas.toString(),
-                            onValueChange = onChangeTextParcelas,
-                            placeholder = {
-                                DescriptionText("Parcelas")
-                            },
-                            modifier = Modifier.padding(vertical = 20.dp)
-                        )
                     }
                 }
 

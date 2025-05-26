@@ -118,11 +118,15 @@ class AdicionarContaViewModel @Inject constructor(
         val valor = string.filter { it.isDigit() }.toInt()
         _quantidadeDeParcelas.value = valor
 
-        guardaValorDaParcela()
+        guardaValorDasParcelas()
     }
 
-    private fun guardaValorDaParcela(){
-        if (_taxaDeJurosMensal.value == 0.0) calculaParcelasSemJuros() else calculaParcelasComJuros()
+    private fun guardaValorDasParcelas(){
+        _valorDasParcelas.value = guardaValorDaParcela()
+    }
+
+    private fun guardaValorDaParcela(): Double{
+        return if (_taxaDeJurosMensal.value == 0.0) calculaParcelasSemJuros() else calculaParcelasComJuros()
     }
 
     private fun calculaParcelasSemJuros(): Double{
