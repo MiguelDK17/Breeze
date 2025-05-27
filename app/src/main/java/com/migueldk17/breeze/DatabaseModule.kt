@@ -19,32 +19,13 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): BreezeDatabase {
-        val MIGRATION_3_4 = object : Migration(3, 4){
-            override fun migrate(db: SupportSQLiteDatabase) {
-                // Adiciona coluna isContaParcelada na tabela Conta
-                db.execSQL("ALTER TABLE conta_table ADD COLUMN is_conta_parcelada INTEGER NOT NULL DEFAULT 0")
-
-                //Cria a nova tabela ParcelaEntity
-                db.execSQL(
-                    """
-                        CREATE TABLE IF NOT EXISTS parcela_entity (
-                        id INTEGER PRIMARY KEY NOT NULL,
-                        id_conta_pai TEXT NOT NULL,
-                        valor REAL NOT NULL,
-                        numero_parcela INTEGER NOT NULL,
-                        total_parcelas INTEGER NOT NULL,
-                        data TEXT NOT NULL,
-                        esta_paga INTEGER NOT NULL DEFAULT 0
-                        )
-                    """.trimIndent())
-            }
-        }
 
         return Room.databaseBuilder(
             context,
             BreezeDatabase::class.java,
             "breeze_database"
-        ).addMigrations(MIGRATION_3_4)
+        ).addMigrations()
+            .fallbackToDestructiveMigration(true)
             .build()
 
     }

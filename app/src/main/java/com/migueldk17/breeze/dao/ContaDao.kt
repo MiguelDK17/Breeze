@@ -18,7 +18,7 @@ interface ContaDao {
      suspend fun getContaById(id: Int): Conta
      //Insere a conta no Room
      @Insert(onConflict = OnConflictStrategy.REPLACE) //Caso haja conflito de IDS a mais recente subistitui a mais antiga
-    suspend fun insertConta(conta: Conta)
+    suspend fun insertConta(conta: Conta): Long
     //Atualiza o valor da conta
     @Update
     suspend fun atualizarConta(conta: Conta)

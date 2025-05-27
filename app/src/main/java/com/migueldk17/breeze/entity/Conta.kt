@@ -9,10 +9,16 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "conta_table")
 data class Conta(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0, //Id da conta
+    val id: Long = 0, //Id da conta
 
     @ColumnInfo(name = "name")
     val name: String, //Nome da conta
+
+    @ColumnInfo(name = "category") //Categoria da Conta
+    val categoria: String,
+
+    @ColumnInfo(name = "sub_category") //Sub categoria da Conta
+    val subCategoria: String,
 
     @ColumnInfo(name = "valor")
     val valor: Double, //Valor monetário da conta

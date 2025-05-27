@@ -20,6 +20,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.math.pow
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @HiltViewModel
 class AdicionarContaViewModel @Inject constructor(
@@ -153,22 +155,34 @@ class AdicionarContaViewModel @Inject constructor(
     fun salvaContaDatabase() {
         viewModelScope.launch {
             val name = _nomeConta.value
+            val categoria = _categoriaConta.value
+            val subCategoria = _subcategoriaConta.value
             val valor = _valorConta.value
             val icon = _iconeCardConta.value.enum.toDatabaseValue()
             val colorIcon = _corIcone.value.toDatabaseValue()
             val colorCard = _corCard.value.toDatabaseValue()
             val dateTime = LocalDateTime.now().toDatabaseValue()
-            val dataDaConta = _dataDaConta.value.toString()
+            val isContaParcelada = _isContaParcelada.value
 
             val conta = Conta(
                 name = name,
+                categoria = categoria,
+                subCategoria = subCategoria,
                 valor = valor,
                 icon = icon,
                 colorIcon = colorIcon,
                 colorCard = colorCard,
                 dateTime = dateTime
             )
-            contaDao.insertConta(conta)
+            val id = contaDao.insertConta(conta)
+            Log.d(TAG, "salvaContaDatabase: id da conta ao criar: $id")
+        }
+    }
+
+    @OptIn(ExperimentalUuidApi::class)
+    fun salvaParcelasDatabase(){
+        viewModelScope.launch {
+
         }
     }
 

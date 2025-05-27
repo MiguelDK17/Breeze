@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,6 +53,7 @@ fun BreezeCard(
     viewModel: PaginaInicialViewModel,
     onClick: () -> Unit,
 ){
+    Log.d(TAG, "BreezeCard: id no Card ${conta.id}")
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
 
