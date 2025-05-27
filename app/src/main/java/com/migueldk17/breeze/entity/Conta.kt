@@ -27,7 +27,10 @@ data class Conta(
     val colorCard: Int, //Cor do card já transformada em Int
 
     @ColumnInfo(name = "date_time")
-    val dateTime: String
+    val dateTime: String,
+
+    @ColumnInfo(name = "is_conta_parcelada", defaultValue = "0")
+    val isContaParcelada: Boolean = false
 )
 
 
