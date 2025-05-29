@@ -3,11 +3,15 @@ package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.dao.ContaDao
+import com.migueldk17.breeze.dao.ParcelaDao
 import com.migueldk17.breeze.dao.ReceitaDao
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.entity.Receita
+import com.migueldk17.breeze.repository.ParcelaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
     private val receitaDao: ReceitaDao,
-    private val contaDao: ContaDao
+    private val contaDao: ContaDao,
+    private val parcelaDao: ParcelaDao,
+    private val repository: ParcelaRepository
 ): ViewModel() {
     //Banco de dados
     private val _receita = MutableStateFlow<Double?>(null)
@@ -36,6 +42,7 @@ class PaginaInicialViewModel @Inject constructor(
 
     private val _showBottomSheet = MutableStateFlow<Boolean>(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
+
 
 
     init {
@@ -88,6 +95,11 @@ class PaginaInicialViewModel @Inject constructor(
         viewModelScope.launch {
             contaDao.apagarConta(conta)
         }
+    }
+
+     fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
+        return repository.buscaParcelas(idContaPai)
+
     }
 
 }

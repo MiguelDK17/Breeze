@@ -40,6 +40,7 @@ import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("DefaultLocale")
@@ -52,6 +53,13 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
 
     var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
+    val parcelas = viewModel.pegaParcelasDaConta(6).collectAsStateWithLifecycle(emptyList()).value
+    
+    if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia")
+    
+    parcelas.forEach { parcela ->
+        Log.d(TAG, "PaginaInicial: Há uma parcela: $parcela")
+    }
 
 
     Column(modifier = Modifier
@@ -109,6 +117,8 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
             else -> {
                 LazyColumn {
                     items(contas) { conta ->
+                        
+                        Log.d(TAG, "PaginaInicial: parcelas da conta: ${parcelas}")
                         BreezeCard(
                             conta,
                             onClick = {

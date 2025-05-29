@@ -2,17 +2,16 @@ package com.migueldk17.breeze.ui.features.adicionarconta.viewmodels
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toDatabaseValue
-import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
+import com.migueldk17.breeze.repository.ParcelaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,12 +21,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.math.pow
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @HiltViewModel
 class AdicionarContaViewModel @Inject constructor(
-    private val repository: ContaRepository
+    private val contaRepository: ContaRepository,
+    private val parcelaRepository: ParcelaRepository
 ): ViewModel() {
 
     private val _nomeConta = MutableStateFlow("")
@@ -92,7 +90,6 @@ class AdicionarContaViewModel @Inject constructor(
     //Guarda a cor do Card de Contas
     fun guardaCorCardEscolhida(icon: BreezeIconsType) {
         _corCard.value = icon.color
-        Log.d(TAG, "guardaIconEscolhido: icone selecionado")
     }
     //Guarda a cor padrão do aplicativo(Surface) para ser usada no card de contas
     fun guardaCorCardPadrao(color: Color) {
@@ -178,28 +175,39 @@ class AdicionarContaViewModel @Inject constructor(
                 isContaParcelada = isContaParcelada
             )
 
-            repository.adicionarConta(conta)
+            contaRepository.adicionarConta(conta)
 
             if (isContaParcelada) salvaParcelasDatabase(conta)
         }
     }
 
     fun salvaParcelasDatabase(conta: Conta){
-        viewModelScope.launch {
-            val idContaPai = conta.id
-            val valor = _valorDasParcelas.value
-            val numeroParcela = 1
-            val totalParcelas = _quantidadeDeParcelas.value
-            val data = _dataDaConta.value.toDatabaseValue()
+            viewModelScope.launch {
+                val idContaPai = conta.id
+                val valor = _valorDasParcelas.value
+                val totalParcelas = _quantidadeDeParcelas.value
+                val dataInicial = _dataDaConta.value
 
-            ParcelaEntity(
-                idContaPai = idContaPai,
-                valor = valor,
-                numeroParcela = numeroParcela,
-                totalParcelas = totalParcelas,
-                data = data
-            )
-        }
+                val listaParcelas = mutableListOf<ParcelaEntity>()
+
+                for (i in 1..totalParcelas) {
+                    val dataParcela = dataInicial.plusMonths(((i - 1).toLong())).toDatabaseValue()
+
+                    val parcela = ParcelaEntity(
+                        idContaPai = idContaPai,
+                        valor = valor,
+                        numeroParcela = i,
+                        totalParcelas = totalParcelas,
+                        data = dataParcela
+                    )
+
+                    listaParcelas.add(parcela)
+                }
+                Log.d(TAG, "salvaParcelasDatabase: $listaParcelas")
+
+                parcelaRepository.adicionaParcelas(listaParcelas)
+            }
+
     }
 
 
