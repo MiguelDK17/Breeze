@@ -49,6 +49,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.MainActivity
+import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.entity.Conta
@@ -58,13 +59,22 @@ import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 
 @Composable
 fun EditarValorConta(
-    conta: Conta,
-    id: Int
+    conta: Conta
 ){
     val cardColor = conta.colorCard.toColor()
-    Log.d(TAG, "EditarValorConta: $cardColor")
+    val nome = conta.name
+    val valorAtual = conta.valor
+    val categoria = conta.categoria
+    val subCategoria = conta.subCategoria
+    Log.d(TAG, "EditarValorConta: $nome")
+    Log.d(TAG, "EditarValorConta: $categoria")
+    Log.d(TAG, "EditarValorConta: $subCategoria")
+    Log.d(TAG, "EditarValorConta: ${conta.isContaParcelada}")
+
+
+
     var text by remember {
-        mutableStateOf("")
+        mutableStateOf("${valorAtual * 10}")
     }
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize()) {
@@ -122,7 +132,8 @@ fun EditarValorConta(
                                     )
                                 },
                                 modifier = Modifier.size(width = 210.dp, height = 56.dp),
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                visualTransformation = MoneyVisualTransformation()
                             )
                             Spacer(Modifier.width(10.dp))
                             OutlinedIconButton(onClick = {

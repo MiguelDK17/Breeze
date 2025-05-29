@@ -78,7 +78,7 @@ class PaginaInicialViewModel @Inject constructor(
     }
 
     //Pega as informações da conta selecionada em PaginaInicial baseada no ID fornecido
-    fun pegaContaSelecionada(id: Int){
+    fun pegaContaSelecionada(id: Long){
         viewModelScope.launch {
             _contaSelecionada.value = contaDao.getContaById(id)
         }

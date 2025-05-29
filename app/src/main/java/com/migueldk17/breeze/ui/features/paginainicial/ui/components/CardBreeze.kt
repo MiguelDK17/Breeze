@@ -50,8 +50,8 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 @Composable
 fun BreezeCard(
     conta: Conta,
-    viewModel: PaginaInicialViewModel,
     onClick: () -> Unit,
+    apagarConta: () -> Unit
 ){
     Log.d(TAG, "BreezeCard: id no Card ${conta.id}")
     //Variavel que controla o estado do BasicAlertDialog
@@ -169,7 +169,7 @@ fun BreezeCard(
                                 Text("Cancelar")
                             }
                             TextButton(onClick = {
-                                viewModel.apagaConta(conta)
+                                apagarConta
                                 openDialog.value = false //Botão de confirmar
                             }) {
                                 Text("Confirmar")

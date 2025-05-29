@@ -15,7 +15,7 @@ interface ContaDao {
      fun getContas(): Flow<List<Conta>>
      //Terminar comando SQL e partir pro ViewModel
      @Query("SELECT * FROM conta_table WHERE id = :id LIMIT 1")
-     suspend fun getContaById(id: Int): Conta
+     suspend fun getContaById(id: Long): Conta
      //Insere a conta no Room
      @Insert(onConflict = OnConflictStrategy.REPLACE) //Caso haja conflito de IDS a mais recente subistitui a mais antiga
     suspend fun insertConta(conta: Conta): Long

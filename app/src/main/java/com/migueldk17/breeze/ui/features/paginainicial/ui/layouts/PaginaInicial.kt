@@ -109,11 +109,16 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
             else -> {
                 LazyColumn {
                     items(contas) { conta ->
-                        BreezeCard(conta, viewModel) {
-                            val intent = Intent(navController.context, MainActivity2::class.java)
-                            intent.putExtra("id", conta.id)
-                            navController.context.startActivity(intent)
-                        }
+                        BreezeCard(
+                            conta,
+                            onClick = {
+                                val intent = Intent(navController.context, MainActivity2::class.java)
+                                Log.d(TAG, "PaginaInicial: ${conta.id}")
+                                intent.putExtra("id", conta.id)
+                                navController.context.startActivity(intent)
+                            },
+                            apagarConta = { viewModel.apagaConta(conta)}
+                        )
                     }
                 }
             }

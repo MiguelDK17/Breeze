@@ -12,7 +12,7 @@ data class ParcelaEntity(
     val id: Int = 0,
 
     @ColumnInfo(name = "id_conta_pai")
-    val idContaPai: String,
+    val idContaPai: Long,
 
     @ColumnInfo(name = "valor")
     val valor: Double,

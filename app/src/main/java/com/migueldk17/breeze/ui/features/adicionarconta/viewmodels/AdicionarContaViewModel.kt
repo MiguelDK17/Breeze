@@ -11,6 +11,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.ParcelaEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -172,17 +173,32 @@ class AdicionarContaViewModel @Inject constructor(
                 icon = icon,
                 colorIcon = colorIcon,
                 colorCard = colorCard,
-                dateTime = dateTime
+                dateTime = dateTime,
+                isContaParcelada = isContaParcelada
             )
             val id = contaDao.insertConta(conta)
             Log.d(TAG, "salvaContaDatabase: id da conta ao criar: $id")
+
+            if (isContaParcelada) salvaParcelasDatabase(conta)
         }
     }
 
-    @OptIn(ExperimentalUuidApi::class)
-    fun salvaParcelasDatabase(){
+    fun salvaParcelasDatabase(conta: Conta){
         viewModelScope.launch {
+            val idContaPai = conta.id
+            val valor = _valorDasParcelas.value
+            val numeroParcela = 1
+            val totalParcelas = _quantidadeDeParcelas.value
+            val data = _dataDaConta.value.toDatabaseValue()
 
+            ParcelaEntity(
+                idContaPai = idContaPai,
+                valor = valor,
+                numeroParcela = numeroParcela,
+                totalParcelas = totalParcelas,
+                data = data
+
+            )
         }
     }
 
