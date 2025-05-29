@@ -12,6 +12,7 @@ import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
+import com.migueldk17.breeze.repository.ContaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +27,7 @@ import kotlin.uuid.Uuid
 
 @HiltViewModel
 class AdicionarContaViewModel @Inject constructor(
-    private val contaDao: ContaDao
+    private val repository: ContaRepository
 ): ViewModel() {
 
     private val _nomeConta = MutableStateFlow("")
@@ -176,8 +177,8 @@ class AdicionarContaViewModel @Inject constructor(
                 dateTime = dateTime,
                 isContaParcelada = isContaParcelada
             )
-            val id = contaDao.insertConta(conta)
-            Log.d(TAG, "salvaContaDatabase: id da conta ao criar: $id")
+
+            repository.adicionarConta(conta)
 
             if (isContaParcelada) salvaParcelasDatabase(conta)
         }
@@ -197,7 +198,6 @@ class AdicionarContaViewModel @Inject constructor(
                 numeroParcela = numeroParcela,
                 totalParcelas = totalParcelas,
                 data = data
-
             )
         }
     }

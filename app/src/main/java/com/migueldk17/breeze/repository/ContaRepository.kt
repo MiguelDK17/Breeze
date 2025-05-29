@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
@@ -22,6 +24,12 @@ class ContaRepository @Inject constructor(
         }
     }
 
+    suspend fun adicionarConta(conta: Conta){
+
+        val id = contaDao.insertConta(conta)
+
+        Log.d(TAG, "adicionaConta: id da conta ao criar: $id")
+    }
     suspend fun apagaConta(conta: Conta) {
         return contaDao.apagarConta(conta)
     }
