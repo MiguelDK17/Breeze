@@ -136,9 +136,9 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                     .padding(vertical = 74.dp),
                 onClick = {
                     viewModel.guardaValorConta(valorConta.toDouble())
+                    if (textJuros != "") viewModel.guardaPorcentagemJuros(textJuros)
                     viewModel.guardaDataConta(selectedDate)
                     if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas)
-                    if (textJuros.isNotEmpty()) viewModel.guardaPorcentagemJuros(textJuros)
                     navController.navigate(NavGraph2.Passo5.route)
                 },
                 enabled = buttonAvancaEnabled(

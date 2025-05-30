@@ -24,12 +24,17 @@ class ContaRepository @Inject constructor(
         }
     }
 
-    suspend fun adicionarConta(conta: Conta){
+    suspend fun adicionarConta(conta: Conta): Long{
 
         val id = contaDao.insertConta(conta)
 
-        Log.d(TAG, "adicionaConta: id da conta ao criar: $id")
+        return id
     }
+
+    suspend fun atualizaConta(conta: Conta){
+        contaDao.atualizarConta(conta)
+    }
+
     suspend fun apagaConta(conta: Conta) {
         return contaDao.apagarConta(conta)
     }

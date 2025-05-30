@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +34,7 @@ fun ReceitaDatePicker(
                             val selectedDate = Instant.ofEpochMilli(millis)
                                 .atZone(ZoneOffset.UTC)
                                 .toLocalDate()
+                            Log.d(TAG, "ReceitaDatePicker: selectedDate está assim em ReceitaDatePicker: $$selectedDate")
                             onDateSelected(selectedDate)
                         }
                         onDismiss()

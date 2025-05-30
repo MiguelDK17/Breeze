@@ -46,7 +46,7 @@ class AdicionarContaViewModel @Inject constructor(
     private val _quantidadeDeParcelas = MutableStateFlow(0)
     val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
 
-    private val _taxaDeJurosMensal = MutableStateFlow(0.0)
+    private val _taxaDeJurosMensal = MutableStateFlow(0.00)
     val taxaDeJurosMensal: StateFlow<Double> = _taxaDeJurosMensal.asStateFlow()
 
     private val _valorDasParcelas = MutableStateFlow(1.0)
@@ -112,6 +112,7 @@ class AdicionarContaViewModel @Inject constructor(
     fun guardaPorcentagemJuros(string: String){
         val valor = string.toDoubleOrNull()?.div(100) ?: 0.0
         _taxaDeJurosMensal.value = valor
+        Log.d(TAG, "guardaPorcentagemJuros: ${_taxaDeJurosMensal.value}")
     }
 
     //Guarda a quantidade de parcelas
@@ -127,10 +128,11 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     private fun guardaValorDaParcela(): Double{
-        return if (_taxaDeJurosMensal.value == 0.0) calculaParcelasSemJuros() else calculaParcelasComJuros()
+        return if (_taxaDeJurosMensal.value == 0.00) calculaParcelasSemJuros() else calculaParcelasComJuros()
     }
 
     private fun calculaParcelasSemJuros(): Double{
+        Log.d(TAG, "calculaParcelasSemJuros: Parcelas sem juros acionada")
         return if (_quantidadeDeParcelas.value > 0){
             _valorConta.value / quantidadeDeParcelas.value
         }
@@ -140,6 +142,7 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     private fun calculaParcelasComJuros(): Double {
+        Log.d(TAG, "calculaParcelasComJuros: Parcelas com juros acionada")
         if (_quantidadeDeParcelas.value <= 0 || _taxaDeJurosMensal.value < 0) return 0.0
 
         val i = _taxaDeJurosMensal.value
@@ -175,15 +178,15 @@ class AdicionarContaViewModel @Inject constructor(
                 isContaParcelada = isContaParcelada
             )
 
-            contaRepository.adicionarConta(conta)
+            val idContaPai = contaRepository.adicionarConta(conta)
 
-            if (isContaParcelada) salvaParcelasDatabase(conta)
+            if (isContaParcelada) salvaParcelasDatabase(idContaPai)
         }
     }
 
-    fun salvaParcelasDatabase(conta: Conta){
+    fun salvaParcelasDatabase(idContaPai: Long){
             viewModelScope.launch {
-                val idContaPai = conta.id
+                val idContaPai = idContaPai
                 val valor = _valorDasParcelas.value
                 val totalParcelas = _quantidadeDeParcelas.value
                 val dataInicial = _dataDaConta.value
@@ -192,6 +195,7 @@ class AdicionarContaViewModel @Inject constructor(
 
                 for (i in 1..totalParcelas) {
                     val dataParcela = dataInicial.plusMonths(((i - 1).toLong())).toDatabaseValue()
+
 
                     val parcela = ParcelaEntity(
                         idContaPai = idContaPai,

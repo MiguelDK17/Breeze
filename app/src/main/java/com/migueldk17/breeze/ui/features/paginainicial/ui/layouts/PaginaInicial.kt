@@ -53,14 +53,6 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
 
     var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
-    val parcelas = viewModel.pegaParcelasDaConta(6).collectAsStateWithLifecycle(emptyList()).value
-    
-    if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia")
-    
-    parcelas.forEach { parcela ->
-        Log.d(TAG, "PaginaInicial: Há uma parcela: $parcela")
-    }
-
 
     Column(modifier = Modifier
         .fillMaxWidth()) {
@@ -117,8 +109,9 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
             else -> {
                 LazyColumn {
                     items(contas) { conta ->
-                        
-                        Log.d(TAG, "PaginaInicial: parcelas da conta: ${parcelas}")
+                        val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+
+                        if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia") else Log.d(TAG, "PaginaInicial: Opa, achamos as parcelas: $parcelas")
                         BreezeCard(
                             conta,
                             onClick = {

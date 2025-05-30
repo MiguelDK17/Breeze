@@ -15,6 +15,7 @@ class ParcelaRepository @Inject constructor(
     suspend fun adicionaParcelas(parcelaEntity: List<ParcelaEntity>){
         try {
             parcelaDao.inserirParcelas(parcelaEntity)
+            Log.d(TAG, "adicionaParcelas: Parcelas adicionadas com sucesso")
         } catch (e: Exception){
             Log.d(TAG, "adicionaParcelas: Ocorreu um erro ao adicionar a conta, $e")
         }
