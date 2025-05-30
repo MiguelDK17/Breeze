@@ -25,7 +25,8 @@ fun SubcategoryChipGroup(
     selectedSubcategory: String,
     onSubCategorySelected: (String) -> Unit
 ){
-    val subCategories = subCategoriesMap[selectedCategory] ?: emptyList()
+    //Pega o map de sub categorias enviado do Passo1 e seleciona apenas a lista correspondente a categoria selecionada
+    val subCategories = subCategoriesMap[selectedCategory] ?: emptyList() //Caso não tenha sub categorias com base na categoria ele irá retornar uma lista vazia
 
     if (subCategories.isNotEmpty()) {
         Column(
@@ -42,8 +43,9 @@ fun SubcategoryChipGroup(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                //Pra cada item da lista um Chip é criado
                 subCategories.forEach { subCategory ->
-                    val isSelected = subCategory == selectedSubcategory
+                    val isSelected = subCategory == selectedSubcategory //Verifica se a sub categoria selecionada é igual a sub categoria atual
 
                     Surface(
                         shape = RoundedCornerShape(50),

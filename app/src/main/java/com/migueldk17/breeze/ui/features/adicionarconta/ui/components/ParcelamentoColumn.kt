@@ -37,24 +37,25 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
-import com.migueldk17.breeze.ui.features.paginainicial.ui.components.ReceitaDatePicker
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ParcelamentoColumn(isSmallScreen: Boolean,
-                       selectedDate: LocalDate,
-                       onEditDate: (LocalDate) -> Unit,
-                       textJuros: String,
-                       onEditTextJuros: (String) -> Unit,
-                       isParcelamentoComJurosChecked: Boolean,
-                       onCheckedChange: (Boolean) -> Unit,
-                       categoriesParcelamento: List<String>,
-                       selectedCategory: String,
-                       onChangeCategoriesParcelamento: (String) -> Unit,
-                       textParcelas: String,
-                       onChangeTextParcelas: (String) -> Unit,
+fun ParcelamentoColumn(isSmallScreen: Boolean, //Booleano para verificar se é um dispositivo pequeno
+                       selectedDate: LocalDate, //Data da primeira parcela
+                       onEditDate: (LocalDate) -> Unit, //Função para editar a data da primeira parcela
+                       textJuros: String, //Texto do campo de texto para o juros
+                       onEditTextJuros: (String) -> Unit, //Função para editar o texto do campo de texto para o juros
+                       isParcelamentoComJurosChecked: Boolean, //Booleano para verificar se o parcelamento tem juros
+                       onCheckedChange: (Boolean) -> Unit, //Função para editar o booleano para verificar se o parcelamento tem juros
+                       categoriesParcelamento: List<String>, //Lista de categorias de parcelamento
+                       selectedCategory: String, //Categoria selecionada
+                       onChangeCategoriesParcelamento: (String) -> Unit, //Função para editar a categoria selecionada
+                       textParcelas: String, //Texto do campo de texto para o número de parcelas
+                       onChangeTextParcelas: (String) -> Unit, //Função para editar o texto do campo de texto para o número de parcelas
                        ){
+
     val fillMaxWidth = Modifier.fillMaxWidth()
     var showDatePicker by remember { mutableStateOf(false)}
 
@@ -84,7 +85,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
                         onCategorySelected = onChangeCategoriesParcelamento,
                         showDescriptionText = false
                     )
-
+                    //Caso a categoria selecionada seja Outro irá aparecer um OutlinedTextField para inserir a quantidade de parcelas
                     if (selectedCategory == "Outro...") {
                         BreezeOutlinedTextField(
                             modifier = Modifier.padding(vertical = 20.dp),
@@ -98,12 +99,14 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
 
             }
         Spacer(modifier = Modifier.height(25.dp))
+
         Row(
             modifier = fillMaxWidth,
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
             DescriptionText("As parcelas têm juros ?")
+
             Checkbox(
                 enabled = true,
                 onCheckedChange = onCheckedChange,
@@ -111,14 +114,15 @@ fun ParcelamentoColumn(isSmallScreen: Boolean,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
+
         if (isParcelamentoComJurosChecked) {
             ResponsiveJurosSection(isSmallScreen, textJuros, onValueChange = onEditTextJuros)
         }
             ResponsiveDateParcelaSection(isSmallScreen, selectedDate, showDatePicker = {
                 showDatePicker = true
             })
-
-        ReceitaDatePicker(
+        //Date Picker usado para alterar a data da conta
+        BreezeDatePicker(
             showDialog = showDatePicker,
             onDismiss = { showDatePicker = false},
             onDateSelected = onEditDate
@@ -158,7 +162,6 @@ private fun ResponsiveJurosSection(
             ResponsiveLabelField(textJuros = textJuros, onValueChange = onValueChange)
         }
     } else {
-        Log.d(TAG, "ParcelamentoColumn: caiu no else $isSmallScreen")
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -258,7 +261,9 @@ private fun ResponsiveDateParcelaSection(
 private fun ResponsiveLabelField(textJuros: String, onValueChange: (String) -> Unit){
 
     DescriptionText("Qual a porcentagem de juros?")
+
     Spacer(modifier = Modifier.size(25.dp))
+
     OutlinedTextField(
         textJuros,
         onValueChange = onValueChange,
