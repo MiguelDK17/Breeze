@@ -114,7 +114,7 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
                 )
             }
 
-            ReceitaDatePicker(
+            BreezeDatePicker(
                 showDialog = showDatePicker,
                 onDismiss = {showDatePicker = false},
                 onDateSelected = { selectedDate = it}

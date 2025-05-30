@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReceitaDatePicker(
+fun BreezeDatePicker(
     showDialog: Boolean,
     onDismiss: () -> Unit,
     onDateSelected: (LocalDate) -> Unit

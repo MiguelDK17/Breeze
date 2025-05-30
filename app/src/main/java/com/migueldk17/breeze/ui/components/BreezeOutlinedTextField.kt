@@ -1,43 +1,40 @@
 package com.migueldk17.breeze.ui.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 
 @Composable
 fun BreezeOutlinedTextField(
-                            modifier: Modifier = Modifier,
-                            text: String,
-                            onValueChange: (String) -> Unit,
-                            textLabel: String,
-                            isError: Boolean = false,
-                            keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-                            visualTransformation: VisualTransformation = VisualTransformation.None,
+                            modifier: Modifier = Modifier, //Modificador padrão
+                            text: String, //Texto do campo
+                            onValueChange: (String) -> Unit, //Função que é chamada quando o texto é alterado
+                            textLabel: String, //Texto do label
+                            isError: Boolean = false, //Booleano de erro
+                            keyboardOptions: KeyboardOptions = KeyboardOptions.Default, //Opções de teclado padrão
+                            visualTransformation: VisualTransformation = VisualTransformation.None, //Transformação visual padrão
 
 ) {
     OutlinedTextField(
-        text,
-        onValueChange = onValueChange,
+        text, //Texto do campo
+        onValueChange = onValueChange, //Função que é chamada quando o texto é alterado
         modifier =  modifier,
         label = {
             DescriptionText(textLabel)
-        },
-        minLines = 1,
-        keyboardOptions = keyboardOptions,
-        isError = isError,
+        }, //Texto do label
+        minLines = 1, //Número mínimo de linhas
+        keyboardOptions = keyboardOptions, //Opções de teclado
+        isError = isError, //Booleano de erro
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color(0xFFF5F5F5),
-            unfocusedContainerColor = Color(0xFFF5F5F5),
-            unfocusedBorderColor = Color(0xFFF5F5F5)
+            focusedContainerColor = Color(0xFFF5F5F5), //Cor do campo quando está focado
+            unfocusedContainerColor = Color(0xFFF5F5F5), //Cor do campo quando não está focado
+            unfocusedBorderColor = Color(0xFFF5F5F5) //Cor da borda do campo quando não está focado
         ),
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation //Transformação visual do texto
     )
 }
