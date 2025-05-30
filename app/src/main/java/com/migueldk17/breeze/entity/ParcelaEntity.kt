@@ -3,29 +3,27 @@ package com.migueldk17.breeze.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
-import java.util.UUID
 
 @Entity(tableName = "parcela_entity")
 data class ParcelaEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int = 0, //Id da parcela
 
     @ColumnInfo(name = "id_conta_pai")
-    val idContaPai: Long,
+    val idContaPai: Long, //Id da conta pai
 
     @ColumnInfo(name = "valor")
-    val valor: Double,
+    val valor: Double, //Valor das parcelas
 
     @ColumnInfo(name = "numero_parcela")
-    val numeroParcela: Int,
+    val numeroParcela: Int, //Número da parcela
 
     @ColumnInfo(name = "total_parcelas")
-    val totalParcelas: Int,
+    val totalParcelas: Int, //Total de parcelas
 
     @ColumnInfo(name = "data")
-    val data: String,
+    val data: String, //Data das parcelas
 
     @ColumnInfo(name = "esta_paga", defaultValue = "0")
-    val estaPaga: Boolean = false
+    val estaPaga: Boolean = false //Booleano de verificação caso a parcela esteja paga
 )

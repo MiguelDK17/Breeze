@@ -29,6 +29,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun InfoIconWithPopup(message: String) {
+    //Controla a visibilidade do popup
     var showPopup by remember { mutableStateOf(false) }
 
     Box {
@@ -43,7 +44,7 @@ fun InfoIconWithPopup(message: String) {
 
         if (showPopup) {
             LaunchedEffect(Unit) {
-                delay(2000)
+                delay(2000) //Adiciona um tempo de visibilidade para o popup de 2 segundos
                 showPopup = false
             }
             Popup(alignment = Alignment.TopCenter, offset = IntOffset(0, -100)) {
