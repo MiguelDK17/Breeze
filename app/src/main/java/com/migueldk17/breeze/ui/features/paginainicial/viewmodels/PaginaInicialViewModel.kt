@@ -8,12 +8,14 @@ import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.repository.ReceitaRepository
+import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -32,8 +34,11 @@ class PaginaInicialViewModel @Inject constructor(
     //Variavwl que controla o estado de carregamente em PaginaInicial
     val carregando = MutableStateFlow(true)
 
+    private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
+    val contaState: StateFlow<UiState<List<Conta>>> = _contaState
     private val _conta = MutableStateFlow<List<Conta>>(emptyList())
     val conta: StateFlow<List<Conta>> = _conta
+
 
     private val _contaSelecionada = MutableStateFlow<Conta?>(null)
     val contaSelecionada: StateFlow<Conta?> = _contaSelecionada.asStateFlow()
@@ -60,13 +65,17 @@ class PaginaInicialViewModel @Inject constructor(
     private fun obterContas() {
         viewModelScope.launch {
             contaRepository.getContas()
+                .catch { e ->
+                    _contaState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                }
                 .collectLatest { lista ->
-                    //Manda a lista de contas pra variavel _conta
-                    _conta.value = lista
+                    if (lista.isEmpty()) {
+                        _contaState.value = UiState.Empty
+                    } else {
+                        delay(500) //Adiciona um pequeno delay
 
-                    delay(500) //Adiciona um pequeno delay
-
-                    carregando.value = false //Muda o valor para false, indicando que o carregamento terminou
+                        _contaState.value = UiState.Success(lista)
+                    }
                 }
         }
     }

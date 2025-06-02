@@ -26,6 +26,9 @@ interface ParcelaDao {
     //Deleta uma parcela
     @Delete
     suspend fun deletarParcela(parcela: ParcelaEntity)
+    //Deleta todas as parcelas
+    @Delete
+    suspend fun apagarTodasAsParcelas(parcelas: List<ParcelaEntity>)
 
 
 }

@@ -51,7 +51,8 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 fun BreezeCard(
     conta: Conta,
     onClick: () -> Unit,
-    apagarConta: () -> Unit
+    apagarConta: () -> Unit,
+    apagarParcelas: () -> Unit
 ){
     Log.d(TAG, "BreezeCard: id no Card ${conta.id}")
     //Variavel que controla o estado do BasicAlertDialog
