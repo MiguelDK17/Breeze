@@ -126,8 +126,11 @@ fun PaginaInicial(navController: NavController,
                                 intent.putExtra("id", conta.id)
                                 navController.context.startActivity(intent)
                             },
-                            apagarConta = { viewModel.apagaConta(conta)},
-                            apagarParcelas = { viewModel}
+                            apagarConta = {  viewModel.apagaConta(conta) },
+                            apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
+                                TAG,
+                                "PaginaInicial: Não há parcelas disponíveis pra apagar"
+                            ) }
                         )
                     }
                 }

@@ -155,7 +155,7 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
 }
 
 private fun textoCorreto(text: String): Boolean {
-    return  text.length <= 20
+    return  text.length <= 25
 }
 
 private fun isBreezeButtonEnabled(text: String, categorySelected: String, subcategorySelected: String): Boolean {

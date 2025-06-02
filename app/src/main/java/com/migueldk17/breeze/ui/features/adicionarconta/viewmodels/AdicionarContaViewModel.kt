@@ -12,10 +12,13 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
+import com.migueldk17.breeze.ui.utils.arredondarValor
+import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -63,6 +66,26 @@ class AdicionarContaViewModel @Inject constructor(
 
     private val _valorConta = MutableStateFlow(1.0)
     val valorConta: StateFlow<Double> get() = _valorConta.asStateFlow()
+
+    private val _salvarContasState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+
+    private val _salvarParcelasState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val salvarParcelasState: StateFlow<UiState<Unit>> = _salvarParcelasState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            salvarParcelasState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> Log.d(TAG, "UI_STATE: Carregando dados")
+                    is UiState.Success<*> -> Log.d(TAG, "UI_STATE: Dados carregados com sucesso!")
+                    is UiState.Error -> Log.d(TAG, "UI_STATE: Erro ao carregar dados")
+                    is UiState.Empty -> Log.d(TAG, "UI_STATE: Lista vazia")
+                }
+            }
+        }
+    }
+
+
 
     fun setNomeConta(string: String) {
         _nomeConta.value = string
@@ -156,6 +179,7 @@ class AdicionarContaViewModel @Inject constructor(
     //Guarda a Conta no Room
     fun salvaContaDatabase() {
         viewModelScope.launch {
+            _salvarContasState.value = UiState.Loading
             val name = _nomeConta.value
             val categoria = _categoriaConta.value
             val subCategoria = _subcategoriaConta.value
@@ -177,17 +201,27 @@ class AdicionarContaViewModel @Inject constructor(
                 dateTime = dateTime,
                 isContaParcelada = isContaParcelada
             )
+            try {
+                val idContaPai = contaRepository.adicionarConta(conta)
 
-            val idContaPai = contaRepository.adicionarConta(conta)
+                if (isContaParcelada) salvaParcelasDatabase(idContaPai)
 
-            if (isContaParcelada) salvaParcelasDatabase(idContaPai)
+                _salvarContasState.value = UiState.Success(Unit)
+            } catch (e: Exception) {
+                _salvarContasState.value = UiState.Error("Erro ao salvar: ${e.message}")
+            }
+
         }
     }
 
     fun salvaParcelasDatabase(idContaPai: Long){
             viewModelScope.launch {
+                _salvarContasState.value = UiState.Loading
+                Log.d(TAG, "salvaParcelasDatabase: valor das parcelas sem formatação: ${_valorDasParcelas.value}")
+
                 val idContaPai = idContaPai
-                val valor = _valorDasParcelas.value
+                val valor = arredondarValor(_valorDasParcelas.value)
+                val porcentagemJuros = _taxaDeJurosMensal.value
                 val totalParcelas = _quantidadeDeParcelas.value
                 val dataInicial = _dataDaConta.value
 
@@ -200,6 +234,7 @@ class AdicionarContaViewModel @Inject constructor(
                     val parcela = ParcelaEntity(
                         idContaPai = idContaPai,
                         valor = valor,
+                        porcentagemJuros = porcentagemJuros,
                         numeroParcela = i,
                         totalParcelas = totalParcelas,
                         data = dataParcela
@@ -207,9 +242,15 @@ class AdicionarContaViewModel @Inject constructor(
 
                     listaParcelas.add(parcela)
                 }
-                Log.d(TAG, "salvaParcelasDatabase: $listaParcelas")
+                 try {
+                     Log.d(TAG, "salvaParcelasDatabase: $listaParcelas")
 
-                parcelaRepository.adicionaParcelas(listaParcelas)
+                     parcelaRepository.adicionaParcelas(listaParcelas)
+                     _salvarContasState.value = UiState.Success(Unit)
+                 } catch (e: Exception){
+                     _salvarContasState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                 }
+
             }
 
     }

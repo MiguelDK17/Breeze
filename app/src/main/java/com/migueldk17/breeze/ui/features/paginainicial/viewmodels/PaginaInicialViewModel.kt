@@ -114,4 +114,11 @@ class PaginaInicialViewModel @Inject constructor(
 
     }
 
+     fun apagaTodasAsParcelas(parcelasList: List<ParcelaEntity>){
+         viewModelScope.launch {
+             parcelaRepository.apagarTodasAsParcelas(parcelasList)
+         }
+
+    }
+
 }

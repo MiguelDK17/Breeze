@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -8,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.VisualTransformation
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.theme.NavyPetrol
 
 @Composable
 fun BreezeOutlinedTextField(
@@ -31,9 +34,9 @@ fun BreezeOutlinedTextField(
         keyboardOptions = keyboardOptions, //Opções de teclado
         isError = isError, //Booleano de erro
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color(0xFFF5F5F5), //Cor do campo quando está focado
-            unfocusedContainerColor = Color(0xFFF5F5F5), //Cor do campo quando não está focado
-            unfocusedBorderColor = Color(0xFFF5F5F5) //Cor da borda do campo quando não está focado
+            focusedContainerColor = if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol, //Cor do campo quando está focado
+            unfocusedContainerColor = if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol, //Cor do campo quando não está focado
+            unfocusedBorderColor = if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol //Cor da borda do campo quando não está focado
         ),
         visualTransformation = visualTransformation //Transformação visual do texto
     )

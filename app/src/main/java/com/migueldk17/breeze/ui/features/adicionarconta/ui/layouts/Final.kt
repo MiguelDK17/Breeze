@@ -68,11 +68,9 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
             Button(onClick = {
-                try {
-                    viewModel.salvaContaDatabase()
-                } catch (e: IllegalStateException){
-                    Log.d(TAG, "Final: $e")
-                }
+
+                viewModel.salvaContaDatabase()
+
                 avançaMainActivity(context)
             }
             ) {

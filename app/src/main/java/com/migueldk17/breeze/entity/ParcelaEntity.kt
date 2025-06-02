@@ -15,6 +15,9 @@ data class ParcelaEntity(
     @ColumnInfo(name = "valor")
     val valor: Double, //Valor das parcelas
 
+    @ColumnInfo(name = "porcentagem_juros")
+    val porcentagemJuros: Double,
+
     @ColumnInfo(name = "numero_parcela")
     val numeroParcela: Int, //Número da parcela
 

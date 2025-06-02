@@ -170,7 +170,8 @@ fun BreezeCard(
                                 Text("Cancelar")
                             }
                             TextButton(onClick = {
-                                apagarConta
+                                apagarConta()
+                                apagarParcelas()
                                 openDialog.value = false //Botão de confirmar
                             }) {
                                 Text("Confirmar")
