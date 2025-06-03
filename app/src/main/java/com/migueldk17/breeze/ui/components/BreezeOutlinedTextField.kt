@@ -1,6 +1,6 @@
 package com.migueldk17.breeze.ui.components
 
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField

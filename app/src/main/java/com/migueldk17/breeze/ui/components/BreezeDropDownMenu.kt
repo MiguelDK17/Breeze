@@ -71,7 +71,9 @@ fun BreezeDropdownMenu(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = selectedCategory, fontSize = 16.sp, color = Color.Black)
+                Text(text = selectedCategory,
+                    fontSize = 16.sp,
+                    color = if(!isSystemInDarkTheme()) Color.Black else Color(0xFFF5F5F5))
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = "Open menu"
