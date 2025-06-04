@@ -13,10 +13,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -46,8 +50,10 @@ class PaginaInicialViewModel @Inject constructor(
     private val _showBottomSheet = MutableStateFlow<Boolean>(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
 
-    private val _parcelaDoMes = MutableStateFlow<ParcelaEntity?>(null)
-    val parcelaDoMes: StateFlow<ParcelaEntity?> = _parcelaDoMes.asStateFlow()
+    private val _parcelaDoMes = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
+    val parcelaState: StateFlow<UiState<ParcelaEntity>> = _parcelaDoMes.asStateFlow()
+
+    private val _parcelasPorConta = mutableMapOf<Long, StateFlow<UiState<ParcelaEntity?>>>()
 
 
     init {
@@ -117,9 +123,22 @@ class PaginaInicialViewModel @Inject constructor(
 
     }
 
-    fun pegaParcelaDoMes(idContaPai: Long, mesAno: String){
-         viewModelScope.launch {
-             _parcelaDoMes.value = parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
+    fun pegaParcelaDoMes(idContaPai: Long, mesAno: String): Flow<UiState<ParcelaEntity?>>{
+        return parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
+            .map { parcela ->
+                parcela?.let { UiState.Success(it) } ?: UiState.Empty
+            }
+            .catch { e -> emit(UiState.Error(e.message ?: "Erro desconhecido")) }
+            .onStart { emit(UiState.Loading) }
+    }
+
+    fun observeParcelaDoMes(idContaPai: Long, mesAno: String): StateFlow<UiState<ParcelaEntity?>>{
+        return _parcelasPorConta.getOrPut(idContaPai) {
+            parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
+                .map { it?.let { UiState.Success(it) } ?: UiState.Empty }
+                .catch { emit(UiState.Error(it.message ?: "Erro desconhecido")) }
+                .onStart { emit(UiState.Loading) }
+                .stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Loading)
         }
     }
 

@@ -112,14 +112,14 @@ fun BreezeCard(
                             Text("Editar Valor")
                         }
                     }
-                    if (parcela != null) {
-                        IconButton(onClick = { isExpanded = !isExpanded }) {
-                            Icon(
-                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                contentDescription = "Expandir detalhes"
-                            )
-                        }
-                    }
+//                    if (parcela != null) {
+//                        IconButton(onClick = { isExpanded = !isExpanded }) {
+//                            Icon(
+//                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+//                                contentDescription = "Expandir detalhes"
+//                            )
+//                        }
+//                    }
                 }
 
 
@@ -146,9 +146,9 @@ fun BreezeCard(
                     }
                 }
             }
-            if (parcela != null) {
-                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded)
-            }
+//            if (parcela != null) {
+//                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded)
+//            }
         }
         if (openDialog.value){
             BasicAlertDialog(

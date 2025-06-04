@@ -14,7 +14,7 @@ class ParcelaRepository @Inject constructor(
             parcelaDao.inserirParcelas(parcelaEntity)
     }
 
-    suspend fun buscaParcelaMes(idContaPai: Long, mesAno: String): ParcelaEntity {
+     fun buscaParcelaMes(idContaPai: Long, mesAno: String): Flow<ParcelaEntity?> {
         return parcelaDao.getParcelaDoMes(idContaPai, mesAno)
     }
 

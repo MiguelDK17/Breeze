@@ -15,8 +15,8 @@ interface ParcelaDao {
     @Query("SELECT * FROM parcela_entity WHERE data LIKE :mesAno || '%'")
     suspend fun getParcelasDoMes(mesAno: String): List<ParcelaEntity>
 
-    @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai AND data LIKE :mesAno || '%'")
-    suspend fun getParcelaDoMes(idContaPai: Long, mesAno: String): ParcelaEntity
+    @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai AND data LIKE :mesAno LIMIT 1")
+    fun getParcelaDoMes(idContaPai: Long, mesAno: String): Flow<ParcelaEntity?>
     //Busca todas as parcelas de uma conta específica
     @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai ORDER BY numero_parcela ASC")
     fun getParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>

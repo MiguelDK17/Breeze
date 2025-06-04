@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.layouts
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +38,7 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.lazy.items
+import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
@@ -117,11 +116,29 @@ fun PaginaInicial(navController: NavController,
                 LazyColumn {
                     items(contas) { conta ->
                         val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
-                        if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia") else viewModel.pegaParcelaDoMes(conta.id, mesAno = LocalDate.now().monthValue.toString())
-                        val parcelaDoMes = viewModel.parcelaDoMes.collectAsStateWithLifecycle().value
-                        val isLatestParcela =  parcelaDoMes == parcelas.lastOrNull()
-
-
+                        
+                        val filtro = formataMesAno(LocalDate.now()) + "%"
+                        val parcelaState = viewModel.pegaParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
+                        
+                        val parcelaDoMes = when (parcelaState) {
+                            is UiState.Loading -> {
+                                Log.d(TAG, "PaginaInicial: Parcela sendo carregada para conta ${conta.id}")
+                                null
+                            }
+                            is UiState.Empty -> {
+                                Log.d(TAG, "PaginaInicial: Nenhuma parcela foi encontrada para conta ${conta.id}")
+                                null
+                            }
+                            is UiState.Error -> {
+                                Log.d(TAG, "PaginaInicial: Erro ao carregar parcela: ${parcelaState.exception}")
+                                null
+                            }
+                            is UiState.Success -> {
+                                Log.d(TAG, "PaginaInicial: Parcela encontrada: ${parcelaState.data}")
+                                parcelaState.data
+                            }
+                        }
+                        val isLatestParcela = parcelaDoMes == parcelas.lastOrNull()
 
                         BreezeCard(
                             conta,
