@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,9 +50,11 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 @Composable
 fun BreezeCard(
     conta: Conta,
-    viewModel: PaginaInicialViewModel,
     onClick: () -> Unit,
+    apagarConta: () -> Unit,
+    apagarParcelas: () -> Unit
 ){
+    Log.d(TAG, "BreezeCard: id no Card ${conta.id}")
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
 
@@ -166,7 +170,8 @@ fun BreezeCard(
                                 Text("Cancelar")
                             }
                             TextButton(onClick = {
-                                viewModel.apagaConta(conta)
+                                apagarConta()
+                                apagarParcelas()
                                 openDialog.value = false //Botão de confirmar
                             }) {
                                 Text("Confirmar")

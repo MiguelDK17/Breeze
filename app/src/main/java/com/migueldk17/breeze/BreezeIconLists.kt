@@ -22,7 +22,11 @@ object BreezeIconLists {
         BreezeIcons.Linear.Shop.Bag2,
         BreezeIcons.Linear.Settings.SettingsLinear,
         BreezeIcons.Linear.Mobility.BusLinear,
-        BreezeIcons.Linear.Mobility.GasStationLinear
+        BreezeIcons.Linear.Mobility.GasStationLinear,
+        BreezeIcons.Linear.Building.Hospital,
+        BreezeIcons.Linear.ElectronicDevices.Airpods,
+        BreezeIcons.Linear.ElectronicDevices.HeadphonesRound,
+        BreezeIcons.Linear.Files.FileText
     )
     //Lista de icones de cores de tipo BreezeIcons
     @Composable

@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +31,6 @@ import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,7 +114,7 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
                 )
             }
 
-            ReceitaDatePicker(
+            BreezeDatePicker(
                 showDialog = showDatePicker,
                 onDismiss = {showDatePicker = false},
                 onDateSelected = { selectedDate = it}

@@ -2,15 +2,20 @@ package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.dao.ContaDao
-import com.migueldk17.breeze.dao.ReceitaDao
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.entity.Receita
+import com.migueldk17.breeze.repository.ContaRepository
+import com.migueldk17.breeze.repository.ParcelaRepository
+import com.migueldk17.breeze.repository.ReceitaRepository
+import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -18,8 +23,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
-    private val receitaDao: ReceitaDao,
-    private val contaDao: ContaDao
+    private val receitaRepository: ReceitaRepository,
+    private val contaRepository: ContaRepository,
+    private val parcelaRepository: ParcelaRepository
 ): ViewModel() {
     //Banco de dados
     private val _receita = MutableStateFlow<Double?>(null)
@@ -28,8 +34,11 @@ class PaginaInicialViewModel @Inject constructor(
     //Variavwl que controla o estado de carregamente em PaginaInicial
     val carregando = MutableStateFlow(true)
 
+    private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
+    val contaState: StateFlow<UiState<List<Conta>>> = _contaState
     private val _conta = MutableStateFlow<List<Conta>>(emptyList())
     val conta: StateFlow<List<Conta>> = _conta
+
 
     private val _contaSelecionada = MutableStateFlow<Conta?>(null)
     val contaSelecionada: StateFlow<Conta?> = _contaSelecionada.asStateFlow()
@@ -38,23 +47,35 @@ class PaginaInicialViewModel @Inject constructor(
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
 
 
+
     init {
+        obterReceita()
+
+        obterContas()
+    }
+    //Pega a receita
+    private fun obterReceita() {
         viewModelScope.launch {
-            receitaDao.getSaldoTotal().collect { receita ->
+            receitaRepository.getSaldoTotal().collect { receita ->
                 _receita.value = receita ?: 0.00 //Valor inicial
             }
         }
-
+    }
+    //Pega todas as contas cadastradas no app
+    private fun obterContas() {
         viewModelScope.launch {
-            //Pega todas as contas registradas no Room
-            contaDao.getContas()
+            contaRepository.getContas()
+                .catch { e ->
+                    _contaState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                }
                 .collectLatest { lista ->
-                    //Manda a lista de contas pra variavel _conta
-                    _conta.value = lista
+                    if (lista.isEmpty()) {
+                        _contaState.value = UiState.Empty
+                    } else {
+                        delay(500) //Adiciona um pequeno delay
 
-                    delay(500) //Adiciona um pequeno delay
-
-                    carregando.value = false //Muda o valor para false, indicando que o carregamento terminou
+                        _contaState.value = UiState.Success(lista)
+                    }
                 }
         }
     }
@@ -64,30 +85,40 @@ class PaginaInicialViewModel @Inject constructor(
 
 
     //Atualiza o saldo do usuário
-    fun adicionaReceita(valor: Double,
-                        descricao: String,
-                        data: LocalDate) {
+    fun adicionaReceita(valor: Double, descricao: String, data: LocalDate) {
         viewModelScope.launch {
-        val receita = Receita(
-            valor = valor / 100,
-            descricao = descricao,
-            data = data.toString()
-        )
-            receitaDao.inserirReceita(receita)
+            val receita = Receita(
+                valor = valor / 100,
+                descricao = descricao,
+                data = data.toString()
+            )
+            receitaRepository.adicionarReceita(receita)
         }
     }
 
     //Pega as informações da conta selecionada em PaginaInicial baseada no ID fornecido
-    fun pegaContaSelecionada(id: Int){
+    fun pegaContaSelecionada(id: Long){
         viewModelScope.launch {
-            _contaSelecionada.value = contaDao.getContaById(id)
+            _contaSelecionada.value = contaRepository.getContaById(id)
         }
     }
     //Apaga a conta selecionada
-    fun apagaConta(conta: Conta) {
-        viewModelScope.launch {
-            contaDao.apagarConta(conta)
-        }
+     fun apagaConta(conta: Conta) {
+         viewModelScope.launch {
+             contaRepository.apagaConta(conta)
+         }
+    }
+    //Pega todas as parcelas baseadas no ID da conta pai
+     fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
+        return parcelaRepository.buscaParcelas(idContaPai)
+
+    }
+
+     fun apagaTodasAsParcelas(parcelasList: List<ParcelaEntity>){
+         viewModelScope.launch {
+             parcelaRepository.apagarTodasAsParcelas(parcelasList)
+         }
+
     }
 
 }

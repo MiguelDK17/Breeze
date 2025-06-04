@@ -1,16 +1,17 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,16 +25,52 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.components.BreezeButton
+import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
+import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
+import com.migueldk17.breeze.ui.components.InfoIconWithPopup
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()){
+fun Passo1(navController: NavController = rememberNavController(), viewModel: AdicionarContaViewModel = hiltViewModel()){
     var text by remember{
         mutableStateOf("")
     }
+    //Lista de strings das categorias disponíveis para escolha do usuário para a conta
+    val categories = listOf(
+        "Alimentação",
+        "Transporte",
+        "Educação",
+        "Moradia",
+        "Lazer",
+        "Saúde",
+        "Trabalho/Negócios",
+        "Pets",
+        "Pessoais",
+        "Outros")
+    //Variavel que armazena a categoria selecionada
+    var selectedCategory by remember { mutableStateOf("Selecione uma categoria") }
+    //Variavel que armazena a sub categoria selecionada
+    var selectedSubCategory by remember { mutableStateOf("") }
+    //Map de sub categoria baseado nas categorias estabelecidas
+    val categorySubcategories = mapOf(
+        "Alimentação" to listOf("Supermercado", "Restaurante", "Lanches", "Delivery"),
+        "Transporte" to listOf("Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
+        "Educação" to listOf("Escola", "Faculdade", "Cursos online", "Material escolar"),
+        "Moradia" to listOf("Aluguel", "Condomínio", "Água", "Energia", "Internet"),
+        "Lazer" to listOf("Cinema", "Viagens", "Assinaturas(Netflix, Spotify...)", "Jogos"),
+        "Saúde" to listOf("Plano de saúde", "Farmácia", "Consulta médica", "Exames"),
+        "Trabalho/Negócios" to listOf("Ferramentas de trabalho", "Marketing", "Transporte a trabalho", "Assinaturas por trabalho"),
+        "Pets" to listOf("Ração", "Veterinário", "Higiene", "Brinquedos"),
+        "Pessoais" to listOf("Roupas", "Cabelo/Beleza", "Presentes", "Academia"),
+        "Outros" to listOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
+    )
+
 
 
     Column(
@@ -49,23 +86,20 @@ fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hi
         Spacer(modifier = Modifier.size(26.dp))
 
         DescriptionText("Vamos começar adicionando um nome !")
-        Spacer(modifier = Modifier.size(26.dp))
-        Column(modifier = Modifier.fillMaxWidth(),
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 26.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
             //TextField responsável por adicionar um nome a conta
-            TextField(
-                text,
-                onValueChange = { value ->
-                    text = value
-                },
-                modifier = Modifier.size(width = 210.dp, height = 56.dp),
-                placeholder = {
-                    Text("Adicionar nome")
-                },
-                minLines = 1,
+            BreezeOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                text = text,
+                onValueChange = { text = it},
+                textLabel = "Adicionar nome",
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 isError = !textoCorreto(text)
+
             )
             if (!textoCorreto(text)) {
                 Text(
@@ -76,20 +110,59 @@ fun Passo1(navController: NavController, viewModel: AdicionarContaViewModel = hi
                 )
             }
         }
-        Spacer(modifier = Modifier.size(74.dp))
-        //Botão para avançar de tela
-        Button(
-            onClick = {
-                    viewModel.setNomeConta(text)
-                    navController.navigate(NavGraph2.Passo2.route)
 
-            }, enabled = text.isNotEmpty() && textoCorreto(text)
-        ) {
-            Text("Avançar")
+        BreezeDropdownMenu(
+            modifier = Modifier.padding(vertical = 10.dp),
+            categoryName = "Insira uma categoria(Opcional)",
+            categories = categories,
+            selectedCategory = selectedCategory,
+            onCategorySelected = { selectedCategory = it }
+        )
+        if (selectedCategory != "Selecione uma categoria") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DescriptionText("Agora, adicione uma sub-categoria!")
+                InfoIconWithPopup("Se não tiver uma opção ideal, pode usar 'Outros' e 'Sem subcategoria'!")
+            }
         }
+        SubcategoryChipGroup(
+            modifier = Modifier.padding(vertical = 16.dp),
+            selectedCategory = selectedCategory,
+            subCategoriesMap = categorySubcategories,
+            selectedSubcategory = selectedSubCategory,
+            onSubCategorySelected = { selectedSubCategory = it}
+        )
+        //Botão para avançar de tela
+        BreezeButton(
+            modifier = Modifier.padding(vertical = 30.dp),
+            text = "Avançar", onClick = {
+                viewModel.setNomeConta(text)
+                viewModel.setCategoria(selectedCategory)
+                viewModel.setSubcategoria(selectedSubCategory)
+                navController.navigate(NavGraph2.Passo2.route)
+
+            },
+            enabled = isBreezeButtonEnabled(text, selectedCategory, selectedSubCategory))
     }
+    Log.d(TAG, "Passo1Preview: ${
+        isBreezeButtonEnabled(
+            text,
+            selectedCategory,
+            selectedSubCategory
+        )
+    }")
 }
 
 private fun textoCorreto(text: String): Boolean {
-    return  text.length <= 20
+    return  text.length <= 25
 }
+
+private fun isBreezeButtonEnabled(text: String, categorySelected: String, subcategorySelected: String): Boolean {
+    val verificacaoText = text.isNotEmpty() && textoCorreto(text)
+    val verificacaoCategory = categorySelected.isNotEmpty() && categorySelected != "Selecione uma categoria"
+    val verificacaoSubCategory = verificacaoCategory == true && subcategorySelected.isNotEmpty()
+
+    return verificacaoText && verificacaoCategory && verificacaoSubCategory
+}
+

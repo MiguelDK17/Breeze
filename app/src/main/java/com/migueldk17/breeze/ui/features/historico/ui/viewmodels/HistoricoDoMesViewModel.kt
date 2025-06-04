@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDateTime
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import android.content.ContentValues.TAG
 import javax.inject.Inject
 
 @HiltViewModel

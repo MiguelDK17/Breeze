@@ -32,6 +32,11 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
     val icone = viewModel.iconeCardConta.collectAsState().value
     val corIcone = viewModel.corIcone.collectAsState().value
     val corCard = viewModel.corCard.collectAsState().value
+    val dataConta = viewModel.dataDaConta.collectAsState().value
+    val isContaParcelada = viewModel.isContaParcelada.collectAsState().value
+    val qtdParcela = viewModel.quantidadeDeParcelas.collectAsState().value
+    val taxaDeJuros = viewModel.taxaDeJurosMensal.collectAsState().value
+    val valorDasParcelas = viewModel.valorDasParcelas.collectAsState().value
 
     //valor da conta armazenado no viewModel
     val valorConta = viewModel.valorConta.collectAsState().value
@@ -63,11 +68,9 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
             Button(onClick = {
-                try {
-                    viewModel.salvaContaDatabase()
-                } catch (e: IllegalStateException){
-                    Log.d(TAG, "Final: $e")
-                }
+
+                viewModel.salvaContaDatabase()
+
                 avançaMainActivity(context)
             }
             ) {

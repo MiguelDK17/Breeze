@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ElevatedCard
@@ -40,19 +39,20 @@ import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.lazy.items
+import com.migueldk17.breeze.uistate.UiState
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("DefaultLocale")
 @Composable
-fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewModel = hiltViewModel()){
+fun PaginaInicial(navController: NavController,
+                  viewModel: PaginaInicialViewModel = hiltViewModel()){
     val saldo by viewModel.receita.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val saldoFormatado = saldo
-    val contas by viewModel.conta.collectAsStateWithLifecycle()
+    val contasState by viewModel.contaState.collectAsStateWithLifecycle()
+    val conta by viewModel.conta.collectAsStateWithLifecycle(emptyList())
     val carregando by viewModel.carregando.collectAsStateWithLifecycle()
 
     var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
-
 
     Column(modifier = Modifier
         .fillMaxWidth()) {
@@ -89,9 +89,9 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
             fontSize = 14.sp)
         Spacer(modifier = Modifier.size(10.dp))
 
-        when{
+        when(contasState){
             //Caso o ViewModel passe carregando como true
-             carregando -> {
+             is UiState.Loading -> {
                  LottieAnimation(
                     animationRes = R.raw.loading_breeze,
                     isPlaying = true,
@@ -100,20 +100,38 @@ fun PaginaInicial(navController: NavController, viewModel: PaginaInicialViewMode
 
             }
             //Caso não haja nenhuma conta registrada no Room
-            contas.isEmpty() -> {
+            is UiState.Empty -> {
                 ContaNaoEncontrada()
+            }
+
+            is UiState.Error -> {
+                val message = (contasState as UiState.Error).exception
+                Log.d(TAG, "PaginaInicial: $message")
             }
 
             //Caso nenhuma das condições anteriores forem atendidas é entendido que
             //Há contas registradas no Room
-            else -> {
+            is UiState.Success -> {
+                val contas = (contasState as UiState.Success).data
                 LazyColumn {
                     items(contas) { conta ->
-                        BreezeCard(conta, viewModel) {
-                            val intent = Intent(navController.context, MainActivity2::class.java)
-                            intent.putExtra("id", conta.id)
-                            navController.context.startActivity(intent)
-                        }
+                        val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+
+                        if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia") else Log.d(TAG, "PaginaInicial: Opa, achamos as parcelas: $parcelas")
+                        BreezeCard(
+                            conta,
+                            onClick = {
+                                val intent = Intent(navController.context, MainActivity2::class.java)
+                                Log.d(TAG, "PaginaInicial: ${conta.id}")
+                                intent.putExtra("id", conta.id)
+                                navController.context.startActivity(intent)
+                            },
+                            apagarConta = {  viewModel.apagaConta(conta) },
+                            apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
+                                TAG,
+                                "PaginaInicial: Não há parcelas disponíveis pra apagar"
+                            ) }
+                        )
                     }
                 }
             }

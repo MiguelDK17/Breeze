@@ -1,8 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
 @Composable

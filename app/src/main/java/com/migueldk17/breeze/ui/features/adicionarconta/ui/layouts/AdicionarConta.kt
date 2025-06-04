@@ -76,7 +76,7 @@ fun AdicionarConta(
         //Card Principal que abriga os passos que serão gerenciados pelo NavigationCompose
 
         CardPrincipal{
-            InstanciaRotasAdicionarConta(navController, scroll, viewModel)
+            InstanciaRotasAdicionarConta(navController, viewModel)
         }
 
 
@@ -138,7 +138,7 @@ private fun retornaPasso(currentRoute: String?): String{
     return text
 }
 @Composable
-private fun InstanciaRotasAdicionarConta(navController: NavHostController, scroll: ScrollState, viewModel: AdicionarContaViewModel){
+private fun InstanciaRotasAdicionarConta(navController: NavHostController, viewModel: AdicionarContaViewModel){
     //Cria o navGraph com a rota inicial como a PaginaInicial
     val navGraph = navController.createGraph(startDestination = NavGraph2.Passo1.route) {
         //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor dos cards
@@ -168,7 +168,6 @@ private fun InstanciaRotasAdicionarConta(navController: NavHostController, scrol
         graph = navGraph,
         modifier = Modifier
             .padding()
-            .verticalScroll(scroll)
             .fillMaxHeight(0.9f),
         enterTransition = { fadeIn(animationSpec = tween(700)) },
         exitTransition = { fadeOut(animationSpec = tween(700)) },

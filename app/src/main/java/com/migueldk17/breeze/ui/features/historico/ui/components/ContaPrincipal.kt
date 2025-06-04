@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
-import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import java.time.LocalDate
 

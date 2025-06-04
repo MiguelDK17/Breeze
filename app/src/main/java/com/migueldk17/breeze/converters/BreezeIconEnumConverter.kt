@@ -71,6 +71,18 @@ fun String.toBreezeIconsType() : BreezeIconsType {
         BreezeIcons.Linear.Mobility.GasStationLinear.enum.name -> {
             BreezeIcons.Linear.Mobility.GasStationLinear
         }
+        BreezeIcons.Linear.Building.Hospital.enum.name -> {
+            BreezeIcons.Linear.Building.Hospital
+        }
+        BreezeIcons.Linear.ElectronicDevices.Airpods.enum.name -> {
+            BreezeIcons.Linear.ElectronicDevices.Airpods
+        }
+        BreezeIcons.Linear.ElectronicDevices.HeadphonesRound.enum.name -> {
+            BreezeIcons.Linear.ElectronicDevices.HeadphonesRound
+        }
+        BreezeIcons.Linear.Files.FileText.enum.name -> {
+            BreezeIcons.Linear.Files.FileText
+        }
 
         else -> {
             BreezeIcons.Unspecified.IconUnspecified
