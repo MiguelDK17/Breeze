@@ -46,6 +46,8 @@ class PaginaInicialViewModel @Inject constructor(
     private val _showBottomSheet = MutableStateFlow<Boolean>(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
 
+    private val _parcelaDoMes = MutableStateFlow<ParcelaEntity?>(null)
+    val parcelaDoMes: StateFlow<ParcelaEntity?> = _parcelaDoMes.asStateFlow()
 
 
     init {
@@ -53,6 +55,7 @@ class PaginaInicialViewModel @Inject constructor(
 
         obterContas()
     }
+
     //Pega a receita
     private fun obterReceita() {
         viewModelScope.launch {
@@ -112,6 +115,12 @@ class PaginaInicialViewModel @Inject constructor(
      fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
         return parcelaRepository.buscaParcelas(idContaPai)
 
+    }
+
+    fun pegaParcelaDoMes(idContaPai: Long, mesAno: String){
+         viewModelScope.launch {
+             _parcelaDoMes.value = parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
+        }
     }
 
      fun apagaTodasAsParcelas(parcelasList: List<ParcelaEntity>){

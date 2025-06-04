@@ -41,6 +41,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.lazy.items
 import com.migueldk17.breeze.uistate.UiState
+import java.time.LocalDate
 
 @Composable
 fun PaginaInicial(navController: NavController,
@@ -116,8 +117,12 @@ fun PaginaInicial(navController: NavController,
                 LazyColumn {
                     items(contas) { conta ->
                         val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+                        if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia") else viewModel.pegaParcelaDoMes(conta.id, mesAno = LocalDate.now().monthValue.toString())
+                        val parcelaDoMes = viewModel.parcelaDoMes.collectAsStateWithLifecycle().value
+                        val isLatestParcela =  parcelaDoMes == parcelas.lastOrNull()
 
-                        if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia") else Log.d(TAG, "PaginaInicial: Opa, achamos as parcelas: $parcelas")
+
+
                         BreezeCard(
                             conta,
                             onClick = {
@@ -130,7 +135,10 @@ fun PaginaInicial(navController: NavController,
                             apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
                                 TAG,
                                 "PaginaInicial: Não há parcelas disponíveis pra apagar"
-                            ) }
+                            ) },
+                            parcela = parcelaDoMes,
+                            isLatestParcela = isLatestParcela
+
                         )
                     }
                 }

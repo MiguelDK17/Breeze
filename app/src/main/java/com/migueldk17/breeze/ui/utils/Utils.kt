@@ -1,16 +1,8 @@
 package com.migueldk17.breeze.ui.utils
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.material3.ColorScheme
-import androidx.compose.ui.graphics.Color
-import com.migueldk17.breeze.ui.theme.blackPoppinsDarkMode
-import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.DateTimeException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 fun formataSaldo(valor: Double?): String {

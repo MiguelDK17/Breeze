@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.repository
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.migueldk17.breeze.dao.ParcelaDao
 import com.migueldk17.breeze.entity.ParcelaEntity
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +12,10 @@ class ParcelaRepository @Inject constructor(
     //Adiciona as parcelas da conta baseado no id da conta pai
     suspend fun adicionaParcelas(parcelaEntity: List<ParcelaEntity>){
             parcelaDao.inserirParcelas(parcelaEntity)
+    }
+
+    suspend fun buscaParcelaMes(idContaPai: Long, mesAno: String): ParcelaEntity {
+        return parcelaDao.getParcelaDoMes(idContaPai, mesAno)
     }
 
     //Busca a parcela baseado no id da conta pai
