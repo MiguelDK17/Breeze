@@ -145,13 +145,6 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
             },
             enabled = isBreezeButtonEnabled(text, selectedCategory, selectedSubCategory))
     }
-    Log.d(TAG, "Passo1Preview: ${
-        isBreezeButtonEnabled(
-            text,
-            selectedCategory,
-            selectedSubCategory
-        )
-    }")
 }
 
 private fun textoCorreto(text: String): Boolean {

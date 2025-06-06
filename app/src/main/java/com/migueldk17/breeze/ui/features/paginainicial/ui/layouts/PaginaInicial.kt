@@ -117,28 +117,40 @@ fun PaginaInicial(navController: NavController,
                     items(contas) { conta ->
                         val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
                         
+
                         val filtro = formataMesAno(LocalDate.now()) + "%"
-                        val parcelaState = viewModel.pegaParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
-                        
-                        val parcelaDoMes = when (parcelaState) {
+                        if(parcelas.isEmpty()) {
+                            Log.d(TAG, "PaginaInicial: Pow man, lista vazia")
+                        } else {
+                            viewModel.pegaParcelaDoMes(conta.id, mesAno = filtro)
+                            Log.d(TAG, "PaginaInicial: As parcelas estão assim man -> $parcelas")
+                        }
+                        val parcelaState = viewModel.parcelaState.collectAsStateWithLifecycle().value
+                        val parcelaDoMes = when(parcelaState){
                             is UiState.Loading -> {
-                                Log.d(TAG, "PaginaInicial: Parcela sendo carregada para conta ${conta.id}")
+                                Log.d(TAG, "PaginaInicial: Parcela sendo carregada")
                                 null
                             }
                             is UiState.Empty -> {
-                                Log.d(TAG, "PaginaInicial: Nenhuma parcela foi encontrada para conta ${conta.id}")
+                                Log.d(TAG, "PaginaInicial: Nenhuma parcela foi encontrada")
                                 null
                             }
                             is UiState.Error -> {
-                                Log.d(TAG, "PaginaInicial: Erro ao carregar parcela: ${parcelaState.exception}")
+                                val message = parcelaState.exception
+                                Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
                                 null
                             }
                             is UiState.Success -> {
-                                Log.d(TAG, "PaginaInicial: Parcela encontrada: ${parcelaState.data}")
-                                parcelaState.data
+                                val parcela = parcelaState.data
+                                Log.d(TAG, "PaginaInicial: Parcela encontrada: $parcela")
+                                parcela
+
                             }
                         }
                         val isLatestParcela = parcelaDoMes == parcelas.lastOrNull()
+
+
+
 
                         BreezeCard(
                             conta,

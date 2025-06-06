@@ -16,6 +16,9 @@ dagger-hilt = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 composeUi = "1.8.2"
 airbnbLottie = "6.6.2"
+googleServices = "4.4.2"
+firebaseBom = "33.15.0"
+pluginCrashlyticsVersion = "3.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +46,10 @@ androidx-hilt-navigation-compose = {group = "androidx.hilt", name = "hilt-naviga
 androidx-compose-ui = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeUi"}
 airbnb-android-lottie = {group = "com.airbnb.android", name = "lottie", version.ref="airbnbLottie"}
 airbnb-android-lottie-compose = {group = "com.airbnb.android", name = "lottie-compose", version.ref= "airbnbLottie"}
+google-firebase-bom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom"}
+google-firebase-crashlytics = {group = "com.google.firebase", name = "firebase-crashlytics"}
+google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics"}
+
 
 
 
@@ -53,4 +60,6 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt"}
 compose-compiler = {id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin"}
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "pluginCrashlyticsVersion"}
 
