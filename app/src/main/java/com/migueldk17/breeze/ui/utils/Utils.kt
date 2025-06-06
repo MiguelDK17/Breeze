@@ -1,16 +1,9 @@
 package com.migueldk17.breeze.ui.utils
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.material3.ColorScheme
-import androidx.compose.ui.graphics.Color
-import com.migueldk17.breeze.ui.theme.blackPoppinsDarkMode
-import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.DateTimeException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 import java.util.Locale
 
 fun formataSaldo(valor: Double?): String {
@@ -47,6 +40,10 @@ fun arredondarValor(valor: Double, casasDecimais: Int = 2): Double {
     return BigDecimal(valor)
         .setScale(casasDecimais, RoundingMode.HALF_EVEN)
         .toDouble()
+}
+
+fun formataMesAno(localDate: LocalDate): String {
+    return "%04d-%02d".format(localDate.year, localDate.monthValue)
 }
 
 

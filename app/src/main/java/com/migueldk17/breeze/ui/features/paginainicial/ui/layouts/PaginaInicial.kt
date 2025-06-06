@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.layouts
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +38,9 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.lazy.items
+import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
+import java.time.LocalDate
 
 @Composable
 fun PaginaInicial(navController: NavController,
@@ -116,8 +116,42 @@ fun PaginaInicial(navController: NavController,
                 LazyColumn {
                     items(contas) { conta ->
                         val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+                        
 
-                        if(parcelas.isEmpty()) Log.d(TAG, "PaginaInicial: Pow man, lista vazia") else Log.d(TAG, "PaginaInicial: Opa, achamos as parcelas: $parcelas")
+                        val filtro = formataMesAno(LocalDate.now()) + "%"
+                        if(parcelas.isEmpty()) {
+                            Log.d(TAG, "PaginaInicial: Pow man, lista vazia")
+                        } else {
+                            viewModel.pegaParcelaDoMes(conta.id, mesAno = filtro)
+                            Log.d(TAG, "PaginaInicial: As parcelas estão assim man -> $parcelas")
+                        }
+                        val parcelaState = viewModel.parcelaState.collectAsStateWithLifecycle().value
+                        val parcelaDoMes = when(parcelaState){
+                            is UiState.Loading -> {
+                                Log.d(TAG, "PaginaInicial: Parcela sendo carregada")
+                                null
+                            }
+                            is UiState.Empty -> {
+                                Log.d(TAG, "PaginaInicial: Nenhuma parcela foi encontrada")
+                                null
+                            }
+                            is UiState.Error -> {
+                                val message = parcelaState.exception
+                                Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
+                                null
+                            }
+                            is UiState.Success -> {
+                                val parcela = parcelaState.data
+                                Log.d(TAG, "PaginaInicial: Parcela encontrada: $parcela")
+                                parcela
+
+                            }
+                        }
+                        val isLatestParcela = parcelaDoMes == parcelas.lastOrNull()
+
+
+
+
                         BreezeCard(
                             conta,
                             onClick = {
@@ -130,7 +164,10 @@ fun PaginaInicial(navController: NavController,
                             apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
                                 TAG,
                                 "PaginaInicial: Não há parcelas disponíveis pra apagar"
-                            ) }
+                            ) },
+                            parcela = parcelaDoMes,
+                            isLatestParcela = isLatestParcela
+
                         )
                     }
                 }

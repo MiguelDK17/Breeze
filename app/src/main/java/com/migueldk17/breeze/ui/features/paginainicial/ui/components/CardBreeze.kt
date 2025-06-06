@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.CardDefaults
@@ -26,8 +29,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,12 +43,12 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
+import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.entity.ParcelaEntity
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
-
-import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
-
 
 //Card de PaginaInicial
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,9 +57,12 @@ fun BreezeCard(
     conta: Conta,
     onClick: () -> Unit,
     apagarConta: () -> Unit,
-    apagarParcelas: () -> Unit
+    apagarParcelas: () -> Unit,
+    parcela: ParcelaEntity?,
+    isLatestParcela: Boolean
 ){
-    Log.d(TAG, "BreezeCard: id no Card ${conta.id}")
+    var isExpanded by remember { mutableStateOf(false) }
+
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
 
@@ -93,8 +101,6 @@ fun BreezeCard(
                 Row(
                     horizontalArrangement = Arrangement.End
                 ) {
-
-
                     TextButton(onClick = {
                         onClick()
                     }) {
@@ -106,6 +112,14 @@ fun BreezeCard(
                             Text("Editar Valor")
                         }
                     }
+//                    if (parcela != null) {
+//                        IconButton(onClick = { isExpanded = !isExpanded }) {
+//                            Icon(
+//                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+//                                contentDescription = "Expandir detalhes"
+//                            )
+//                        }
+//                    }
                 }
 
 
@@ -132,7 +146,9 @@ fun BreezeCard(
                     }
                 }
             }
-
+//            if (parcela != null) {
+//                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded)
+//            }
         }
         if (openDialog.value){
             BasicAlertDialog(
@@ -185,4 +201,39 @@ fun BreezeCard(
 
     }
     Spacer(modifier = Modifier.size(10.dp))
+}
+
+@Composable
+private fun IsExpandableCard(
+    conta: Conta,
+    parcela: ParcelaEntity,
+    isLatestParcela: Boolean,
+    isExpandable: Boolean,
+){
+    val porcentagemJuros = parcela.porcentagemJuros
+
+    val data = parcela.data.toLocalDate()
+    val dia = data.dayOfMonth
+    val mesSeguinte = data.monthValue + 1
+    val ano = data.year
+    val dataFormatada = if (!isLatestParcela) "$dia/$mesSeguinte/$ano" else "Esta é a última parcela"
+    if (isExpandable){
+        AnimatedVisibility(visible = conta.isContaParcelada) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                DescriptionText("\uD83D\uDCA1 Conta Parcelada")
+
+                DescriptionText("Parcelas: ${parcela.numeroParcela} de ${parcela.totalParcelas}")
+                DescriptionText("Valor da parcela: ${formataSaldo(parcela.valor)}")
+                DescriptionText("Juros: $porcentagemJuros %")
+                DescriptionText("Próxima parcela: $dataFormatada")
+
+
+
+            }
+        }
+    }
 }
