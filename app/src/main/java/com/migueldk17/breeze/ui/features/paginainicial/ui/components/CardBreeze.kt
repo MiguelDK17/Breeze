@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
@@ -46,9 +47,13 @@ import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.uistate.UiState
+import java.time.LocalDate
 
 //Card de PaginaInicial
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +66,8 @@ fun BreezeCard(
     parcela: ParcelaEntity?,
     isLatestParcela: Boolean
 ){
+
+
     var isExpanded by remember { mutableStateOf(false) }
 
     //Variavel que controla o estado do BasicAlertDialog
@@ -112,14 +119,14 @@ fun BreezeCard(
                             Text("Editar Valor")
                         }
                     }
-//                    if (parcela != null) {
-//                        IconButton(onClick = { isExpanded = !isExpanded }) {
-//                            Icon(
-//                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-//                                contentDescription = "Expandir detalhes"
-//                            )
-//                        }
-//                    }
+                    if (parcela != null) {
+                        IconButton(onClick = { isExpanded = !isExpanded }) {
+                            Icon(
+                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = "Expandir detalhes"
+                            )
+                        }
+                    }
                 }
 
 
@@ -146,9 +153,9 @@ fun BreezeCard(
                     }
                 }
             }
-//            if (parcela != null) {
-//                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded)
-//            }
+            if (parcela != null) {
+                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded)
+            }
         }
         if (openDialog.value){
             BasicAlertDialog(

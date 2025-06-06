@@ -10,7 +10,7 @@ fun LocalDate.toDatabaseValue(): String {
 }
 
 fun String.toLocalDate(): LocalDate {
-    return LocalDate.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+    return LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
 }
 
 
