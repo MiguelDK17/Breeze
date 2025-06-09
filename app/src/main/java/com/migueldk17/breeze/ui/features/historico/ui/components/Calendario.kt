@@ -88,7 +88,7 @@ fun GridMes(viewModel: HistoricoViewModel){
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
                         mesSelecionado = meses[index]
-                        viewModel.observarContasPorMes(meses[index])
+                        viewModel.salvaMes(meses[index])
                     })
             })
     }

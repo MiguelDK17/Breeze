@@ -7,21 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.ui.utils.traduzData
+import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoricoViewModel @Inject constructor(
     private val contaDao: ContaDao,
-    private val repository: ContaRepository,
+    private val contaRepository: ContaRepository,
     @ApplicationContext private val context: Context
 ): ViewModel(){
     //Pega as contas registradas no Room
@@ -37,39 +43,39 @@ class HistoricoViewModel @Inject constructor(
     private val _contasFiltradas = MutableStateFlow<List<Conta>>(emptyList())
     val contasFiltradas: StateFlow<List<Conta>> = _contasFiltradas.asStateFlow()
 
+    private val _contasMensais = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
+
+    private val _mes = MutableStateFlow("")
+    val mes: StateFlow<String> = _mes.asStateFlow()
+
     //Busca as contas registradas no Room e manda pro ViewModel
     init {
         viewModelScope.launch {
-            contaDao.getContas()
-                .collectLatest { lista ->
-                    _contas.value = lista
-                }
+//            contaDao.getContas()
+//                .collectLatest { lista ->
+//                    _contas.value = lista
+//                }
         }
     }
-
-    fun observarContasPorMes(mes: String){
-
-        viewModelScope.launch {
-            repository.getContasPorMes(mes)
-                .collect { contasFiltradas ->
-                    //Se houver contas o estado é atualizado
-                    if (contasFiltradas.isNotEmpty()) {
-                        _contasFiltradas.value = contasFiltradas
-                        //Salva a data já traduzida
-                        salvaDataTraduzida(
-                            traduzData(contasFiltradas.first().dateTime.toLocalDateTime().month.name)
-
-                        )
-                        _contasEncontradas.value = true
-                        //Caso não houver atualiza o estado como false e uma mensagem é dispadada
-                    } else {
-                        _contasEncontradas.value = false
-                        Toast.makeText(context, "Não há nenhuma conta registrada neste mês", Toast.LENGTH_LONG).show()
-                    }
-                }
-        }
-
+    fun salvaMes(mes: String){
+        _mes.value = mes
     }
+
+    fun buscaContasPorMes(): Flow<UiState<List<Conta>?>> {
+        return contaRepository.getContasPorMes(_mes.value)
+            .map { conta ->
+                //Se houver contas o estado é atualizado
+                conta?.let {
+                    salvaDataTraduzida(
+                        traduzData(conta.first().dateTime.toLocalDateTime().month.name)
+                    )
+                    UiState.Success(it)
+                } ?: UiState.Empty
+            }
+            .catch { e -> emit(UiState.Error(e.message ?: "Erro desconhecido")) }
+            .onStart { emit(UiState.Loading) } as Flow<UiState<List<Conta>?>>
+    }
+
     //Função que salva a data já traduzida
     fun salvaDataTraduzida(string: String){
         _dataTraduzida.value = string
