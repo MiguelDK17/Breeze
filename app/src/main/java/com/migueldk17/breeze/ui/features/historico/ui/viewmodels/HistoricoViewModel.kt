@@ -15,12 +15,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,8 +36,7 @@ class HistoricoViewModel @Inject constructor(
     private val _contas = MutableStateFlow<List<Conta>>(emptyList())
     val contas: StateFlow<List<Conta>> = _contas.asStateFlow()
     //Verifica se houve contas encontradas
-    private val _contasEncontradas = MutableStateFlow<Boolean>(false)
-    val contasEncontradas: StateFlow<Boolean?> = _contasEncontradas.asStateFlow()
+    private val _contasEncontradas = mutableMapOf<Long, StateFlow<UiState<List<Conta>>>>()
     //Armazena a data já traduzida
     private val _dataTraduzida = MutableStateFlow<String>("")
     val dataTraduzida: StateFlow<String> = _dataTraduzida.asStateFlow()
@@ -63,17 +64,10 @@ class HistoricoViewModel @Inject constructor(
 
     fun buscaContasPorMes(): Flow<UiState<List<Conta>?>> {
         return contaRepository.getContasPorMes(_mes.value)
-            .map { conta ->
-                //Se houver contas o estado é atualizado
-                conta?.let {
-                    salvaDataTraduzida(
-                        traduzData(conta.first().dateTime.toLocalDateTime().month.name)
-                    )
-                    UiState.Success(it)
-                } ?: UiState.Empty
-            }
-            .catch { e -> emit(UiState.Error(e.message ?: "Erro desconhecido")) }
-            .onStart { emit(UiState.Loading) } as Flow<UiState<List<Conta>?>>
+            .map { it?.let { UiState.Success(it) } ?: UiState.Empty }
+            .catch { emit(UiState.Error(it.message ?: "Erro desconhecido")) }
+            .onStart { emit(UiState.Loading) }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Loading)
     }
 
     //Função que salva a data já traduzida

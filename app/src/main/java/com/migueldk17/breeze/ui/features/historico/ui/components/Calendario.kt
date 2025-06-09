@@ -32,11 +32,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
+import java.time.LocalDate
 
 
 @Composable
-fun Calendario(viewModel: HistoricoViewModel){
+fun Calendario(
+    viewModel: HistoricoViewModel,
+    onClick: () -> Unit){
     val context = LocalContext.current
+    val ano = LocalDate.now().year
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +54,7 @@ fun Calendario(viewModel: HistoricoViewModel){
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "2024",
+                text = ano.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -58,7 +62,7 @@ fun Calendario(viewModel: HistoricoViewModel){
             Spacer(modifier = Modifier.height(16.dp))
 
             //Grid com os meses
-            GridMes(viewModel)
+            GridMes(viewModel, onClick)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -68,7 +72,8 @@ fun Calendario(viewModel: HistoricoViewModel){
 }
 
 @Composable
-fun GridMes(viewModel: HistoricoViewModel){
+fun GridMes(viewModel: HistoricoViewModel,
+            onClickHistorico: () -> Unit){
     //Lista de meses
     val meses = listOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
     var mesSelecionado by remember { mutableStateOf<String?>(null) }
@@ -89,6 +94,7 @@ fun GridMes(viewModel: HistoricoViewModel){
                     onClick = {
                         mesSelecionado = meses[index]
                         viewModel.salvaMes(meses[index])
+                        onClickHistorico
                     })
             })
     }
