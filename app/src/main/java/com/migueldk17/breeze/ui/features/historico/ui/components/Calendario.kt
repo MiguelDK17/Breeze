@@ -44,8 +44,7 @@ import java.time.LocalDate
 
 @Composable
 fun Calendario(
-    viewModel: HistoricoViewModel,
-    onClick: () -> Unit){
+    viewModel: HistoricoViewModel){
     val context = LocalContext.current
     val ano = LocalDate.now().year
     Card(
@@ -69,7 +68,7 @@ fun Calendario(
             Spacer(modifier = Modifier.height(16.dp))
 
             //Grid com os meses
-            GridMes(viewModel, onClick)
+            GridMes(viewModel)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -79,8 +78,7 @@ fun Calendario(
 }
 
 @Composable
-fun GridMes(viewModel: HistoricoViewModel,
-            onClick: () -> Unit){
+fun GridMes(viewModel: HistoricoViewModel){
     //Lista de meses
     val meses = listOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
     var mesSelecionado by remember { mutableStateOf<String?>(null) }
@@ -101,7 +99,6 @@ fun GridMes(viewModel: HistoricoViewModel,
                     onClick = {
                         mesSelecionado = meses[index]
                         viewModel.buscaContasPorMes(meses[index])
-                        onClick()
                     })
             })
     }

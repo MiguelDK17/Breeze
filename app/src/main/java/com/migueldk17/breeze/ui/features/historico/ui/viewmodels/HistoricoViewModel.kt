@@ -17,8 +17,10 @@ import com.migueldk17.breeze.ui.utils.traduzData
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -46,8 +48,8 @@ class HistoricoViewModel @Inject constructor(
 
     private val _contasMensais = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
 
-    private val _contasTeste = MutableStateFlow<Boolean>(false)
-    val contasTeste: StateFlow<Boolean> = _contasTeste.asStateFlow()
+    private val _navegarParaTela = MutableSharedFlow<String>()
+    val navegarParaTela = _navegarParaTela.asSharedFlow()
 
     private val _mes = MutableStateFlow("")
     val mes: StateFlow<String> = _mes.asStateFlow()
@@ -63,16 +65,10 @@ class HistoricoViewModel @Inject constructor(
     }
 
     fun buscaContasPorMes(mes: String){
-        Log.d(TAG, "buscaContasPorMes: $mes")
         viewModelScope.launch {
             contaRepository.getContasPorMes(mes)
                 .map { contas ->
                     when {
-                        false -> {
-                            Log.d(TAG, "buscaContasPorMes: Caiu no null")
-                            UiState.Empty
-                        }
-
                         contas.isEmpty()-> {
                             Log.d(TAG, "buscaContasPorMes: $contas")
                             Log.d(TAG, "buscaContasPorMes: a lista tá realmente vazia")
@@ -84,8 +80,8 @@ class HistoricoViewModel @Inject constructor(
                             salvaDataTraduzida(
                                 traduzData(contas.first().dateTime.toLocalDateTime().month.name)
                             )
+                            _navegarParaTela.emit(_dataTraduzida.value)
                             UiState.Success(contas)
-                            _contasTeste.value = true
                         }
                     }
                 }

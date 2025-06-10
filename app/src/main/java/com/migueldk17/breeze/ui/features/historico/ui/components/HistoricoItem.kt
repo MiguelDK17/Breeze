@@ -1,6 +1,9 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
 
+import android.annotation.SuppressLint
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -21,10 +24,12 @@ import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import java.time.LocalDate
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HistoricoItem(
     date: LocalDate, //Data de crição da conta
@@ -39,13 +44,16 @@ fun HistoricoItem(
     val density = LocalDensity.current
 
 
-    Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
 
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
         ) {
-            Canvas(
+        val horizontalValue = if (maxWidth < 380.dp) 15f else 15f //Padding responsivo de acordo com a largura da tela
+        val isSmallScreen = maxWidth < 380.dp //Boolean que controla se a tela é pequena ou não
+
+        Canvas(
                 modifier = Modifier
                     .width(2.dp)
                     .matchParentSize()
@@ -56,7 +64,7 @@ fun HistoricoItem(
                 val endOffset = with(density) { 5.dp.toPx() }
 
                 val finalHeight = if (lastIndex) {
-                    0f
+                    15f
                 } else {
                     size.height + endOffset
                 }
