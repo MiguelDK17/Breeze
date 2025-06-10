@@ -17,33 +17,19 @@ import com.migueldk17.breeze.uistate.UiState
 
 @Composable
 fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
-    //Contas encontradas do mes
-    val contasEncontradas = viewModel.buscaContasPorMes().collectAsStateWithLifecycle(initialValue = UiState.Loading).value
-
-    //Data já traduzida pro português
-    val dataTraduzida = viewModel.dataTraduzida.collectAsStateWithLifecycle().value
-
     val context = LocalContext.current
-
-    Calendario(viewModel) {
-        when (contasEncontradas){
-            is UiState.Empty -> {
-                Toast.makeText(context, "Não há contas registradas neste mês", Toast.LENGTH_SHORT).show()
-            }
-            is UiState.Error -> {
-                Toast.makeText(context, "Ocorreu um erro ao buscar contas", Toast.LENGTH_SHORT).show()
-            }
-            is UiState.Loading -> {
-
-            }
-            is UiState.Success -> {
-                UiState.Success(contasEncontradas.data)
-                val context = context
-                val intent = Intent(context, MainActivity4::class.java)
-                intent.putExtra("data", dataTraduzida)
-                context.startActivity(intent)
-            }
-        }
+    val contasTeste = viewModel.contasTeste.collectAsStateWithLifecycle().value
+    val dataTraduzida = viewModel.dataTraduzida.collectAsStateWithLifecycle().value
+    val avancaTela = if (contasTeste == true) {
+        val context = context
+        val intent = Intent(context, MainActivity4::class.java)
+        intent.putExtra("data", dataTraduzida)
+        context.startActivity(intent)
+    } else {
+        Log.d(TAG, "Historico: False")
     }
+    Calendario(viewModel, onClick = {
+        avancaTela
+    })
 
 }

@@ -1,5 +1,9 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +35,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.MainActivity4
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
+import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
 
@@ -73,7 +80,7 @@ fun Calendario(
 
 @Composable
 fun GridMes(viewModel: HistoricoViewModel,
-            onClickHistorico: () -> Unit){
+            onClick: () -> Unit){
     //Lista de meses
     val meses = listOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
     var mesSelecionado by remember { mutableStateOf<String?>(null) }
@@ -93,8 +100,8 @@ fun GridMes(viewModel: HistoricoViewModel,
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
                         mesSelecionado = meses[index]
-                        viewModel.salvaMes(meses[index])
-                        onClickHistorico
+                        viewModel.buscaContasPorMes(meses[index])
+                        onClick()
                     })
             })
     }
@@ -107,7 +114,6 @@ fun MesItem(
     isSelected: Boolean,
     onClick: () -> Unit){
 
-    val context = LocalContext.current
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -137,6 +143,5 @@ fun MesItem(
                 color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
                )
            }
-
     }
 }
