@@ -50,7 +50,7 @@ fun HistoricoItem(
             .fillMaxWidth()
             .wrapContentHeight()
         ) {
-        val horizontalValue = if (maxWidth < 380.dp) 15f else 15f //Padding responsivo de acordo com a largura da tela
+        val horizontalValue = if (maxWidth < 380.dp) 15f else 16f //Padding responsivo de acordo com a largura da tela
         val isSmallScreen = maxWidth < 380.dp //Boolean que controla se a tela é pequena ou não
 
         Canvas(
@@ -64,7 +64,7 @@ fun HistoricoItem(
                 val endOffset = with(density) { 5.dp.toPx() }
 
                 val finalHeight = if (lastIndex) {
-                    15f
+                    horizontalValue
                 } else {
                     size.height + endOffset
                 }

@@ -17,6 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity"
             android:theme="@style/Theme.Breeze">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +28,18 @@
         </activity>
         <activity android:name=".MainActivity2"
             android:exported="false"
-            android:theme="@style/Theme.Breeze"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Breeze"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
         <activity android:name=".MainActivity3"
             android:exported="true"
-            android:theme="@style/Theme.Breeze"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Breeze"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
         <activity android:name=".MainActivity4"
-            android:theme="@style/Theme.Breeze"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Breeze"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 
 </manifest>

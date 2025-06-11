@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -148,6 +150,8 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                 enabled = buttonAvancaEnabled(
                     valorConta = valorConta,
                     textJuros,
+                    textParcelas,
+                    selectedCategory,
                     isChecked,
                     isCheckedParcelamento
                 )
@@ -160,8 +164,11 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
 private fun buttonAvancaEnabled(
     valorConta: String,
     porcentagemText: String,
+    textParcelas: String,
+    selectedCategory: String,
     isCheckedPasso4: Boolean,
     isCheckedParcelamento: Boolean): Boolean {
+    Log.d(TAG, "buttonAvancaEnabled: O valor de textParcelas é de: $textParcelas ")
 
     val condicao = when {
         //Caso o valor da conta não esteja vazio e o checkbox esteja marcado o valor é true
@@ -169,11 +176,14 @@ private fun buttonAvancaEnabled(
             true
         }
         //Caso o valor da conta não esteja vazio e o checkbox esteja marcado e o de parcelamento não o valor é true
-        valorConta.isNotEmpty() && isCheckedPasso4 && !isCheckedParcelamento -> {
+        valorConta.isNotEmpty() && isCheckedPasso4 && !isCheckedParcelamento && selectedCategory != "Outro..." -> {
             true
         }
         //Caso o valor da conta não esteja vazio, o checkbox esteja ativo, o checkbox de parcelamento esteja ativo e o texto de porcentagem não esteja ativo o valor é true
         valorConta.isNotEmpty() && isCheckedPasso4 && isCheckedParcelamento && porcentagemText.isNotEmpty() -> {
+            true
+        }
+        valorConta.isNotEmpty() && selectedCategory == "Outro..." && textParcelas.isNotEmpty() -> {
             true
         }
         //Qualquer outro cenário além dos mencionados acima o valor é false

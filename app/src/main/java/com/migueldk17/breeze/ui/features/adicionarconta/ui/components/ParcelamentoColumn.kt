@@ -134,7 +134,9 @@ fun ParcelamentoColumn(isSmallScreen: Boolean, //Booleano para verificar se é u
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            val text = if (isParcelamentoComJurosChecked) "Parcelado em $selectedCategory com juros" else "Parcelado em $selectedCategory sem juros"
+            val parceladoEm = if (selectedCategory == "Outro...") "${textParcelas}x" else selectedCategory
+            val parceladoEmFormatado = if (parceladoEm == "x") "..." else parceladoEm
+            val text = if (isParcelamentoComJurosChecked) "Parcelado em $parceladoEmFormatado com juros" else "Parcelado em $parceladoEmFormatado sem juros"
             Text(
                 text,
                 fontStyle = FontStyle.Italic,
