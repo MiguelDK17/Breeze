@@ -38,6 +38,7 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.lazy.items
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
@@ -138,8 +139,8 @@ fun PaginaInicial(navController: NavController,
                             }
                         }
 
-                        val semParcelaNoMes = conta.isContaParcelada && parcelaState is UiState.Empty
-                        Log.d(TAG, "PaginaInicial: semParcelaNoMes está assim: $semParcelaNoMes")
+                        val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
+                        val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().data.toLocalDate() else null
 
                         val isLatestParcela = parcelaDoMes == latestParcela
 
@@ -147,7 +148,6 @@ fun PaginaInicial(navController: NavController,
                             conta,
                             onClick = {
                                 val intent = Intent(navController.context, MainActivity2::class.java)
-                                Log.d(TAG, "PaginaInicial: ${conta.id}")
                                 intent.putExtra("id", conta.id)
                                 navController.context.startActivity(intent)
                             },
@@ -158,7 +158,8 @@ fun PaginaInicial(navController: NavController,
                             ) },
                             parcela = parcelaDoMes,
                             isLatestParcela = isLatestParcela,
-                            semParcelaNoMes = semParcelaNoMes
+                            semParcelaNoMes = semParcelaNoMes,
+                            dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura
 
                         )
                     }

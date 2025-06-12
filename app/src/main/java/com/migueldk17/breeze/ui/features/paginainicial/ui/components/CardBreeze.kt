@@ -65,7 +65,8 @@ fun BreezeCard(
     apagarParcelas: () -> Unit,
     parcela: ParcelaEntity?,
     isLatestParcela: Boolean,
-    semParcelaNoMes: Boolean
+    semParcelaNoMes: Boolean,
+    dataPrimeiraParcelaFutura: LocalDate?
 ){
 
 
@@ -156,11 +157,9 @@ fun BreezeCard(
                 }
             }
             if (parcela != null || semParcelaNoMes) {
-                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded, semParcelaNoMes)
+                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded, semParcelaNoMes, dataPrimeiraParcelaFutura)
             }
-            else {
-                Log.d(TAG, "BreezeCard: O OR não está funcionando da forma que pensamos")
-            }
+
         }
         if (openDialog.value){
             BasicAlertDialog(
@@ -221,12 +220,27 @@ private fun IsExpandableCard(
     parcela: ParcelaEntity?,
     isLatestParcela: Boolean,
     isExpandable: Boolean,
-    semParcelaNoMes: Boolean
+    semParcelaNoMes: Boolean,
+    dataPrimeiraParcelaFutura: LocalDate?
 ){
      if(isExpandable){
         AnimatedVisibility(visible = conta.isContaParcelada) {
             if (semParcelaNoMes) {
-            DescriptionText("Nenhuma parcela agendada para este mês.")
+                val dia = dataPrimeiraParcelaFutura!!.dayOfMonth
+                val mes = dataPrimeiraParcelaFutura.monthValue
+                val ano = dataPrimeiraParcelaFutura.year
+                val dataFormatada =  "$dia/$mes/$ano"
+                Column(modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    DescriptionText(
+                        "Tá tudo quieto por aqui este mês!",
+                        size = 12.9.sp
+                    )
+                    DescriptionText(
+                        "Olha só, a próxima vem em: $dataFormatada",
+                        size = 12.9.sp)
+                }
+
             }
             else {
             Column(

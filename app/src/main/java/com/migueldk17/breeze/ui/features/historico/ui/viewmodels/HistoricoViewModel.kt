@@ -46,7 +46,8 @@ class HistoricoViewModel @Inject constructor(
     val dataTraduzida: StateFlow<String> = _dataTraduzida.asStateFlow()
     //Filtra as contas
 
-    private val _contasMensais = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
+    private val _contasState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
+    val contasState: StateFlow<UiState<List<Conta>>> = _contasState.asStateFlow()
 
     private val _navegarParaTela = MutableSharedFlow<String>()
     val navegarParaTela = _navegarParaTela.asSharedFlow()
@@ -70,10 +71,7 @@ class HistoricoViewModel @Inject constructor(
                 .map { contas ->
                     when {
                         contas.isEmpty()-> {
-                            Log.d(TAG, "buscaContasPorMes: $contas")
-                            Log.d(TAG, "buscaContasPorMes: a lista tá realmente vazia")
-                            Toast.makeText(context, "Não há contas registradas neste mês", Toast.LENGTH_SHORT).show()
-                            UiState.Empty
+                            _contasState.value = UiState.Empty
                         }
 
                         else -> {
@@ -81,16 +79,15 @@ class HistoricoViewModel @Inject constructor(
                                 traduzData(contas.first().dateTime.toLocalDateTime().month.name)
                             )
                             _navegarParaTela.emit(_dataTraduzida.value)
-                            UiState.Success(contas)
+                            _contasState.value = UiState.Success(contas)
                         }
                     }
                 }
                 .catch {
-                    Log.d(TAG, "buscaContasPorMes: caiu no catch: ${it.message}")
-                    UiState.Error(it.message ?: "Erro desconhecido") }
+                    _contasState.value = UiState.Error(it.message ?: "Erro desconhecido") }
                 .onStart {
-                    Log.d(TAG, "buscaContasPorMes: ainda tá no start")
-                    emit(UiState.Loading) }
+                    _contasState.value = UiState.Loading
+                }
                 .collect()
         }
 

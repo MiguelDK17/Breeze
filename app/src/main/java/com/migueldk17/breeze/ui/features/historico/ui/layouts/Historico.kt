@@ -19,7 +19,22 @@ import com.migueldk17.breeze.uistate.UiState
 @Composable
 fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
     val context = LocalContext.current
-
+    val contasState = viewModel.contasState.collectAsStateWithLifecycle().value
+    
+    when(contasState){
+        is UiState.Loading -> {
+            Log.d(TAG, "Historico: Lista de contas no histórico sendo carregadas")
+        }
+        is UiState.Empty -> {
+            Toast.makeText(context, "Não há contas registradas neste mês", Toast.LENGTH_SHORT).show()
+        }
+        is UiState.Error -> {
+            Log.d(TAG, "Historico: Ocorreu um erro ao buscar as contas: ${contasState.exception}")
+        }
+        is UiState.Success<*> -> {
+            Log.d(TAG, "Historico: Lista de contas carregadas com sucesso")
+    }
+    }
     LaunchedEffect(Unit) {
         viewModel.navegarParaTela.collect { dataTraduzida ->
             val context = context
@@ -27,7 +42,6 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
             intent.putExtra("data", dataTraduzida)
             context.startActivity(intent)
         }
-
     }
 
     Calendario(viewModel)
