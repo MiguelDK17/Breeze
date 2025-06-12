@@ -121,31 +121,25 @@ fun PaginaInicial(navController: NavController,
 
                         val parcelaDoMes = when(parcelaState){
                             is UiState.Loading -> {
-                                Log.d(TAG, "PaginaInicial: Parcela sendo carregada")
                                 null
                             }
                             is UiState.Empty -> {
-                                Log.d(TAG, "PaginaInicial: Nenhuma parcela foi encontrada")
-                                Log.d(TAG, "PaginaInicial: id da conta: ${conta.id}")
-                                Log.d(TAG, "PaginaInicial: nome da conta: ${conta.name}")
                                 null
                             }
                             is UiState.Error -> {
                                 val message = parcelaState.exception
                                 Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
-                                Log.d(TAG, "PaginaInicial: id da conta: ${conta.id}")
-                                Log.d(TAG, "PaginaInicial: nome da conta: ${conta.name}")
                                 null
                             }
                             is UiState.Success -> {
                                 val parcela = parcelaState.data
-                                Log.d(TAG, "PaginaInicial: Parcela encontrada: $parcela")
-                                Log.d(TAG, "PaginaInicial: id da conta: ${conta.id}")
-                                Log.d(TAG, "PaginaInicial: nome da conta: ${conta.name}")
                                 parcela
 
                             }
                         }
+
+                        val semParcelaNoMes = conta.isContaParcelada && parcelaState is UiState.Empty
+                        Log.d(TAG, "PaginaInicial: semParcelaNoMes está assim: $semParcelaNoMes")
 
                         val isLatestParcela = parcelaDoMes == latestParcela
 
@@ -163,7 +157,8 @@ fun PaginaInicial(navController: NavController,
                                 "PaginaInicial: Não há parcelas disponíveis pra apagar"
                             ) },
                             parcela = parcelaDoMes,
-                            isLatestParcela = isLatestParcela
+                            isLatestParcela = isLatestParcela,
+                            semParcelaNoMes = semParcelaNoMes
 
                         )
                     }

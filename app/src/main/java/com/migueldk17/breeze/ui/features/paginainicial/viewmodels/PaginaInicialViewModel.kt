@@ -123,16 +123,6 @@ class PaginaInicialViewModel @Inject constructor(
 
     }
 
-    fun pegaParcelaDoMes(idContaPai: Long, mesAno: String): Flow<UiState<ParcelaEntity?>>{
-        return parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
-            .map { parcela ->
-                parcela?.let { UiState.Success(it) } ?: UiState.Empty
-            }
-            .catch { e -> emit(UiState.Error(e.message ?: "Erro desconhecido")) }
-            .onStart { emit(UiState.Loading) }
-    }
-
-
     fun observeParcelaDoMes(idContaPai: Long, mesAno: String): StateFlow<UiState<ParcelaEntity?>>{
         return _parcelasPorConta.getOrPut(idContaPai) {
             parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
