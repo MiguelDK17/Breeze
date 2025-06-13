@@ -243,12 +243,11 @@ class AdicionarContaViewModel @Inject constructor(
                     listaParcelas.add(parcela)
                 }
                  try {
-                     Log.d(TAG, "salvaParcelasDatabase: $listaParcelas")
-
                      parcelaRepository.adicionaParcelas(listaParcelas)
-                     _salvarContasState.value = UiState.Success(Unit)
+                     Log.d(TAG, "salvaParcelasDatabase: $listaParcelas")
+                     _salvarParcelasState.value = UiState.Success(Unit)
                  } catch (e: Exception){
-                     _salvarContasState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                     _salvarParcelasState.value = UiState.Error(e.message ?: "Erro desconhecido")
                  }
 
             }

@@ -26,7 +26,7 @@ class HistoricoDoMesViewModel @Inject constructor(
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
     //Pega as contas do mes sem filtro
-    fun getContasDoMes(): Flow<List<Conta>> {
+    fun getContasDoMes(): Flow<List<Conta>?> {
         return repository.getContasPorMes(_data.value)
     }
     
@@ -36,7 +36,7 @@ class HistoricoDoMesViewModel @Inject constructor(
             repository.getContasPorMes(mes.take(3)) //Pega as contas do mes
         }
         .map { contas ->
-            contas
+            contas!!
                 .sortedBy { it.dateTime.toLocalDateTime() } //Filtra por data e hora
                 .groupBy { it.dateTime.toLocalDateTime().toLocalDate() } //Agrupa por data
                 .mapNotNull { (data, contasDoDia) ->

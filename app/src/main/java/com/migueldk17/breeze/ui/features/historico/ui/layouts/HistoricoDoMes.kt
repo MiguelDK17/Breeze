@@ -41,7 +41,8 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
         modifier = modifier
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
-        GraficoDeBarras(contas, modifier)
+
+        GraficoDeBarras(contas!!, modifier)
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier.padding(horizontal = 10.dp)

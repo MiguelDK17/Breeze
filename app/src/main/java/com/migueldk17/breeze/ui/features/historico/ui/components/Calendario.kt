@@ -1,5 +1,9 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,12 +35,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.MainActivity4
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
+import com.migueldk17.breeze.uistate.UiState
+import java.time.LocalDate
 
 
 @Composable
-fun Calendario(viewModel: HistoricoViewModel){
+fun Calendario(
+    viewModel: HistoricoViewModel){
     val context = LocalContext.current
+    val ano = LocalDate.now().year
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +60,7 @@ fun Calendario(viewModel: HistoricoViewModel){
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "2024",
+                text = ano.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -88,7 +98,7 @@ fun GridMes(viewModel: HistoricoViewModel){
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
                         mesSelecionado = meses[index]
-                        viewModel.observarContasPorMes(meses[index])
+                        viewModel.buscaContasPorMes(meses[index])
                     })
             })
     }
@@ -101,7 +111,6 @@ fun MesItem(
     isSelected: Boolean,
     onClick: () -> Unit){
 
-    val context = LocalContext.current
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -131,6 +140,5 @@ fun MesItem(
                 color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
                )
            }
-
     }
 }
