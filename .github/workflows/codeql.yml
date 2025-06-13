@@ -41,7 +41,18 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: manual
-
+      - name: Create fake google-services.json
+        run: |
+          mkdir -p app
+          echo '{
+            "project_info": {
+              "project_id": "fake-project",
+              "project_number": "123456789"
+            },
+            "client": [],
+            "configuration_version": "1"
+          }' > app/google-services.json
+          
       - name: Build manual
         run: ./gradlew clean assembleDebug --no-daemon
 
