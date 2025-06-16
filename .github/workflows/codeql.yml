@@ -86,3 +86,5 @@ jobs:
 
       - name: Rodar análise do CodeQL
         uses: github/codeql-action/analyze@v3
+
+        
