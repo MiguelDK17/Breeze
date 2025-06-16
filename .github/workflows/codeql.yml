@@ -48,14 +48,22 @@ jobs:
           mkdir -p app/src/release
           echo '{
             "project_info": {
-              "project_id": "fake-project",
-              "project_number": "123456789"
+            "project_id": "fake-project",
+            "project_number": "123456789"
             },
-            "client": [],
+            "client": [{
+              "client_info": {
+                "mobilesdk_app_id": "1:123456789:android:fake",
+                "android_client_info": {
+                "package_name": "com.migueldk17.breeze"
+                }
+                }
+                }],
             "configuration_version": "1"
           }' > app/google-services.json
           cp app/google-services.json app/src/debug/google-services.json
           cp app/google-services.json app/src/release/google-services.json
+
           
       - name: Build manual
         run: ./gradlew clean assembleDebug --no-daemon
