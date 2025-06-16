@@ -44,6 +44,8 @@ jobs:
       - name: Create fake google-services.json
         run: |
           mkdir -p app
+          mkdir -p app/src/debug
+          mkdir -p app/src/release
           echo '{
             "project_info": {
               "project_id": "fake-project",
@@ -52,6 +54,8 @@ jobs:
             "client": [],
             "configuration_version": "1"
           }' > app/google-services.json
+          cp app/google-services.json app/src/debug/google-services.json
+          cp app/google-services.json app/src/release/google-services.json
           
       - name: Build manual
         run: ./gradlew clean assembleDebug --no-daemon
