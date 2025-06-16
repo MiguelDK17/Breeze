@@ -38,6 +38,7 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.lazy.items
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
@@ -46,11 +47,8 @@ import java.time.LocalDate
 fun PaginaInicial(navController: NavController,
                   viewModel: PaginaInicialViewModel = hiltViewModel()){
     val saldo by viewModel.receita.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val saldoFormatado = saldo
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
-    val conta by viewModel.conta.collectAsStateWithLifecycle(emptyList())
-    val carregando by viewModel.carregando.collectAsStateWithLifecycle()
 
     var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
 
@@ -116,23 +114,17 @@ fun PaginaInicial(navController: NavController,
                 LazyColumn {
                     items(contas) { conta ->
                         val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
-                        
+                        val latestParcela = parcelas.lastOrNull()
 
                         val filtro = formataMesAno(LocalDate.now()) + "%"
-                        if(parcelas.isEmpty()) {
-                            Log.d(TAG, "PaginaInicial: Pow man, lista vazia")
-                        } else {
-                            viewModel.pegaParcelaDoMes(conta.id, mesAno = filtro)
-                            Log.d(TAG, "PaginaInicial: As parcelas estão assim man -> $parcelas")
-                        }
-                        val parcelaState = viewModel.parcelaState.collectAsStateWithLifecycle().value
+
+                        val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
+
                         val parcelaDoMes = when(parcelaState){
                             is UiState.Loading -> {
-                                Log.d(TAG, "PaginaInicial: Parcela sendo carregada")
                                 null
                             }
                             is UiState.Empty -> {
-                                Log.d(TAG, "PaginaInicial: Nenhuma parcela foi encontrada")
                                 null
                             }
                             is UiState.Error -> {
@@ -142,21 +134,20 @@ fun PaginaInicial(navController: NavController,
                             }
                             is UiState.Success -> {
                                 val parcela = parcelaState.data
-                                Log.d(TAG, "PaginaInicial: Parcela encontrada: $parcela")
                                 parcela
 
                             }
                         }
-                        val isLatestParcela = parcelaDoMes == parcelas.lastOrNull()
 
+                        val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
+                        val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().data.toLocalDate() else null
 
-
+                        val isLatestParcela = parcelaDoMes == latestParcela
 
                         BreezeCard(
                             conta,
                             onClick = {
                                 val intent = Intent(navController.context, MainActivity2::class.java)
-                                Log.d(TAG, "PaginaInicial: ${conta.id}")
                                 intent.putExtra("id", conta.id)
                                 navController.context.startActivity(intent)
                             },
@@ -166,7 +157,9 @@ fun PaginaInicial(navController: NavController,
                                 "PaginaInicial: Não há parcelas disponíveis pra apagar"
                             ) },
                             parcela = parcelaDoMes,
-                            isLatestParcela = isLatestParcela
+                            isLatestParcela = isLatestParcela,
+                            semParcelaNoMes = semParcelaNoMes,
+                            dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura
 
                         )
                     }

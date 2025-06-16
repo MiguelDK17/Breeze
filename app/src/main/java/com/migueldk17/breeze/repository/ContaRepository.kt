@@ -17,10 +17,10 @@ class ContaRepository @Inject constructor(
 
     //Pega as contas por mes
     fun getContasPorMes(mes: String): Flow<List<Conta>> {
-        return contaDao.getContas().map { contas ->
+        return contaDao.getContasHistorico().map { contas ->
             contas.filter { conta ->
                 val dataFormatada = conta.dateTime.toLocalDateTime()
-                val mesTraduzido = traduzData(dataFormatada.month.name).take(3)
+                val mesTraduzido = traduzData(dataFormatada.month?.name ?: "").take(3)
                 mesTraduzido == mes
             }
         }
