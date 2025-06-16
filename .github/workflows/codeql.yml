@@ -42,27 +42,43 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: manual
       - name: Create fake google-services.json
-        run: |
-          mkdir -p app
-          mkdir -p app/src/debug
-          mkdir -p app/src/release
-          echo '{
-            "project_info": {
-            "project_id": "fake-project",
-            "project_number": "123456789"
+    run: |
+      mkdir -p app
+      mkdir -p app/src/debug
+      mkdir -p app/src/release
+      echo '{
+        "project_info": {
+          "project_number": "123456789",
+          "firebase_url": "https://fake.firebaseio.com",
+          "project_id": "fake-project",
+          "storage_bucket": "fake.appspot.com"
+        },
+        "client": [{
+          "client_info": {
+            "mobilesdk_app_id": "1:123456789:android:fakeappid",
+            "android_client_info": {
+              "package_name": "com.migueldk17.breeze"
+            }
+          },
+          "api_key": [{
+            "current_key": "FAKE_API_KEY"
+          }],
+          "services": {
+            "analytics_service": {
+              "status": "ENABLED"
             },
-            "client": [{
-              "client_info": {
-                "mobilesdk_app_id": "1:123456789:android:fake",
-                "android_client_info": {
-                "package_name": "com.migueldk17.breeze"
-                }
-                }
-                }],
-            "configuration_version": "1"
-          }' > app/google-services.json
-          cp app/google-services.json app/src/debug/google-services.json
-          cp app/google-services.json app/src/release/google-services.json
+            "appinvite_service": {
+              "status": "ENABLED"
+            },
+            "ads_service": {
+              "status": "DISABLED"
+            }
+          }
+        }],
+        "configuration_version": "1"
+        }' > app/google-services.json
+        cp app/google-services.json app/src/debug/google-services.json
+        cp app/google-services.json app/src/release/google-services.json
 
           
       - name: Build manual
