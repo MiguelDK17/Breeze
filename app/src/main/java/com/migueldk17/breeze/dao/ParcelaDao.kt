@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface ParcelaDao {
     //Busca todas as parcelas do mês atual
     @Query("SELECT * FROM parcela_entity WHERE data LIKE :mesAno || '%'")
-    suspend fun getParcelasDoMes(mesAno: String): List<ParcelaEntity>
+     fun getParcelasDoMes(mesAno: String): Flow<List<ParcelaEntity>>
 
     @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai AND data LIKE :mesAno LIMIT 1")
     fun getParcelaDoMes(idContaPai: Long, mesAno: String): Flow<ParcelaEntity?>

@@ -119,13 +119,13 @@ class PaginaInicialViewModel @Inject constructor(
     }
     //Pega todas as parcelas baseadas no ID da conta pai
      fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
-        return parcelaRepository.buscaParcelas(idContaPai)
+        return parcelaRepository.buscaParcelasDaConta(idContaPai)
 
     }
 
     fun observeParcelaDoMes(idContaPai: Long, mesAno: String): StateFlow<UiState<ParcelaEntity?>>{
         return _parcelasPorConta.getOrPut(idContaPai) {
-            parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
+            parcelaRepository.buscaParcelaDoMesParaConta(idContaPai, mesAno)
                 .map { it?.let { UiState.Success(it) } ?: UiState.Empty }
                 .catch { emit(UiState.Error(it.message ?: "Erro desconhecido")) }
                 .onStart { emit(UiState.Loading) }
