@@ -32,8 +32,8 @@ import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesV
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
-    //Pega as contas já criadas do mes sem formatação
-    val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(emptyList()).value
+
+    val contas = viewModel.buscaContasPorMes().collectAsStateWithLifecycle().value
     //Pega as contas já filtradas por data da mais recente a mais antiga
     val historico = viewModel.historico.collectAsStateWithLifecycle().value
 
@@ -42,7 +42,7 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
 
-        GraficoDeBarras(contas!!, modifier)
+        GraficoDeBarras(contas, modifier)
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier.padding(horizontal = 10.dp)
