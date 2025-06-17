@@ -121,6 +121,8 @@ fun BreezeCard(
                             Text("Editar Valor")
                         }
                     }
+
+                    //Caso haja parcela no mês OU haja parcela nos meses subsequentes
                     if (parcela != null || semParcelaNoMes) {
                         IconButton(onClick = { isExpanded = !isExpanded }) {
                             Icon(
@@ -156,6 +158,8 @@ fun BreezeCard(
                     }
                 }
             }
+
+            //Caso haja parcela no mês OU haja parcela nos meses subsequentes
             if (parcela != null || semParcelaNoMes) {
                 IsExpandableCard(conta, parcela, isLatestParcela, isExpanded, semParcelaNoMes, dataPrimeiraParcelaFutura)
             }

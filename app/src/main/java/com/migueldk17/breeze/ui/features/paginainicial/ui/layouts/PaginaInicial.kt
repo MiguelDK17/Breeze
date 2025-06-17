@@ -113,13 +113,19 @@ fun PaginaInicial(navController: NavController,
                 val contas = (contasState as UiState.Success).data
                 LazyColumn {
                     items(contas) { conta ->
+                        //Pega a lista de parcelas
                         val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+
+                        //Pega a última parcela
                         val latestParcela = parcelas.lastOrNull()
 
+                        //Formata a data para consulta no Room
                         val filtro = formataMesAno(LocalDate.now()) + "%"
 
+                        //Pega as parcelas com o UIState para cobrir os estados da lista
                         val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
 
+                        //Pega a parcela do mês
                         val parcelaDoMes = when(parcelaState){
                             is UiState.Loading -> {
                                 null
@@ -138,11 +144,15 @@ fun PaginaInicial(navController: NavController,
 
                             }
                         }
-
+                        //Verifica se não há parcelas no mês
                         val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
+
+                        //Pega a data da primeira parcela futura caso não haja parcelas nesse mês, mas haja nos meses subsequentes
                         val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().data.toLocalDate() else null
 
+                        //Verifica se é a última parcela
                         val isLatestParcela = parcelaDoMes == latestParcela
+
 
                         BreezeCard(
                             conta,

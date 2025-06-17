@@ -40,21 +40,29 @@ class HistoricoDoMesViewModel @Inject constructor(
 
     val historico: StateFlow<List<HistoricoDoDia>> = _data
         .flatMapLatest { mes ->
+            //Data formatada para consulta no Room para Parcelas
             val dataFormadadaParaParcela = formataMesAno(LocalDate.now()) + "%"
+            //Flow de Lista de Contas
             val contasFlow = contaRepository.getContasPorMes(mes.take(3))
+            //Flow de Lista de Contas
             val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormadadaParaParcela)
 
-
+            //Combine junta os fluxos de contas e parcelas
             combine(contasFlow, parcelasFlow) { contas, parcelas ->
-
+                //Mapeia as contas baseado no id
                 val contasMapeadas = contas.associateBy {it.id}
 
-               val idsContaPai = parcelas.map { it.idContaPai }.toSet()
+                //Cria um Set com os IDs das contas que são pais de parcelas no mês
+                val idsContaPai = parcelas.map { it.idContaPai }.toSet()
 
+                //Filtra as contas normais, removendo as contas que são pai de parcela
                 val contasFiltradas = contas.filterNot { it.id in idsContaPai }
 
+                //Agora monta as contas representando as parcelas
                 val contasDasParcelas = parcelas.mapNotNull { parcela ->
+
                     val contaPai = contasMapeadas[parcela.idContaPai]
+
                     contaPai?.let {
                         Conta(
                             id = parcela.id.toLong(),
@@ -70,6 +78,8 @@ class HistoricoDoMesViewModel @Inject constructor(
                         )
                     }
                 }
+
+                //Junta as contas normais(sem as pai) + as contas das parcelas
                 val todasAsContas = contasFiltradas + contasDasParcelas
 
                 todasAsContas
@@ -86,10 +96,11 @@ class HistoricoDoMesViewModel @Inject constructor(
                             outrasContas = outras
                         )
                     }
-                    .sortedByDescending { it.data }
+                    .sortedByDescending { it.data } //Pega da mais recente a mais antiga
             }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+       //Fica on quando a UI estiver ativa e tiver um observador, inicia com lista vazia
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())  //StateFlow que se inicia com o ViewModel e dura quando o ViewModel durar
 
     //Pega as primeiras três letras do mês
     fun setData(mes: String){
