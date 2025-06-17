@@ -4,9 +4,9 @@ import android.util.Log
 import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
@@ -19,11 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
 import javax.inject.Inject
@@ -45,23 +41,20 @@ class HistoricoDoMesViewModel @Inject constructor(
     val historico: StateFlow<List<HistoricoDoDia>> = _data
         .flatMapLatest { mes ->
             val dataFormadadaParaParcela = formataMesAno(LocalDate.now()) + "%"
-            val contasDoMes = contaRepository.getContasPorMes(mes.take(3))
-            val parcelasDoMes = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormadadaParaParcela)
-
-            combine(contasDoMes, parcelasDoMes) { contas, parcelas ->
-                Log.d(TAG, "HistoricoDoMesViewModel: dentro do combine ")
+            val contasFlow = contaRepository.getContasPorMes(mes.take(3))
+            val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormadadaParaParcela)
 
 
+            combine(contasFlow, parcelasFlow) { contas, parcelas ->
 
                 val contasMapeadas = contas.associateBy {it.id}
 
-                Log.d(TAG, "HistoricoDoMesViewModel: as contas mapeadas: $contasMapeadas ")
-                Log.d(TAG, "HistoricoDoMesViewModel: as parcelas: $parcelas ")
+               val idsContaPai = parcelas.map { it.idContaPai }.toSet()
+
+                val contasFiltradas = contas.filterNot { it.id in idsContaPai }
 
                 val contasDasParcelas = parcelas.mapNotNull { parcela ->
-                    Log.d(TAG, "HistoricoDoMesViewModel: dentro do map ")
                     val contaPai = contasMapeadas[parcela.idContaPai]
-
                     contaPai?.let {
                         Conta(
                             id = parcela.id.toLong(),
@@ -72,14 +65,12 @@ class HistoricoDoMesViewModel @Inject constructor(
                             icon = it.icon,
                             colorIcon = it.colorIcon,
                             colorCard = it.colorCard,
-                            dateTime = it.dateTime,
+                            dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
                             isContaParcelada = true
                         )
                     }
                 }
-                Log.d(TAG, "HistoricoDoMesViewModel: tamanho de contasDasParcelas: $contasDasParcelas ")
-                val todasAsContas = contas + contasDasParcelas
-                Log.d(TAG, "HistoricoDoMesViewModel: todas as contas já separadas ")
+                val todasAsContas = contasFiltradas + contasDasParcelas
 
                 todasAsContas
                     .sortedBy { it.dateTime.toLocalDateTime() }
