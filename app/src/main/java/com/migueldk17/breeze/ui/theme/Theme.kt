@@ -11,18 +11,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-
-private val DarkColorScheme = darkColorScheme(
-    primary = DeepSkyBlue,
-    secondary = NavyPetrol,
-    background = DarkBlue,
-    surface = MidnightBlue,
-    onPrimary = Branco,
-    onSecondary = Branco,
-    onBackground = LightGrayText,
-    onSurface = LightGrayText
-)
-
 private val LightColorScheme = lightColorScheme(
     primary = SkyBlue,                  //Cor principal do app
     secondary = Blue,                   //Cor secundária do app
@@ -35,6 +23,16 @@ private val LightColorScheme = lightColorScheme(
 
 )
 
+private val DarkColorScheme = darkColorScheme(
+    primary = DeepSkyBlue,
+    secondary = NavyPetrol,
+    background = DarkBlue,
+    surface = MidnightBlue,
+    onPrimary = Branco,
+    onSecondary = Branco,
+    onBackground = LightGrayText,
+    onSurface = LightGrayText
+)
 
 @Composable
 fun BreezeTheme(
