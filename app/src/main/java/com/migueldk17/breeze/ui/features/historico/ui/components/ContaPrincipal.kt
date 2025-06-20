@@ -41,7 +41,13 @@ fun ContaPrincipal(
     price: Double //Valor da conta
 ){
     var textoClicado by remember {mutableStateOf(false)}
-    val scope = rememberCoroutineScope()
+    val map = mapOf(
+        "Nome:" to nameAccount.toString(),
+        "Valor Total:" to price.toString(),
+        "Valor da parcela:" to "",
+        "Data de pagamento:" to date.toString(),
+        "Taxa de juros:" to ""
+    )
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -98,6 +104,6 @@ fun ContaPrincipal(
     }
 
     if (textoClicado){
-        DetailsCard(onChangeOpenDialog = {!textoClicado})
+        DetailsCard(mapDeCategoria = map, onChangeOpenDialog = {textoClicado = it}, textoClicado)
     }
 }

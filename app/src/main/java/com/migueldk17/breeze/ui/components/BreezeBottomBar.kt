@@ -1,13 +1,6 @@
 package com.migueldk17.breeze.ui.components
 
-import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material3.FloatingActionButton
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -19,12 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
@@ -112,9 +101,12 @@ fun BreezeBottomBar(navController: NavController){
 @Composable
 fun BreezeBottomBarModel(){
     var selectedItem by remember { mutableIntStateOf(0) }
+    val home = BreezeIcons.Linear.Building.HomeLinear
+    val settings = BreezeIcons.Linear.Settings.SettingsLinear
+
     NavigationBar{
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Página Inicial") },
+            icon = { BreezeIcon(home, contentDescription = "Página Inicial") },
             label = { Text("Página Inicial") },
             selected = selectedItem == 0,
             onClick = {
@@ -130,7 +122,7 @@ fun BreezeBottomBarModel(){
             }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Settings, contentDescription = "Configurações") },
+            icon = { BreezeIcon(settings, contentDescription = "Configurações")},
             label = { Text("Configurações") },
             selected = selectedItem == 2,
             onClick = {

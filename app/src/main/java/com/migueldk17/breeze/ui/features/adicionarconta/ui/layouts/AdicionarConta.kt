@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +34,9 @@ import androidx.navigation.createGraph
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrincipal
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+import com.migueldk17.breeze.ui.theme.SkyBlue
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AdicionarConta(
     modifier : Modifier = Modifier,
@@ -65,12 +69,12 @@ fun AdicionarConta(
         )
         Spacer(modifier = Modifier.size(15.dp))
         //LinearProgressIndicator que evolui conforme os passos
-        LinearProgressIndicator(
+        LinearWavyProgressIndicator(
             progress = {
                 progressIndicatorEvolution(currentRoute)
             },
             modifier = Modifier.fillMaxWidth(),
-            color = Green,
+            color = SkyBlue,
         )
         Spacer(modifier = Modifier.size(10.dp))
         //Card Principal que abriga os passos que serão gerenciados pelo NavigationCompose

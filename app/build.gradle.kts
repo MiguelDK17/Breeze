@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui)
     implementation(libs.breeze.icons)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.airbnb.android.lottie)
     implementation(libs.airbnb.android.lottie.compose)
     implementation(platform(libs.google.firebase.bom))
