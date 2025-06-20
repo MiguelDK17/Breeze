@@ -30,7 +30,7 @@ import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.ParcelamentoColumn
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel

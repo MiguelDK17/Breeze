@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
@@ -46,13 +43,10 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
-import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
-import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.ui.utils.formataSaldo
-import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
 //Card de PaginaInicial

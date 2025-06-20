@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity

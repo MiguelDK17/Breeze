@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,15 +12,25 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
@@ -28,6 +40,8 @@ fun ContaPrincipal(
     breezeIcon: BreezeIconsType, //Icone BreezeIcon
     price: Double //Valor da conta
 ){
+    var textoClicado by remember {mutableStateOf(false)}
+    val scope = rememberCoroutineScope()
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -61,7 +75,11 @@ fun ContaPrincipal(
                 fontSize = 15.sp,
                 modifier = Modifier
                     .weight(1f) //Adiciona peso ao Text
-                    .padding(end = 8.dp),
+                    .padding(end = 8.dp)
+                    .clickable{
+                        textoClicado = true
+                    }
+                    ,
                 overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                 maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
@@ -76,9 +94,10 @@ fun ContaPrincipal(
                 textAlign = TextAlign.End
             )
 
-
-
         }
+    }
 
+    if (textoClicado){
+        DetailsCard(onChangeOpenDialog = {!textoClicado})
     }
 }

@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.adicionarconta.ui.components
+package com.migueldk17.breeze.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,15 +11,16 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun DescriptionText(
+fun TitleText(
     text: String,
-    size: TextUnit = 14.sp,
+    size: TextUnit = 18.sp,
     modifier: Modifier = Modifier,
-    fontWeight: FontWeight? = null ){
+    fontWeight: FontWeight? = null,
+    color: Color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else Color.Black){
     Text(
         text,
-        style = MaterialTheme.typography.bodySmall,
-        color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else Color.Black,
+        style = MaterialTheme.typography.bodyMedium,
+        color = color,
         fontSize = size,
         modifier = modifier,
         fontWeight = fontWeight

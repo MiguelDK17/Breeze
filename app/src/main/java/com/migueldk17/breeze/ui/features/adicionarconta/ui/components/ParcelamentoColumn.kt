@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +35,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
