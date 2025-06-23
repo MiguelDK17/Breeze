@@ -19,6 +19,9 @@ class ParcelaRepository @Inject constructor(
      fun buscaParcelaDoMesParaConta(idContaPai: Long, mesAno: String): Flow<ParcelaEntity?> {
         return parcelaDao.getParcelaDoMes(idContaPai, mesAno)
     }
+    suspend fun getParcelaPorId(idParcela: Long): ParcelaEntity? {
+        return parcelaDao.getParcelaPorId(idParcela)
+    }
 
     //Busca a parcela baseado no id da conta pai
      fun buscaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{

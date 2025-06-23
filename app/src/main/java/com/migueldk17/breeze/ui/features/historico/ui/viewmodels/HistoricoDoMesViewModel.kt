@@ -1,16 +1,20 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.utils.formataMesAno
+import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,6 +36,7 @@ class HistoricoDoMesViewModel @Inject constructor(
     //Pega a data do mes
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
+    private val _parcela: MutableStateFlow<UiState<ParcelaEntity>> = MutableStateFlow(UiState.Loading)
 
     //Pega as contas do mes sem filtro
     fun buscaContasPorMes(): StateFlow<List<Conta>>{
@@ -88,6 +94,22 @@ class HistoricoDoMesViewModel @Inject constructor(
         return contasFiltradas
 
     }
+
+     fun buscaParcelaPorId(idParcela: Long): UiState<ParcelaEntity> {
+         Log.d(TAG, "buscaParcelaPorId: $idParcela")
+          viewModelScope.launch {
+              parcelaRepository.getParcelaPorId(idParcela)
+                  .let{ parcela ->
+                      if (parcela == null){
+                          _parcela.value = UiState.Empty
+                      }
+                      else {
+                          _parcela.value = UiState.Success(parcela)
+                      }
+                  }
+          }
+         return _parcela.value
+     }
 
 
 

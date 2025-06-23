@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,7 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
+import com.migueldk17.breeze.uistate.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,6 +71,19 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     val size = historico.indexOf(dia)
                     //Verifica se a conta é a última
                     val isLastItem = size == historico.lastIndex
+                    val buscaParcelaPorId = viewModel.buscaParcelaPorId(dia.contaPrincipal.id)
+                    val parcela = when(buscaParcelaPorId){
+                        is UiState.Empty -> {
+                            Log.d(TAG, "HistoricoDoMes: A lista tá vazia")
+                            null
+                        }
+                        is UiState.Loading -> null
+                        is UiState.Error -> null
+                        is UiState.Success -> {
+                            buscaParcelaPorId.data
+                        }
+                    }
+
 
                     HistoricoItem(
                         date = dia.data,
@@ -75,7 +91,8 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                         breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
                         princeFirst = dia.contaPrincipal.valor,
                         lastIndex = isLastItem,
-                        contas = dia.outrasContas
+                        contas = dia.outrasContas,
+                        parcela = parcela
                     )
 
                 }
@@ -88,8 +105,10 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     .height(40.dp)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent,
-                                MaterialTheme.colorScheme.background)
+                            colors = listOf(
+                                Color.Transparent,
+                                MaterialTheme.colorScheme.background
+                            )
                         )
                     )
             )

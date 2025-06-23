@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -29,9 +31,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 
@@ -40,10 +43,12 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 fun DetailsCard(
     mapDeCategoria: Map<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
-    openDialog: Boolean
+    idParcela: Long,
+    viewModel: HistoricoDoMesViewModel = hiltViewModel()
     ){
+
     val lista = listOf("Nome:", "Valor Total:", "Valor da parcela:", "Data de pagamento:", "Taxa de juros:")
-    if (openDialog){
+
         BasicAlertDialog(
             onDismissRequest = {
                 //Dispensa o BasicAlertDialog
@@ -62,7 +67,9 @@ fun DetailsCard(
                         color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(20.dp).background(Color.Yellow))
+                    Spacer(modifier = Modifier
+                        .height(20.dp)
+                        .background(Color.Yellow))
                     lista.forEach { category ->
                         val accountCategory = mapDeCategoria[category]
                         Row(
@@ -94,7 +101,6 @@ fun DetailsCard(
                             Text("Tudo bem!")
                         }
                     }
-                }
                 }
             }
         }

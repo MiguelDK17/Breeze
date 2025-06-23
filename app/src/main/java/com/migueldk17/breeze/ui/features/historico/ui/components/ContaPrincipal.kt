@@ -27,8 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataValorConta
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -38,12 +40,14 @@ fun ContaPrincipal(
     date: LocalDate, //Data de criação da conta
     nameAccount: String, //Nome da conta
     breezeIcon: BreezeIconsType, //Icone BreezeIcon
-    price: Double //Valor da conta
+    price: Double, //Valor da conta
+    id: Long
+
 ){
     var textoClicado by remember {mutableStateOf(false)}
     val map = mapOf(
         "Nome:" to nameAccount.toString(),
-        "Valor Total:" to price.toString(),
+        "Valor Total:" to formataValorConta(price),
         "Valor da parcela:" to "",
         "Data de pagamento:" to date.toString(),
         "Taxa de juros:" to ""
@@ -104,6 +108,6 @@ fun ContaPrincipal(
     }
 
     if (textoClicado){
-        DetailsCard(mapDeCategoria = map, onChangeOpenDialog = {textoClicado = it}, textoClicado)
+        DetailsCard(mapDeCategoria = map, onChangeOpenDialog = {textoClicado = it}, id)
     }
 }
