@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
@@ -23,31 +21,55 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.uistate.UiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DetailsCard(
     mapDeCategoria: Map<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
-    idParcela: Long,
-    viewModel: HistoricoDoMesViewModel = hiltViewModel()
+    id: Long,
+    viewModel: HistoricoDoMesViewModel= hiltViewModel()
     ){
+    viewModel.buscaParcelaPorId(id)
+    val nome = mapDeCategoria["Nome:"]!!
+    val buscaParcela = viewModel.parcela.collectAsStateWithLifecycle().value
+    val parcela = when(buscaParcela){
+        is UiState.Loading -> null
+        is UiState.Empty -> {
+            Log.d(TAG, "DetailsCard: foi retornado um objeto vazio")
+            null
+        }
+        is UiState.Error -> {
+            Log.d(TAG, "DetailsCard: Deu erro: ${buscaParcela.exception}")
+            null
+        }
+        is UiState.Success -> {
+            Log.d(TAG, "DetailsCard: tem algum erro que não tá sendo captado")
+            buscaParcela.data
+            }
 
+    }
+    Log.d(TAG, "DetailsCard: Parcela: $parcela")
     val lista = listOf("Nome:", "Valor Total:", "Valor da parcela:", "Data de pagamento:", "Taxa de juros:")
+    val indicesParaRemover = setOf(2,4)
+    val listaFiltrada = if (nome.contains("Parcela")) lista else lista.filterIndexed { index, _ -> index !in indicesParaRemover }
+    Log.d(TAG, "DetailsCard: $listaFiltrada")
+
+
 
         BasicAlertDialog(
             onDismissRequest = {
@@ -70,7 +92,7 @@ fun DetailsCard(
                     Spacer(modifier = Modifier
                         .height(20.dp)
                         .background(Color.Yellow))
-                    lista.forEach { category ->
+                    listaFiltrada.forEach { category ->
                         val accountCategory = mapDeCategoria[category]
                         Row(
                             verticalAlignment = Alignment.Top,

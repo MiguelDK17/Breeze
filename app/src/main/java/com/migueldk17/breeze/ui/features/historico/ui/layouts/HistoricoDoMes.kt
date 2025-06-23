@@ -71,19 +71,6 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     val size = historico.indexOf(dia)
                     //Verifica se a conta é a última
                     val isLastItem = size == historico.lastIndex
-                    val buscaParcelaPorId = viewModel.buscaParcelaPorId(dia.contaPrincipal.id)
-                    val parcela = when(buscaParcelaPorId){
-                        is UiState.Empty -> {
-                            Log.d(TAG, "HistoricoDoMes: A lista tá vazia")
-                            null
-                        }
-                        is UiState.Loading -> null
-                        is UiState.Error -> null
-                        is UiState.Success -> {
-                            buscaParcelaPorId.data
-                        }
-                    }
-
 
                     HistoricoItem(
                         date = dia.data,
@@ -92,7 +79,7 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                         princeFirst = dia.contaPrincipal.valor,
                         lastIndex = isLastItem,
                         contas = dia.outrasContas,
-                        parcela = parcela
+                        id = dia.contaPrincipal.id
                     )
 
                 }

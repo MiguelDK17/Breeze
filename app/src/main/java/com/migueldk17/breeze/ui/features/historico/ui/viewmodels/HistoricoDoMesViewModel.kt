@@ -37,6 +37,7 @@ class HistoricoDoMesViewModel @Inject constructor(
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
     private val _parcela: MutableStateFlow<UiState<ParcelaEntity>> = MutableStateFlow(UiState.Loading)
+    val parcela: StateFlow<UiState<ParcelaEntity>> = _parcela.asStateFlow()
 
     //Pega as contas do mes sem filtro
     fun buscaContasPorMes(): StateFlow<List<Conta>>{
@@ -98,7 +99,7 @@ class HistoricoDoMesViewModel @Inject constructor(
      fun buscaParcelaPorId(idParcela: Long): UiState<ParcelaEntity> {
          Log.d(TAG, "buscaParcelaPorId: $idParcela")
           viewModelScope.launch {
-              parcelaRepository.getParcelaPorId(idParcela)
+             parcelaRepository.getParcelaPorId(idParcela)
                   .let{ parcela ->
                       if (parcela == null){
                           _parcela.value = UiState.Empty
@@ -107,6 +108,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                           _parcela.value = UiState.Success(parcela)
                       }
                   }
+
           }
          return _parcela.value
      }

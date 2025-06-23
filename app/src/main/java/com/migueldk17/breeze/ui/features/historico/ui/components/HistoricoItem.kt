@@ -40,6 +40,7 @@ fun HistoricoItem(
     lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
     contas: List<Conta>, //Lista de outras contas que ficam escondidas sob o estado
     id: Long
+
 ){
     //Controla a expanção/contração das outras contas
     val expanded = remember{ mutableStateOf(false) }
