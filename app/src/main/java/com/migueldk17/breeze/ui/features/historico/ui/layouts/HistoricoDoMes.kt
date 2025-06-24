@@ -1,8 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +28,6 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
-import com.migueldk17.breeze.uistate.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +76,7 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                         princeFirst = dia.contaPrincipal.valor,
                         lastIndex = isLastItem,
                         contas = dia.outrasContas,
-                        id = dia.contaPrincipal.id
+                        idContaPrincipal = dia.contaPrincipal.id,
                     )
 
                 }

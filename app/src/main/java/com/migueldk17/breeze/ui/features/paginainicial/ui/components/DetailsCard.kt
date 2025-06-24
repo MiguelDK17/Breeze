@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -27,13 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
-import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 
@@ -42,22 +35,19 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 fun DetailsCard(
     mapDeCategoria: Map<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
-    id: Long,
-
     ){
-    val nome = mapDeCategoria["Nome:"]!!
+    val nome = mapDeCategoria["Nome"]!!
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
-
-         val lista = listOf(
-            "Nome:",
-            "Valor Total:",
-            "Valor da parcela:",
-            "Data de pagamento:",
-            "Taxa de juros:"
-        )
-        val indicesParaRemover = setOf(2, 4)
-        val listaFiltrada = if (nome.contains("Parcela")) lista else lista.filterIndexed { index, _ -> index !in indicesParaRemover }
+    val lista = listOf(
+        "Nome",
+        "Valor Total",
+        "Valor da parcela",
+        "Data de pagamento",
+        "Taxa de juros"
+    )
+    val indicesParaRemover = setOf(2, 4)
+    val listaFiltrada = if (nome.contains("Parcela")) lista else lista.filterIndexed { index, _ -> index !in indicesParaRemover }
         BasicAlertDialog(
             onDismissRequest = {
                 //Dispensa o BasicAlertDialog

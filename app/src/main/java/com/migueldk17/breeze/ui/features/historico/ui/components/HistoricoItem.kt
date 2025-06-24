@@ -2,8 +2,6 @@ package com.migueldk17.breeze.ui.features.historico.ui.components
 
 
 import android.annotation.SuppressLint
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -28,7 +26,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
-import com.migueldk17.breeze.entity.ParcelaEntity
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -39,7 +36,7 @@ fun HistoricoItem(
     princeFirst: Double, //Valor da conta principal
     lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
     contas: List<Conta>, //Lista de outras contas que ficam escondidas sob o estado
-    id: Long
+    idContaPrincipal: Long
 
 ){
     //Controla a expanção/contração das outras contas
@@ -83,7 +80,7 @@ fun HistoricoItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 //Conta principal, a última adicionada em um mesmo dia
-                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst, id)
+                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst, idContaPrincipal)
 
                 if (contas.isNotEmpty()) {
                     VerMaisButton(contas.size, expanded)
