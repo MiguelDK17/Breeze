@@ -29,12 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
-import com.migueldk17.breeze.uistate.UiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -42,35 +43,21 @@ fun DetailsCard(
     mapDeCategoria: Map<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
     id: Long,
-    viewModel: HistoricoDoMesViewModel= hiltViewModel()
+
     ){
-    viewModel.buscaParcelaPorId(id)
     val nome = mapDeCategoria["Nome:"]!!
-    val buscaParcela = viewModel.parcela.collectAsStateWithLifecycle().value
-    val parcela = when(buscaParcela){
-        is UiState.Loading -> null
-        is UiState.Empty -> {
-            Log.d(TAG, "DetailsCard: foi retornado um objeto vazio")
-            null
-        }
-        is UiState.Error -> {
-            Log.d(TAG, "DetailsCard: Deu erro: ${buscaParcela.exception}")
-            null
-        }
-        is UiState.Success -> {
-            Log.d(TAG, "DetailsCard: tem algum erro que não tá sendo captado")
-            buscaParcela.data
-            }
-
-    }
-    Log.d(TAG, "DetailsCard: Parcela: $parcela")
-    val lista = listOf("Nome:", "Valor Total:", "Valor da parcela:", "Data de pagamento:", "Taxa de juros:")
-    val indicesParaRemover = setOf(2,4)
-    val listaFiltrada = if (nome.contains("Parcela")) lista else lista.filterIndexed { index, _ -> index !in indicesParaRemover }
-    Log.d(TAG, "DetailsCard: $listaFiltrada")
+    val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
 
-
+         val lista = listOf(
+            "Nome:",
+            "Valor Total:",
+            "Valor da parcela:",
+            "Data de pagamento:",
+            "Taxa de juros:"
+        )
+        val indicesParaRemover = setOf(2, 4)
+        val listaFiltrada = if (nome.contains("Parcela")) lista else lista.filterIndexed { index, _ -> index !in indicesParaRemover }
         BasicAlertDialog(
             onDismissRequest = {
                 //Dispensa o BasicAlertDialog
@@ -93,7 +80,7 @@ fun DetailsCard(
                         .height(20.dp)
                         .background(Color.Yellow))
                     listaFiltrada.forEach { category ->
-                        val accountCategory = mapDeCategoria[category]
+                        val accountCategory = mapDeCategoriaMutavel[category]
                         Row(
                             verticalAlignment = Alignment.Top,
                             horizontalArrangement = Arrangement.Start
@@ -102,7 +89,7 @@ fun DetailsCard(
                                 category,
                                 modifier = Modifier.padding(vertical = 5.dp)
                             )
-                            DescriptionText(accountCategory ?: "",
+                            DescriptionText(" $accountCategory",
                                 modifier = Modifier.padding(vertical = 5.dp))
 
                         }
@@ -127,3 +114,5 @@ fun DetailsCard(
             }
         }
 }
+
+

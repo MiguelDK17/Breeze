@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -25,12 +27,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.ParcelaEntity
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DetailsCard
+import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.ui.utils.formataValorConta
+import com.migueldk17.breeze.uistate.UiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -41,17 +50,13 @@ fun ContaPrincipal(
     nameAccount: String, //Nome da conta
     breezeIcon: BreezeIconsType, //Icone BreezeIcon
     price: Double, //Valor da conta
-    id: Long
+    id: Long,
+    viewModel: HistoricoDoMesViewModel= hiltViewModel()
 
 ){
     var textoClicado by remember {mutableStateOf(false)}
-    val map = mapOf(
-        "Nome:" to nameAccount.toString(),
-        "Valor Total:" to formataValorConta(price),
-        "Valor da parcela:" to "",
-        "Data de pagamento:" to date.toString(),
-        "Taxa de juros:" to ""
-    )
+
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -108,6 +113,51 @@ fun ContaPrincipal(
     }
 
     if (textoClicado){
+        viewModel.buscaParcelaPorId(id)
+        val buscaParcela = viewModel.parcela.collectAsStateWithLifecycle().value
+        val parcela = when(buscaParcela) {
+            is UiState.Loading -> null
+            is UiState.Empty -> {
+                Log.d(TAG, "DetailsCard: foi retornado um objeto vazio")
+                null
+            }
+
+            is UiState.Error -> {
+                Log.d(TAG, "DetailsCard: Deu erro: ${buscaParcela.exception}")
+                null
+            }
+
+            is UiState.Success -> {
+                Log.d(TAG, "DetailsCard: tem algum erro que não tá sendo captado")
+                buscaParcela.data
+            }
+        }
+        val day = date.dayOfMonth
+        val month = date.monthValue
+        val year = date.year
+        val dataFormatada = "$day/$month/$year"
+        val map = if (parcela != null){
+            mapOf(
+                "Nome:" to nameAccount.toString(),
+                "Valor Total:" to retornaValorTotalArredondado(parcela.valor, parcela.totalParcelas),
+                "Valor da parcela:" to formataSaldo(parcela.valor),
+                "Data de pagamento:" to dataFormatada,
+                "Taxa de juros:" to "${formataTaxaDeJuros(parcela.porcentagemJuros)} a.m"
+            )
+        } else {
+            mapOf(
+                "Nome:" to nameAccount.toString(),
+                "Valor Total:" to price.toString(),
+                "Data de pagamento:" to dataFormatada
+            )
+        }
         DetailsCard(mapDeCategoria = map, onChangeOpenDialog = {textoClicado = it}, id)
     }
+}
+
+private fun retornaValorTotalArredondado(valorParcela: Double,totalParcelas: Int): String {
+    val valorTotal = valorParcela * totalParcelas
+    val totalArredondado = arredondarValor(valorTotal)
+    val totalFormatado = formataValorConta(totalArredondado)
+    return totalFormatado
 }
