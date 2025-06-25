@@ -1,9 +1,13 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,8 +27,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
@@ -41,13 +48,17 @@ fun DetailsCard(
 
     val lista = listOf(
         "Nome",
+        "Categoria",
+        "Sub Categoria",
         "Valor Total",
         "Valor da parcela",
         "Data de pagamento",
         "Taxa de juros"
     )
-    val indicesParaRemover = setOf(2, 4)
-    val listaFiltrada = if (nome.contains("Parcela")) lista else lista.filterIndexed { index, _ -> index !in indicesParaRemover }
+    val indicesParaRemover = setOf(4, 6)
+    val listaFiltrada = if (nome.contains("Parcela")) lista else lista
+        .filterIndexed { index, _ -> index !in indicesParaRemover }
+
         BasicAlertDialog(
             onDismissRequest = {
                 //Dispensa o BasicAlertDialog
@@ -72,15 +83,30 @@ fun DetailsCard(
                     listaFiltrada.forEach { category ->
                         val accountCategory = mapDeCategoriaMutavel[category]
                         Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
                             verticalAlignment = Alignment.Top,
                             horizontalArrangement = Arrangement.Start
                         ) {
                             DescriptionText(
                                 category,
-                                modifier = Modifier.padding(vertical = 5.dp)
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .padding(vertical = 5.dp)
                             )
-                            DescriptionText(" $accountCategory",
-                                modifier = Modifier.padding(vertical = 5.dp))
+                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                            Log.d(TAG, "DetailsCard: $accountCategory")
+
+                            DescriptionText(
+                                " $accountCategory",
+                                modifier = Modifier
+                                    .padding(vertical = 5.dp)
+                                    .align(Alignment.Top)
+                                    .background(Color.Yellow),
+                                size = if (accountCategory!!.contains("Assinaturas")) 11.9.sp else 14.sp
+                                )
+
+
 
                         }
                         Spacer(modifier = Modifier.height(10.dp))
@@ -94,7 +120,9 @@ fun DetailsCard(
                         Button(onClick = {
                             onChangeOpenDialog(false) //Botão de confirmar
                         },
-                            shapes = ButtonShapes(shape = ShapeDefaults.ExtraSmall, pressedShape = ShapeDefaults.ExtraSmall),
+                            shapes = ButtonShapes(
+                                shape = ShapeDefaults.ExtraSmall,
+                                pressedShape = ShapeDefaults.ExtraSmall),
                             modifier = Modifier
                                     .height(48.dp)) {
                             Text("Tudo bem!")

@@ -46,7 +46,8 @@ fun ContaPrincipal(
     breezeIcon: BreezeIconsType, //Icone BreezeIcon
     price: Double, //Valor da conta
     id: Long,
-    viewModel: HistoricoDoMesViewModel= hiltViewModel()
+    category: String,
+    subCategory: String
 
 ){
     var textoClicado by remember {mutableStateOf(false)}
@@ -114,6 +115,8 @@ fun ContaPrincipal(
                 nameAccount= nameAccount,
                 date = date.atStartOfDay(),
                 valor = price,
+                category = category,
+                subCategory = subCategory
 
             )
         }

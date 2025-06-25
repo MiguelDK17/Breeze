@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DetailsCard
@@ -26,9 +25,12 @@ fun ShowDetailsCard(
     id: Long,
     nameAccount: String,
     valor: Double,
+    date: LocalDateTime,
+    category: String,
+    subCategory: String,
     viewModel: HistoricoDoMesViewModel = hiltViewModel(),
-    date: LocalDateTime
-){
+
+    ){
     var isVisible by remember { mutableStateOf(false) }
     viewModel.buscaParcelaPorId(id)
     val buscaParcela = viewModel.parcela.collectAsStateWithLifecycle().value
@@ -55,6 +57,8 @@ fun ShowDetailsCard(
         val map = if (parcela != null && parcela.idContaPai != id) {
             mapOf(
                 "Nome" to nameAccount.toString(),
+                "Categoria" to category,
+                "Sub Categoria" to subCategory,
                 "Valor Total" to retornaValorTotalArredondado(parcela.valor, parcela.totalParcelas),
                 "Valor da parcela" to formataSaldo(parcela.valor),
                 "Data de pagamento" to dataFormatada,
@@ -63,8 +67,11 @@ fun ShowDetailsCard(
         } else {
             mapOf(
                 "Nome" to nameAccount.toString(),
+                "Categoria" to category,
+                "Sub Categoria" to subCategory,
                 "Valor Total" to formataSaldo(valor),
                 "Data de pagamento" to dataFormatada
+
             )
         }
         LaunchedEffect(Unit) {

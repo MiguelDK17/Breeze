@@ -36,7 +36,9 @@ fun HistoricoItem(
     princeFirst: Double, //Valor da conta principal
     lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
     contas: List<Conta>, //Lista de outras contas que ficam escondidas sob o estado
-    idContaPrincipal: Long
+    idContaPrincipal: Long,
+    categoryPrincipal: String,
+    subCategoryPrincipal: String
 
 ){
     //Controla a expanção/contração das outras contas
@@ -80,7 +82,7 @@ fun HistoricoItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 //Conta principal, a última adicionada em um mesmo dia
-                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst, idContaPrincipal)
+                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst, idContaPrincipal, categoryPrincipal, subCategoryPrincipal)
 
                 if (contas.isNotEmpty()) {
                     VerMaisButton(contas.size, expanded)

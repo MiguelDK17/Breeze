@@ -43,8 +43,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun ContaSecundaria(
     contas: List<Conta>,
-    expanded: MutableState<Boolean>,
-    viewModel: HistoricoDoMesViewModel = hiltViewModel()
+    expanded: MutableState<Boolean>
 ){
     var textoClicado by remember { mutableStateOf(false) }
     var contaMutable by remember { mutableStateOf(Conta(
@@ -116,13 +115,15 @@ fun ContaSecundaria(
                 }
             }
             if (textoClicado){
-                Log.d(TAG, "ContaSecundaria: conta Mutable está assim -> $contaMutable")
-                ShowDetailsCard(
-                    onChangeTextoClicado = {textoClicado = it},
-                    id = contaMutable.id,
-                    nameAccount = contaMutable.name,
-                    date = contaMutable.dateTime.toLocalDateTime(),
-                    valor = contaMutable.valor)
+                 ShowDetailsCard(
+                     onChangeTextoClicado = {textoClicado = it},
+                     id = contaMutable.id,
+                     nameAccount = contaMutable.name,
+                     date = contaMutable.dateTime.toLocalDateTime(),
+                     valor = contaMutable.valor,
+                     category = contaMutable.categoria,
+                     subCategory = contaMutable.subCategoria
+                 )
             }
         }
     }
