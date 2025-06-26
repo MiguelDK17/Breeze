@@ -48,9 +48,8 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 fun DetailsCard(
     mapDeCategoria: Map<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
+    isContaParcelada: Boolean
     ){
-    val nome = mapDeCategoria["Nome"]!!
-    Log.d(TAG, "DetailsCard: ${mapDeCategoria["Valor Total"]}")
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
     val lista = listOf(
@@ -62,8 +61,9 @@ fun DetailsCard(
         "Data de pagamento",
         "Taxa de juros"
     )
+    //Caso for conta fixa remove os campos 4(Valor da parcela) e 6(taxa de juros)
     val indicesParaRemover = setOf(4, 6)
-    val listaFiltrada = if (nome.contains("Parcela")) lista else lista
+    val listaFiltrada = if (isContaParcelada) lista else lista
         .filterIndexed { index, _ -> index !in indicesParaRemover }
 
         BasicAlertDialog(
@@ -107,8 +107,7 @@ fun DetailsCard(
                                 text = accountCategory.toString(),
                                 modifier = Modifier
                                     .padding(vertical = 5.dp)
-                                    .align(Alignment.Top),
-                                color = NavyBlue
+                                    .align(Alignment.Top)
                                 )
 
 

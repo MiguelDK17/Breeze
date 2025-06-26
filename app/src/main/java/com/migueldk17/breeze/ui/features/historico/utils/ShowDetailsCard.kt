@@ -30,8 +30,6 @@ fun ShowDetailsCard(
     subCategory: String,
     isContaParcelada: Boolean,
     viewModel: HistoricoDoMesViewModel = hiltViewModel(),
-
-
     ){
     var isVisible by remember { mutableStateOf(false) }
     viewModel.buscaParcelaPorId(id)
@@ -58,7 +56,7 @@ fun ShowDetailsCard(
     val dataFormatada = "$day/$month/$year"
         val map = if (parcela != null && isContaParcelada) {
             mapOf(
-                "Nome" to nameAccount.toString(),
+                "Nome" to nameAccount,
                 "Categoria" to category,
                 "Sub Categoria" to subCategory,
                 "Valor Total" to retornaValorTotalArredondado(parcela.valor, parcela.totalParcelas),
@@ -68,12 +66,11 @@ fun ShowDetailsCard(
             )
         } else {
             mapOf(
-                "Nome" to nameAccount.toString(),
+                "Nome" to nameAccount,
                 "Categoria" to category,
                 "Sub Categoria" to subCategory,
                 "Valor Total" to formataSaldo(valor),
                 "Data de pagamento" to dataFormatada
-
             )
         }
         LaunchedEffect(Unit) {
@@ -82,7 +79,11 @@ fun ShowDetailsCard(
         }
     Log.d(TAG, "ShowDetailsCard: mapa antes de ir pro DetailsCard $map")
         if (isVisible) {
-            DetailsCard(map, onChangeOpenDialog = onChangeTextoClicado)
+            DetailsCard(
+                map,
+                onChangeOpenDialog = onChangeTextoClicado,
+                isContaParcelada = isContaParcelada
+            )
         }
 
 

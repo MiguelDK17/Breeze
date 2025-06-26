@@ -1,5 +1,12 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import android.util.Log
+import android.content.ContentValues.TAG
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +17,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +34,12 @@ import com.migueldk17.breeze.ui.components.BreezeOutlinedButton
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
+import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity
+import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import java.util.Locale
 
 @Composable
@@ -34,9 +50,47 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
     val corIcone = viewModel.corIcone.collectAsStateWithLifecycle().value
     val corCard = viewModel.corCard.collectAsStateWithLifecycle().value
     //valor da conta armazenado no viewModel
-    val valorConta = viewModel.valorConta.collectAsState().value
+    val valorConta = viewModel.valorConta.collectAsStateWithLifecycle().value
     //Pega o valor da conta do viewModel e formata para valores monetários
     val valorMascarado = String.format(Locale.getDefault(),"R$: %.2f", valorConta)
+    val category = viewModel.categoriaConta.collectAsStateWithLifecycle().value
+    val subCategory = viewModel.subcategoriaConta.collectAsStateWithLifecycle().value
+    val valorDaParcela = viewModel.valorDasParcelas.collectAsStateWithLifecycle().value
+    val totalDasParcelas = viewModel.quantidadeDeParcelas.collectAsStateWithLifecycle().value
+    val date = viewModel.dataDaConta.collectAsStateWithLifecycle().value
+    val day = date.dayOfMonth
+    val month = date.monthValue
+    val year = date.year
+    val dataFormatada = "$day/$month/$year"
+    val isContaParcelada = viewModel.isContaParcelada.collectAsStateWithLifecycle().value
+    Log.d(TAG, "Final: isContaParcelada está assim: $isContaParcelada")
+    val porcentagemJuros = viewModel.taxaDeJurosMensal.collectAsStateWithLifecycle().value
+    var mostrarDetalhes by remember { mutableStateOf(false) }
+    val map = if (isContaParcelada) {
+        Log.d(TAG, "Final: Entrou no if")
+        mapOf(
+            "Nome" to nomeConta,
+            "Categoria" to category,
+            "Sub Categoria" to subCategory,
+            "Valor Total" to retornaValorTotalArredondado(
+                valorDaParcela,
+                totalDasParcelas
+            ),
+            "Valor da parcela" to formataSaldo(valorDaParcela),
+            "Data de pagamento" to dataFormatada,
+            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
+        )
+    } else {
+        Log.d(TAG, "Final: Entrou no else")
+        mapOf(
+            "Nome" to nomeConta,
+            "Categoria" to category,
+            "Sub Categoria" to subCategory,
+            "Valor Total" to formataSaldo(valorConta),
+            "Data de pagamento" to dataFormatada
+        )
+    }
+
 
     //Column do Passo Final
     Column(
@@ -45,19 +99,35 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DescriptionText("Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar.",)
+        DescriptionText(
+            "Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar."
+        )
         Spacer(modifier = Modifier.size(25.dp))
         //Card já finalizado
-        PersonalizationCard(nomeConta = nomeConta, icone = icone, corIcone = corIcone, valorMascarado = valorMascarado, corCard = corCard)
+        PersonalizationCard(
+            nomeConta = nomeConta,
+            icone = icone, corIcone = corIcone,
+            valorMascarado = valorMascarado,
+            corCard = corCard)
         Spacer(modifier = Modifier.size(35.dp))
 
         //Botão para voltar ao Passo1 para adicionar uma nova conta
         BreezeOutlinedButton(
-            onClick = {
-                navController.navigate(NavGraph2.Passo1.route)
-            },
-            text = "Mostrar detalhes"
+            onClick = { mostrarDetalhes = !mostrarDetalhes },
+            text = if (mostrarDetalhes) "Ocultar detalhes" else "Mostrar detalhes"
             )
+
+        AnimatedVisibility(
+            visible = mostrarDetalhes,
+            enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
+            exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
+        ) {
+            DetailsCard(
+                mapDeCategoria = map,
+                onChangeOpenDialog = { mostrarDetalhes = it },
+                isContaParcelada = isContaParcelada
+            )
+        }
         Spacer(modifier = Modifier.size(20.dp))
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados

@@ -44,7 +44,7 @@ class AdicionarContaViewModel @Inject constructor(
     val isContaParcelada: StateFlow<Boolean> = _isContaParcelada.asStateFlow()
 
     private val _dataDaConta = MutableStateFlow(LocalDate.now())
-    val dataDaConta: StateFlow<LocalDate?> = _dataDaConta.asStateFlow()
+    val dataDaConta: StateFlow<LocalDate> = _dataDaConta.asStateFlow()
 
     private val _quantidadeDeParcelas = MutableStateFlow(0)
     val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
