@@ -1,7 +1,6 @@
 package com.migueldk17.breeze.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
