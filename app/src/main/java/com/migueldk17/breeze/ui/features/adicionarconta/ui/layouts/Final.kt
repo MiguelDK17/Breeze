@@ -15,8 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.components.BreezeButton
+import com.migueldk17.breeze.ui.components.BreezeOutlinedButton
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
@@ -26,16 +29,10 @@ import java.util.Locale
 @Composable
 fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val nomeConta = viewModel.nomeConta.collectAsState().value
-    val icone = viewModel.iconeCardConta.collectAsState().value
-    val corIcone = viewModel.corIcone.collectAsState().value
-    val corCard = viewModel.corCard.collectAsState().value
-    val dataConta = viewModel.dataDaConta.collectAsState().value
-    val isContaParcelada = viewModel.isContaParcelada.collectAsState().value
-    val qtdParcela = viewModel.quantidadeDeParcelas.collectAsState().value
-    val taxaDeJuros = viewModel.taxaDeJurosMensal.collectAsState().value
-    val valorDasParcelas = viewModel.valorDasParcelas.collectAsState().value
-
+    val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
+    val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
+    val corIcone = viewModel.corIcone.collectAsStateWithLifecycle().value
+    val corCard = viewModel.corCard.collectAsStateWithLifecycle().value
     //valor da conta armazenado no viewModel
     val valorConta = viewModel.valorConta.collectAsState().value
     //Pega o valor da conta do viewModel e formata para valores monetários
@@ -55,24 +52,20 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
         Spacer(modifier = Modifier.size(35.dp))
 
         //Botão para voltar ao Passo1 para adicionar uma nova conta
-        OutlinedButton(
+        BreezeOutlinedButton(
             onClick = {
                 navController.navigate(NavGraph2.Passo1.route)
-            }
-            ) {
-                Text("Adicionar nova conta")
-            }
+            },
+            text = "Mostrar detalhes"
+            )
         Spacer(modifier = Modifier.size(20.dp))
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
-            Button(onClick = {
-
-                viewModel.salvaContaDatabase()
-
-                avançaMainActivity(context)
-            }
-            ) {
-                Text("Concluir")
-            }
+        BreezeButton(
+            onClick = {
+            viewModel.salvaContaDatabase()
+            avançaMainActivity(context)
+        },
+            text = "Concluir")
     }
 }

@@ -17,6 +17,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -28,12 +31,13 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
+import com.migueldk17.breeze.uistate.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
 
-    val contas = viewModel.buscaContasPorMes().collectAsStateWithLifecycle().value
+    val contas = viewModel.contasPorMes.collectAsStateWithLifecycle().value
     //Pega as contas já filtradas por data da mais recente a mais antiga
     val historico = viewModel.historico.collectAsStateWithLifecycle().value
 

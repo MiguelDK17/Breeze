@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -36,8 +37,53 @@ class HistoricoDoMesViewModel @Inject constructor(
     //Pega a data do mes
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
+    private val _contasPorMes = MutableStateFlow<List<Conta>>(emptyList())
+    val contasPorMes: StateFlow<List<Conta>> = _contasPorMes.asStateFlow()
+
     private val _parcela: MutableStateFlow<UiState<ParcelaEntity>> = MutableStateFlow(UiState.Loading)
     val parcela: StateFlow<UiState<ParcelaEntity>> = _parcela.asStateFlow()
+
+    init {
+        observarContaPorMes()
+    }
+
+    private fun observarContaPorMes() {
+        viewModelScope.launch {
+            _data.collectLatest { mes ->
+                val dataFormatadaParaParcela = formataMesAno(LocalDate.now()) + "%"
+
+                val contasFlow = contaRepository.getContasPorMes(mes.take(3))
+                val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormatadaParaParcela)
+
+                combine(contasFlow, parcelasFlow) { contas, parcelas ->
+                    val contasMapeadas = contas.associateBy { it.id }
+                    val idsContaPai = parcelas.map { it.idContaPai }.toSet()
+                    val contasFiltradas = contas.filterNot { it.id in idsContaPai }
+
+                    val contasDasParcelas = parcelas.mapNotNull { parcela ->
+                        contasMapeadas[parcela.idContaPai]?.let { contaPai ->
+                            Conta(
+                                id = parcela.id.toLong(),
+                                name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
+                                categoria = contaPai.categoria,
+                                subCategoria = contaPai.subCategoria,
+                                valor = parcela.valor,
+                                icon = contaPai.icon,
+                                colorIcon = contaPai.colorIcon,
+                                colorCard = contaPai.colorCard,
+                                dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
+                                isContaParcelada = true
+                            )
+                        }
+                    }
+                    val todasAsContas = contasFiltradas + contasDasParcelas
+                    todasAsContas.sortedBy { it.dateTime }
+                }.collectLatest { contasOrdenadas ->
+                    _contasPorMes.value = contasOrdenadas
+                }
+            }
+        }
+    }
 
     //Pega as contas do mes sem filtro
     fun buscaContasPorMes(): StateFlow<List<Conta>>{
@@ -90,7 +136,10 @@ class HistoricoDoMesViewModel @Inject constructor(
                 }
             }
             //Fica on quando a UI estiver ativa e tiver um observador, inicia com lista vazia
-            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())  //StateFlow que se inicia com o ViewModel e dura quando o ViewModel durar
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                emptyList())  //StateFlow que se inicia com o ViewModel e dura quando o ViewModel durar
 
         return contasFiltradas
 
