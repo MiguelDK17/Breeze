@@ -1,8 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,7 +68,6 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     val size = historico.indexOf(dia)
                     //Verifica se a conta é a última
                     val isLastItem = size == historico.lastIndex
-                    Log.d(TAG, "HistoricoDoMes: O bo tá na origem(ou não ?) categoria ${dia.contaPrincipal.categoria}, sub categoria ${dia.contaPrincipal.subCategoria}")
 
                     HistoricoItem(
                         date = dia.data,
@@ -81,7 +78,8 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                         contas = dia.outrasContas,
                         idContaPrincipal = dia.contaPrincipal.id,
                         categoryPrincipal = dia.contaPrincipal.categoria,
-                        subCategoryPrincipal = dia.contaPrincipal.subCategoria
+                        subCategoryPrincipal = dia.contaPrincipal.subCategoria,
+                        isContaParceladaContaPrincipal = dia.contaPrincipal.isContaParcelada
                     )
 
                 }

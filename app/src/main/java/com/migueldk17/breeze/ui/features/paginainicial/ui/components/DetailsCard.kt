@@ -28,9 +28,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LastBaseline
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
@@ -44,6 +50,7 @@ fun DetailsCard(
     onChangeOpenDialog: (Boolean) -> Unit,
     ){
     val nome = mapDeCategoria["Nome"]!!
+    Log.d(TAG, "DetailsCard: ${mapDeCategoria["Valor Total"]}")
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
     val lista = listOf(
@@ -95,15 +102,13 @@ fun DetailsCard(
                                     .padding(vertical = 5.dp)
                             )
                             Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-                            Log.d(TAG, "DetailsCard: $accountCategory")
 
                             DescriptionText(
-                                " $accountCategory",
+                                text = accountCategory.toString(),
                                 modifier = Modifier
                                     .padding(vertical = 5.dp)
-                                    .align(Alignment.Top)
-                                    .background(Color.Yellow),
-                                size = if (accountCategory!!.contains("Assinaturas")) 11.9.sp else 14.sp
+                                    .align(Alignment.Top),
+                                color = NavyBlue
                                 )
 
 

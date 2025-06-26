@@ -115,6 +115,7 @@ fun ContaSecundaria(
                 }
             }
             if (textoClicado){
+                Log.d(TAG, "ContaSecundaria: valor da conta: ${contaMutable.valor}")
                  ShowDetailsCard(
                      onChangeTextoClicado = {textoClicado = it},
                      id = contaMutable.id,
@@ -122,7 +123,8 @@ fun ContaSecundaria(
                      date = contaMutable.dateTime.toLocalDateTime(),
                      valor = contaMutable.valor,
                      category = contaMutable.categoria,
-                     subCategory = contaMutable.subCategoria
+                     subCategory = contaMutable.subCategoria,
+                     isContaParcelada = contaMutable.isContaParcelada
                  )
             }
         }

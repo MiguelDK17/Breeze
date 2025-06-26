@@ -28,7 +28,9 @@ fun ShowDetailsCard(
     date: LocalDateTime,
     category: String,
     subCategory: String,
+    isContaParcelada: Boolean,
     viewModel: HistoricoDoMesViewModel = hiltViewModel(),
+
 
     ){
     var isVisible by remember { mutableStateOf(false) }
@@ -54,7 +56,7 @@ fun ShowDetailsCard(
     val month = date.monthValue
     val year = date.year
     val dataFormatada = "$day/$month/$year"
-        val map = if (parcela != null && parcela.idContaPai != id) {
+        val map = if (parcela != null && isContaParcelada) {
             mapOf(
                 "Nome" to nameAccount.toString(),
                 "Categoria" to category,
@@ -78,6 +80,7 @@ fun ShowDetailsCard(
             delay(50)
             isVisible = true
         }
+    Log.d(TAG, "ShowDetailsCard: mapa antes de ir pro DetailsCard $map")
         if (isVisible) {
             DetailsCard(map, onChangeOpenDialog = onChangeTextoClicado)
         }

@@ -47,7 +47,8 @@ fun ContaPrincipal(
     price: Double, //Valor da conta
     id: Long,
     category: String,
-    subCategory: String
+    subCategory: String,
+    isContaParcelada: Boolean
 
 ){
     var textoClicado by remember {mutableStateOf(false)}
@@ -116,7 +117,8 @@ fun ContaPrincipal(
                 date = date.atStartOfDay(),
                 valor = price,
                 category = category,
-                subCategory = subCategory
+                subCategory = subCategory,
+                isContaParcelada = isContaParcelada
 
             )
         }
