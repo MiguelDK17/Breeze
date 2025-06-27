@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.utils
 
 
+import androidx.navigation.NavController
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -68,6 +69,16 @@ fun formataTaxaDeJuros(taxaDeJurosMensal: Double): String {
     val formato = DecimalFormat("#.##%") // Define a máscara: duas casas decimais e símbolo de porcentagem
     return formato.format(taxaDeJurosMensal)
 }
+
+fun NavController.navigateSingleTopTo(route: String) {
+    this.navigate(route){
+        popUpTo(this@navigateSingleTopTo.graph.startDestinationId) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+    }
 
 
 

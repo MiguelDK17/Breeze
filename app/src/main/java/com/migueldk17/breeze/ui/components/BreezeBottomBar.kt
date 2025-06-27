@@ -1,7 +1,6 @@
 package com.migueldk17.breeze.ui.components
 
 
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,7 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.migueldk17.breeze.Screen
+import com.migueldk17.breeze.ui.features.paginainicial.navigation.routes.Screen
+import com.migueldk17.breeze.ui.utils.navigateSingleTopTo
 
 @Composable
 fun BreezeBottomBar(navController: NavController){
@@ -35,7 +35,7 @@ fun BreezeBottomBar(navController: NavController){
                 selected = selectedItem == 0,
                 onClick = {
                     selectedItem = 0
-                    navController.navigate(Screen.PaginaInicial.route)
+                    navController.navigateSingleTopTo(route = Screen.PaginaInicial.route)
                 },
                 colors = NavigationBarItemColors(
                     selectedIconColor = Color.Transparent,
@@ -58,7 +58,7 @@ fun BreezeBottomBar(navController: NavController){
                 selected = selectedItem == 1,
                 onClick = {
                     selectedItem = 1
-                    navController.navigate(Screen.Historico.route)
+                    navController.navigateSingleTopTo(route = Screen.Historico.route)
                 },
                 colors = NavigationBarItemColors(
                     selectedIconColor = Color.Unspecified,
@@ -81,7 +81,7 @@ fun BreezeBottomBar(navController: NavController){
                 selected = selectedItem == 2,
                 onClick = {
                     selectedItem = 2
-                    navController.navigate(Screen.Configuracoes.route)
+                    navController.navigateSingleTopTo(route = Screen.Configuracoes.route)
                 },
                 colors = NavigationBarItemColors(
                     selectedIconColor = Color.Transparent,

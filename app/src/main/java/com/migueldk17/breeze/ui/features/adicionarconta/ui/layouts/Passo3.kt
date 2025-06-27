@@ -26,13 +26,13 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIcon
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun Passo3(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()){
+fun Passo3(
+    navToPasso4: () -> Unit,
+    currentState: String?,
+    viewModel: AdicionarContaViewModel = hiltViewModel()){
 
     val nomeConta = viewModel.nomeConta.collectAsState().value
     val icone = viewModel.iconeCardConta.collectAsState().value
-
-    //Passo atual
-    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
 
     //Column do Passo3
     Column {
@@ -61,7 +61,7 @@ fun Passo3(navController: NavController, viewModel: AdicionarContaViewModel = hi
             OutlinedButton(
                 onClick = {
                     adicionaCorPadrao(currentState, viewModel)
-                    navController.navigate(NavGraph2.Passo4.route)
+                    navToPasso4()
                 }
             ){
                 Text("Ou usar a cor padrão")
@@ -70,7 +70,7 @@ fun Passo3(navController: NavController, viewModel: AdicionarContaViewModel = hi
             //Botão para avançar de tela
             Button(onClick = {
                 insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
-                navController.navigate(NavGraph2.Passo4.route)
+                navToPasso4()
             }, enabled = true
             ) {
                 Text("Avançar")

@@ -35,7 +35,9 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.Subcategor
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun Passo1(navController: NavController = rememberNavController(), viewModel: AdicionarContaViewModel = hiltViewModel()){
+fun Passo1(
+    navToPasso2: () -> Unit,
+    viewModel: AdicionarContaViewModel = hiltViewModel()){
     var text by remember{
         mutableStateOf("")
     }
@@ -138,7 +140,7 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
                 viewModel.setNomeConta(text)
                 viewModel.setCategoria(selectedCategory)
                 viewModel.setSubcategoria(selectedSubCategory)
-                navController.navigate(NavGraph2.Passo2.route)
+                navToPasso2()
 
             },
             enabled = isBreezeButtonEnabled(text, selectedCategory, selectedSubCategory))

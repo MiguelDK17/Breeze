@@ -16,7 +16,8 @@ fun TitleText(
     size: TextUnit = 18.sp,
     modifier: Modifier = Modifier,
     fontWeight: FontWeight? = null,
-    color: Color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else Color.Black){
+    color: Color = MaterialTheme.colorScheme.onSurface
+){
     Text(
         text,
         style = MaterialTheme.typography.bodyMedium,

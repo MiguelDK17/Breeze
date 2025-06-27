@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeOutlinedButton
 import com.migueldk17.breeze.ui.components.DescriptionText
@@ -49,7 +48,6 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
     val porcentagemJuros = viewModel.taxaDeJurosMensal.collectAsStateWithLifecycle().value
     var mostrarDetalhes by remember { mutableStateOf(false) }
     val map = if (isContaParcelada) {
-        Log.d(TAG, "Final: Entrou no if")
         mapOf(
             "Nome" to dadosDaConta.nome,
             "Categoria" to dadosDaConta.categoria,
@@ -63,7 +61,6 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
             "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
         )
     } else {
-        Log.d(TAG, "Final: Entrou no else")
         mapOf(
             "Nome" to dadosDaConta.nome,
             "Categoria" to dadosDaConta.categoria,

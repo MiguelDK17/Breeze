@@ -27,7 +27,10 @@ import com.migueldk17.breeze.ui.utils.formataValorConta
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
+fun Passo5(
+    navToFinal: () -> Unit,
+    currentState: String?,
+    viewModel: AdicionarContaViewModel = hiltViewModel()) {
 
     val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
     val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
@@ -35,8 +38,6 @@ fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hi
     val valorConta = viewModel.valorConta.collectAsStateWithLifecycle().value
     //Pega o valor da conta do viewModel e formata para valores monetários
     val valorMascarado = formataValorConta(valorConta)
-
-    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
 
 
     Column {
@@ -68,7 +69,7 @@ fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hi
             OutlinedButton(
                 onClick = {
                     adicionaCorPadrao(currentState, viewModel)
-                    navController.navigate(NavGraph2.Final.route)
+                    navToFinal()
                 }
             ){
                 Text("Ou usar a cor padrão")
@@ -77,7 +78,7 @@ fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hi
             //Botão para avançar de tela
             Button(onClick = {
                 insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
-                navController.navigate(NavGraph2.Final.route)
+                navToFinal()
             }, enabled = true
             ) {
                 Text("Avançar")

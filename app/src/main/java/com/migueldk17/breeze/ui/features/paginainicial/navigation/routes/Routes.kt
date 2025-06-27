@@ -1,4 +1,4 @@
-package com.migueldk17.breeze
+package com.migueldk17.breeze.ui.features.paginainicial.navigation.routes
 
 
 //Rotas em string que estão sendo usadas pelo Jetpack Navigation

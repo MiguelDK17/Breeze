@@ -38,7 +38,9 @@ import java.time.LocalDate
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
+fun Passo4(
+    navToPasso5: () -> Unit,
+    viewModel: AdicionarContaViewModel = hiltViewModel()) {
     //Valor bruto da conta em reais
     var valorConta by remember{
         mutableStateOf("")
@@ -145,7 +147,7 @@ fun Passo4(navController: NavController, viewModel: AdicionarContaViewModel = hi
                     if (textJuros != "") viewModel.guardaPorcentagemJuros(textJuros) //Guarda a porcentagem de juros
                     viewModel.guardaDataConta(selectedDate) //Guarda a data da conta
                     if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas) //Guarda a quantidade de parcelas
-                    navController.navigate(NavGraph2.Passo5.route)
+                    navToPasso5()
                 },
                 enabled = buttonAvancaEnabled(
                     valorConta = valorConta,

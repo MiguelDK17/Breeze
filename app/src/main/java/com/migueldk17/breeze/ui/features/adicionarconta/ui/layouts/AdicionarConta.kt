@@ -32,6 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrincipal
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.SkyBlue
@@ -44,9 +45,7 @@ fun AdicionarConta(
 ){
     //Cria o navController
     val navController = rememberNavController()
-    //Cria o scroll que será usado futuramente
-    val scroll = rememberScrollState()
-    //Pega a rota atual do navController
+     //Pega a rota atual do navController
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     //Column principal do ciclo de vida AdicionarContaOpcionaç
@@ -56,10 +55,9 @@ fun AdicionarConta(
             .padding(15.dp)
     ) {
         //Text de título
-        Text(
-            "Adicionar Conta",
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp)
+        TitleText(
+            "Adicionar Conta"
+        )
         Spacer(modifier = Modifier.size(20.dp))
         //Contagem de passos
         Text(
@@ -82,7 +80,6 @@ fun AdicionarConta(
         CardPrincipal{
             InstanciaRotasAdicionarConta(navController, viewModel)
         }
-
 
     }
 
@@ -142,27 +139,50 @@ private fun retornaPasso(currentRoute: String?): String{
     return text
 }
 @Composable
-private fun InstanciaRotasAdicionarConta(navController: NavHostController, viewModel: AdicionarContaViewModel){
+private fun InstanciaRotasAdicionarConta(
+    navController: NavHostController,
+    viewModel: AdicionarContaViewModel){
     //Cria o navGraph com a rota inicial como a PaginaInicial
     val navGraph = navController.createGraph(startDestination = NavGraph2.Passo1.route) {
         //Passa o viewModel como argumento para PaginaInicial para que seja feita o envio da cor dos cards
         composable(NavGraph2.Passo1.route) {
-            Passo1(navController, viewModel)
+            Passo1(
+                navToPasso2 = {
+                navController.navigate(NavGraph2.Passo2.route)
+            }, viewModel
+            )
         }
         composable(NavGraph2.Passo2.route) {
-            Passo2(navController, viewModel)
+            Passo2(
+                navToPasso3 = {
+                    navController.navigate(NavGraph2.Passo3.route)},
+                currentState = navController.currentBackStackEntryAsState().value?.destination?.route,
+                viewModel
+            )
         }
         composable(NavGraph2.Passo3.route){
-            Passo3(navController, viewModel)
+            Passo3(
+                navToPasso4 = {
+                navController.navigate(NavGraph2.Passo4.route)
+            },
+                currentState = navController.currentBackStackEntryAsState().value?.destination?.route,
+                viewModel
+            )
         }
         composable(NavGraph2.Passo4.route){
-            Passo4(navController, viewModel)
+            Passo4(navToPasso5 = {
+                navController.navigate(NavGraph2.Passo5.route)
+            }, viewModel)
         }
         composable(NavGraph2.Passo5.route){
-            Passo5(navController, viewModel)
+            Passo5(navToFinal = {
+                navController.navigate(NavGraph2.Final.route)
+            },
+                currentState = navController.currentBackStackEntryAsState().value?.destination?.route,
+                viewModel)
         }
         composable(NavGraph2.Final.route){
-            Final(navController, viewModel)
+            Final( viewModel)
         }
     }
     //NavHost contendo o navController, as rotas, o scroll vertical e as animações, os layouts compose irão compertilhar dessas propriedades
