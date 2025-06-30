@@ -1,18 +1,13 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import android.content.Context
-import android.util.Log
-import android.content.ContentValues.TAG
-import android.content.Intent
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.MainActivity4
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.traduzData
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,8 +34,6 @@ class HistoricoViewModel @Inject constructor(
     //Pega as contas registradas no Room
     private val _contas = MutableStateFlow<List<Conta>>(emptyList())
     val contas: StateFlow<List<Conta>> = _contas.asStateFlow()
-    //Verifica se houve contas encontradas
-    private val _contasEncontradas = mutableMapOf<Long, StateFlow<UiState<List<Conta>>>>()
     //Armazena a data já traduzida
     private val _dataTraduzida = MutableStateFlow<String>("")
     val dataTraduzida: StateFlow<String> = _dataTraduzida.asStateFlow()
@@ -72,6 +65,7 @@ class HistoricoViewModel @Inject constructor(
                     when {
                         contas.isEmpty()-> {
                             _contasState.value = UiState.Empty
+                            ToastManager.showToast(context = context, message = "Não há contas registradas neste mês")
                         }
 
                         else -> {

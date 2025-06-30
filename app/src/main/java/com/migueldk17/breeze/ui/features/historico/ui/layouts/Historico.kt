@@ -4,7 +4,6 @@ package com.migueldk17.breeze.ui.features.historico.ui.layouts
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
@@ -26,7 +25,7 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
             Log.d(TAG, "Historico: Lista de contas no histórico sendo carregadas")
         }
         is UiState.Empty -> {
-            Toast.makeText(context, "Não há contas registradas neste mês", Toast.LENGTH_SHORT).show()
+
         }
         is UiState.Error -> {
             Log.d(TAG, "Historico: Ocorreu um erro ao buscar as contas: ${contasState.exception}")

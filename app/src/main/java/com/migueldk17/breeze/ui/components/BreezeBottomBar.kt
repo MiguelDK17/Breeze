@@ -8,12 +8,9 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.features.paginainicial.navigation.routes.Screen
@@ -21,7 +18,15 @@ import com.migueldk17.breeze.ui.utils.navigateSingleTopTo
 
 @Composable
 fun BreezeBottomBar(navController: NavController){
-    var selectedItem by remember { mutableIntStateOf(0) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    var selectedItem = when(currentRoute){
+        Screen.PaginaInicial.route -> 0
+        Screen.Historico.route -> 1
+        Screen.Configuracoes.route -> 2
+        else -> 0
+    }
 
     NavigationBar {
             NavigationBarItem(
@@ -34,7 +39,6 @@ fun BreezeBottomBar(navController: NavController){
                 label = { Text("Página Inicial") },
                 selected = selectedItem == 0,
                 onClick = {
-                    selectedItem = 0
                     navController.navigateSingleTopTo(route = Screen.PaginaInicial.route)
                 },
                 colors = NavigationBarItemColors(
@@ -57,7 +61,6 @@ fun BreezeBottomBar(navController: NavController){
                 label = { Text("Histórico") },
                 selected = selectedItem == 1,
                 onClick = {
-                    selectedItem = 1
                     navController.navigateSingleTopTo(route = Screen.Historico.route)
                 },
                 colors = NavigationBarItemColors(
@@ -80,7 +83,6 @@ fun BreezeBottomBar(navController: NavController){
                 label = { Text("Configurações") },
                 selected = selectedItem == 2,
                 onClick = {
-                    selectedItem = 2
                     navController.navigateSingleTopTo(route = Screen.Configuracoes.route)
                 },
                 colors = NavigationBarItemColors(
@@ -96,45 +98,4 @@ fun BreezeBottomBar(navController: NavController){
         }
 
 
-}
-
-@Composable
-fun BreezeBottomBarModel(){
-    var selectedItem by remember { mutableIntStateOf(0) }
-    val home = BreezeIcons.Linear.Building.HomeLinear
-    val settings = BreezeIcons.Linear.Settings.SettingsLinear
-
-    NavigationBar{
-        NavigationBarItem(
-            icon = { BreezeIcon(home, contentDescription = "Página Inicial") },
-            label = { Text("Página Inicial") },
-            selected = selectedItem == 0,
-            onClick = {
-                selectedItem = 0
-            }
-        )
-        NavigationBarItem(
-            icon = { BreezeIcon(BreezeIcons.Linear.Time.CalendarLinear, contentDescription = "Histórico") },
-            label = { Text("Histórico") },
-            selected = selectedItem == 1,
-            onClick = {
-                selectedItem = 1
-            }
-        )
-        NavigationBarItem(
-            icon = { BreezeIcon(settings, contentDescription = "Configurações")},
-            label = { Text("Configurações") },
-            selected = selectedItem == 2,
-            onClick = {
-                selectedItem = 2
-            }
-        )
-    }
-}
-
-
-@Composable
-@Preview(showBackground = true)
-private fun Preview(){
-    BreezeBottomBarModel()
 }

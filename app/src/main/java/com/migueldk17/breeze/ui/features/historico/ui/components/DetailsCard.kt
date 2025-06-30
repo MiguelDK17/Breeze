@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.paginainicial.ui.components
+package com.migueldk17.breeze.ui.features.historico.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme

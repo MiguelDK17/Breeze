@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.adicionarconta
+package com.migueldk17.breeze.ui.features.adicionarconta.models
 
 import androidx.compose.ui.graphics.Color
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
