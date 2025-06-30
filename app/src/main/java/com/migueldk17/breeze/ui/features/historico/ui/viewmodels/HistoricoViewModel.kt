@@ -45,8 +45,9 @@ class HistoricoViewModel @Inject constructor(
     private val _navegarParaTela = MutableSharedFlow<String>()
     val navegarParaTela = _navegarParaTela.asSharedFlow()
 
-    private val _mes = MutableStateFlow("")
-    val mes: StateFlow<String> = _mes.asStateFlow()
+
+    private val _dataFormatada = MutableStateFlow("")
+    val dataFormatada: StateFlow<String> = _dataFormatada.asStateFlow()
 
     //Busca as contas registradas no Room e manda pro ViewModel
     init {
@@ -60,7 +61,7 @@ class HistoricoViewModel @Inject constructor(
 
     fun buscaContasPorMes(mes: String){
         viewModelScope.launch {
-            contaRepository.getContasPorMes(mes)
+            contaRepository.getContasMes(mes)
                 .map { contas ->
                     when {
                         contas.isEmpty()-> {
@@ -90,6 +91,10 @@ class HistoricoViewModel @Inject constructor(
     //Função que salva a data já traduzida
     fun salvaDataTraduzida(string: String){
         _dataTraduzida.value = string
+    }
+
+    fun salvaDataFormatada(string: String){
+        _dataFormatada.value = string
     }
 
 }

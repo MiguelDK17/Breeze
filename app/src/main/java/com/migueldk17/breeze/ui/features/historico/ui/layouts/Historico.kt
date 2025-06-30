@@ -19,6 +19,7 @@ import com.migueldk17.breeze.uistate.UiState
 fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
     val context = LocalContext.current
     val contasState = viewModel.contasState.collectAsStateWithLifecycle().value
+    val dataFormatada = viewModel.dataFormatada.collectAsStateWithLifecycle().value
     
     when(contasState){
         is UiState.Loading -> {
@@ -36,9 +37,11 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
     }
     LaunchedEffect(Unit) {
         viewModel.navegarParaTela.collect { dataTraduzida ->
+            Log.d(TAG, "Historico: $dataTraduzida")
             val context = context
             val intent = Intent(context, MainActivity4::class.java)
-            intent.putExtra("data", dataTraduzida)
+            intent.putExtra("mes", dataTraduzida)
+            intent.putExtra("dataFormatada",dataFormatada)
             context.startActivity(intent)
         }
     }

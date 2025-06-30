@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MainActivity4
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
+import com.migueldk17.breeze.ui.utils.retornaDataFormatadaParaPesquisaNoRoom
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
@@ -45,7 +46,6 @@ import java.time.LocalDate
 @Composable
 fun Calendario(
     viewModel: HistoricoViewModel){
-    val context = LocalContext.current
     val ano = LocalDate.now().year
     Card(
         modifier = Modifier
@@ -68,7 +68,7 @@ fun Calendario(
             Spacer(modifier = Modifier.height(16.dp))
 
             //Grid com os meses
-            GridMes(viewModel)
+            GridMes(viewModel, ano)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -78,9 +78,10 @@ fun Calendario(
 }
 
 @Composable
-fun GridMes(viewModel: HistoricoViewModel){
+fun GridMes(viewModel: HistoricoViewModel, ano: Int){
     //Lista de meses
     val meses = listOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
+
     var mesSelecionado by remember { mutableStateOf<String?>(null) }
 
     LazyVerticalGrid(
@@ -97,8 +98,11 @@ fun GridMes(viewModel: HistoricoViewModel){
                     isSelected = meses[index] == mesSelecionado,
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
+                        val dataFormatada = retornaDataFormatadaParaPesquisaNoRoom(meses[index], ano)
+                        Log.d(TAG, "GridMes: $dataFormatada")
                         mesSelecionado = meses[index]
-                        viewModel.buscaContasPorMes(meses[index])
+                        viewModel.salvaDataFormatada(dataFormatada)
+                        viewModel.buscaContasPorMes(dataFormatada)
                     })
             })
     }

@@ -95,5 +95,15 @@ object ToastManager {
     }
 }
 
+fun retornaDataFormatadaParaPesquisaNoRoom(mes: String, ano: Int): String {
+    val mesesMap = mapOf( // Use immutable mapOf
+        "Jan" to "01", "Fev" to "02", "Mar" to "03", "Abr" to "04",
+        "Mai" to "05", "Jun" to "06", "Jul" to "07", "Ago" to "08",
+        "Set" to "09", "Out" to "10", "Nov" to "11", "Dez" to "12"
+    )
+    val dataFormatada = "$ano-${mesesMap[mes]}%"
+    return dataFormatada
+}
+
 
 

@@ -28,6 +28,7 @@ class ParcelaRepository @Inject constructor(
         return parcelaDao.getParcelasDaConta(idContaPai)
     }
 
+
     //Deleta todas as parcelas
     suspend fun apagarTodasAsParcelas(parcelas: List<ParcelaEntity>){
         parcelaDao.apagarTodasAsParcelas(parcelas)

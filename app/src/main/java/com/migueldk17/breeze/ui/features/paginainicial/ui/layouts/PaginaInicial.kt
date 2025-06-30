@@ -50,7 +50,7 @@ fun PaginaInicial(navController: NavController,
     val saldoFormatado = saldo
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
 
-    var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
+    val showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
 
     Column(modifier = Modifier
         .fillMaxWidth()) {
@@ -121,6 +121,7 @@ fun PaginaInicial(navController: NavController,
 
                         //Formata a data para consulta no Room
                         val filtro = formataMesAno(LocalDate.now()) + "%"
+                        Log.d(TAG, "PaginaInicial: $filtro")
 
                         //Pega as parcelas com o UIState para cobrir os estados da lista
                         val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value

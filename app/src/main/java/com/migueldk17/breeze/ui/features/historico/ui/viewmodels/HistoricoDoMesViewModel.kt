@@ -50,11 +50,9 @@ class HistoricoDoMesViewModel @Inject constructor(
     private fun observarContaPorMes() {
         viewModelScope.launch {
             _data.collectLatest { mes ->
-                val dataFormatadaParaParcela = formataMesAno(LocalDate.now()) + "%"
-                Log.d(TAG, "observarContaPorMes: $dataFormatadaParaParcela")
-
-                val contasFlow = contaRepository.getContasPorMes(mes.take(3))
-                val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormatadaParaParcela)
+                
+                val contasFlow = contaRepository.getContasMes(mes)
+                val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
                 combine(contasFlow, parcelasFlow) { contas, parcelas ->
                     val contasMapeadas = contas.associateBy { it.id }
@@ -170,9 +168,9 @@ class HistoricoDoMesViewModel @Inject constructor(
             //Data formatada para consulta no Room para Parcelas
             val dataFormadadaParaParcela = formataMesAno(LocalDate.now()) + "%"
             //Flow de Lista de Contas
-            val contasFlow = contaRepository.getContasPorMes(mes.take(3))
+            val contasFlow = contaRepository.getContasMes(mes)
             //Flow de Lista de Contas
-            val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormadadaParaParcela)
+            val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
             //Combine junta os fluxos de contas e parcelas
             combine(contasFlow, parcelasFlow) { contas, parcelas ->
@@ -231,6 +229,6 @@ class HistoricoDoMesViewModel @Inject constructor(
 
     //Pega as primeiras três letras do mês
     fun setData(mes: String){
-        _data.value = mes.take(3)
+        _data.value = mes
     }
 }

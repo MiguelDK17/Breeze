@@ -1,19 +1,18 @@
 package com.migueldk17.breeze
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMes
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -28,15 +27,15 @@ class MainActivity4: ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val intent = intent.getStringExtra("data")
-            val data = intent
-            viewModel.setData(data!!)
+            val mes = intent.getStringExtra("data")
+            val dataFormatada = intent.getStringExtra("dataFormatada")
+            viewModel.setData(dataFormatada!!)
             BreezeTheme {
                 Scaffold(
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text("Mês de $data")
+                                Text("Mês de $mes")
                             }
                         )
                     }
