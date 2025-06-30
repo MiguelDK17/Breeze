@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,13 +29,15 @@ import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.InfoIconWithPopup
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 
 @Composable
-fun Passo1(navController: NavController = rememberNavController(), viewModel: AdicionarContaViewModel = hiltViewModel()){
+fun Passo1(
+    navToPasso2: () -> Unit,
+    viewModel: AdicionarContaViewModel = hiltViewModel()){
     var text by remember{
         mutableStateOf("")
     }
@@ -140,7 +140,7 @@ fun Passo1(navController: NavController = rememberNavController(), viewModel: Ad
                 viewModel.setNomeConta(text)
                 viewModel.setCategoria(selectedCategory)
                 viewModel.setSubcategoria(selectedSubCategory)
-                navController.navigate(NavGraph2.Passo2.route)
+                navToPasso2()
 
             },
             enabled = isBreezeButtonEnabled(text, selectedCategory, selectedSubCategory))

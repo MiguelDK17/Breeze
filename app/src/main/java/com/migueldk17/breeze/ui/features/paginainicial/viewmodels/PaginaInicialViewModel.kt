@@ -119,16 +119,22 @@ class PaginaInicialViewModel @Inject constructor(
     }
     //Pega todas as parcelas baseadas no ID da conta pai
      fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
-        return parcelaRepository.buscaParcelas(idContaPai)
+        return parcelaRepository.buscaParcelasDaConta(idContaPai)
 
     }
-
+    //Função que observa as contas do mês
     fun observeParcelaDoMes(idContaPai: Long, mesAno: String): StateFlow<UiState<ParcelaEntity?>>{
+        //Retorna o StateFlow com UiState
         return _parcelasPorConta.getOrPut(idContaPai) {
-            parcelaRepository.buscaParcelaMes(idContaPai, mesAno)
+            //Busca as parcelas do Mêes baseado no id da conta pai + mês do ano
+            parcelaRepository.buscaParcelaDoMesParaConta(idContaPai, mesAno)
+                //Mapeia o resultado, caso haja resultados retorna Success com a lista, caso contrário retorna Empty
                 .map { it?.let { UiState.Success(it) } ?: UiState.Empty }
+                //Captura o erro
                 .catch { emit(UiState.Error(it.message ?: "Erro desconhecido")) }
+                //No início da chamada inicia como Loading
                 .onStart { emit(UiState.Loading) }
+                //Dura quando o ViewModel é criado e nunca mais para, inicia com Loading
                 .stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Loading)
         }
     }

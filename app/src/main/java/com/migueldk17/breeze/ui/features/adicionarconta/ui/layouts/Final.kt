@@ -2,46 +2,74 @@ package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.ui.components.BreezeButton
+import com.migueldk17.breeze.ui.components.BreezeOutlinedButton
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
+import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity
-import java.util.Locale
+import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
+
 
 @Composable
-fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
+fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val nomeConta = viewModel.nomeConta.collectAsState().value
-    val icone = viewModel.iconeCardConta.collectAsState().value
-    val corIcone = viewModel.corIcone.collectAsState().value
-    val corCard = viewModel.corCard.collectAsState().value
-    val dataConta = viewModel.dataDaConta.collectAsState().value
-    val isContaParcelada = viewModel.isContaParcelada.collectAsState().value
-    val qtdParcela = viewModel.quantidadeDeParcelas.collectAsState().value
-    val taxaDeJuros = viewModel.taxaDeJurosMensal.collectAsState().value
-    val valorDasParcelas = viewModel.valorDasParcelas.collectAsState().value
+    val dadosDaConta = viewModel.dadosContaUI.collectAsStateWithLifecycle().value
+    val day = dadosDaConta.data.dayOfMonth
+    val month = dadosDaConta.data.monthValue
+    val year = dadosDaConta.data.year
+    val dataFormatada = "$day/$month/$year"
+    val isContaParcelada = viewModel.isContaParcelada.collectAsStateWithLifecycle().value
+    Log.d(TAG, "Final: isContaParcelada está assim: $isContaParcelada")
+    val porcentagemJuros = viewModel.taxaDeJurosMensal.collectAsStateWithLifecycle().value
+    var mostrarDetalhes by remember { mutableStateOf(false) }
+    val map = if (isContaParcelada) {
+        mapOf(
+            "Nome" to dadosDaConta.nome,
+            "Categoria" to dadosDaConta.categoria,
+            "Sub Categoria" to dadosDaConta.subCategoria,
+            "Valor Total" to retornaValorTotalArredondado(
+                dadosDaConta.valorParcela,
+                dadosDaConta.totalParcelas
+            ),
+            "Valor da parcela" to formataSaldo(dadosDaConta.valorParcela),
+            "Data de pagamento" to dataFormatada,
+            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
+        )
+    } else {
+        mapOf(
+            "Nome" to dadosDaConta.nome,
+            "Categoria" to dadosDaConta.categoria,
+            "Sub Categoria" to dadosDaConta.subCategoria,
+            "Valor Total" to formataSaldo(dadosDaConta.valor),
+            "Data de pagamento" to dataFormatada
+        )
+    }
 
-    //valor da conta armazenado no viewModel
-    val valorConta = viewModel.valorConta.collectAsState().value
-    //Pega o valor da conta do viewModel e formata para valores monetários
-    val valorMascarado = String.format(Locale.getDefault(),"R$: %.2f", valorConta)
 
     //Column do Passo Final
     Column(
@@ -50,31 +78,44 @@ fun Final(navController: NavController, viewModel: AdicionarContaViewModel = hil
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DescriptionText("Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar.",)
+        DescriptionText(
+            "Sua nova conta está pronta! Quando precisar, ela estará aqui para te ajudar."
+        )
         Spacer(modifier = Modifier.size(25.dp))
         //Card já finalizado
-        PersonalizationCard(nomeConta = nomeConta, icone = icone, corIcone = corIcone, valorMascarado = valorMascarado, corCard = corCard)
+        PersonalizationCard(
+            nomeConta = dadosDaConta.nome,
+            icone = dadosDaConta.icone,
+            corIcone = dadosDaConta.corIcone,
+            valorMascarado = formataSaldo(dadosDaConta.valor),
+            corCard = dadosDaConta.corCard)
         Spacer(modifier = Modifier.size(35.dp))
 
         //Botão para voltar ao Passo1 para adicionar uma nova conta
-        OutlinedButton(
-            onClick = {
-                navController.navigate(NavGraph2.Passo1.route)
-            }
-            ) {
-                Text("Adicionar nova conta")
-            }
+        BreezeOutlinedButton(
+            onClick = { mostrarDetalhes = !mostrarDetalhes },
+            text = if (mostrarDetalhes) "Ocultar detalhes" else "Mostrar detalhes"
+            )
+
+        AnimatedVisibility(
+            visible = mostrarDetalhes,
+            enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
+            exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
+        ) {
+            DetailsCard(
+                mapDeCategoria = map,
+                onChangeOpenDialog = { mostrarDetalhes = it },
+                isContaParcelada = isContaParcelada
+            )
+        }
         Spacer(modifier = Modifier.size(20.dp))
 
         //Botão que finaliza o ciclo e adiciona a conta ao banco de dados
-            Button(onClick = {
-
-                viewModel.salvaContaDatabase()
-
-                avançaMainActivity(context)
-            }
-            ) {
-                Text("Concluir")
-            }
+        BreezeButton(
+            onClick = {
+            viewModel.salvaContaDatabase()
+            avançaMainActivity(context)
+        },
+            text = "Concluir")
     }
 }

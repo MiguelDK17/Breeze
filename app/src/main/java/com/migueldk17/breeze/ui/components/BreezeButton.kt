@@ -11,16 +11,18 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun BreezeButton(modifier: Modifier = Modifier,
-                 text: String,
-                 onClick: () -> Unit,
-                 enabled: Boolean = true){
+fun BreezeButton(
+    modifier: Modifier = Modifier,
+    text: String,onClick: () -> Unit,
+    enabled: Boolean = true
+){
     Button(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled){
         Text(text,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp)
+            fontSize = 14.sp
+        )
     }
 }

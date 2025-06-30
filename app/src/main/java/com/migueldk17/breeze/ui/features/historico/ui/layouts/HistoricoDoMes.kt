@@ -17,6 +17,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -28,12 +31,13 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
+import com.migueldk17.breeze.uistate.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
-    //Pega as contas já criadas do mes sem formatação
-    val contas = viewModel.getContasDoMes().collectAsStateWithLifecycle(emptyList()).value
+
+    val contas = viewModel.contasPorMes.collectAsStateWithLifecycle().value
     //Pega as contas já filtradas por data da mais recente a mais antiga
     val historico = viewModel.historico.collectAsStateWithLifecycle().value
 
@@ -42,7 +46,7 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
 
-        GraficoDeBarras(contas!!, modifier)
+        GraficoDeBarras(contas, modifier)
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier.padding(horizontal = 10.dp)
@@ -75,7 +79,11 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                         breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
                         princeFirst = dia.contaPrincipal.valor,
                         lastIndex = isLastItem,
-                        contas = dia.outrasContas
+                        contas = dia.outrasContas,
+                        idContaPrincipal = dia.contaPrincipal.id,
+                        categoryPrincipal = dia.contaPrincipal.categoria,
+                        subCategoryPrincipal = dia.contaPrincipal.subCategoria,
+                        isContaParceladaContaPrincipal = dia.contaPrincipal.isContaParcelada
                     )
 
                 }
@@ -88,8 +96,10 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
                     .height(40.dp)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent,
-                                MaterialTheme.colorScheme.background)
+                            colors = listOf(
+                                Color.Transparent,
+                                MaterialTheme.colorScheme.background
+                            )
                         )
                     )
             )

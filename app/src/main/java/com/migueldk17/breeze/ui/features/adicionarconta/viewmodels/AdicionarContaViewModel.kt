@@ -12,13 +12,17 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
+import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
 import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -44,7 +48,7 @@ class AdicionarContaViewModel @Inject constructor(
     val isContaParcelada: StateFlow<Boolean> = _isContaParcelada.asStateFlow()
 
     private val _dataDaConta = MutableStateFlow(LocalDate.now())
-    val dataDaConta: StateFlow<LocalDate?> = _dataDaConta.asStateFlow()
+    val dataDaConta: StateFlow<LocalDate> = _dataDaConta.asStateFlow()
 
     private val _quantidadeDeParcelas = MutableStateFlow(0)
     val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
@@ -71,6 +75,51 @@ class AdicionarContaViewModel @Inject constructor(
 
     private val _salvarParcelasState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val salvarParcelasState: StateFlow<UiState<Unit>> = _salvarParcelasState.asStateFlow()
+
+    val dadosContaUI: StateFlow<DadosContaUI> = combine(
+        listOf(
+            nomeConta,
+            iconeCardConta,
+            corIcone,
+            corCard,
+            valorConta,
+            categoriaConta,
+            subcategoriaConta,
+            valorDasParcelas,
+            quantidadeDeParcelas,
+            dataDaConta,
+            isContaParcelada,
+            taxaDeJurosMensal
+        )
+    ) { valores ->
+        DadosContaUI(
+            nome = valores[0] as String,
+            icone = valores[1] as BreezeIconsType,
+            corIcone = valores[2] as Color,
+            corCard = valores[3] as Color,
+            valor = valores[4] as Double,
+            categoria = valores[5] as String,
+            subCategoria = valores[6] as String,
+            valorParcela = valores[7] as Double,
+            totalParcelas = valores[8] as Int,
+            data = valores[9] as LocalDate,
+            isParcelada = valores[10] as Boolean,
+            taxaJuros = valores[11] as Double
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DadosContaUI(
+        nome = "",
+        icone = BreezeIcons.Unspecified.IconUnspecified,
+        corIcone = Color.Unspecified,
+        corCard = Color.Unspecified,
+        valor = 0.0,
+        categoria = "",
+        subCategoria = "",
+        valorParcela = 0.0,
+        totalParcelas = 0,
+        data = LocalDate.now(),
+        isParcelada = false,
+        taxaJuros = 0.0
+    ))
 
     init {
         viewModelScope.launch {

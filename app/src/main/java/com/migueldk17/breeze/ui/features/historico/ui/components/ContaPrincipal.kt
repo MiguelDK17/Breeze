@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -18,7 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
+import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataValorConta
 import java.time.LocalDate
 
 @Composable
@@ -26,8 +34,15 @@ fun ContaPrincipal(
     date: LocalDate, //Data de criação da conta
     nameAccount: String, //Nome da conta
     breezeIcon: BreezeIconsType, //Icone BreezeIcon
-    price: Double //Valor da conta
+    price: Double, //Valor da conta
+    id: Long,
+    category: String,
+    subCategory: String,
+    isContaParcelada: Boolean
+
 ){
+    var textoClicado by remember {mutableStateOf(false)}
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -61,7 +76,11 @@ fun ContaPrincipal(
                 fontSize = 15.sp,
                 modifier = Modifier
                     .weight(1f) //Adiciona peso ao Text
-                    .padding(end = 8.dp),
+                    .padding(end = 8.dp)
+                    .clickable{
+                        textoClicado = true
+                    }
+                    ,
                 overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                 maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
@@ -72,13 +91,35 @@ fun ContaPrincipal(
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp,
                 modifier = Modifier
-                    .padding(horizontal = 15.dp),
+                    .padding(horizontal = 15.dp)
+                    .clickable{
+                        textoClicado = true
+                    },
                 textAlign = TextAlign.End
             )
 
-
-
         }
+        if (textoClicado){
+            ShowDetailsCard(
+                onChangeTextoClicado = {textoClicado = it},
+                id = id,
+                nameAccount= nameAccount,
+                date = date.atStartOfDay(),
+                valor = price,
+                category = category,
+                subCategory = subCategory,
+                isContaParcelada = isContaParcelada
 
+            )
+        }
     }
+
+
+}
+
+internal fun retornaValorTotalArredondado(valorParcela: Double, totalParcelas: Int): String {
+    val valorTotal = valorParcela * totalParcelas
+    val totalArredondado = arredondarValor(valorTotal)
+    val totalFormatado = formataValorConta(totalArredondado)
+    return totalFormatado
 }

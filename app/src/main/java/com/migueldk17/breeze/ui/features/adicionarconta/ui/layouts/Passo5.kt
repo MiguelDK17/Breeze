@@ -9,7 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,7 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCorPadrao
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
@@ -28,7 +27,10 @@ import com.migueldk17.breeze.ui.utils.formataValorConta
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()) {
+fun Passo5(
+    navToFinal: () -> Unit,
+    currentState: String?,
+    viewModel: AdicionarContaViewModel = hiltViewModel()) {
 
     val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
     val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
@@ -36,8 +38,6 @@ fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hi
     val valorConta = viewModel.valorConta.collectAsStateWithLifecycle().value
     //Pega o valor da conta do viewModel e formata para valores monetários
     val valorMascarado = formataValorConta(valorConta)
-
-    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
 
 
     Column {
@@ -69,7 +69,7 @@ fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hi
             OutlinedButton(
                 onClick = {
                     adicionaCorPadrao(currentState, viewModel)
-                    navController.navigate(NavGraph2.Final.route)
+                    navToFinal()
                 }
             ){
                 Text("Ou usar a cor padrão")
@@ -78,7 +78,7 @@ fun Passo5(navController: NavController, viewModel: AdicionarContaViewModel = hi
             //Botão para avançar de tela
             Button(onClick = {
                 insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
-                navController.navigate(NavGraph2.Final.route)
+                navToFinal()
             }, enabled = true
             ) {
                 Text("Avançar")

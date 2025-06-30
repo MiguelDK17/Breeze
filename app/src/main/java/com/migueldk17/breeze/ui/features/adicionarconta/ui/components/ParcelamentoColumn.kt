@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,24 +35,26 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ParcelamentoColumn(isSmallScreen: Boolean, //Booleano para verificar se é um dispositivo pequeno
-                       selectedDate: LocalDate, //Data da primeira parcela
-                       onEditDate: (LocalDate) -> Unit, //Função para editar a data da primeira parcela
-                       textJuros: String, //Texto do campo de texto para o juros
-                       onEditTextJuros: (String) -> Unit, //Função para editar o texto do campo de texto para o juros
-                       isParcelamentoComJurosChecked: Boolean, //Booleano para verificar se o parcelamento tem juros
-                       onCheckedChange: (Boolean) -> Unit, //Função para editar o booleano para verificar se o parcelamento tem juros
-                       categoriesParcelamento: List<String>, //Lista de categorias de parcelamento
-                       selectedCategory: String, //Categoria selecionada
-                       onChangeCategoriesParcelamento: (String) -> Unit, //Função para editar a categoria selecionada
-                       textParcelas: String, //Texto do campo de texto para o número de parcelas
-                       onChangeTextParcelas: (String) -> Unit, //Função para editar o texto do campo de texto para o número de parcelas
-                       ){
+fun ParcelamentoColumn(
+    isSmallScreen: Boolean, //Booleano para verificar se é um dispositivo pequeno
+    selectedDate: LocalDate, //Data da primeira parcela
+    onEditDate: (LocalDate) -> Unit, //Função para editar a data da primeira parcela
+    textJuros: String, //Texto do campo de texto para o juros
+    onEditTextJuros: (String) -> Unit, //Função para editar o texto do campo de texto para o juros
+    isParcelamentoComJurosChecked: Boolean, //Booleano para verificar se o parcelamento tem juros
+    onCheckedChange: (Boolean) -> Unit, //Função para editar o booleano para verificar se o parcelamento tem juros
+    categoriesParcelamento: List<String>, //Lista de categorias de parcelamento
+    selectedCategory: String, //Categoria selecionada
+    onChangeCategoriesParcelamento: (String) -> Unit, //Função para editar a categoria selecionada
+    textParcelas: String, //Texto do campo de texto para o número de parcelas
+    onChangeTextParcelas: (String) -> Unit, //Função para editar o texto do campo de texto para o número de parcelas
+    ){
 
     val fillMaxWidth = Modifier.fillMaxWidth()
     var showDatePicker by remember { mutableStateOf(false)}
@@ -89,7 +89,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean, //Booleano para verificar se é u
                     if (selectedCategory == "Outro...") {
                         BreezeOutlinedTextField(
                             modifier = Modifier.padding(vertical = 20.dp),
-                            text = textParcelas.toString(),
+                            text = textParcelas,
                             onValueChange = onChangeTextParcelas,
                             textLabel = "Parcelas",
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -136,7 +136,7 @@ fun ParcelamentoColumn(isSmallScreen: Boolean, //Booleano para verificar se é u
         ) {
             val parceladoEm = if (selectedCategory == "Outro...") "${textParcelas}x" else selectedCategory
             val parceladoEmFormatado = if (parceladoEm == "x") "..." else parceladoEm
-            val text = if (isParcelamentoComJurosChecked) "Parcelado em $parceladoEmFormatado com juros" else "Parcelado em $parceladoEmFormatado sem juros"
+            val text = if (isParcelamentoComJurosChecked && textJuros.isNotEmpty()) "Parcelado em $parceladoEmFormatado com juros" else "Parcelado em $parceladoEmFormatado sem juros"
             Text(
                 text,
                 fontStyle = FontStyle.Italic,

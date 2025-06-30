@@ -18,7 +18,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.1-beta"
+        versionName = "1.2-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui)
     implementation(libs.breeze.icons)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.airbnb.android.lottie)
     implementation(libs.airbnb.android.lottie.compose)
     implementation(platform(libs.google.firebase.bom))

@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
-import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
@@ -28,9 +28,11 @@ import com.migueldk17.breeze.ui.theme.blackPoppinsDarkMode
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 
 @Composable
-fun Passo2(navController: NavController, viewModel: AdicionarContaViewModel = hiltViewModel()){
+fun Passo2(
+    navToPasso3: () -> Unit,
+    currentState: String?,
+    viewModel: AdicionarContaViewModel = hiltViewModel()){
     val nomeConta = viewModel.nomeConta.collectAsState().value
-    val currentState = navController.currentBackStackEntryAsState().value?.destination?.route
 
 
     //Column do Passo2
@@ -66,7 +68,7 @@ fun Passo2(navController: NavController, viewModel: AdicionarContaViewModel = hi
             //Botão para avançar de tela
             Button(onClick = {
                 insereIconeNoViewModel(currentState, viewModel, iconCarrousel)
-                navController.navigate(NavGraph2.Passo3.route)
+                navToPasso3()
             }, enabled = true
             ) {
                 Text("Avançar")
