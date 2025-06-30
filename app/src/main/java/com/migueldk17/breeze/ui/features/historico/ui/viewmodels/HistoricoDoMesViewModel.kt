@@ -51,6 +51,7 @@ class HistoricoDoMesViewModel @Inject constructor(
         viewModelScope.launch {
             _data.collectLatest { mes ->
                 val dataFormatadaParaParcela = formataMesAno(LocalDate.now()) + "%"
+                Log.d(TAG, "observarContaPorMes: $dataFormatadaParaParcela")
 
                 val contasFlow = contaRepository.getContasPorMes(mes.take(3))
                 val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormatadaParaParcela)

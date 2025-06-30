@@ -91,7 +91,7 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
             corCard = dadosDaConta.corCard)
         Spacer(modifier = Modifier.size(35.dp))
 
-        //Botão para voltar ao Passo1 para adicionar uma nova conta
+
         BreezeOutlinedButton(
             onClick = { mostrarDetalhes = !mostrarDetalhes },
             text = if (mostrarDetalhes) "Ocultar detalhes" else "Mostrar detalhes"
