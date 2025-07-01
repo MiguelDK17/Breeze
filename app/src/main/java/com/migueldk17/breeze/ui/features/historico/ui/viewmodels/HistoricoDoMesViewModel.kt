@@ -50,98 +50,43 @@ class HistoricoDoMesViewModel @Inject constructor(
     private fun observarContaPorMes() {
         viewModelScope.launch {
             _data.collectLatest { mes ->
-                
-                val contasFlow = contaRepository.getContasMes(mes)
-                val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(mes)
+                if (mes.isNotBlank() && mes.matches(Regex("""\d{4}-\d{2}%"""))) {
+                    val contasFlow = contaRepository.getContasMes(mes)
+                    val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
-                combine(contasFlow, parcelasFlow) { contas, parcelas ->
-                    val contasMapeadas = contas.associateBy { it.id }
-                    val idsContaPai = parcelas.map { it.idContaPai }.toSet()
-                    val contasFiltradas = contas.filterNot { it.id in idsContaPai }
+                    combine(contasFlow, parcelasFlow) { contas, parcelas ->
+                        val contasMapeadas = contas.associateBy { it.id }
+                        val idsContaPai = parcelas.map { it.idContaPai }.toSet()
+                        val contasFiltradas = contas.filterNot { it.id in idsContaPai }
 
-                    val contasDasParcelas = parcelas.mapNotNull { parcela ->
-                        contasMapeadas[parcela.idContaPai]?.let { contaPai ->
-                            Conta(
-                                id = parcela.id.toLong(),
-                                name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
-                                categoria = contaPai.categoria,
-                                subCategoria = contaPai.subCategoria,
-                                valor = parcela.valor,
-                                icon = contaPai.icon,
-                                colorIcon = contaPai.colorIcon,
-                                colorCard = contaPai.colorCard,
-                                dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
-                                isContaParcelada = true
-                            )
+                        val contasDasParcelas = parcelas.mapNotNull { parcela ->
+                            contasMapeadas[parcela.idContaPai]?.let { contaPai ->
+                                Conta(
+                                    id = parcela.id.toLong(),
+                                    name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
+                                    categoria = contaPai.categoria,
+                                    subCategoria = contaPai.subCategoria,
+                                    valor = parcela.valor,
+                                    icon = contaPai.icon,
+                                    colorIcon = contaPai.colorIcon,
+                                    colorCard = contaPai.colorCard,
+                                    dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
+                                    isContaParcelada = true
+                                )
+                            }
                         }
+                        val todasAsContas = contasFiltradas + contasDasParcelas
+                        todasAsContas.sortedBy { it.dateTime }
+                    }.collectLatest { contasOrdenadas ->
+                        _contasPorMes.value = contasOrdenadas
                     }
-                    val todasAsContas = contasFiltradas + contasDasParcelas
-                    todasAsContas.sortedBy { it.dateTime }
-                }.collectLatest { contasOrdenadas ->
-                    _contasPorMes.value = contasOrdenadas
+                }
+                else {
+                    Log.d(TAG, "observarContaPorMes: Data inválida para consulta no Room: $mes")
+
                 }
             }
         }
-    }
-
-    //Pega as contas do mes sem filtro
-    fun buscaContasPorMes(): StateFlow<List<Conta>>{
-        val contasFiltradas = _data.flatMapLatest { mes ->
-                //Data formatada para consulta no Room para Parcelas
-                val dataFormadadaParaParcela = formataMesAno(LocalDate.now()) + "%"
-                //Flow de Lista de Contas
-                val contasFlow = contaRepository.getContasPorMes(mes.take(3))
-                //Flow de Lista de Contas
-                val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(dataFormadadaParaParcela)
-
-                //Combine junta os fluxos de contas e parcelas
-                combine(contasFlow, parcelasFlow) { contas, parcelas ->
-                    //Mapeia as contas baseado no id
-                    val contasMapeadas = contas.associateBy {it.id}
-
-                    //Cria um Set com os IDs das contas que são pais de parcelas no mês
-                    val idsContaPai = parcelas.map { it.idContaPai }.toSet()
-
-                    //Filtra as contas normais, removendo as contas que são pai de parcela
-                    val contasFiltradas = contas.filterNot { it.id in idsContaPai }
-
-                    //Agora monta as contas representando as parcelas
-                    val contasDasParcelas = parcelas.mapNotNull { parcela ->
-
-                        val contaPai = contasMapeadas[parcela.idContaPai]
-
-                        contaPai?.let {
-                            Conta(
-                                id = parcela.id.toLong(),
-                                name = "${it.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
-                                categoria = it.categoria,
-                                subCategoria = it.subCategoria,
-                                valor = parcela.valor,
-                                icon = it.icon,
-                                colorIcon = it.colorIcon,
-                                colorCard = it.colorCard,
-                                dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
-                                isContaParcelada = true
-                            )
-                        }
-                    }
-
-                    //Junta as contas normais(sem as pai) + as contas das parcelas
-                    val todasAsContas = contasFiltradas + contasDasParcelas
-                    val contasFiltradasPorData = todasAsContas
-                        .sortedBy { it.dateTime } //Pega da mais recente a mais antiga
-                    contasFiltradasPorData
-
-                }
-            }
-            //Fica on quando a UI estiver ativa e tiver um observador, inicia com lista vazia
-            .stateIn(
-                viewModelScope,
-                SharingStarted.Eagerly,
-                emptyList())  //StateFlow que se inicia com o ViewModel e dura quando o ViewModel durar
-
-        return contasFiltradas
-
     }
 
      fun buscaParcelaPorId(idParcela: Long): UiState<ParcelaEntity> {
@@ -165,8 +110,6 @@ class HistoricoDoMesViewModel @Inject constructor(
 
     val historico: StateFlow<List<HistoricoDoDia>> = _data
         .flatMapLatest { mes ->
-            //Data formatada para consulta no Room para Parcelas
-            val dataFormadadaParaParcela = formataMesAno(LocalDate.now()) + "%"
             //Flow de Lista de Contas
             val contasFlow = contaRepository.getContasMes(mes)
             //Flow de Lista de Contas

@@ -27,9 +27,11 @@ class MainActivity4: ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val mes = intent.getStringExtra("data")
+            val mes = intent.getStringExtra("mes")
             val dataFormatada = intent.getStringExtra("dataFormatada")
-            viewModel.setData(dataFormatada!!)
+            if (dataFormatada != null) {
+                viewModel.setData(dataFormatada)
+            }
             BreezeTheme {
                 Scaffold(
                     topBar = {
