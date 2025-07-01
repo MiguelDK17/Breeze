@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +39,7 @@ fun DetailsCard(
     onChangeOpenDialog: (Boolean) -> Unit,
     isContaParcelada: Boolean
     ){
+    Log.d(TAG, "DetailsCard: $isContaParcelada")
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
     val lista = listOf(

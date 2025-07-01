@@ -30,7 +30,11 @@ class MainActivity4: ComponentActivity() {
             val mes = intent.getStringExtra("mes")
             val dataFormatada = intent.getStringExtra("dataFormatada")
             if (dataFormatada != null) {
+                Log.d(TAG, "dataFormatada: caiu no if: $dataFormatada")
                 viewModel.setData(dataFormatada)
+            }
+            else {
+                Log.d(TAG, "dataFormatada: caiu no else: $dataFormatada")
             }
             BreezeTheme {
                 Scaffold(

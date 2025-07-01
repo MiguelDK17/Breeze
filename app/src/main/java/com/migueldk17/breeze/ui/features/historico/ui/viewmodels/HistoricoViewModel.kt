@@ -42,7 +42,7 @@ class HistoricoViewModel @Inject constructor(
     private val _contasState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
     val contasState: StateFlow<UiState<List<Conta>>> = _contasState.asStateFlow()
 
-    private val _navegarParaTela = MutableSharedFlow<String>()
+    private val _navegarParaTela = MutableSharedFlow<Pair<String, String>>()
     val navegarParaTela = _navegarParaTela.asSharedFlow()
 
 
@@ -73,8 +73,8 @@ class HistoricoViewModel @Inject constructor(
                             salvaDataTraduzida(
                                 traduzData(contas.first().dateTime.toLocalDateTime().month.name)
                             )
-                            _navegarParaTela.emit(_dataTraduzida.value)
                             _contasState.value = UiState.Success(contas)
+                            avancaParaMainActivity4()
                         }
                     }
                 }
@@ -95,6 +95,15 @@ class HistoricoViewModel @Inject constructor(
 
     fun salvaDataFormatada(string: String){
         _dataFormatada.value = string
+    }
+
+    fun avancaParaMainActivity4(){
+        val mes = _dataTraduzida.value
+        val dataFormatada = _dataFormatada.value
+        viewModelScope.launch {
+            _navegarParaTela.emit(Pair(mes, dataFormatada))
+        }
+
     }
 
 }

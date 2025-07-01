@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -49,8 +50,10 @@ class HistoricoDoMesViewModel @Inject constructor(
 
     private fun observarContaPorMes() {
         viewModelScope.launch {
-            _data.collectLatest { mes ->
-                if (mes.isNotBlank() && mes.matches(Regex("""\d{4}-\d{2}%"""))) {
+            _data
+                //Filtra caso a data seja vazia
+                .filter { it.isNotBlank() && it.matches(Regex("""\d{4}-\d{2}%""")) }
+                .collectLatest { mes ->
                     val contasFlow = contaRepository.getContasMes(mes)
                     val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
@@ -80,18 +83,12 @@ class HistoricoDoMesViewModel @Inject constructor(
                     }.collectLatest { contasOrdenadas ->
                         _contasPorMes.value = contasOrdenadas
                     }
-                }
-                else {
-                    Log.d(TAG, "observarContaPorMes: Data inválida para consulta no Room: $mes")
-
-                }
             }
         }
     }
 
      fun buscaParcelaPorId(idParcela: Long): UiState<ParcelaEntity> {
-         Log.d(TAG, "buscaParcelaPorId: $idParcela")
-          viewModelScope.launch {
+           viewModelScope.launch {
              parcelaRepository.getParcelaPorId(idParcela)
                   .let{ parcela ->
                       if (parcela == null){
