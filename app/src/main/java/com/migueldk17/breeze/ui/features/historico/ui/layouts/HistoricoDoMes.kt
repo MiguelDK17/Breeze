@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -40,6 +43,16 @@ fun HistoricoDoMes(modifier: Modifier,viewModel: HistoricoDoMesViewModel) {
     val contas = viewModel.contasPorMes.collectAsStateWithLifecycle().value
     //Pega as contas já filtradas por data da mais recente a mais antiga
     val historico = viewModel.historico.collectAsStateWithLifecycle().value
+
+    val dataFormatada = viewModel.data.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(Unit) {
+        Log.d(TAG, "HistoricoDoMes: $dataFormatada")
+        if (dataFormatada.isNotEmpty()) {
+            viewModel.observarContaPorMes()
+        }
+
+    }
 
     Column(
         modifier = modifier

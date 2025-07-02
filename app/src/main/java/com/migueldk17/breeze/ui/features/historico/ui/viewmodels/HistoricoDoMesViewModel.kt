@@ -44,11 +44,8 @@ class HistoricoDoMesViewModel @Inject constructor(
     private val _parcela: MutableStateFlow<UiState<ParcelaEntity>> = MutableStateFlow(UiState.Loading)
     val parcela: StateFlow<UiState<ParcelaEntity>> = _parcela.asStateFlow()
 
-    init {
-        observarContaPorMes()
-    }
 
-    private fun observarContaPorMes() {
+    fun observarContaPorMes() {
         viewModelScope.launch {
             _data
                 //Filtra caso a data seja vazia
