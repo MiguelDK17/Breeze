@@ -1,12 +1,15 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import android.content.Context
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.repository.ContaRepository
+import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.traduzData
 import com.migueldk17.breeze.uistate.UiState
@@ -20,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -27,8 +31,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoricoViewModel @Inject constructor(
-    private val contaDao: ContaDao,
     private val contaRepository: ContaRepository,
+    private val parcelaRepository: ParcelaRepository,
     @ApplicationContext private val context: Context
 ): ViewModel(){
     //Pega as contas registradas no Room
@@ -52,7 +56,7 @@ class HistoricoViewModel @Inject constructor(
     //Busca as contas registradas no Room e manda pro ViewModel
     init {
         viewModelScope.launch {
-            contaDao.getContas()
+            contaRepository.getContas()
                 .collectLatest { lista ->
                     _contas.value = lista
                 }
@@ -61,29 +65,57 @@ class HistoricoViewModel @Inject constructor(
 
     fun buscaContasPorMes(mes: String){
         viewModelScope.launch {
-            contaRepository.getContasMes(mes)
-                .map { contas ->
-                    when {
-                        contas.isEmpty()-> {
-                            _contasState.value = UiState.Empty
-                            ToastManager.showToast(context = context, message = "Não há contas registradas neste mês")
-                        }
+            combine(
+                contaRepository.getContasMes(mes),
+                parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
-                        else -> {
-                            salvaDataTraduzida(
-                                traduzData(contas.first().dateTime.toLocalDateTime().month.name)
-                            )
-                            _contasState.value = UiState.Success(contas)
-                            avancaParaMainActivity4()
-                        }
+            ){ contas, parcelas ->
+                Log.d(TAG, "buscaContasPorMes: As parcelas tão vindo assim: $parcelas")
+                val contasMapeadas = contas.associateBy { it.id }
+                val idsContaPai = parcelas.map { it.idContaPai }.toSet()
+                val contasFiltradas = contas
+                    .filterNot { it.id in idsContaPai }
+                    .filterNot { it.isContaParcelada }
+
+                val contasDasParcelas = parcelas.mapNotNull { parcela ->
+                    val contaPai = contasMapeadas[parcela.idContaPai]
+                        ?: contaRepository.getContaById(parcela.idContaPai)
+
+                    contaPai?.let { contaPai ->
+                        Conta(
+                            id = parcela.id.toLong(),
+                            name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
+                            categoria = contaPai.categoria,
+                            subCategoria = contaPai.subCategoria,
+                            valor = parcela.valor,
+                            icon = contaPai.icon,
+                            colorIcon = contaPai.colorIcon,
+                            colorCard = contaPai.colorCard,
+                            dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
+                            isContaParcelada = true
+                        )
                     }
                 }
-                .catch {
-                    _contasState.value = UiState.Error(it.message ?: "Erro desconhecido") }
-                .onStart {
-                    _contasState.value = UiState.Loading
+                val todasAsContas = contasFiltradas + contasDasParcelas
+
+                todasAsContas
+                    .sortedBy { it.dateTime }
+
+            }
+                .collectLatest { contasOrdenadas ->
+                    if (contasOrdenadas.isEmpty()){
+                        _contasState.value = UiState.Empty
+                        ToastManager.showToast(context,  "Não há contas registradas neste mês")
+                    }
+                    else {
+                        salvaDataTraduzida(
+                            traduzData(contasOrdenadas.first().dateTime.toLocalDateTime().month.name)
+                        )
+                        _contasState.value = UiState.Success(contasOrdenadas)
+                        avancaParaMainActivity4()
+                    }
+
                 }
-                .collect()
         }
 
     }

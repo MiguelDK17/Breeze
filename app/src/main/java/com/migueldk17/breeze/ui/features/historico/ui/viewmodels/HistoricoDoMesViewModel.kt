@@ -60,10 +60,14 @@ class HistoricoDoMesViewModel @Inject constructor(
                     combine(contasFlow, parcelasFlow) { contas, parcelas ->
                         val contasMapeadas = contas.associateBy { it.id }
                         val idsContaPai = parcelas.map { it.idContaPai }.toSet()
-                        val contasFiltradas = contas.filterNot { it.id in idsContaPai }
+                        val contasFiltradas = contas
+                            .filterNot { it.id in idsContaPai }
+                            .filterNot { it.isContaParcelada }
 
                         val contasDasParcelas = parcelas.mapNotNull { parcela ->
-                            contasMapeadas[parcela.idContaPai]?.let { contaPai ->
+                            val contaPai = contasMapeadas[parcela.idContaPai]
+                                ?: contaRepository.getContaById(parcela.idContaPai)
+                            contaPai?.let { contaPai ->
                                 Conta(
                                     id = parcela.id.toLong(),
                                     name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
@@ -120,13 +124,18 @@ class HistoricoDoMesViewModel @Inject constructor(
                 //Cria um Set com os IDs das contas que são pais de parcelas no mês
                 val idsContaPai = parcelas.map { it.idContaPai }.toSet()
 
-                //Filtra as contas normais, removendo as contas que são pai de parcela
-                val contasFiltradas = contas.filterNot { it.id in idsContaPai }
+                //Filtra as contas normais
+                // - removendo as contas que são pai de parcela
+                // - remove contas parceladas cuja parcela não caiu nesse mês
+                val contasFiltradas = contas
+                    .filterNot { it.id in idsContaPai }
+                    .filterNot { it.isContaParcelada }
 
                 //Agora monta as contas representando as parcelas
                 val contasDasParcelas = parcelas.mapNotNull { parcela ->
 
                     val contaPai = contasMapeadas[parcela.idContaPai]
+                        ?: contaRepository.getContaById(parcela.idContaPai)
 
                     contaPai?.let {
                         Conta(

@@ -21,7 +21,6 @@ class ContaRepository @Inject constructor(
     }
 
     suspend fun getContaById(id: Long): Conta? = contaDao.getContaById(id)
-
     //Pega as contas por mes
     fun getContasPorMes(mes: String): Flow<List<Conta>> {
         return contaDao.getContasHistorico().map { contas ->
