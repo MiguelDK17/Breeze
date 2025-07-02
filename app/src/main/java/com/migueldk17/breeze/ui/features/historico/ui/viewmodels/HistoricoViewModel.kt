@@ -15,8 +15,10 @@ import com.migueldk17.breeze.ui.utils.traduzData
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,6 +56,8 @@ class HistoricoViewModel @Inject constructor(
     private val _dataFormatada = MutableStateFlow("")
     val dataFormatada: StateFlow<String> = _dataFormatada.asStateFlow()
 
+    private var buscaJob: Job? = null
+
     //Busca as contas registradas no Room e manda pro ViewModel
     init {
         viewModelScope.launch {
@@ -63,8 +68,10 @@ class HistoricoViewModel @Inject constructor(
         }
     }
 
+
     fun buscaContasPorMes(mes: String){
-        viewModelScope.launch {
+        buscaJob?.cancel()
+        buscaJob = viewModelScope.launch {
             combine(
                 contaRepository.getContasMes(mes),
                 parcelaRepository.buscaTodasAsParcelasDoMes(mes)
@@ -116,6 +123,7 @@ class HistoricoViewModel @Inject constructor(
                     }
 
                 }
+
         }
 
     }
@@ -135,7 +143,10 @@ class HistoricoViewModel @Inject constructor(
         viewModelScope.launch {
             _navegarParaTela.emit(Pair(mes, dataFormatada))
         }
+    }
 
+    fun cancelarBusca(){
+        buscaJob?.cancel()
     }
 
 }

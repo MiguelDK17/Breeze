@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,20 +33,27 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
         }
         is UiState.Success<*> -> {
             Log.d(TAG, "Historico: Lista de contas carregadas com sucesso")
-    }
-    }
-    LaunchedEffect(Unit) {
-        viewModel.navegarParaTela.collect { (mes, dataFormatada) ->
-            Log.d(TAG, "Historico: $mes")
-            val context = context
-            val intent = Intent(context, MainActivity4::class.java)
-            intent.putExtra("mes", mes)
-            intent.putExtra("dataFormatada", dataFormatada)
-            context.startActivity(intent)
+            LaunchedEffect(Unit) {
+                viewModel.navegarParaTela.collect { (mes, dataFormatada) ->
+                    Log.d(TAG, "Historico: $mes")
+                    val context = context
+                    val intent = Intent(context, MainActivity4::class.java)
+                    intent.putExtra("mes", mes)
+                    intent.putExtra("dataFormatada", dataFormatada)
+                    context.startActivity(intent)
 
-        }
+                }
+            }
+    }
     }
 
     Calendario(viewModel)
+
+    DisposableEffect(Unit) {
+        onDispose {
+            Log.d(TAG, "Historico: Cancelando busca")
+            viewModel.cancelarBusca()
+        }
+    }
 
 }
