@@ -21,6 +21,18 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
     val context = LocalContext.current
     val contasState = viewModel.contasState.collectAsStateWithLifecycle().value
 
+    LaunchedEffect(true) {
+        viewModel.navegarParaTela.collect { (mes, dataFormatada) ->
+            Log.d(TAG, "Historico: Recebido evento para navegar para MainActivity4 com o mês: $mes")
+            val context = context
+            val intent = Intent(context, MainActivity4::class.java)
+            intent.putExtra("mes", mes)
+            intent.putExtra("dataFormatada", dataFormatada)
+            context.startActivity(intent)
+
+        }
+    }
+
     when(contasState){
         is UiState.Loading -> {
             Log.d(TAG, "Historico: Lista de contas no histórico sendo carregadas")
@@ -33,25 +45,14 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
         }
         is UiState.Success<*> -> {
             Log.d(TAG, "Historico: Lista de contas carregadas com sucesso")
-            LaunchedEffect(Unit) {
-                viewModel.navegarParaTela.collect { (mes, dataFormatada) ->
-                    Log.d(TAG, "Historico: $mes")
-                    val context = context
-                    val intent = Intent(context, MainActivity4::class.java)
-                    intent.putExtra("mes", mes)
-                    intent.putExtra("dataFormatada", dataFormatada)
-                    context.startActivity(intent)
-
-                }
-            }
-    }
+        }
     }
 
     Calendario(viewModel)
 
     DisposableEffect(Unit) {
         onDispose {
-            Log.d(TAG, "Historico: Cancelando busca")
+            Log.d(TAG, "Historico: Cancelando busca na saída do Composable.")
             viewModel.cancelarBusca()
         }
     }

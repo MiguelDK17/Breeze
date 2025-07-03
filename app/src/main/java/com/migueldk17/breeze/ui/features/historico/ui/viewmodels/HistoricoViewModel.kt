@@ -18,17 +18,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,17 +52,6 @@ class HistoricoViewModel @Inject constructor(
 
     private var buscaJob: Job? = null
 
-    //Busca as contas registradas no Room e manda pro ViewModel
-    init {
-        viewModelScope.launch {
-            contaRepository.getContas()
-                .collectLatest { lista ->
-                    _contas.value = lista
-                }
-        }
-    }
-
-
     fun buscaContasPorMes(mes: String){
         buscaJob?.cancel()
         buscaJob = viewModelScope.launch {
@@ -77,7 +60,6 @@ class HistoricoViewModel @Inject constructor(
                 parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
             ){ contas, parcelas ->
-                Log.d(TAG, "buscaContasPorMes: As parcelas tão vindo assim: $parcelas")
                 val contasMapeadas = contas.associateBy { it.id }
                 val idsContaPai = parcelas.map { it.idContaPai }.toSet()
                 val contasFiltradas = contas
@@ -115,11 +97,10 @@ class HistoricoViewModel @Inject constructor(
                         ToastManager.showToast(context,  "Não há contas registradas neste mês")
                     }
                     else {
-                        salvaDataTraduzida(
-                            traduzData(contasOrdenadas.first().dateTime.toLocalDateTime().month.name)
-                        )
+                        val dataFormatada = traduzData(contasOrdenadas.first().dateTime.toLocalDateTime().month.name)
+                        salvaDataTraduzida(dataFormatada)
                         _contasState.value = UiState.Success(contasOrdenadas)
-                        avancaParaMainActivity4()
+                        disparaNavegarParaTela()
                     }
 
                 }
@@ -137,7 +118,7 @@ class HistoricoViewModel @Inject constructor(
         _dataFormatada.value = string
     }
 
-    fun avancaParaMainActivity4(){
+    fun disparaNavegarParaTela(){
         val mes = _dataTraduzida.value
         val dataFormatada = _dataFormatada.value
         viewModelScope.launch {
