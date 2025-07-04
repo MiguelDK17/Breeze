@@ -7,26 +7,52 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.forEachGesture
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMes
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import com.migueldk17.breeze.ui.theme.SkyBlue
+import com.migueldk17.breeze.ui.utils.ToastManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity4: ComponentActivity() {
@@ -46,8 +72,11 @@ class MainActivity4: ComponentActivity() {
             else {
                 Log.d(TAG, "dataFormatada: caiu no else: $dataFormatada")
             }
-            val categories = listOf("Contas💲", "Receitas 📅")
-            var selectedCategory by remember { mutableStateOf("Contas") }
+            val context = LocalContext.current
+            val categories = listOf("Contas", "Receitas")
+            val selectedCategory = remember { mutableStateOf(categories[0]) }
+            val interactionSource = remember { MutableInteractionSource() }
+            var isPressed by remember { mutableStateOf(false) }
             BreezeTheme {
                 Scaffold(
                     topBar = {
@@ -60,15 +89,51 @@ class MainActivity4: ComponentActivity() {
                             ),
                             actions = {
                                 DescriptionText("Filtros:")
-                                BreezeDropdownMenu(
-                                    modifier = Modifier.size(width = 98.dp, height = 40.dp),
-                                    categoryName = "",
-                                    categories = categories,
-                                    selectedCategory = selectedCategory,
-                                    onCategorySelected = {
-                                        selectedCategory = it
-                                    }
-                                )
+                                val isButtonMoneySendSelected = selectedCategory.value == categories[0]
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .combinedClickable(
+                                            onClick = {
+                                                selectedCategory.value = categories[0]
+                                            },
+                                            onLongClick = {
+                                                ToastManager.showToast(context, "Contas")
+                                            }
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    BreezeIcon(
+                                        BreezeIcons.Linear.Money.MoneySend,
+                                        contentDescription = null,
+                                        color = buttonColor(isButtonMoneySendSelected)
+                                    )
+                                }
+                                val isButtonMoneyReciveSelected = selectedCategory.value == categories[1]
+                                Box(
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .combinedClickable(
+                                            onClick = {
+                                                selectedCategory.value = categories[1]
+                                            },
+                                            onLongClick = {
+                                                ToastManager.showToast(context, "Receitas")
+                                            }
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    val isButtonMoneyReciveSelected = selectedCategory.value == categories[1]
+                                    BreezeIcon(
+                                        BreezeIcons.Linear.Money.MoneyRecive,
+                                        contentDescription = null,
+                                        color = buttonColor(isButtonMoneyReciveSelected)
+                                    )
+
+                                }
 
                             }
                         )
@@ -79,4 +144,11 @@ class MainActivity4: ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun buttonColor(isButtonSelected: Boolean): Color{
+    val color = if (isButtonSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+
+    return color
 }
