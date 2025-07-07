@@ -7,27 +7,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.forEachGesture
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,27 +28,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMes
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesReceita
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoMesReceita
 import com.migueldk17.breeze.ui.theme.BreezeTheme
-import com.migueldk17.breeze.ui.theme.SkyBlue
 import com.migueldk17.breeze.ui.utils.ToastManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity4: ComponentActivity() {
-    private val viewModel by viewModels<HistoricoDoMesViewModel>()
+    private val viewModelContas by viewModels<HistoricoDoMesViewModel>()
+    private val viewModelReceitas by viewModels<HistoricoMesReceita>()
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +55,14 @@ class MainActivity4: ComponentActivity() {
             val dataFormatada = intent.getStringExtra("dataFormatada")
             if (dataFormatada != null) {
                 Log.d(TAG, "dataFormatada: caiu no if: $dataFormatada")
-                viewModel.setData(dataFormatada)
+                viewModelContas.setData(dataFormatada)
             }
             else {
                 Log.d(TAG, "dataFormatada: caiu no else: $dataFormatada")
             }
             val context = LocalContext.current
             val categories = listOf("Contas", "Receitas")
-            val selectedCategory = remember { mutableStateOf(categories[0]) }
+            var selectedCategory by remember { mutableStateOf(categories[0]) }
             val interactionSource = remember { MutableInteractionSource() }
             var isPressed by remember { mutableStateOf(false) }
             BreezeTheme {
@@ -89,7 +77,7 @@ class MainActivity4: ComponentActivity() {
                             ),
                             actions = {
                                 DescriptionText("Filtros:")
-                                val isButtonMoneySendSelected = selectedCategory.value == categories[0]
+                                val isButtonMoneySendSelected = selectedCategory == categories[0]
 
                                 Box(
                                     modifier = Modifier
@@ -97,7 +85,7 @@ class MainActivity4: ComponentActivity() {
                                         .clip(CircleShape)
                                         .combinedClickable(
                                             onClick = {
-                                                selectedCategory.value = categories[0]
+                                                selectedCategory = categories[0]
                                             },
                                             onLongClick = {
                                                 ToastManager.showToast(context, "Contas")
@@ -111,14 +99,13 @@ class MainActivity4: ComponentActivity() {
                                         color = buttonColor(isButtonMoneySendSelected)
                                     )
                                 }
-                                val isButtonMoneyReciveSelected = selectedCategory.value == categories[1]
                                 Box(
                                     modifier = Modifier
                                         .size(48.dp)
                                         .clip(CircleShape)
                                         .combinedClickable(
                                             onClick = {
-                                                selectedCategory.value = categories[1]
+                                                selectedCategory = categories[1]
                                             },
                                             onLongClick = {
                                                 ToastManager.showToast(context, "Receitas")
@@ -126,7 +113,7 @@ class MainActivity4: ComponentActivity() {
                                         ),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    val isButtonMoneyReciveSelected = selectedCategory.value == categories[1]
+                                    val isButtonMoneyReciveSelected = selectedCategory == categories[1]
                                     BreezeIcon(
                                         BreezeIcons.Linear.Money.MoneyRecive,
                                         contentDescription = null,
@@ -139,7 +126,7 @@ class MainActivity4: ComponentActivity() {
                         )
                     }
                 ) { paddingValues ->
-                    HistoricoDoMes(modifier = Modifier.padding(paddingValues),viewModel)
+                    HistoricoDoMes(modifier = Modifier.padding(paddingValues), viewModelContas, viewModelReceitas, selectedCategory)
                 }
             }
         }

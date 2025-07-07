@@ -17,5 +17,5 @@ data class Receita(
     val descricao: String,
 
     @ColumnInfo(name = "data")
-    val data: String
+    val data: String //Está sendo salvo como LocalDate.toString()
 )
