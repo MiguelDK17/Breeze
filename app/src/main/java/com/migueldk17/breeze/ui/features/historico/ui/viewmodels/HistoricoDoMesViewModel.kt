@@ -5,12 +5,11 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
-import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDiaContas
+import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,8 +34,8 @@ class HistoricoDoMesViewModel @Inject constructor(
     //Pega a data do mes
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
-    private val _contasPorMes = MutableStateFlow<List<Conta>>(emptyList())
-    val contasPorMes: StateFlow<List<Conta>> = _contasPorMes.asStateFlow()
+    private val _contasPorMes = MutableStateFlow<List<LinhaDoTempoModel>>(emptyList())
+    val contasPorMes: StateFlow<List<LinhaDoTempoModel>> = _contasPorMes.asStateFlow()
 
     private val _parcela: MutableStateFlow<UiState<ParcelaEntity>> = MutableStateFlow(UiState.Loading)
     val parcela: StateFlow<UiState<ParcelaEntity>> = _parcela.asStateFlow()
@@ -52,9 +51,22 @@ class HistoricoDoMesViewModel @Inject constructor(
                     val parcelasFlow = parcelaRepository.buscaTodasAsParcelasDoMes(mes)
 
                     combine(contasFlow, parcelasFlow) { contas, parcelas ->
+                        //Mapeia as contas baseado no id
                         val contasMapeadas = contas.associateBy { it.id }
                         val idsContaPai = parcelas.map { it.idContaPai }.toSet()
-                        val contasFiltradas = contas
+                        val transformaContaEmLinhaDoMesViewModel = contas.map {
+                            LinhaDoTempoModel(
+                                id = it.id,
+                                name = it.name,
+                                category = it.categoria,
+                                subCategory = it.subCategoria,
+                                valor = it.valor,
+                                icon = it.icon,
+                                colorIcon = it.colorIcon,
+                                colorCard = it.colorCard,
+                                dateTime = it.dateTime.toLocalDate().atStartOfDay(),
+                            )
+                        }
                             .filterNot { it.id in idsContaPai }
                             .filterNot { it.isContaParcelada }
 
@@ -62,21 +74,20 @@ class HistoricoDoMesViewModel @Inject constructor(
                             val contaPai = contasMapeadas[parcela.idContaPai]
                                 ?: contaRepository.getContaById(parcela.idContaPai)
                             contaPai?.let { contaPai ->
-                                Conta(
+                                LinhaDoTempoModel(
                                     id = parcela.id.toLong(),
                                     name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
-                                    categoria = contaPai.categoria,
-                                    subCategoria = contaPai.subCategoria,
+                                    category = contaPai.categoria,
+                                    subCategory = contaPai.subCategoria,
                                     valor = parcela.valor,
                                     icon = contaPai.icon,
                                     colorIcon = contaPai.colorIcon,
                                     colorCard = contaPai.colorCard,
-                                    dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
-                                    isContaParcelada = true
+                                    dateTime = parcela.data.toLocalDate().atStartOfDay(),
                                 )
                             }
                         }
-                        val todasAsContas = contasFiltradas + contasDasParcelas
+                        val todasAsContas = transformaContaEmLinhaDoMesViewModel + contasDasParcelas
                         todasAsContas.sortedBy { it.dateTime }
                     }.collectLatest { contasOrdenadas ->
                         _contasPorMes.value = contasOrdenadas
@@ -103,7 +114,7 @@ class HistoricoDoMesViewModel @Inject constructor(
 
 
 
-    val historico: StateFlow<List<HistoricoDoDiaContas>> = _data
+    val historico: StateFlow<List<HistoricoDoDia>> = _data
         .flatMapLatest { mes ->
             //Flow de Lista de Contas
             val contasFlow = contaRepository.getContasMes(mes)
@@ -121,7 +132,19 @@ class HistoricoDoMesViewModel @Inject constructor(
                 //Filtra as contas normais
                 // - removendo as contas que são pai de parcela
                 // - remove contas parceladas cuja parcela não caiu nesse mês
-                val contasFiltradas = contas
+                val transformaContaEmLinhaDoMesViewModel = contas.map { conta ->
+                    LinhaDoTempoModel(
+                        id = conta.id,
+                        name = conta.name,
+                        category = conta.categoria,
+                        subCategory = conta.subCategoria,
+                        valor = conta.valor,
+                        icon = conta.icon,
+                        colorIcon = conta.colorIcon,
+                        colorCard = conta.colorCard,
+                        dateTime = conta.dateTime.toLocalDate().atStartOfDay(),
+                    )
+                }
                     .filterNot { it.id in idsContaPai }
                     .filterNot { it.isContaParcelada }
 
@@ -132,36 +155,35 @@ class HistoricoDoMesViewModel @Inject constructor(
                         ?: contaRepository.getContaById(parcela.idContaPai)
 
                     contaPai?.let {
-                        Conta(
+                        LinhaDoTempoModel(
                             id = parcela.id.toLong(),
                             name = "${it.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
-                            categoria = it.categoria,
-                            subCategoria = it.subCategoria,
+                            category = it.categoria,
+                            subCategory = it.subCategoria,
                             valor = parcela.valor,
                             icon = it.icon,
                             colorIcon = it.colorIcon,
                             colorCard = it.colorCard,
-                            dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
-                            isContaParcelada = true
+                            dateTime = parcela.data.toLocalDate().atStartOfDay(),
                         )
                     }
                 }
 
                 //Junta as contas normais(sem as pai) + as contas das parcelas
-                val todasAsContas = contasFiltradas + contasDasParcelas
+                val todasAsContas = transformaContaEmLinhaDoMesViewModel + contasDasParcelas
 
                 todasAsContas
-                    .sortedBy { it.dateTime.toLocalDateTime() }
-                    .groupBy { it.dateTime.toLocalDateTime().toLocalDate() }
+                    .sortedBy { it.dateTime }
+                    .groupBy { it.dateTime.toLocalDate() }
                     .mapNotNull { (data, contasDoDia) ->
                         val contasOrdenadas = contasDoDia.sortedByDescending { it.dateTime }
                         val primeira = contasOrdenadas.first()
                         val outras = contasOrdenadas.drop(1)
 
-                        HistoricoDoDiaContas(
+                        HistoricoDoDia(
                             data = data,
-                            contaPrincipal = primeira,
-                            outrasContas = outras
+                            primaryTimeline = primeira,
+                            otherTimeline = outras
                         )
                     }
                     .sortedByDescending { it.data } //Pega da mais recente a mais antiga

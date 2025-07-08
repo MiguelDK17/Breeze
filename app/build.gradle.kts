@@ -51,11 +51,15 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+
+    }
 }
 
 
 dependencies {
-
+    //Bibliotecas padrão
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -72,18 +76,24 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui)
-    implementation(libs.breeze.icons)
     implementation(libs.androidx.compose.material.icons.extended)
+
+
+    //Bibliotecas de terceiros
+    implementation(libs.breeze.icons)
     implementation(libs.airbnb.android.lottie)
     implementation(libs.airbnb.android.lottie.compose)
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.crashlytics)
     implementation(libs.google.firebase.analytics)
+
+    //Testes
     testImplementation(libs.junit)
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

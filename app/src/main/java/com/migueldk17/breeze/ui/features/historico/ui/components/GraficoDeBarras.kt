@@ -20,16 +20,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.ui.features.historico.model.GraficoDoDiaModel
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
 @Composable
 fun GraficoDeBarras(
-    graficoDoDiaModel: List<GraficoDoDiaModel>,
+    graficoDoDiaModel: List<LinhaDoTempoModel>,
     modifier: Modifier = Modifier
 ){
     //Pega a densidade da tela
@@ -97,13 +100,16 @@ fun GraficoDeBarras(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     itemsIndexed(graficoDoDiaModel) { index, grafico ->
-                        val alturaMaxima = graficoDoDiaModel.maxOfOrNull { it.valor } ?: 1f
-                        val texto = formataSaldo(grafico.valor.toDouble())
+                        val alturaMaxima = graficoDoDiaModel.maxOfOrNull { it.valor.toFloat() } ?: 1f
+                        val texto = formataSaldo(grafico.valor)
+                        val listColors = listOf(grafico.colorIcon.toColor(), grafico.colorCard.toColor())
+                        val brush = Brush.verticalGradient(colors = listColors)
+                        val dayOfMonth = grafico.dateTime.dayOfMonth
                         BarraAnimada(
                             valor = grafico.valor.toFloat(),
                             maxValue = alturaMaxima,
-                            cor = grafico.brush,
-                            dia = grafico.dayOfMonth,
+                            cor = brush,
+                            dia = dayOfMonth,
                             delayAnimacao = index * 100, //delay em milissegundos
                             valorFormatado = texto)
 

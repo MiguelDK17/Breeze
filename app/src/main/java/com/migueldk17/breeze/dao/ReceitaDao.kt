@@ -14,13 +14,13 @@ interface ReceitaDao {
     suspend fun inserirReceita(receita: Receita)
 
     //Pega a soma de todos os valores em saldo_table
-    @Query("SELECT SUM(valor) FROM saldo_table")
+    @Query("SELECT SUM(valor) FROM receita_entity")
     fun getSaldoTotal(): Flow<Double?>
 
     //Busca o primeiro registro da tabela saldo_table
-    @Query("SELECT * FROM saldo_table ORDER BY data DESC")
+    @Query("SELECT * FROM receita_entity ORDER BY data DESC")
     suspend fun getTodasAsReceitas(): List<Receita>? //Retorna null se a tabela estiver vazia
 
-    @Query("SELECT * FROM saldo_table WHERE data LIKE :mesAno || '%'")
+    @Query("SELECT * FROM receita_entity WHERE data LIKE :mesAno || '%'")
     fun getReceitasDoMes(mesAno: String): Flow<List<Receita>>
 }

@@ -22,9 +22,9 @@ object DatabaseModule {
     fun provideDatabase(@ApplicationContext context: Context): BreezeDatabase {
 
         val MIGRATION_8_9 = object : Migration(8, 9) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 // Cria a nova tabela com a estrutura nova
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE receita_entity (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         valor REAL NOT NULL,
@@ -34,13 +34,13 @@ object DatabaseModule {
                     )
                 """.trimIndent())
                 // Copia os dados da tabela saldo_table para a nova tabela
-                database.execSQL("""
+                db.execSQL("""
                     INSERTO INTO receita_entity (id, valor, descricao, data, icon)
                     SELECT id, valor, descricao, data, '' FROM saldo_table
                 """.trimIndent())
 
                 // Remove a tabela antiga
-                database.execSQL("DROP TABLE saldo_table")
+                db.execSQL("DROP TABLE saldo_table")
             }
         }
 

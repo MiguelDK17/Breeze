@@ -28,9 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.converters.toGraficoDoDia
-import com.migueldk17.breeze.converters.toGraficoDoDiaList
-import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDiaContas
+import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
@@ -68,10 +66,10 @@ fun HistoricoDoMes(
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
         if (tipoDeLista == "Contas") {
-            GraficoDeBarras(contas.toGraficoDoDia(), modifier)
+            GraficoDeBarras(contas, modifier)
         }
         else {
-            GraficoDeBarras(receita.toGraficoDoDiaList(), modifier)
+            GraficoDeBarras(receita, modifier)
         }
         Spacer(modifier = Modifier.height(30.dp))
         Row(
@@ -110,7 +108,7 @@ fun HistoricoDoMes(
     }
 
 @Composable
-private fun LazyColumnContas(historicoContas: List<HistoricoDoDiaContas>) {
+private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -126,15 +124,15 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDiaContas>) {
 
             HistoricoItem(
                 date = dia.data,
-                nameAccountFirst = dia.contaPrincipal.name,
-                breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
-                princeFirst = dia.contaPrincipal.valor,
+                nameAccountFirst = dia.primaryTimeline.name,
+                breezeIconFirst = dia.primaryTimeline.icon.toBreezeIconsType(),
+                princeFirst = dia.primaryTimeline.valor,
                 lastIndex = isLastItem,
-                linhaDoTempoModel = dia.outrasContas,
-                idContaPrincipal = dia.contaPrincipal.id,
-                categoryPrincipal = dia.contaPrincipal.categoria,
-                subCategoryPrincipal = dia.contaPrincipal.subCategoria,
-                isContaParceladaContaPrincipal = dia.contaPrincipal.isContaParcelada
+                linhaDoTempoModel = dia.otherTimeline,
+                idContaPrincipal = dia.primaryTimeline.id,
+                categoryPrincipal = dia.primaryTimeline.category,
+                subCategoryPrincipal = dia.primaryTimeline.subCategory,
+                isContaParceladaContaPrincipal = dia.primaryTimeline.isContaParcelada
             )
 
         }

@@ -5,18 +5,15 @@ import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.repository.ReceitaRepository
-import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDiaReceitas
-import com.migueldk17.breeze.uistate.UiState
+import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,11 +24,11 @@ class HistoricoReceitaViewModel @Inject constructor(
     private val _data = MutableStateFlow("")
     val data: MutableStateFlow<String> = _data
 
-    private val _receitasPorMes = MutableStateFlow<List<Receita>>(emptyList())
-    val receitasPorMes: StateFlow <List<Receita>> = _receitasPorMes.asStateFlow()
+    private val _receitasPorMes = MutableStateFlow<List<LinhaDoTempoModel>>(emptyList())
+    val receitasPorMes: StateFlow <List<LinhaDoTempoModel>> = _receitasPorMes.asStateFlow()
 
-    private val _receitasOrganizadas = MutableStateFlow<List<HistoricoDoDiaReceitas>>(emptyList())
-    val receitasOrganizadas: StateFlow<List<HistoricoDoDiaReceitas>> = _receitasOrganizadas.asStateFlow()
+    private val _receitasOrganizadas = MutableStateFlow<List<HistoricoDoDia>>(emptyList())
+    val receitasOrganizadas: StateFlow<List<HistoricoDoDia>> = _receitasOrganizadas.asStateFlow()
 
 
     fun setData(mes: String) {
@@ -49,7 +46,17 @@ class HistoricoReceitaViewModel @Inject constructor(
                                 Log.d(TAG, "observarReceitasPorMes: Receitas vazias")
                             } else {
                                 Log.d(TAG, "observarReceitasPorMes: Receitas recebidas")
-                                _receitasPorMes.value = receitas
+                                val linhaDoTempoModel = receitas.map { receita ->
+                                    LinhaDoTempoModel(
+                                        id = receita.id,
+                                        name = receita.descricao,
+                                        valor = receita.valor,
+                                        dateTime = receita.data.toLocalDate().atStartOfDay(),
+                                        icon = receita.icon
+
+                                    )
+                                }
+                                _receitasPorMes.value = linhaDoTempoModel
                             }
                         }
 
@@ -62,17 +69,17 @@ class HistoricoReceitaViewModel @Inject constructor(
     fun organizaReceitas(){
         viewModelScope.launch {
             _receitasOrganizadas.value = _receitasPorMes.value
-                .sortedBy { it.data.toLocalDate().atStartOfDay() }
-                .groupBy { it.data.toLocalDate() }
+                .sortedBy { it.dateTime }
+                .groupBy { it.dateTime.toLocalDate() }
                 .mapNotNull { (data, receitasDoDia) ->
-                    val receitasOrdenadas = receitasDoDia.sortedByDescending { it.data }
+                    val receitasOrdenadas = receitasDoDia.sortedByDescending { it.dateTime }
                     val primeira = receitasOrdenadas.first()
                     val outras = receitasOrdenadas.drop(1)
 
-                    HistoricoDoDiaReceitas(
+                    HistoricoDoDia(
                         data = data,
-                        receitaPrincipal = primeira,
-                        outrasReceitas = outras
+                        primaryTimeline = primeira,
+                        otherTimeline = outras
                     )
                 }
                 .sortedByDescending { it.data }

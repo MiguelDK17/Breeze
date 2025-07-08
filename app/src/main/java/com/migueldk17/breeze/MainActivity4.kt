@@ -34,7 +34,6 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMes
-import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesReceita
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
