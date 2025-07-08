@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 //Model de Historico com data, conta principal(para ser mostrado em primeiro na linha do tempo)
 //E outras contas que ficam escondidas sob o estado do botão ver mais
-data class HistoricoDoDia(
+data class HistoricoDoDiaContas(
     val data: LocalDate, //Data de criação da conta
     val contaPrincipal: Conta, //Conta principal
     val outrasContas: List<Conta> //Outras contas que ficam escondidas sob o estado do botão ver mais em HistoricoItem

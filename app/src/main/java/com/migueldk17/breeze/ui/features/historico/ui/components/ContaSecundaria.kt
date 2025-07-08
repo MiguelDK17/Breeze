@@ -28,31 +28,32 @@ import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import java.time.LocalDateTime
 
 @Composable
 fun ContaSecundaria(
-    contas: List<Conta>,
+    linhaDoTempoModel: List<LinhaDoTempoModel>,
     expanded: MutableState<Boolean>
 ){
     var textoClicado by remember { mutableStateOf(false) }
-    var contaMutable by remember { mutableStateOf(Conta(
+    var timeLineMutable by remember { mutableStateOf(LinhaDoTempoModel(
         id = 0,
         name = "",
-        categoria = "",
-        subCategoria = "",
+        category = "",
+        subCategory = "",
         valor = 0.0,
         icon = "",
         colorIcon = 0,
         colorCard = 0,
-        dateTime = "",
+        dateTime = LocalDateTime.now(),
         isContaParcelada = false
     )) }
     Column {
         if (expanded.value) {
-            contas.forEach { conta ->
+            linhaDoTempoModel.forEach { conta ->
 
                 Row(
                     modifier = Modifier
@@ -85,7 +86,7 @@ fun ContaSecundaria(
                             .weight(1f)
                             .clickable {
                                 textoClicado = true
-                                contaMutable = conta
+                                timeLineMutable = conta
                             },
                         overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                         maxLines = 1 //Limita o texto a 1 linha para evitar quebra
@@ -99,7 +100,7 @@ fun ContaSecundaria(
                             .padding(end = 15.dp)
                             .clickable {
                                 textoClicado = true
-                                contaMutable = conta
+                                timeLineMutable = conta
                             }
 
                     )
@@ -107,16 +108,16 @@ fun ContaSecundaria(
                 }
             }
             if (textoClicado){
-                Log.d(TAG, "ContaSecundaria: valor da conta: ${contaMutable.valor}")
+                Log.d(TAG, "ContaSecundaria: valor da conta: ${timeLineMutable.valor}")
                  ShowDetailsCard(
                      onChangeTextoClicado = {textoClicado = it},
-                     id = contaMutable.id,
-                     nameAccount = contaMutable.name,
-                     date = contaMutable.dateTime.toLocalDateTime(),
-                     valor = contaMutable.valor,
-                     category = contaMutable.categoria,
-                     subCategory = contaMutable.subCategoria,
-                     isContaParcelada = contaMutable.isContaParcelada
+                     id = timeLineMutable.id,
+                     nameAccount = timeLineMutable.name,
+                     date = timeLineMutable.dateTime,
+                     valor = timeLineMutable.valor,
+                     category = timeLineMutable.category,
+                     subCategory = timeLineMutable.subCategory,
+                     isContaParcelada = timeLineMutable.isContaParcelada
                  )
             }
         }

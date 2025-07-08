@@ -13,6 +13,7 @@ material3 = "1.4.0-alpha17"
 googleIcons = "1.7.8"
 navComposeVersion = "2.9.1"
 roomVersion = "2.7.2"
+roomTesting = "2.6.1"
 ksp = "2.0.21-1.0.25"
 dagger-hilt = "2.56.2"
 hiltNavigationCompose = "1.2.0"
@@ -21,6 +22,7 @@ airbnbLottie = "6.6.7"
 googleServices = "4.4.3"
 firebaseBom = "33.16.0"
 pluginCrashlyticsVersion = "3.0.4"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,7 @@ androidx-navigation-compose = {group = "androidx.navigation", name = "navigation
 androidx-room-runtime = {group = "androidx.room", name = "room-runtime", version.ref = "roomVersion"}
 androidx-room-compiler = {group = "androidx.room", name = "room-compiler", version.ref = "roomVersion"}
 androidx-room-ktx = {group = "androidx.room", name = "room-ktx", version.ref = "roomVersion"}
+androidx-room-testing = {group = "androidx.room", name = "room-testing", version.ref = "roomTesting"}
 hilt-android = {group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt"}
 hilt-compiler = {group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger-hilt"}
 androidx-hilt-navigation-compose = {group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose"}

@@ -20,20 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.ui.features.historico.model.GraficoDoDia
+import com.migueldk17.breeze.ui.features.historico.model.GraficoDoDiaModel
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
 @Composable
 fun GraficoDeBarras(
-    graficoDoDia: List<GraficoDoDia>,
+    graficoDoDiaModel: List<GraficoDoDiaModel>,
     modifier: Modifier = Modifier
 ){
     //Pega a densidade da tela
@@ -100,8 +96,8 @@ fun GraficoDeBarras(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    itemsIndexed(graficoDoDia) { index, grafico ->
-                        val alturaMaxima = graficoDoDia.maxOfOrNull { it.valor } ?: 1f
+                    itemsIndexed(graficoDoDiaModel) { index, grafico ->
+                        val alturaMaxima = graficoDoDiaModel.maxOfOrNull { it.valor } ?: 1f
                         val texto = formataSaldo(grafico.valor.toDouble())
                         BarraAnimada(
                             valor = grafico.valor.toFloat(),

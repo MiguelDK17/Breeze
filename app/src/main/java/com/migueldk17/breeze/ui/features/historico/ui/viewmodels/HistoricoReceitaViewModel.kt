@@ -4,9 +4,12 @@ import android.util.Log
 import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.repository.ReceitaRepository
+import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDiaReceitas
 import com.migueldk17.breeze.uistate.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,8 +20,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class HistoricoMesReceita @Inject constructor(
+@HiltViewModel
+class HistoricoReceitaViewModel @Inject constructor(
     private val receitaRepository: ReceitaRepository
 ): ViewModel() {
     private val _data = MutableStateFlow("")
@@ -26,6 +29,10 @@ class HistoricoMesReceita @Inject constructor(
 
     private val _receitasPorMes = MutableStateFlow<List<Receita>>(emptyList())
     val receitasPorMes: StateFlow <List<Receita>> = _receitasPorMes.asStateFlow()
+
+    private val _receitasOrganizadas = MutableStateFlow<List<HistoricoDoDiaReceitas>>(emptyList())
+    val receitasOrganizadas: StateFlow<List<HistoricoDoDiaReceitas>> = _receitasOrganizadas.asStateFlow()
+
 
     fun setData(mes: String) {
         _data.value = mes
@@ -41,6 +48,7 @@ class HistoricoMesReceita @Inject constructor(
                             if (receitas.isEmpty()) {
                                 Log.d(TAG, "observarReceitasPorMes: Receitas vazias")
                             } else {
+                                Log.d(TAG, "observarReceitasPorMes: Receitas recebidas")
                                 _receitasPorMes.value = receitas
                             }
                         }
@@ -49,6 +57,26 @@ class HistoricoMesReceita @Inject constructor(
                 }
         }
 
+    }
+
+    fun organizaReceitas(){
+        viewModelScope.launch {
+            _receitasOrganizadas.value = _receitasPorMes.value
+                .sortedBy { it.data.toLocalDate().atStartOfDay() }
+                .groupBy { it.data.toLocalDate() }
+                .mapNotNull { (data, receitasDoDia) ->
+                    val receitasOrdenadas = receitasDoDia.sortedByDescending { it.data }
+                    val primeira = receitasOrdenadas.first()
+                    val outras = receitasOrdenadas.drop(1)
+
+                    HistoricoDoDiaReceitas(
+                        data = data,
+                        receitaPrincipal = primeira,
+                        outrasReceitas = outras
+                    )
+                }
+                .sortedByDescending { it.data }
+        }
     }
 
 }

@@ -21,6 +21,6 @@ interface ReceitaDao {
     @Query("SELECT * FROM saldo_table ORDER BY data DESC")
     suspend fun getTodasAsReceitas(): List<Receita>? //Retorna null se a tabela estiver vazia
 
-    @Query("SELECT * FROM saldo_table WHERE data = :mesAno || '%'")
+    @Query("SELECT * FROM saldo_table WHERE data LIKE :mesAno || '%'")
     fun getReceitasDoMes(mesAno: String): Flow<List<Receita>>
 }

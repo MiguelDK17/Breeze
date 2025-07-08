@@ -36,7 +36,7 @@ import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMes
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesReceita
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
-import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoMesReceita
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.utils.ToastManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +44,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity4: ComponentActivity() {
     private val viewModelContas by viewModels<HistoricoDoMesViewModel>()
-    private val viewModelReceitas by viewModels<HistoricoMesReceita>()
+    private val viewModelReceitas by viewModels<HistoricoReceitaViewModel>()
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +56,7 @@ class MainActivity4: ComponentActivity() {
             if (dataFormatada != null) {
                 Log.d(TAG, "dataFormatada: caiu no if: $dataFormatada")
                 viewModelContas.setData(dataFormatada)
+                viewModelReceitas.setData(dataFormatada)
             }
             else {
                 Log.d(TAG, "dataFormatada: caiu no else: $dataFormatada")

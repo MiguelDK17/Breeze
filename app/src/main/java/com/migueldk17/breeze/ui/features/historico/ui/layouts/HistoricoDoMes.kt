@@ -30,17 +30,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toGraficoDoDia
 import com.migueldk17.breeze.converters.toGraficoDoDiaList
+import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDiaContas
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
-import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoMesReceita
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMes(
     modifier: Modifier,
     viewModelContas: HistoricoDoMesViewModel,
-    viewModelReceita: HistoricoMesReceita,
+    viewModelReceita: HistoricoReceitaViewModel,
     tipoDeLista: String
 
     ) {
@@ -87,32 +88,7 @@ fun HistoricoDoMes(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
 
-            ) {
-                items(historico) { dia ->
-                    //Paga o tamanho da lista
-                    val size = historico.indexOf(dia)
-                    //Verifica se a conta é a última
-                    val isLastItem = size == historico.lastIndex
-
-                    HistoricoItem(
-                        date = dia.data,
-                        nameAccountFirst = dia.contaPrincipal.name,
-                        breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
-                        princeFirst = dia.contaPrincipal.valor,
-                        lastIndex = isLastItem,
-                        contas = dia.outrasContas,
-                        idContaPrincipal = dia.contaPrincipal.id,
-                        categoryPrincipal = dia.contaPrincipal.categoria,
-                        subCategoryPrincipal = dia.contaPrincipal.subCategoria,
-                        isContaParceladaContaPrincipal = dia.contaPrincipal.isContaParcelada
-                    )
-
-                }
-            }
             //Fade do final da lista
             Box(
                 modifier = Modifier
@@ -132,4 +108,50 @@ fun HistoricoDoMes(
         }
     }
     }
+
+@Composable
+private fun LazyColumnContas(historicoContas: List<HistoricoDoDiaContas>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+
+    ) {
+        items(historicoContas) { dia ->
+            //Paga o tamanho da lista
+            val size = historicoContas.indexOf(dia)
+            //Verifica se a conta é a última
+            val isLastItem = size == historicoContas.lastIndex
+
+
+
+            HistoricoItem(
+                date = dia.data,
+                nameAccountFirst = dia.contaPrincipal.name,
+                breezeIconFirst = dia.contaPrincipal.icon.toBreezeIconsType(),
+                princeFirst = dia.contaPrincipal.valor,
+                lastIndex = isLastItem,
+                linhaDoTempoModel = dia.outrasContas,
+                idContaPrincipal = dia.contaPrincipal.id,
+                categoryPrincipal = dia.contaPrincipal.categoria,
+                subCategoryPrincipal = dia.contaPrincipal.subCategoria,
+                isContaParceladaContaPrincipal = dia.contaPrincipal.isContaParcelada
+            )
+
+        }
+    }
+}
+@Composable
+private fun LazyColumnReceitas(viewModelReceita: HistoricoReceitaViewModel){
+    val historicoReceitas = viewModelReceita.receitasOrganizadas.collectAsStateWithLifecycle().value
+
+    LazyColumn {
+        items(historicoReceitas) { dia ->
+            val size = historicoReceitas.indexOf(dia)
+            val isLastItem = size == historicoReceitas.lastIndex
+
+
+
+        }
+    }
+}
 

@@ -10,7 +10,7 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
-import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
+import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDiaContas
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HistoricoDoMesViewModel @Inject constructor(
@@ -102,7 +103,7 @@ class HistoricoDoMesViewModel @Inject constructor(
 
 
 
-    val historico: StateFlow<List<HistoricoDoDia>> = _data
+    val historico: StateFlow<List<HistoricoDoDiaContas>> = _data
         .flatMapLatest { mes ->
             //Flow de Lista de Contas
             val contasFlow = contaRepository.getContasMes(mes)
@@ -157,7 +158,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                         val primeira = contasOrdenadas.first()
                         val outras = contasOrdenadas.drop(1)
 
-                        HistoricoDoDia(
+                        HistoricoDoDiaContas(
                             data = data,
                             contaPrincipal = primeira,
                             outrasContas = outras

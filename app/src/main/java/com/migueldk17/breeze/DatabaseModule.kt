@@ -21,12 +21,34 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): BreezeDatabase {
 
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Cria a nova tabela com a estrutura nova
+                database.execSQL("""
+                    CREATE TABLE receita_entity (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        valor REAL NOT NULL,
+                        descricao TEXT NOT NULL,
+                        data TEXT NOT NULL,
+                        icon TEXT NOT NULL DEFAULT ''
+                    )
+                """.trimIndent())
+                // Copia os dados da tabela saldo_table para a nova tabela
+                database.execSQL("""
+                    INSERTO INTO receita_entity (id, valor, descricao, data, icon)
+                    SELECT id, valor, descricao, data, '' FROM saldo_table
+                """.trimIndent())
+
+                // Remove a tabela antiga
+                database.execSQL("DROP TABLE saldo_table")
+            }
+        }
+
         return Room.databaseBuilder(
             context,
             BreezeDatabase::class.java,
             "breeze_database"
-        ).addMigrations()
-            .fallbackToDestructiveMigration(true)
+        ).addMigrations(MIGRATION_8_9)
             .build()
 
     }

@@ -10,7 +10,7 @@ import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.entity.Receita
 
 
-@Database(entities = [Conta::class, Receita::class, ParcelaEntity::class], version = 8, exportSchema = false)
+@Database(entities = [Conta::class, Receita::class, ParcelaEntity::class], version = 9, exportSchema = false)
 abstract class BreezeDatabase: RoomDatabase() {
     abstract fun receitaDao(): ReceitaDao
 
