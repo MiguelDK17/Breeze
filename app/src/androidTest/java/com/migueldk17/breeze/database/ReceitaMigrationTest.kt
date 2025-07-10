@@ -24,16 +24,12 @@ class ReceitaMigrationTest {
         // Cria o banco na versão antiga (V8)
         val db = helper.createDatabase(TEST_DB, 8)
 
-        // Cria a tabela antiga (caso teu schema não crie automaticamente)
         db.execSQL("""
-            CREATE TABLE saldo_table(
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            valor REAL NOT NULL,
-            descricao TEXT NOT NULL,
-            data TEXT NOT NULL
-            )
+            INSERT INTO saldo_table (valor, descricao, data)
+            VALUES (99.99, 'Teste Receita', '2023-10-01')
         """.trimIndent())
-            db.close()
+
+        db.close()
 
         val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -49,7 +45,7 @@ class ReceitaMigrationTest {
                 """.trimIndent())
                 // Copia os dados da tabela saldo_table para a nova tabela
                 database.execSQL("""
-                    INSERTO INTO receita_entity (id, valor, descricao, data, icon)
+                    INSERT INTO receita_entity (id, valor, descricao, data, icon)
                     SELECT id, valor, descricao, data, '' FROM saldo_table
                 """.trimIndent())
 
