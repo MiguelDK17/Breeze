@@ -40,10 +40,6 @@ android {
         }
     }
 
-    testOptions {
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -71,7 +67,11 @@ android {
     }
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
+        arg("room.incremental", "true")
 
+    }
+    sourceSets {
+        getByName("debug").assets.srcDir(files("$projectDir/schemas"))
     }
 }
 
