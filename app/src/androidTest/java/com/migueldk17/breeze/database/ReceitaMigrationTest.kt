@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.database
 
+import android.util.Log
 import androidx.room.migration.Migration
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -23,6 +24,13 @@ class ReceitaMigrationTest {
     fun migrateTo9() {
         // Cria o banco na versão antiga (V8)
         val db = helper.createDatabase(TEST_DB, 8)
+        db.query("SELECT * FROM saldo_table")
+            .use{
+                while (it.moveToFirst()){
+                   println("Tabela encontrada: ${it.getString(0)}")
+                }
+            }
+
 
         db.execSQL("""
             INSERT INTO saldo_table (valor, descricao, data)
