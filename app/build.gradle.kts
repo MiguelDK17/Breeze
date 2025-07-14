@@ -25,13 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        ndk {
-            abiFilters += listOf("armeabi-v7a")
-        }
+        
     }
-
-
 
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -46,16 +41,7 @@ android {
                 "proguard-rules.pro"
             )
         }
-        getByName("debug") {
-            ndk {
-                abiFilters += listOf("armeabi-v7a")
-            }
-        }
-        getByName("release") {
-            ndk {
-            abiFilters += listOf("armeabi-v7a")
-            }
-        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -120,7 +106,7 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.junit)
-    //androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)

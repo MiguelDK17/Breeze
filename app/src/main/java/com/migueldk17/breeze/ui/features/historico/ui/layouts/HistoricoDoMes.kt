@@ -69,6 +69,7 @@ fun HistoricoDoMes(
             GraficoDeBarras(contas, modifier)
         }
         else {
+            Log.d(TAG, "HistoricoDoMes: $receita")
             GraficoDeBarras(receita, modifier)
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -86,6 +87,14 @@ fun HistoricoDoMes(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            if (tipoDeLista == "Contas") {
+                Log.d(TAG, "HistoricoDoMes: Estamos no LazyColumn de Contas")
+                LazyColumnContas(historico)
+            }
+            else {
+                Log.d(TAG, "HistoricoDoMes: Agora estamos no lazyColumn de Receitas")
+                LazyColumnReceitas(viewModelReceita)
+            }
 
             //Fade do final da lista
             Box(
@@ -109,6 +118,7 @@ fun HistoricoDoMes(
 
 @Composable
 private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -140,15 +150,26 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
 }
 @Composable
 private fun LazyColumnReceitas(viewModelReceita: HistoricoReceitaViewModel){
-    val historicoReceitas = viewModelReceita.receitasOrganizadas.collectAsStateWithLifecycle().value
+    val historicoReceitas = viewModelReceita.organizaReceitas()
 
     LazyColumn {
         items(historicoReceitas) { dia ->
             val size = historicoReceitas.indexOf(dia)
             val isLastItem = size == historicoReceitas.lastIndex
 
+            HistoricoItem(
+                date = dia.data,
+                nameAccountFirst = dia.primaryTimeline.name,
+                breezeIconFirst = dia.primaryTimeline.icon.toBreezeIconsType(),
+                princeFirst = dia.primaryTimeline.valor,
+                lastIndex = isLastItem,
+                linhaDoTempoModel = dia.otherTimeline,
+                idContaPrincipal = dia.primaryTimeline.id,
+                categoryPrincipal = dia.primaryTimeline.category,
+                subCategoryPrincipal = dia.primaryTimeline.subCategory,
+                isContaParceladaContaPrincipal = dia.primaryTimeline.isContaParcelada
 
-
+            )
         }
     }
 }

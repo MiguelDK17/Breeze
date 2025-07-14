@@ -66,9 +66,8 @@ class HistoricoReceitaViewModel @Inject constructor(
 
     }
 
-    fun organizaReceitas(){
-        viewModelScope.launch {
-            _receitasOrganizadas.value = _receitasPorMes.value
+    fun organizaReceitas(): List<HistoricoDoDia> {
+         return _receitasPorMes.value
                 .sortedBy { it.dateTime }
                 .groupBy { it.dateTime.toLocalDate() }
                 .mapNotNull { (data, receitasDoDia) ->
@@ -83,7 +82,8 @@ class HistoricoReceitaViewModel @Inject constructor(
                     )
                 }
                 .sortedByDescending { it.data }
+
         }
-    }
+
 
 }

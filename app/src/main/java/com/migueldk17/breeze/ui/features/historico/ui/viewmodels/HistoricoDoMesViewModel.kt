@@ -2,9 +2,12 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
@@ -64,7 +67,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                                 icon = it.icon,
                                 colorIcon = it.colorIcon,
                                 colorCard = it.colorCard,
-                                dateTime = it.dateTime.toLocalDate().atStartOfDay(),
+                                dateTime = it.dateTime.toLocalDateTime(),
                             )
                         }
                             .filterNot { it.id in idsContaPai }
@@ -74,6 +77,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                             val contaPai = contasMapeadas[parcela.idContaPai]
                                 ?: contaRepository.getContaById(parcela.idContaPai)
                             contaPai?.let { contaPai ->
+                                Log.d(TAG, "observarContaPorMes: data das parcelas: ${parcela.data}")
                                 LinhaDoTempoModel(
                                     id = parcela.id.toLong(),
                                     name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
@@ -142,7 +146,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                         icon = conta.icon,
                         colorIcon = conta.colorIcon,
                         colorCard = conta.colorCard,
-                        dateTime = conta.dateTime.toLocalDate().atStartOfDay(),
+                        dateTime = conta.dateTime.toLocalDateTime(),
                     )
                 }
                     .filterNot { it.id in idsContaPai }
