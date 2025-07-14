@@ -18,8 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.migueldk17.breezeicons.icons.BreezeIconsType
-import java.time.LocalDate
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -30,17 +28,9 @@ import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HistoricoItem(
-    date: LocalDate, //Data de crição da conta
-    nameAccountFirst: String, //Nome da conta principal
-    breezeIconFirst: BreezeIconsType, //Icone da conta principal
-    princeFirst: Double, //Valor da conta principal
+    linhaDoTempoPrincipal: LinhaDoTempoModel, //Conta principal
     lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
-    linhaDoTempoModel: List<LinhaDoTempoModel>, //Lista de outras contas que ficam escondidas sob o estado
-    idContaPrincipal: Long,
-    categoryPrincipal: String,
-    subCategoryPrincipal: String,
-    isContaParceladaContaPrincipal: Boolean
-
+    linhaDoTempoOther: List<LinhaDoTempoModel>, //Lista de outras contas que ficam escondidas sob o estado
 ){
     //Controla a expanção/contração das outras contas
     val expanded = remember{ mutableStateOf(false) }
@@ -83,10 +73,10 @@ fun HistoricoItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 //Conta principal, a última adicionada em um mesmo dia
-                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst, idContaPrincipal, categoryPrincipal, subCategoryPrincipal, isContaParceladaContaPrincipal)
+                ContaPrincipal(linhaDoTempoModel = linhaDoTempoPrincipal)
 
-                if (linhaDoTempoModel.isNotEmpty()) {
-                    VerMaisButton(linhaDoTempoModel.size, expanded)
+                if (linhaDoTempoOther.isNotEmpty()) {
+                    VerMaisButton(linhaDoTempoOther.size, expanded)
 
                     //Adiciona uma animação ao expandir a lista
                     AnimatedVisibility(
@@ -95,7 +85,7 @@ fun HistoricoItem(
                         exit = shrinkVertically()
                     ) {
                         //Conta Secundária, caso haja mais de uma outra conta no mesmo dia as contas mais antigas são mandadas pra cá
-                        ContaSecundaria(linhaDoTempoModel, expanded)
+                        ContaSecundaria(linhaDoTempoOther, expanded)
                     }
                 }
                 else {

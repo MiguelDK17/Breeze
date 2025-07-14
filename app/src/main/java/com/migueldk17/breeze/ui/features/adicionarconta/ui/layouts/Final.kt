@@ -105,7 +105,8 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
             DetailsCard(
                 mapDeCategoria = map,
                 onChangeOpenDialog = { mostrarDetalhes = it },
-                isContaParcelada = isContaParcelada
+                isContaParcelada = isContaParcelada,
+                isReceita = false
             )
         }
         Spacer(modifier = Modifier.size(20.dp))

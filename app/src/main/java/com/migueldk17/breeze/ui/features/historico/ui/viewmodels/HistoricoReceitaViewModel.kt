@@ -27,10 +27,6 @@ class HistoricoReceitaViewModel @Inject constructor(
     private val _receitasPorMes = MutableStateFlow<List<LinhaDoTempoModel>>(emptyList())
     val receitasPorMes: StateFlow <List<LinhaDoTempoModel>> = _receitasPorMes.asStateFlow()
 
-    private val _receitasOrganizadas = MutableStateFlow<List<HistoricoDoDia>>(emptyList())
-    val receitasOrganizadas: StateFlow<List<HistoricoDoDia>> = _receitasOrganizadas.asStateFlow()
-
-
     fun setData(mes: String) {
         _data.value = mes
     }
@@ -52,7 +48,8 @@ class HistoricoReceitaViewModel @Inject constructor(
                                         name = receita.descricao,
                                         valor = receita.valor,
                                         dateTime = receita.data.toLocalDate().atStartOfDay(),
-                                        icon = receita.icon
+                                        icon = receita.icon,
+                                        isReceita = true
 
                                     )
                                 }

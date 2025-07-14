@@ -27,8 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
@@ -130,19 +132,21 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
             //Verifica se a conta é a última
             val isLastItem = size == historicoContas.lastIndex
 
-
+            val linhaDoTempoPrincipal =
+                LinhaDoTempoModel(
+                    name = dia.primaryTimeline.name,
+                    icon = dia.primaryTimeline.icon,
+                    valor = dia.primaryTimeline.valor,
+                    id = dia.primaryTimeline.id,
+                    dateTime = dia.primaryTimeline.dateTime,
+                    category = dia.primaryTimeline.category,
+                    subCategory = dia.primaryTimeline.subCategory
+                )
 
             HistoricoItem(
-                date = dia.data,
-                nameAccountFirst = dia.primaryTimeline.name,
-                breezeIconFirst = dia.primaryTimeline.icon.toBreezeIconsType(),
-                princeFirst = dia.primaryTimeline.valor,
+                linhaDoTempoPrincipal = linhaDoTempoPrincipal,
                 lastIndex = isLastItem,
-                linhaDoTempoModel = dia.otherTimeline,
-                idContaPrincipal = dia.primaryTimeline.id,
-                categoryPrincipal = dia.primaryTimeline.category,
-                subCategoryPrincipal = dia.primaryTimeline.subCategory,
-                isContaParceladaContaPrincipal = dia.primaryTimeline.isContaParcelada
+                linhaDoTempoOther = dia.otherTimeline
             )
 
         }
@@ -151,24 +155,29 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
 @Composable
 private fun LazyColumnReceitas(viewModelReceita: HistoricoReceitaViewModel){
     val historicoReceitas = viewModelReceita.organizaReceitas()
+    Log.d(TAG, "LazyColumnReceitas: $historicoReceitas")
 
     LazyColumn {
         items(historicoReceitas) { dia ->
             val size = historicoReceitas.indexOf(dia)
             val isLastItem = size == historicoReceitas.lastIndex
+            val referenceBreezeIcon = dia.primaryTimeline.icon
+            val breezeIcon = if (referenceBreezeIcon.isEmpty()) BreezeIcons.Linear.Money.DollarCircle else referenceBreezeIcon.toBreezeIconsType()
+            val linhaDoTempoPrincipal = LinhaDoTempoModel(
+                name = dia.primaryTimeline.name,
+                icon = breezeIcon.enum.name,
+                valor = dia.primaryTimeline.valor,
+                id = dia.primaryTimeline.id,
+                dateTime = dia.primaryTimeline.dateTime,
+                isReceita = true
+            )
+            Log.d(TAG, "LazyColumnReceitas: Linha do Tempo Principal$linhaDoTempoPrincipal")
+
 
             HistoricoItem(
-                date = dia.data,
-                nameAccountFirst = dia.primaryTimeline.name,
-                breezeIconFirst = dia.primaryTimeline.icon.toBreezeIconsType(),
-                princeFirst = dia.primaryTimeline.valor,
+                linhaDoTempoPrincipal = linhaDoTempoPrincipal,
                 lastIndex = isLastItem,
-                linhaDoTempoModel = dia.otherTimeline,
-                idContaPrincipal = dia.primaryTimeline.id,
-                categoryPrincipal = dia.primaryTimeline.category,
-                subCategoryPrincipal = dia.primaryTimeline.subCategory,
-                isContaParceladaContaPrincipal = dia.primaryTimeline.isContaParcelada
-
+                linhaDoTempoOther = dia.otherTimeline
             )
         }
     }

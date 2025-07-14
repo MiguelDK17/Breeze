@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -37,9 +35,9 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 fun DetailsCard(
     mapDeCategoria: Map<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
-    isContaParcelada: Boolean
+    isContaParcelada: Boolean,
+    isReceita: Boolean
     ){
-    Log.d(TAG, "DetailsCard: $isContaParcelada")
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
     val lista = listOf(
@@ -52,9 +50,21 @@ fun DetailsCard(
         "Taxa de juros"
     )
     //Caso for conta fixa remove os campos 4(Valor da parcela) e 6(taxa de juros)
-    val indicesParaRemover = setOf(4, 6)
-    val listaFiltrada = if (isContaParcelada) lista else lista
-        .filterIndexed { index, _ -> index !in indicesParaRemover }
+    val indicesParaRemoverParcelas = setOf(4, 6)
+    val indicesParaRemoverReceitas = setOf(1, 2, 4, 6)
+    val listaFiltrada = when {
+        isContaParcelada -> {
+            lista
+        }
+        isReceita -> {
+            lista.filterIndexed { index, _ -> index !in indicesParaRemoverReceitas }
+        }
+        else -> {
+            lista
+                .filterIndexed { index, _ -> index !in indicesParaRemoverParcelas }
+        }
+    }
+    val titleText = if (!isReceita) "Detalhes da Conta" else "Detalhes da Receita"
 
         BasicAlertDialog(
             onDismissRequest = {
@@ -70,7 +80,7 @@ fun DetailsCard(
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
                     //Título do BasicAlertDialog
-                    TitleText("Detalhes da Conta",
+                    TitleText(titleText,
                         color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue,
                         fontWeight = FontWeight.Bold
                     )

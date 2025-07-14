@@ -22,25 +22,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
-import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
-import java.time.LocalDate
 
 @Composable
 fun ContaPrincipal(
-    date: LocalDate, //Data de criação da conta
-    nameAccount: String, //Nome da conta
-    breezeIcon: BreezeIconsType, //Icone BreezeIcon
-    price: Double, //Valor da conta
-    id: Long,
-    category: String,
-    subCategory: String,
-    isContaParcelada: Boolean
+    linhaDoTempoModel: LinhaDoTempoModel,
 
 ){
+    val nameAccount = linhaDoTempoModel.name
+    val breezeIcon = linhaDoTempoModel.icon.toBreezeIconsType()
+    val price = linhaDoTempoModel.valor
     var textoClicado by remember {mutableStateOf(false)}
 
     Row(
@@ -57,7 +53,7 @@ fun ContaPrincipal(
             modifier = Modifier.width(60.dp)
         ) {
 
-            BoxDate(date) //Box de data
+            BoxDate(linhaDoTempoModel.dateTime.toLocalDate()) //Box de data
         }
         Row(
             modifier = Modifier
@@ -100,20 +96,13 @@ fun ContaPrincipal(
 
         }
         if (textoClicado){
-            ShowDetailsCard(
-                onChangeTextoClicado = {textoClicado = it},
-                id = id,
-                nameAccount= nameAccount,
-                date = date.atStartOfDay(),
-                valor = price,
-                category = category,
-                subCategory = subCategory,
-                isContaParcelada = isContaParcelada
 
+            ShowDetailsCard(
+                linhaDoTempoModel = linhaDoTempoModel,
+                onChangeTextoClicado = {textoClicado = it},
             )
         }
     }
-
 
 }
 

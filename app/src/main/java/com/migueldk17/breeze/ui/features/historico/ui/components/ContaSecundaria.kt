@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
@@ -110,14 +109,8 @@ fun ContaSecundaria(
             if (textoClicado){
                 Log.d(TAG, "ContaSecundaria: valor da conta: ${timeLineMutable.valor}")
                  ShowDetailsCard(
+                     linhaDoTempoModel = timeLineMutable,
                      onChangeTextoClicado = {textoClicado = it},
-                     id = timeLineMutable.id,
-                     nameAccount = timeLineMutable.name,
-                     date = timeLineMutable.dateTime,
-                     valor = timeLineMutable.valor,
-                     category = timeLineMutable.category,
-                     subCategory = timeLineMutable.subCategory,
-                     isContaParcelada = timeLineMutable.isContaParcelada
                  )
             }
         }

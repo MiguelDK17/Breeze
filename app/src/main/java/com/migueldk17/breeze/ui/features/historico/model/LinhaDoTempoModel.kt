@@ -15,6 +15,7 @@ data class LinhaDoTempoModel(
     val isContaParcelada: Boolean = false,
     val category: String = "",
     val subCategory: String = "",
+    val isReceita: Boolean = false,
 
 
 
