@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
+import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -38,9 +39,7 @@ fun HistoricoItem(
     val expanded = remember{ mutableStateOf(false) }
     val density = LocalDensity.current
 
-    Log.d(TAG, "HistoricoItem: breezeIcon ${linhaDoTempoPrincipal.icon}")
-
-
+    Log.d(TAG, "HistoricoItem: breezeIcon ${linhaDoTempoPrincipal.icon.toBreezeIconsType().enum.name}")
 
     BoxWithConstraints(
         modifier = Modifier
@@ -88,6 +87,9 @@ fun HistoricoItem(
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
+                        linhaDoTempoOther.forEach { linhaDoTempoModel ->
+                            Log.d(TAG, "HistoricoItem: $linhaDoTempoModel")
+                        }
                         //Conta Secundária, caso haja mais de uma outra conta no mesmo dia as contas mais antigas são mandadas pra cá
                         ContaSecundaria(linhaDoTempoOther, expanded)
                     }

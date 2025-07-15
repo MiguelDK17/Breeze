@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +41,7 @@ fun ContaPrincipal(
     val breezeIcon = linhaDoTempoModel.icon.toBreezeIconsType()
     val price = linhaDoTempoModel.valor
     var textoClicado by remember {mutableStateOf(false)}
+    val trulyBreezeIcon =  if(breezeIcon.enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else breezeIcon
 
     Row(
         modifier = Modifier
@@ -53,7 +56,6 @@ fun ContaPrincipal(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.width(60.dp)
         ) {
-
             BoxDate(linhaDoTempoModel.dateTime.toLocalDate()) //Box de data
         }
         Row(
@@ -62,11 +64,13 @@ fun ContaPrincipal(
                 .height(71.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BreezeIcon(breezeIcon = if (breezeIcon.enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else breezeIcon,
+            BreezeIcon(
+                breezeIcon = trulyBreezeIcon,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 15.dp)
-                    .size(25.dp))
+                    .size(25.dp)
+            )
             Text(
                 nameAccount,
                 style = MaterialTheme.typography.bodySmall,
@@ -74,10 +78,9 @@ fun ContaPrincipal(
                 modifier = Modifier
                     .weight(1f) //Adiciona peso ao Text
                     .padding(end = 8.dp)
-                    .clickable{
+                    .clickable {
                         textoClicado = true
-                    }
-                    ,
+                    },
                 overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                 maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
@@ -89,7 +92,7 @@ fun ContaPrincipal(
                 fontSize = 14.sp,
                 modifier = Modifier
                     .padding(horizontal = 15.dp)
-                    .clickable{
+                    .clickable {
                         textoClicado = true
                     },
                 textAlign = TextAlign.End
@@ -97,7 +100,6 @@ fun ContaPrincipal(
 
         }
         if (textoClicado){
-
             ShowDetailsCard(
                 linhaDoTempoModel = linhaDoTempoModel,
                 onChangeTextoClicado = {textoClicado = it},

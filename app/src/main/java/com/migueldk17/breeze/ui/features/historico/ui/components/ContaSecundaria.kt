@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
@@ -37,6 +38,7 @@ fun ContaSecundaria(
     linhaDoTempoModel: List<LinhaDoTempoModel>,
     expanded: MutableState<Boolean>
 ){
+
     var textoClicado by remember { mutableStateOf(false) }
     var timeLineMutable by remember { mutableStateOf(LinhaDoTempoModel(
         id = 0,
@@ -52,8 +54,9 @@ fun ContaSecundaria(
     )) }
     Column {
         if (expanded.value) {
-            linhaDoTempoModel.forEach { conta ->
-
+            linhaDoTempoModel.forEach { tempoModel ->
+                val name = tempoModel.name.ifEmpty { "Receitas" }
+                val trulyBreezeIcon =  if(tempoModel.icon.toBreezeIconsType().enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else tempoModel.icon.toBreezeIconsType()
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -69,39 +72,36 @@ fun ContaSecundaria(
                             .height(24.dp)
                     )
                     BreezeIcon(
-                        breezeIcon = conta.icon.toBreezeIconsType(),
+                        breezeIcon = trulyBreezeIcon,
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
-
-
                     )
                     Spacer(modifier = Modifier.width(20.dp))
                     Text(
-                        conta.name,
+                        name,
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         modifier = Modifier
                             .weight(1f)
                             .clickable {
                                 textoClicado = true
-                                timeLineMutable = conta
+                                timeLineMutable = tempoModel
                             },
                         overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                         maxLines = 1 //Limita o texto a 1 linha para evitar quebra
                     )
 
                     Text(
-                        formataSaldo(conta.valor),
+                        formataSaldo(tempoModel.valor),
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         modifier = Modifier
                             .padding(end = 15.dp)
                             .clickable {
                                 textoClicado = true
-                                timeLineMutable = conta
+                                timeLineMutable = tempoModel
                             }
-
                     )
 
                 }

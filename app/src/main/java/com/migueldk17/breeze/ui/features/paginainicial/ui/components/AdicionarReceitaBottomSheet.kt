@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.MoneyVisualTransformation
+import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -53,7 +54,7 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
 
     var selectedDate by remember { mutableStateOf(LocalDate.now())}
 
-    val icon = BreezeIcons.Linear.Money.DollarCircle.enum.name
+    val icon = BreezeIcons.Linear.Money.DollarCircle.enum.toDatabaseValue()
 
     ModalBottomSheet(
         onDismissRequest = {

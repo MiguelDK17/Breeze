@@ -71,6 +71,8 @@ class HistoricoReceitaViewModel @Inject constructor(
                     val receitasOrdenadas = receitasDoDia.sortedByDescending { it.dateTime }
                     val primeira = receitasOrdenadas.first()
                     val outras = receitasOrdenadas.drop(1)
+                    Log.d(TAG, "organizaReceitas: primeira receita: $primeira")
+                    Log.d(TAG, "organizaReceitas:outras receitas: $outras")
 
                     HistoricoDoDia(
                         data = data,
