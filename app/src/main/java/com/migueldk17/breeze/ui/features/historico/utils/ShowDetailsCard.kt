@@ -61,8 +61,6 @@ fun ShowDetailsCard(
     val dataFormatada = "$day/$month/$year"
     val map = when {
         linhaDoTempoModel.isReceita -> {
-            Log.d(TAG, "ShowDetailsCard: verficação se é receita ${linhaDoTempoModel.isReceita}")
-
             mapOf(
                 "Nome" to nameAccount,
                 "Valor Total" to formataSaldo(valor),
@@ -70,7 +68,6 @@ fun ShowDetailsCard(
             )
     }
     parcela != null && isContaParcelada -> {
-        Log.d(TAG, "ShowDetailsCard: verficação se é receita ${linhaDoTempoModel.isReceita}")
         mapOf(
             "Nome" to nameAccount,
             "Categoria" to category,
@@ -82,7 +79,6 @@ fun ShowDetailsCard(
         )
     }
         else -> {
-            Log.d(TAG, "ShowDetailsCard: verficação se é receita ${linhaDoTempoModel.isReceita}")
             mapOf(
                 "Nome" to nameAccount,
                 "Categoria" to category,

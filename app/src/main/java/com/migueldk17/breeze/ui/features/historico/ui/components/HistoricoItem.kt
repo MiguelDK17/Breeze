@@ -2,6 +2,8 @@ package com.migueldk17.breeze.ui.features.historico.ui.components
 
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -35,6 +37,8 @@ fun HistoricoItem(
     //Controla a expanção/contração das outras contas
     val expanded = remember{ mutableStateOf(false) }
     val density = LocalDensity.current
+
+    Log.d(TAG, "HistoricoItem: breezeIcon ${linhaDoTempoPrincipal.icon}")
 
 
 

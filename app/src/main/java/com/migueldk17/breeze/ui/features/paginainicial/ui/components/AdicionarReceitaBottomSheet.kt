@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import kotlinx.coroutines.launch
@@ -51,6 +52,8 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
     var showDatePicker by remember { mutableStateOf(false)}
 
     var selectedDate by remember { mutableStateOf(LocalDate.now())}
+
+    val icon = BreezeIcons.Linear.Money.DollarCircle.enum.name
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -127,7 +130,8 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
                     viewModel.adicionaReceita(
                         valor = saldoInput.toDouble(),
                         descricao = descricaoInput,
-                        data = selectedDate
+                        data = selectedDate,
+                        icon = icon
                     )
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {

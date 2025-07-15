@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
@@ -61,7 +62,7 @@ fun ContaPrincipal(
                 .height(71.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BreezeIcon(breezeIcon = breezeIcon,
+            BreezeIcon(breezeIcon = if (breezeIcon.enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else breezeIcon,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 15.dp)

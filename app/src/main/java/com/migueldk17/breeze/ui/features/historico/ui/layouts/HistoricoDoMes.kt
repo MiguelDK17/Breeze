@@ -90,11 +90,9 @@ fun HistoricoDoMes(
             modifier = Modifier.fillMaxSize()
         ) {
             if (tipoDeLista == "Contas") {
-                Log.d(TAG, "HistoricoDoMes: Estamos no LazyColumn de Contas")
-                LazyColumnContas(historico)
+                 LazyColumnContas(historico)
             }
             else {
-                Log.d(TAG, "HistoricoDoMes: Agora estamos no lazyColumn de Receitas")
                 LazyColumnReceitas(viewModelReceita)
             }
 
@@ -155,24 +153,24 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
 @Composable
 private fun LazyColumnReceitas(viewModelReceita: HistoricoReceitaViewModel){
     val historicoReceitas = viewModelReceita.organizaReceitas()
-    Log.d(TAG, "LazyColumnReceitas: $historicoReceitas")
 
     LazyColumn {
         items(historicoReceitas) { dia ->
             val size = historicoReceitas.indexOf(dia)
             val isLastItem = size == historicoReceitas.lastIndex
             val referenceBreezeIcon = dia.primaryTimeline.icon
-            val breezeIcon = if (referenceBreezeIcon.isEmpty()) BreezeIcons.Linear.Money.DollarCircle else referenceBreezeIcon.toBreezeIconsType()
+            val name = dia.primaryTimeline.name.ifEmpty { "Receita" }
+            Log.d(TAG, "LazyColumnReceitas:referencia do icone $referenceBreezeIcon")
+            val breezeIcon = if (referenceBreezeIcon.isEmpty()) BreezeIcons.Linear.Money.DollarCircle else BreezeIcons.Linear.Money.DollarCircle
+            Log.d(TAG, "LazyColumnReceitas: o valor de breezeIcon está assim ${breezeIcon.enum.name}")
             val linhaDoTempoPrincipal = LinhaDoTempoModel(
-                name = dia.primaryTimeline.name,
+                name = name,
                 icon = breezeIcon.enum.name,
                 valor = dia.primaryTimeline.valor,
                 id = dia.primaryTimeline.id,
                 dateTime = dia.primaryTimeline.dateTime,
                 isReceita = true
             )
-            Log.d(TAG, "LazyColumnReceitas: Linha do Tempo Principal$linhaDoTempoPrincipal")
-
 
             HistoricoItem(
                 linhaDoTempoPrincipal = linhaDoTempoPrincipal,

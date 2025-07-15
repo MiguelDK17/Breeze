@@ -180,7 +180,6 @@ fun PaginaInicial(navController: NavController,
 
     }
 
-
     if (showBottomSheet){
         AdicionarReceitaBottomSheet(viewModel)
     }
