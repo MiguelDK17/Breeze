@@ -105,7 +105,6 @@ fun ContaSecundaria(
                                 timeLineMutable = tempoModel
                             }
                     )
-
                 }
             }
             if (textoClicado){

@@ -37,15 +37,23 @@ import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.unit.max
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
 @Composable
-fun PaginaInicial(navController: NavController,
-                  viewModel: PaginaInicialViewModel = hiltViewModel()){
+fun PaginaInicial(
+    viewModel: PaginaInicialViewModel = hiltViewModel(),
+    goToAdicionarConta: (Long) -> Unit
+){
     val saldo by viewModel.receita.collectAsStateWithLifecycle()
     val saldoFormatado = saldo
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
@@ -56,17 +64,22 @@ fun PaginaInicial(navController: NavController,
         .fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
         //Card de saldo disponível
-        ElevatedCard(modifier = Modifier
-            .size(width = 254.dp, height = 49.dp))
+        ElevatedCard(
+            modifier = Modifier
+                .widthIn(min = 254.dp)
+                .heightIn(min = 49.dp, max = 100.dp)
+        )
         {
-             Row(modifier = Modifier.fillMaxSize(),
-                 verticalAlignment = Alignment.CenterVertically,
-                 horizontalArrangement = Arrangement.Center) {
+            Row(modifier = Modifier
+                .widthIn(min = 254.dp)
+                .heightIn(min = 49.dp, max = 100.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center) {
                 Text(
                     "Seu Saldo: ${formataSaldo(saldoFormatado)}",
                     style = MaterialTheme.typography.titleMedium
                 )
-                 //Botão para editar o saldo
+                //Botão para editar o saldo
                 IconButton(
                     onClick = {
                         viewModel.atualizaBottomSheet(true)
@@ -81,7 +94,8 @@ fun PaginaInicial(navController: NavController,
                         modifier = Modifier.size(30.dp)
                     )
                 }
-            } }
+            }
+        }
         Spacer(modifier = Modifier.size(15.dp))
         Text("Suas Contas:",
             fontSize = 14.sp)
@@ -158,9 +172,7 @@ fun PaginaInicial(navController: NavController,
                         BreezeCard(
                             conta,
                             onClick = {
-                                val intent = Intent(navController.context, MainActivity2::class.java)
-                                intent.putExtra("id", conta.id)
-                                navController.context.startActivity(intent)
+                                goToAdicionarConta(conta.id)
                             },
                             apagarConta = {  viewModel.apagaConta(conta) },
                             apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(

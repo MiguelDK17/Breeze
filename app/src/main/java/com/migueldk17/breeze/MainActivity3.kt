@@ -23,7 +23,6 @@ class MainActivity3: ComponentActivity() {
 
         setContent {
             BreezeTheme {
-
                 Scaffold {paddingValues ->
                     AdicionarConta(modifier = Modifier.padding(paddingValues), viewModel)
                 }
