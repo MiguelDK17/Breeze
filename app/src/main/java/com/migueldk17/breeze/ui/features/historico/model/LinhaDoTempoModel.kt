@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 data class LinhaDoTempoModel(
     val id: Long,
-    val name: String,
+    var name: String,
     val valor: Double,
     val dateTime: LocalDateTime,
     val icon: String,

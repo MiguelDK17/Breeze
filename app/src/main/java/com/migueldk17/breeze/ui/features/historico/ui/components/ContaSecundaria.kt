@@ -56,6 +56,7 @@ fun ContaSecundaria(
         if (expanded.value) {
             linhaDoTempoModel.forEach { tempoModel ->
                 val name = tempoModel.name.ifEmpty { "Receitas" }
+                tempoModel.name = name
                 val trulyBreezeIcon =  if(tempoModel.icon.toBreezeIconsType().enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else tempoModel.icon.toBreezeIconsType()
                 Row(
                     modifier = Modifier
@@ -71,6 +72,7 @@ fun ContaSecundaria(
                             .width(60.dp)
                             .height(24.dp)
                     )
+
                     BreezeIcon(
                         breezeIcon = trulyBreezeIcon,
                         contentDescription = null,
