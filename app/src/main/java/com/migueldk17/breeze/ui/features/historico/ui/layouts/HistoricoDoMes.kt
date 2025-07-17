@@ -60,7 +60,6 @@ fun HistoricoDoMes(
             viewModelContas.observarContaPorMes()
             viewModelReceita.observarReceitasPorMes()
         }
-
     }
 
     Column(
@@ -71,7 +70,6 @@ fun HistoricoDoMes(
             GraficoDeBarras(contas, modifier)
         }
         else {
-            Log.d(TAG, "HistoricoDoMes: $receita")
             GraficoDeBarras(receita, modifier)
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -111,10 +109,9 @@ fun HistoricoDoMes(
                         )
                     )
             )
-
         }
     }
-    }
+}
 
 @Composable
 private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {

@@ -50,7 +50,6 @@ class HistoricoReceitaViewModel @Inject constructor(
                                         dateTime = receita.data.toLocalDate().atStartOfDay(),
                                         icon = receita.icon,
                                         isReceita = true
-
                                     )
                                 }
                                 _receitasPorMes.value = linhaDoTempoModel
