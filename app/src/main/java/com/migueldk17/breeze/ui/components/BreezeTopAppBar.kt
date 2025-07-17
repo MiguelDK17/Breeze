@@ -28,7 +28,6 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 @Composable
 fun BreezeTopAppBar(){
     val context = LocalContext.current
-    val activity = LocalActivity.current
     MediumTopAppBar(
         title = {
             Text("Bem Vindo !",
@@ -40,7 +39,6 @@ fun BreezeTopAppBar(){
                 onClick = {
                     val intent = Intent(context, MainActivity3::class.java)
                     context.startActivity(intent)
-                    activity?.finish()
                 },
             ) {
                 Icon(Icons.Default.AddCircle,

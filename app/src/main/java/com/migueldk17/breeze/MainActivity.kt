@@ -79,13 +79,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(Screen.PaginaInicial.route) {
-                            PaginaInicial(
-                                goToAdicionarConta = { value ->
-                                    val intent = Intent(context, MainActivity3::class.java)
-                                    intent.putExtra("id", value)
-                                    context.startActivity(intent)
-                                }
-                            )
+                            PaginaInicial()
                         }
                         composable(Screen.Historico.route) {
                             Historico()
