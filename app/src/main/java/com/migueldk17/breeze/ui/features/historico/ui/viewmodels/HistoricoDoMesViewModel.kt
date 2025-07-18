@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
-
-
 import android.util.Log
 import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
@@ -20,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -37,8 +36,13 @@ class HistoricoDoMesViewModel @Inject constructor(
     //Pega a data do mes
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
+
     private val _contasPorMes = MutableStateFlow<List<LinhaDoTempoModel>>(emptyList())
     val contasPorMes: StateFlow<List<LinhaDoTempoModel>> = _contasPorMes.asStateFlow()
+
+    private val _listaVazia = MutableStateFlow(false)
+    val listaVazia: StateFlow<Boolean> = _listaVazia.asStateFlow()
+
 
     private val _parcela: MutableStateFlow<UiState<ParcelaEntity>> = MutableStateFlow(UiState.Loading)
     val parcela: StateFlow<UiState<ParcelaEntity>> = _parcela.asStateFlow()
@@ -95,6 +99,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                         todasAsContas.sortedBy { it.dateTime }
                     }.collectLatest { contasOrdenadas ->
                         _contasPorMes.value = contasOrdenadas
+                        _listaVazia.value = contasOrdenadas.isEmpty()
                     }
             }
         }

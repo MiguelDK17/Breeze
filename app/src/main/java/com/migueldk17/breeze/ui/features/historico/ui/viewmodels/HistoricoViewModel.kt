@@ -50,65 +50,6 @@ class HistoricoViewModel @Inject constructor(
     private val _dataFormatada = MutableStateFlow("")
     val dataFormatada: StateFlow<String> = _dataFormatada.asStateFlow()
 
-    private var buscaJob: Job? = null
-
-    fun buscaContasPorMes(mes: String){
-        buscaJob?.cancel()
-        buscaJob = viewModelScope.launch {
-            combine(
-                contaRepository.getContasMes(mes),
-                parcelaRepository.buscaTodasAsParcelasDoMes(mes)
-
-            ){ contas, parcelas ->
-                val contasMapeadas = contas.associateBy { it.id }
-                val idsContaPai = parcelas.map { it.idContaPai }.toSet()
-                val contasFiltradas = contas
-                    .filterNot { it.id in idsContaPai }
-                    .filterNot { it.isContaParcelada }
-
-                val contasDasParcelas = parcelas.mapNotNull { parcela ->
-                    val contaPai = contasMapeadas[parcela.idContaPai]
-                        ?: contaRepository.getContaById(parcela.idContaPai)
-
-                    contaPai?.let { contaPai ->
-                        Conta(
-                            id = parcela.id.toLong(),
-                            name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",
-                            categoria = contaPai.categoria,
-                            subCategoria = contaPai.subCategoria,
-                            valor = parcela.valor,
-                            icon = contaPai.icon,
-                            colorIcon = contaPai.colorIcon,
-                            colorCard = contaPai.colorCard,
-                            dateTime = parcela.data.toLocalDate().atStartOfDay().toString(),
-                            isContaParcelada = true
-                        )
-                    }
-                }
-                val todasAsContas = contasFiltradas + contasDasParcelas
-
-                todasAsContas
-                    .sortedBy { it.dateTime }
-
-            }
-                .collectLatest { contasOrdenadas ->
-                    if (contasOrdenadas.isEmpty()){
-                        _contasState.value = UiState.Empty
-                        ToastManager.showToast(context,  "Não há contas registradas neste mês")
-                    }
-                    else {
-                        val dataFormatada = traduzData(contasOrdenadas.first().dateTime.toLocalDateTime().month.name)
-                        salvaDataTraduzida(dataFormatada)
-                        _contasState.value = UiState.Success(contasOrdenadas)
-                        disparaNavegarParaTela()
-                    }
-
-                }
-
-        }
-
-    }
-
     //Função que salva a data já traduzida
     fun salvaDataTraduzida(string: String){
         _dataTraduzida.value = string
@@ -124,10 +65,6 @@ class HistoricoViewModel @Inject constructor(
         viewModelScope.launch {
             _navegarParaTela.emit(Pair(mes, dataFormatada))
         }
-    }
-
-    fun cancelarBusca(){
-        buscaJob?.cancel()
     }
 
 }

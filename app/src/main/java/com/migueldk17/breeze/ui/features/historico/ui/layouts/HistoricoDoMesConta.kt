@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
@@ -45,11 +46,25 @@ fun HistoricoDoMesConta(
 
     val dataFormatada = viewModelContas.data.collectAsStateWithLifecycle().value
 
+    val listaVazia = viewModelContas.listaVazia.collectAsStateWithLifecycle().value
+
     LaunchedEffect(Unit) {
         if (dataFormatada.isNotEmpty()) {
             viewModelContas.observarContaPorMes()
         }
     }
+
+    if (listaVazia){
+        ListaVaziaHistorico(
+            animationRes = R.raw.empty_ghost,
+            titleText = "Nenhuma conta por aqui... 👻",
+            descriptionText1 = "Parece que suas contas ainda estão no mundo dos fantasmas.",
+            descriptionText2 = "Crie uma pra começar a organizar tudo certinho!",
+            buttonText = "Criar Conta",
+            onClick = {}
+        )
+    }
+    else {
 
     Column(
         modifier = modifier
@@ -94,6 +109,7 @@ fun HistoricoDoMesConta(
             )
         }
     }
+    }
 }
 
 @Composable
@@ -128,6 +144,7 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
             )
 
         }
+
     }
 }
 

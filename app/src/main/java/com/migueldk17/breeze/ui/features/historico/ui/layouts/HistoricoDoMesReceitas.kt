@@ -64,7 +64,7 @@ fun HistoricoDoMesReceita(
             }
 
         }
-        is UiState.Empty -> SemReceitasHistorico(
+        is UiState.Empty -> ListaVaziaHistorico(
             animationRes = R.raw.piggy_saving_money,
             titleText = "Sem Receitas por Aqui!",
             descriptionText1 = "Ainda não há nenhuma receita cadastrada neste mês!",
