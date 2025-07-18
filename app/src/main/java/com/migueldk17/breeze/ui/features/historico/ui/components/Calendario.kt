@@ -2,8 +2,6 @@ package com.migueldk17.breeze.ui.features.historico.ui.components
 
 import android.util.Log
 import android.content.ContentValues.TAG
-import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,13 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.migueldk17.breeze.MainActivity4
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
 import com.migueldk17.breeze.ui.utils.retornaDataFormatadaParaPesquisaNoRoom
-import com.migueldk17.breeze.uistate.UiState
+import com.migueldk17.breeze.ui.utils.traduzData
 import java.time.LocalDate
 
 
@@ -99,10 +94,11 @@ fun GridMes(viewModel: HistoricoViewModel, ano: Int){
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
                         val dataFormatada = retornaDataFormatadaParaPesquisaNoRoom(meses[index], ano)
-                        Log.d(TAG, "GridMes: $dataFormatada")
                         mesSelecionado = meses[index]
+                        val dataTraduzida = traduzData(meses[index])
+                        viewModel.salvaDataTraduzida(dataTraduzida)
                         viewModel.salvaDataFormatada(dataFormatada)
-                        viewModel.buscaContasPorMes(dataFormatada)
+                        viewModel.disparaNavegarParaTela()
                     })
             })
     }
