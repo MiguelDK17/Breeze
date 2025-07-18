@@ -29,7 +29,7 @@ import com.migueldk17.breeze.ui.components.TitleText
 import kotlinx.coroutines.delay
 
 @Composable
-fun SemReceitasHistorico(
+fun ListaVaziaHistorico(
     animationRes: Int,
     titleText: String,
     descriptionText1: String,

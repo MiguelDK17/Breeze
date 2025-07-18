@@ -24,18 +24,18 @@ fun formataValorConta(valor: Double?): String = String.format(Locale.getDefault(
 fun traduzData(mes: String): String {
 
     val mesTraduzido = when(mes){
-        "JANUARY" ->  "Janeiro"
-        "FEBRUARY" ->  "Fevereiro"
-        "MARCH" ->  "Março"
-        "APRIL" ->  "Abril"
-        "MAY" ->  "Maio"
-        "JUNE" ->  "Junho"
-        "JULY" ->  "Julho"
-        "AUGUST" ->  "Agosto"
-        "SEPTEMBER" ->  "Setembro"
-        "OCTOBER" ->  "Outubro"
-        "NOVEMBER" ->  "Novembro"
-        "DECEMBER" ->  "Dezembro"
+        "Jan" ->  "Janeiro"
+        "Fev" ->  "Fevereiro"
+        "Mar" ->  "Março"
+        "Abr" ->  "Abril"
+        "Mai" ->  "Maio"
+        "Jun" ->  "Junho"
+        "Jul" ->  "Julho"
+        "Ago" ->  "Agosto"
+        "Set" ->  "Setembro"
+        "Out" ->  "Outubro"
+        "Nov" ->  "Novembro"
+        "Dez" ->  "Dezembro"
         else -> "Inválido"
     }
     return mesTraduzido
