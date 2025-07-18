@@ -1,8 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,27 +25,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
-import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoricoDoMes(
+fun HistoricoDoMesConta(
     modifier: Modifier,
     viewModelContas: HistoricoDoMesViewModel,
-    viewModelReceita: HistoricoReceitaViewModel,
-    tipoDeLista: String
 
     ) {
     val contas = viewModelContas.contasPorMes.collectAsStateWithLifecycle().value
-
-    val receita = viewModelReceita.receitasPorMes.collectAsStateWithLifecycle().value
 
     //Pega as contas já filtradas por data da mais recente a mais antiga
     val historico = viewModelContas.historico.collectAsStateWithLifecycle().value
@@ -55,10 +46,8 @@ fun HistoricoDoMes(
     val dataFormatada = viewModelContas.data.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
-        Log.d(TAG, "HistoricoDoMes: $dataFormatada")
         if (dataFormatada.isNotEmpty()) {
             viewModelContas.observarContaPorMes()
-            viewModelReceita.observarReceitasPorMes()
         }
     }
 
@@ -66,13 +55,11 @@ fun HistoricoDoMes(
         modifier = modifier
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
-        if (tipoDeLista == "Contas") {
-            GraficoDeBarras(contas, modifier)
-        }
-        else {
-            GraficoDeBarras(receita, modifier)
-        }
+
+        GraficoDeBarras(contas, modifier)
+
         Spacer(modifier = Modifier.height(30.dp))
+
         Row(
             modifier = Modifier.padding(horizontal = 10.dp)
         ) {
@@ -82,17 +69,13 @@ fun HistoricoDoMes(
                 fontSize = 14.sp,
             )
         }
+
         Spacer(modifier = Modifier.height(15.dp))
 
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (tipoDeLista == "Contas") {
-                 LazyColumnContas(historico)
-            }
-            else {
-                LazyColumnReceitas(viewModelReceita)
-            }
+            LazyColumnContas(historico)
 
             //Fade do final da lista
             Box(
@@ -147,34 +130,5 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
         }
     }
 }
-@Composable
-private fun LazyColumnReceitas(viewModelReceita: HistoricoReceitaViewModel){
-    val historicoReceitas = viewModelReceita.organizaReceitas()
 
-    LazyColumn {
-        items(historicoReceitas) { dia ->
-            val size = historicoReceitas.indexOf(dia)
-            val isLastItem = size == historicoReceitas.lastIndex
-            val referenceBreezeIcon = dia.primaryTimeline.icon
-            val name = dia.primaryTimeline.name.ifEmpty { "Receita" }
-            Log.d(TAG, "LazyColumnReceitas:referencia do icone $referenceBreezeIcon")
-            val breezeIcon = if (referenceBreezeIcon.isEmpty()) BreezeIcons.Linear.Money.DollarCircle else BreezeIcons.Linear.Money.DollarCircle
-            Log.d(TAG, "LazyColumnReceitas: o valor de breezeIcon está assim ${breezeIcon.enum.name}")
-            val linhaDoTempoPrincipal = LinhaDoTempoModel(
-                name = name,
-                icon = breezeIcon.enum.name,
-                valor = dia.primaryTimeline.valor,
-                id = dia.primaryTimeline.id,
-                dateTime = dia.primaryTimeline.dateTime,
-                isReceita = true
-            )
-
-            HistoricoItem(
-                linhaDoTempoPrincipal = linhaDoTempoPrincipal,
-                lastIndex = isLastItem,
-                linhaDoTempoOther = dia.otherTimeline
-            )
-        }
-    }
-}
 

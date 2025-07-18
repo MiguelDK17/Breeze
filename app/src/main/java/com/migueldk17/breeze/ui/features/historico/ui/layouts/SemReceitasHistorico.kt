@@ -1,73 +1,88 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
-import com.migueldk17.breeze.ui.theme.BreezeTheme
+import kotlinx.coroutines.delay
 
 @Composable
-@Preview(showBackground = true)
-fun SemReceitasHistorico(){
-    BreezeTheme {
+fun SemReceitasHistorico(
+    animationRes: Int,
+    titleText: String,
+    descriptionText1: String,
+    descriptionText2: String,
+    buttonText: String,
+    onClick: () -> Unit
+){
+    var showContent by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        delay(100)
+        showContent = true
+    }
+    AnimatedVisibility(visible = showContent, enter = fadeIn() + slideInVertically()) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LottieAnimation(
-                animationRes = com.migueldk17.breeze.R.raw.piggy_saving_money,
+                animationRes = animationRes,
                 isPlaying = true,
-                iterations = 10,
                 modifier = Modifier
                     .widthIn(min = 200.dp)
                     .heightIn(min = 200.dp, max = 500.dp)
             )
             TitleText(
-                "Sem Receitas por Aqui!",
+                titleText,
                 fontWeight = FontWeight.Bold,
                 size = 20.sp,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             DescriptionText(
-                "Ainda não há nenhuma receita cadastrada neste mês!",
+                descriptionText1,
                 fontWeight = FontWeight.Bold,
                 size = 14.sp,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             DescriptionText(
-                "Você pode começar adicionando uma na Página Inicial 💰!",
+                descriptionText2,
                 fontWeight = FontWeight.Bold,
                 size = 14.sp,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(20.dp))
             BreezeButton(
-                text = "Adicionar Receita",
-                onClick = {}
+                text = buttonText,
+                onClick = onClick
             )
+
         }
     }
+
 }

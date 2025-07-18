@@ -8,6 +8,7 @@ import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.repository.ReceitaRepository
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
+import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +25,8 @@ class HistoricoReceitaViewModel @Inject constructor(
     private val _data = MutableStateFlow("")
     val data: MutableStateFlow<String> = _data
 
-    private val _receitasPorMes = MutableStateFlow<List<LinhaDoTempoModel>>(emptyList())
-    val receitasPorMes: StateFlow <List<LinhaDoTempoModel>> = _receitasPorMes.asStateFlow()
+    private val _receitasPorMes = MutableStateFlow<UiState<List<LinhaDoTempoModel>>>(UiState.Loading)
+    val receitaState: StateFlow <UiState<List<LinhaDoTempoModel>>> = _receitasPorMes.asStateFlow()
 
     fun setData(mes: String) {
         _data.value = mes
@@ -39,6 +40,7 @@ class HistoricoReceitaViewModel @Inject constructor(
                     receitaRepository.getReceitasDoMes(mes)
                         .collectLatest { receitas ->
                             if (receitas.isEmpty()) {
+                                _receitasPorMes.value = UiState.Empty
                                 Log.d(TAG, "observarReceitasPorMes: Receitas vazias")
                             } else {
                                 Log.d(TAG, "observarReceitasPorMes: Receitas recebidas")
@@ -52,7 +54,7 @@ class HistoricoReceitaViewModel @Inject constructor(
                                         isReceita = true
                                     )
                                 }
-                                _receitasPorMes.value = linhaDoTempoModel
+                                _receitasPorMes.value = UiState.Success(linhaDoTempoModel)
                             }
                         }
 
@@ -62,8 +64,8 @@ class HistoricoReceitaViewModel @Inject constructor(
 
     }
 
-    fun organizaReceitas(): List<HistoricoDoDia> {
-         return _receitasPorMes.value
+    fun organizaReceitas(lista: List<LinhaDoTempoModel>): List<HistoricoDoDia> {
+         return lista
                 .sortedBy { it.dateTime }
                 .groupBy { it.dateTime.toLocalDate() }
                 .mapNotNull { (data, receitasDoDia) ->

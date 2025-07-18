@@ -30,7 +30,6 @@ class MainActivity2: ComponentActivity() {
             BreezeTheme {
             Scaffold { _ ->
                 val id = intent.getLongExtra("id", 0)
-                Log.d(TAG, "onCreate: $id")
                 //Pega a conta uma vez
                 LaunchedEffect(id) { viewModel.pegaContaSelecionada(id)}
 

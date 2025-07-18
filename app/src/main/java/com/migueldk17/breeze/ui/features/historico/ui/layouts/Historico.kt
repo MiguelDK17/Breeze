@@ -23,7 +23,6 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
 
     LaunchedEffect(true) {
         viewModel.navegarParaTela.collect { (mes, dataFormatada) ->
-            Log.d(TAG, "Historico: Recebido evento para navegar para MainActivity4 com o mês: $mes")
             val context = context
             val intent = Intent(context, MainActivity4::class.java)
             intent.putExtra("mes", mes)
@@ -52,7 +51,6 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
 
     DisposableEffect(Unit) {
         onDispose {
-            Log.d(TAG, "Historico: Cancelando busca na saída do Composable.")
             viewModel.cancelarBusca()
         }
     }

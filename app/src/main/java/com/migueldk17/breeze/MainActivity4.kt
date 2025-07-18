@@ -1,14 +1,11 @@
 package com.migueldk17.breeze
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,7 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.DescriptionText
-import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMes
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesConta
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesReceita
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -53,18 +51,12 @@ class MainActivity4: ComponentActivity() {
             val mes = intent.getStringExtra("mes")
             val dataFormatada = intent.getStringExtra("dataFormatada")
             if (dataFormatada != null) {
-                Log.d(TAG, "dataFormatada: caiu no if: $dataFormatada")
                 viewModelContas.setData(dataFormatada)
                 viewModelReceitas.setData(dataFormatada)
-            }
-            else {
-                Log.d(TAG, "dataFormatada: caiu no else: $dataFormatada")
             }
             val context = LocalContext.current
             val categories = listOf("Contas", "Receitas")
             var selectedCategory by remember { mutableStateOf(categories[0]) }
-            val interactionSource = remember { MutableInteractionSource() }
-            var isPressed by remember { mutableStateOf(false) }
             BreezeTheme {
                 Scaffold(
                     topBar = {
@@ -126,7 +118,18 @@ class MainActivity4: ComponentActivity() {
                         )
                     }
                 ) { paddingValues ->
-                    HistoricoDoMes(modifier = Modifier.padding(paddingValues), viewModelContas, viewModelReceitas, selectedCategory)
+                    if (selectedCategory == "Contas") {
+                        HistoricoDoMesConta(
+                            modifier = Modifier.padding(paddingValues),
+                            viewModelContas,
+                        )
+                    }
+                    else {
+                        HistoricoDoMesReceita(
+                            modifier = Modifier.padding(paddingValues),
+                            viewModelReceita = viewModelReceitas
+                        )
+                    }
                 }
             }
         }
