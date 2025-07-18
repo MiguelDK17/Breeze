@@ -93,11 +93,16 @@ fun GridMes(viewModel: HistoricoViewModel, ano: Int){
                     isSelected = meses[index] == mesSelecionado,
                     //Salva o mes clicado na variavel mesSelecionado
                     onClick = {
+                        //Formata data pra busca no Room
                         val dataFormatada = retornaDataFormatadaParaPesquisaNoRoom(meses[index], ano)
                         mesSelecionado = meses[index]
+                        //Data completa para mostrar na TopAppBar em HistoricoDoMes
                         val dataTraduzida = traduzData(meses[index])
+                        //Salva a Data Traduzida
                         viewModel.salvaDataTraduzida(dataTraduzida)
+                        //Salva a Data Formatada pra consulta no Room
                         viewModel.salvaDataFormatada(dataFormatada)
+                        //Dispara a navegação quando as duas datas estiverem prontas
                         viewModel.disparaNavegarParaTela()
                     })
             })
