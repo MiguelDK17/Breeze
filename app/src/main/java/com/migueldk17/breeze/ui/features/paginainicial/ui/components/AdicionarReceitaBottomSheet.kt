@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -33,6 +34,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -41,10 +43,11 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun AdicionarReceitaBottomSheet(
     atualizaBottomSheet: (Boolean) -> Unit,
-    adicionaReceita: (Double, String, LocalDate, String) -> Unit,
-    sheetState: SheetState){
+    adicionaReceita: (Double, String, LocalDate, String) -> Unit
+){
     //Estados para controlar o ModalBottomSheet
      val scope = rememberCoroutineScope()
+
     //Estado para armazenar o saldo
     var saldoInput by remember { mutableStateOf("") }
 
@@ -60,20 +63,16 @@ fun AdicionarReceitaBottomSheet(
 
     val icon = BreezeIcons.Linear.Money.DollarCircle.enum.toDatabaseValue()
 
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
     LaunchedEffect(Unit) {
         sheetState.show()
     }
 
-    LaunchedEffect(fecharSolicitado) {
-        if (fecharSolicitado) {
-            sheetState.hide()
-            atualizaBottomSheet(false)
-        }
-    }
-
     ModalBottomSheet(
         onDismissRequest = {
-            fecharSolicitado = true
             atualizaBottomSheet(false)
         },
         sheetState = sheetState
@@ -162,5 +161,7 @@ fun AdicionarReceitaBottomSheet(
         }
     }
 
-
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+private suspend fun fechaBottomSheet(sheetState: SheetState) = sheetState.hide()

@@ -39,11 +39,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.ui.utils.formataMesAno
@@ -61,7 +56,7 @@ fun PaginaInicial(
 
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
 
-    var showBottomSheet by remember { mutableStateOf(false) }
+    val showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
 
     val context = LocalContext.current
 
@@ -69,7 +64,6 @@ fun PaginaInicial(
 
     val hasRequestedAddAccountSheet = activity?.intent?.getBooleanExtra("abrirBottomSheet", false)
 
-    showBottomSheet = hasRequestedAddAccountSheet ?: false
 
 
     Column(modifier = Modifier
@@ -94,7 +88,7 @@ fun PaginaInicial(
                 //Botão para editar o saldo
                 IconButton(
                     onClick = {
-                        showBottomSheet = true
+                        viewModel.atualizaBottomSheet(true)
                     },
                     modifier = Modifier
                         .size(23.dp)
@@ -204,26 +198,14 @@ fun PaginaInicial(
         }
 
     }
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
 
-    LaunchedEffect(showBottomSheet) {
-        if (showBottomSheet){
-            sheetState.show()
-        }
-        else {
-            sheetState.hide()
-        }
-    }
-
-    if (showBottomSheet){
+    if (showBottomSheet || hasRequestedAddAccountSheet == true){
         AdicionarReceitaBottomSheet(
-            atualizaBottomSheet = {showBottomSheet = it},
+            atualizaBottomSheet = {viewModel.atualizaBottomSheet(it)},
             adicionaReceita = { saldo, descricao, data, icon ->
                 viewModel.adicionaReceita(saldo, descricao, data, icon)
-            },
-            sheetState = sheetState
+            }
         )
     }
+
 }
