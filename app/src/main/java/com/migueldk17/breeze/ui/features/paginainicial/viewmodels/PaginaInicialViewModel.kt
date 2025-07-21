@@ -88,10 +88,6 @@ class PaginaInicialViewModel @Inject constructor(
                 }
         }
     }
-    fun atualizaBottomSheet(boolean: Boolean){
-        _showBottomSheet.value = boolean
-    }
-
 
     //Atualiza o saldo do usuário
     fun adicionaReceita(

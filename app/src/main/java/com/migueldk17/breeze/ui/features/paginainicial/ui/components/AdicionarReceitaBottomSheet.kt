@@ -14,9 +14,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,12 +39,12 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
-    var showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
+fun AdicionarReceitaBottomSheet(
+    atualizaBottomSheet: (Boolean) -> Unit,
+    adicionaReceita: (Double, String, LocalDate, String) -> Unit,
+    sheetState: SheetState){
     //Estados para controlar o ModalBottomSheet
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-
+     val scope = rememberCoroutineScope()
     //Estado para armazenar o saldo
     var saldoInput by remember { mutableStateOf("") }
 
@@ -54,11 +56,25 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
 
     var selectedDate by remember { mutableStateOf(LocalDate.now())}
 
+    var fecharSolicitado by remember { mutableStateOf(false)}
+
     val icon = BreezeIcons.Linear.Money.DollarCircle.enum.toDatabaseValue()
+
+    LaunchedEffect(Unit) {
+        sheetState.show()
+    }
+
+    LaunchedEffect(fecharSolicitado) {
+        if (fecharSolicitado) {
+            sheetState.hide()
+            atualizaBottomSheet(false)
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = {
-            viewModel.atualizaBottomSheet(false)
+            fecharSolicitado = true
+            atualizaBottomSheet(false)
         },
         sheetState = sheetState
     ) {
@@ -127,16 +143,15 @@ fun AdicionarReceitaBottomSheet(viewModel: PaginaInicialViewModel){
             // Botão salvar
             Button(
                 onClick = {
-                    Log.d(TAG, "AdicionarReceitaBottomSheet: valor: ${saldoInput}, descrição: $descricaoInput, data: $selectedDate" )
-                    viewModel.adicionaReceita(
-                        valor = saldoInput.toDouble(),
-                        descricao = descricaoInput,
-                        data = selectedDate,
-                        icon = icon
+                    adicionaReceita(
+                        saldoInput.toDouble(),
+                        descricaoInput,
+                        selectedDate,
+                        icon
                     )
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
-                            viewModel.atualizaBottomSheet(false)
+                            atualizaBottomSheet(false)
                         }
                     }
                 },

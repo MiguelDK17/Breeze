@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 
+import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,10 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
@@ -48,6 +52,10 @@ fun HistoricoDoMesConta(
 
     val listaVazia = viewModelContas.listaVazia.collectAsStateWithLifecycle().value
 
+    val context = LocalContext.current
+
+    val activity = LocalActivity.current
+
     LaunchedEffect(Unit) {
         if (dataFormatada.isNotEmpty()) {
             viewModelContas.observarContaPorMes()
@@ -61,7 +69,12 @@ fun HistoricoDoMesConta(
             descriptionText1 = "Parece que suas contas ainda estão no mundo dos fantasmas.",
             descriptionText2 = "Crie uma pra começar a organizar tudo certinho!",
             buttonText = "Criar Conta",
-            onClick = {}
+            onClick = {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.putExtra("abrirBottomSheet", true)
+                context.startActivity(intent)
+                activity?.finish()
+            }
         )
     }
     else {

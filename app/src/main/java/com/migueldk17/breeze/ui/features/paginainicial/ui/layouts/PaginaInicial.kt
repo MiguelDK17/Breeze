@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,10 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieConstants
 import com.migueldk17.breeze.R
-import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.AdicionarReceitaBottomSheet
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCard
@@ -37,36 +34,43 @@ import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.foundation.background
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.max
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaginaInicial(
     viewModel: PaginaInicialViewModel = hiltViewModel()
 ){
     val saldo by viewModel.receita.collectAsStateWithLifecycle()
+
     val saldoFormatado = saldo
+
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
 
-    val showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
+    val activity = LocalActivity.current
+
+    val hasRequestedAddAccountSheet = activity?.intent?.getBooleanExtra("abrirBottomSheet", false)
+
+    showBottomSheet = hasRequestedAddAccountSheet ?: false
+
 
     Column(modifier = Modifier
         .fillMaxWidth()) {
@@ -90,7 +94,7 @@ fun PaginaInicial(
                 //Botão para editar o saldo
                 IconButton(
                     onClick = {
-                        viewModel.atualizaBottomSheet(true)
+                        showBottomSheet = true
                     },
                     modifier = Modifier
                         .size(23.dp)
@@ -143,7 +147,6 @@ fun PaginaInicial(
 
                         //Formata a data para consulta no Room
                         val filtro = formataMesAno(LocalDate.now()) + "%"
-                        Log.d(TAG, "PaginaInicial: $filtro")
 
                         //Pega as parcelas com o UIState para cobrir os estados da lista
                         val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
@@ -201,63 +204,26 @@ fun PaginaInicial(
         }
 
     }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
-    if (showBottomSheet){
-        AdicionarReceitaBottomSheet(viewModel)
-    }
-
-}
-
-@Preview(name = "Normal", fontScale = 1.0f, showBackground = true)
-@Preview(name = "Grande", fontScale = 1.3f, showBackground = true)
-@Preview(name = "EG", fontScale = 1.5f, showBackground = true)
-@Composable
-private fun Preview(){
-    val fontScale = LocalConfiguration.current.fontScale
-    Column {
-        val context = LocalContext.current
-
-            Spacer(modifier = Modifier.size(20.dp))
-            //Card de saldo disponível
-            ElevatedCard(
-                modifier = Modifier
-                    .widthIn(min = 254.dp)
-                    .heightIn(min = 49.dp, max = 100.dp)
-                    .background(Color.Blue)
-            )
-            {
-                LaunchedEffect(Unit) {
-                    Log.d(TAG, "Preview: fontScale: $fontScale")
-                }
-                Row(modifier = Modifier
-                    .widthIn(min = 254.dp)
-                    .heightIn(min = 49.dp, max = 100.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center) {
-                    Text(
-                        "Seu Saldo: R$1000,00",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    //Botão para editar o saldo
-                    IconButton(
-                        onClick = {},
-                        modifier = Modifier
-                            .size(23.dp)
-                            .padding(0.dp)
-                    ) {
-                        Icon(
-                            Icons.Default.Edit,
-                            "",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.size(15.dp))
-            Text("Suas Contas:",
-                fontSize = 14.sp)
-            Spacer(modifier = Modifier.size(10.dp))
-
-
+    LaunchedEffect(showBottomSheet) {
+        if (showBottomSheet){
+            sheetState.show()
+        }
+        else {
+            sheetState.hide()
         }
     }
+
+    if (showBottomSheet){
+        AdicionarReceitaBottomSheet(
+            atualizaBottomSheet = {showBottomSheet = it},
+            adicionaReceita = { saldo, descricao, data, icon ->
+                viewModel.adicionaReceita(saldo, descricao, data, icon)
+            },
+            sheetState = sheetState
+        )
+    }
+}

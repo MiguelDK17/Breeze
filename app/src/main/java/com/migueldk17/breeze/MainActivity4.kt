@@ -137,7 +137,7 @@ class MainActivity4: ComponentActivity() {
 }
 
 @Composable
-fun buttonColor(isButtonSelected: Boolean): Color{
+private fun buttonColor(isButtonSelected: Boolean): Color{
     val color = if (isButtonSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
 
     return color
