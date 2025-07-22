@@ -2,6 +2,8 @@ package com.migueldk17.breeze.ui.features.historico.ui.layouts
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -25,10 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
@@ -47,6 +51,10 @@ fun HistoricoDoMesReceita(
     val receitaState = viewModelReceita.receitaState.collectAsStateWithLifecycle().value
 
     val dataFormatada = viewModelReceita.data.collectAsStateWithLifecycle().value
+
+    val context = LocalContext.current
+
+    val activity = LocalActivity.current
 
     LaunchedEffect(Unit) {
         if (dataFormatada.isNotEmpty()) {
@@ -70,7 +78,12 @@ fun HistoricoDoMesReceita(
             descriptionText1 = "Ainda não há nenhuma receita cadastrada neste mês!",
             descriptionText2 = "Você pode começar adicionando uma na Página Inicial 💰!",
             buttonText = "Adicionar Receita",
-            onClick = {}
+            onClick = {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.putExtra("showBottomSheet", true)
+                context.startActivity(intent)
+                activity?.finish()
+            }
         )
         is UiState.Error -> {
             val error = (receitaState.exception)

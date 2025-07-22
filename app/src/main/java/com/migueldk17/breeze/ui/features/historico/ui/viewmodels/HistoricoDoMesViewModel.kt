@@ -81,7 +81,6 @@ class HistoricoDoMesViewModel @Inject constructor(
                             val contaPai = contasMapeadas[parcela.idContaPai]
                                 ?: contaRepository.getContaById(parcela.idContaPai)
                             contaPai?.let { contaPai ->
-                                Log.d(TAG, "observarContaPorMes: data das parcelas: ${parcela.data}")
                                 LinhaDoTempoModel(
                                     id = parcela.id.toLong(),
                                     name = "${contaPai.name} - Parcela ${parcela.numeroParcela}/${parcela.totalParcelas}",

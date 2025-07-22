@@ -162,6 +162,3 @@ fun AdicionarReceitaBottomSheet(
     }
 
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-private suspend fun fechaBottomSheet(sheetState: SheetState) = sheetState.hide()

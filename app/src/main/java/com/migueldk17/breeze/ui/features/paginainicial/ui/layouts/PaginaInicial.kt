@@ -62,7 +62,19 @@ fun PaginaInicial(
 
     val activity = LocalActivity.current
 
-    val hasRequestedAddAccountSheet = activity?.intent?.getBooleanExtra("abrirBottomSheet", false)
+    val hasRequestedAddAccountSheet:Boolean
+
+    if (activity!!.intent.hasExtra("showBottomSheet")){
+        hasRequestedAddAccountSheet = activity.intent.getBooleanExtra("showBottomSheet", false)
+        viewModel.atualizaBottomSheet(hasRequestedAddAccountSheet)
+        activity.intent.removeExtra("showBottomSheet")
+    }
+    else {
+        hasRequestedAddAccountSheet = false
+    }
+
+    Log.d(TAG, "PaginaInicial: hasRequestedAddAccountSheet $hasRequestedAddAccountSheet")
+    Log.d(TAG, "PaginaInicial: valor da intent: ${activity.intent.hasExtra("showBottomSheet")}")
 
 
 
@@ -199,7 +211,7 @@ fun PaginaInicial(
 
     }
 
-    if (showBottomSheet || hasRequestedAddAccountSheet == true){
+    if (showBottomSheet){
         AdicionarReceitaBottomSheet(
             atualizaBottomSheet = {viewModel.atualizaBottomSheet(it)},
             adicionaReceita = { saldo, descricao, data, icon ->

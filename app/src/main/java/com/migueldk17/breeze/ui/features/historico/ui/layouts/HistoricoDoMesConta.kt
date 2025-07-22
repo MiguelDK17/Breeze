@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MainActivity
+import com.migueldk17.breeze.MainActivity2
+import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
@@ -41,7 +43,6 @@ import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesV
 fun HistoricoDoMesConta(
     modifier: Modifier,
     viewModelContas: HistoricoDoMesViewModel,
-
     ) {
     val contas = viewModelContas.contasPorMes.collectAsStateWithLifecycle().value
 
@@ -70,8 +71,7 @@ fun HistoricoDoMesConta(
             descriptionText2 = "Crie uma pra começar a organizar tudo certinho!",
             buttonText = "Criar Conta",
             onClick = {
-                val intent = Intent(context, MainActivity::class.java)
-                intent.putExtra("abrirBottomSheet", true)
+                val intent = Intent(context, MainActivity3::class.java)
                 context.startActivity(intent)
                 activity?.finish()
             }
