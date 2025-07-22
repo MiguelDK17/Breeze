@@ -16,5 +16,8 @@ class ReceitaRepository @Inject constructor(
       fun getSaldoTotal(): Flow<Double?> {
         return receitaDao.getSaldoTotal()
     }
+    fun getReceitasDoMes(mesAno: String): Flow<List<Receita>> {
+        return receitaDao.getReceitasDoMes(mesAno)
+    }
 
 }

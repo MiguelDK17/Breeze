@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.repository
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
@@ -13,8 +15,12 @@ class ContaRepository @Inject constructor(
 ){
     fun getContas(): Flow<List<Conta>> =  contaDao.getContas()
 
-    suspend fun getContaById(id: Long): Conta? = contaDao.getContaById(id)
+    fun getContasMes(mesAno: String): Flow<List<Conta>>{
+        Log.d(TAG, "getContasMes: $mesAno")
+        return contaDao.getContasMes(mesAno)
+    }
 
+    suspend fun getContaById(id: Long): Conta? = contaDao.getContaById(id)
     //Pega as contas por mes
     fun getContasPorMes(mes: String): Flow<List<Conta>> {
         return contaDao.getContasHistorico().map { contas ->

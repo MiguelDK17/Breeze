@@ -24,18 +24,18 @@ fun formataValorConta(valor: Double?): String = String.format(Locale.getDefault(
 fun traduzData(mes: String): String {
 
     val mesTraduzido = when(mes){
-        "JANUARY" ->  "Janeiro"
-        "FEBRUARY" ->  "Fevereiro"
-        "MARCH" ->  "Março"
-        "APRIL" ->  "Abril"
-        "MAY" ->  "Maio"
-        "JUNE" ->  "Junho"
-        "JULY" ->  "Julho"
-        "AUGUST" ->  "Agosto"
-        "SEPTEMBER" ->  "Setembro"
-        "OCTOBER" ->  "Outubro"
-        "NOVEMBER" ->  "Novembro"
-        "DECEMBER" ->  "Dezembro"
+        "Jan" ->  "Janeiro"
+        "Fev" ->  "Fevereiro"
+        "Mar" ->  "Março"
+        "Abr" ->  "Abril"
+        "Mai" ->  "Maio"
+        "Jun" ->  "Junho"
+        "Jul" ->  "Julho"
+        "Ago" ->  "Agosto"
+        "Set" ->  "Setembro"
+        "Out" ->  "Outubro"
+        "Nov" ->  "Novembro"
+        "Dez" ->  "Dezembro"
         else -> "Inválido"
     }
     return mesTraduzido
@@ -93,6 +93,16 @@ object ToastManager {
             lastToastTime = currentTime
         }
     }
+}
+
+fun retornaDataFormatadaParaPesquisaNoRoom(mes: String, ano: Int): String {
+    val mesesMap = mapOf( // Use immutable mapOf
+        "Jan" to "01", "Fev" to "02", "Mar" to "03", "Abr" to "04",
+        "Mai" to "05", "Jun" to "06", "Jul" to "07", "Ago" to "08",
+        "Set" to "09", "Out" to "10", "Nov" to "11", "Dez" to "12"
+    )
+    val dataFormatada = "$ano-${mesesMap[mes]}%"
+    return dataFormatada
 }
 
 

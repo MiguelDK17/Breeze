@@ -26,13 +26,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.ui.features.historico.model.GraficoDoDiaModel
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.utils.formataSaldo
 
 @Composable
 fun GraficoDeBarras(
-    contas: List<Conta>,
+    graficoDoDiaModel: List<LinhaDoTempoModel>,
     modifier: Modifier = Modifier
 ){
     //Pega a densidade da tela
@@ -99,17 +99,17 @@ fun GraficoDeBarras(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    itemsIndexed(contas) { index, conta ->
-                        val alturaMaxima = contas.maxOfOrNull { it.valor.toFloat() } ?: 1f
-                        val texto = formataSaldo(conta.valor.toDouble())
-                        val brush = Brush.verticalGradient(
-                            colors = listOf(conta.colorIcon.toColor(), conta.colorCard.toColor())
-                        )
+                    itemsIndexed(graficoDoDiaModel) { index, grafico ->
+                        val alturaMaxima = graficoDoDiaModel.maxOfOrNull { it.valor.toFloat() } ?: 1f
+                        val texto = formataSaldo(grafico.valor)
+                        val listColors = listOf(grafico.colorIcon.toColor(), grafico.colorCard.toColor())
+                        val brush = Brush.verticalGradient(colors = listColors)
+                        val dayOfMonth = grafico.dateTime.dayOfMonth
                         BarraAnimada(
-                            valor = conta.valor.toFloat(),
+                            valor = grafico.valor.toFloat(),
                             maxValue = alturaMaxima,
                             cor = brush,
-                            dia = conta.dateTime.toLocalDateTime().dayOfMonth,
+                            dia = dayOfMonth,
                             delayAnimacao = index * 100, //delay em milissegundos
                             valorFormatado = texto)
 

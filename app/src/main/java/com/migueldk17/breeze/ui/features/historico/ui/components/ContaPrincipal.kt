@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,26 +24,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
-import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
-import java.time.LocalDate
 
 @Composable
 fun ContaPrincipal(
-    date: LocalDate, //Data de criação da conta
-    nameAccount: String, //Nome da conta
-    breezeIcon: BreezeIconsType, //Icone BreezeIcon
-    price: Double, //Valor da conta
-    id: Long,
-    category: String,
-    subCategory: String,
-    isContaParcelada: Boolean
+    linhaDoTempoModel: LinhaDoTempoModel,
 
 ){
+    val nameAccount = linhaDoTempoModel.name
+    val breezeIcon = linhaDoTempoModel.icon.toBreezeIconsType()
+    val price = linhaDoTempoModel.valor
     var textoClicado by remember {mutableStateOf(false)}
+    val trulyBreezeIcon =  if(breezeIcon.enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else breezeIcon
 
     Row(
         modifier = Modifier
@@ -56,8 +56,7 @@ fun ContaPrincipal(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.width(60.dp)
         ) {
-
-            BoxDate(date) //Box de data
+            BoxDate(linhaDoTempoModel.dateTime.toLocalDate()) //Box de data
         }
         Row(
             modifier = Modifier
@@ -65,11 +64,13 @@ fun ContaPrincipal(
                 .height(71.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BreezeIcon(breezeIcon = breezeIcon,
+            BreezeIcon(
+                breezeIcon = trulyBreezeIcon,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 15.dp)
-                    .size(25.dp))
+                    .size(25.dp)
+            )
             Text(
                 nameAccount,
                 style = MaterialTheme.typography.bodySmall,
@@ -77,10 +78,9 @@ fun ContaPrincipal(
                 modifier = Modifier
                     .weight(1f) //Adiciona peso ao Text
                     .padding(end = 8.dp)
-                    .clickable{
+                    .clickable {
                         textoClicado = true
-                    }
-                    ,
+                    },
                 overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                 maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
@@ -92,7 +92,7 @@ fun ContaPrincipal(
                 fontSize = 14.sp,
                 modifier = Modifier
                     .padding(horizontal = 15.dp)
-                    .clickable{
+                    .clickable {
                         textoClicado = true
                     },
                 textAlign = TextAlign.End
@@ -101,19 +101,11 @@ fun ContaPrincipal(
         }
         if (textoClicado){
             ShowDetailsCard(
+                linhaDoTempoModel = linhaDoTempoModel,
                 onChangeTextoClicado = {textoClicado = it},
-                id = id,
-                nameAccount= nameAccount,
-                date = date.atStartOfDay(),
-                valor = price,
-                category = category,
-                subCategory = subCategory,
-                isContaParcelada = isContaParcelada
-
             )
         }
     }
-
 
 }
 

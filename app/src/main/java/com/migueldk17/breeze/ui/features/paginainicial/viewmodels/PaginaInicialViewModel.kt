@@ -94,12 +94,18 @@ class PaginaInicialViewModel @Inject constructor(
 
 
     //Atualiza o saldo do usuário
-    fun adicionaReceita(valor: Double, descricao: String, data: LocalDate) {
+    fun adicionaReceita(
+        valor: Double,
+        descricao: String,
+        data: LocalDate,
+        icon: String
+    ) {
         viewModelScope.launch {
             val receita = Receita(
                 valor = valor / 100,
                 descricao = descricao,
-                data = data.toString()
+                data = data.toString(),
+                icon = icon
             )
             receitaRepository.adicionarReceita(receita)
         }

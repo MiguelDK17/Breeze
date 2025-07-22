@@ -1,6 +1,7 @@
 package com.migueldk17.breeze
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -78,7 +79,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(Screen.PaginaInicial.route) {
-                            PaginaInicial(navController)
+                            PaginaInicial()
                         }
                         composable(Screen.Historico.route) {
                             Historico()

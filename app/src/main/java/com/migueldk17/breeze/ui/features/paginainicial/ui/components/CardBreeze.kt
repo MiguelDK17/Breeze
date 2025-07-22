@@ -44,9 +44,12 @@ import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataValorConta
 import java.time.LocalDate
 
 //Card de PaginaInicial
@@ -137,7 +140,7 @@ fun BreezeCard(
             ) {
                 Spacer(modifier = Modifier.width(68.dp))
                 Text(
-                    formataSaldo(conta.valor),
+                    retornaValorNoCard(conta.valor, parcela),
                     color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
                 )
                 Box(modifier = Modifier.fillMaxWidth(),
@@ -265,4 +268,14 @@ private fun IsExpandableCard(
             }
         }
     }
+}
+
+private fun retornaValorNoCard(valor: Double,parcela: ParcelaEntity?): String {
+    val valor = if (parcela == null) {
+        formataValorConta(valor)
+    } else {
+        retornaValorTotalArredondado(parcela.valor, parcela.totalParcelas)
+    }
+    return valor
+
 }

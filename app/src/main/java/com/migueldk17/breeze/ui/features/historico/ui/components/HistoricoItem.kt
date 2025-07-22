@@ -2,6 +2,8 @@ package com.migueldk17.breeze.ui.features.historico.ui.components
 
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -18,35 +20,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.migueldk17.breezeicons.icons.BreezeIconsType
-import com.migueldk17.breeze.entity.Conta
-import java.time.LocalDate
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
+import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HistoricoItem(
-    date: LocalDate, //Data de crição da conta
-    nameAccountFirst: String, //Nome da conta principal
-    breezeIconFirst: BreezeIconsType, //Icone da conta principal
-    princeFirst: Double, //Valor da conta principal
+    linhaDoTempoPrincipal: LinhaDoTempoModel, //Conta principal
     lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
-    contas: List<Conta>, //Lista de outras contas que ficam escondidas sob o estado
-    idContaPrincipal: Long,
-    categoryPrincipal: String,
-    subCategoryPrincipal: String,
-    isContaParceladaContaPrincipal: Boolean
-
+    linhaDoTempoOther: List<LinhaDoTempoModel>, //Lista de outras contas que ficam escondidas sob o estado
 ){
     //Controla a expanção/contração das outras contas
     val expanded = remember{ mutableStateOf(false) }
     val density = LocalDensity.current
 
-
+    Log.d(TAG, "HistoricoItem: breezeIcon ${linhaDoTempoPrincipal.icon.toBreezeIconsType().enum.name}")
 
     BoxWithConstraints(
         modifier = Modifier
@@ -83,10 +76,10 @@ fun HistoricoItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 //Conta principal, a última adicionada em um mesmo dia
-                ContaPrincipal(date, nameAccountFirst, breezeIconFirst, princeFirst, idContaPrincipal, categoryPrincipal, subCategoryPrincipal, isContaParceladaContaPrincipal)
+                ContaPrincipal(linhaDoTempoModel = linhaDoTempoPrincipal)
 
-                if (contas.isNotEmpty()) {
-                    VerMaisButton(contas.size, expanded)
+                if (linhaDoTempoOther.isNotEmpty()) {
+                    VerMaisButton(linhaDoTempoOther.size, expanded)
 
                     //Adiciona uma animação ao expandir a lista
                     AnimatedVisibility(
@@ -94,8 +87,11 @@ fun HistoricoItem(
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
+                        linhaDoTempoOther.forEach { linhaDoTempoModel ->
+                            Log.d(TAG, "HistoricoItem: $linhaDoTempoModel")
+                        }
                         //Conta Secundária, caso haja mais de uma outra conta no mesmo dia as contas mais antigas são mandadas pra cá
-                        ContaSecundaria(contas, expanded)
+                        ContaSecundaria(linhaDoTempoOther, expanded)
                     }
                 }
                 else {

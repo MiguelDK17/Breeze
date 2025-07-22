@@ -99,9 +99,12 @@ fun Passo4(
             BreezeOutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 text = valorConta,
-                onValueChange = { valorConta = it},
+                onValueChange = { text ->
+                    valorConta = text.filter { it.isDigit() }
+
+                },
                 textLabel = "Adicionar Valor",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
                 visualTransformation = MoneyVisualTransformation()
 
             )
@@ -126,7 +129,9 @@ fun Passo4(
                     selectedDate = selectedDate, //Data da conta
                     onEditDate = { selectedDate = it}, //Função que atualiza a data da conta
                     textJuros = textJuros, //Valor do juros
-                    onEditTextJuros = { textJuros = it}, //Função que atualiza o valor do juros
+                    onEditTextJuros = { text ->
+                        textJuros = text.filter { it.isDigit() }
+                    }, //Função que atualiza o valor do juros
                     isCheckedParcelamento, //Boolean que controla se o checkbox de parcelamento está marcado ou não
                     { isCheckedParcelamento = it}, //Função que atualiza o valor do checkbox de parcelamento
                     categoriesParcelamento = categories, //Lista de opções de parcelamento

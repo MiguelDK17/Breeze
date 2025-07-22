@@ -26,34 +26,38 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import java.time.LocalDateTime
 
 @Composable
 fun ContaSecundaria(
-    contas: List<Conta>,
+    linhaDoTempoModel: List<LinhaDoTempoModel>,
     expanded: MutableState<Boolean>
 ){
+
     var textoClicado by remember { mutableStateOf(false) }
-    var contaMutable by remember { mutableStateOf(Conta(
+    var timeLineMutable by remember { mutableStateOf(LinhaDoTempoModel(
         id = 0,
         name = "",
-        categoria = "",
-        subCategoria = "",
+        category = "",
+        subCategory = "",
         valor = 0.0,
         icon = "",
         colorIcon = 0,
         colorCard = 0,
-        dateTime = "",
+        dateTime = LocalDateTime.now(),
         isContaParcelada = false
     )) }
     Column {
         if (expanded.value) {
-            contas.forEach { conta ->
-
+            linhaDoTempoModel.forEach { tempoModel ->
+                val name = tempoModel.name.ifEmpty { "Receitas" }
+                tempoModel.name = name
+                val trulyBreezeIcon =  if(tempoModel.icon.toBreezeIconsType().enum.name == "ICON_UNSPECIFIED") BreezeIcons.Linear.Money.DollarCircle else tempoModel.icon.toBreezeIconsType()
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -68,55 +72,46 @@ fun ContaSecundaria(
                             .width(60.dp)
                             .height(24.dp)
                     )
+
                     BreezeIcon(
-                        breezeIcon = conta.icon.toBreezeIconsType(),
+                        breezeIcon = trulyBreezeIcon,
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
-
-
                     )
                     Spacer(modifier = Modifier.width(20.dp))
                     Text(
-                        conta.name,
+                        name,
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         modifier = Modifier
                             .weight(1f)
                             .clickable {
                                 textoClicado = true
-                                contaMutable = conta
+                                timeLineMutable = tempoModel
                             },
                         overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                         maxLines = 1 //Limita o texto a 1 linha para evitar quebra
                     )
 
                     Text(
-                        formataSaldo(conta.valor),
+                        formataSaldo(tempoModel.valor),
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         modifier = Modifier
                             .padding(end = 15.dp)
                             .clickable {
                                 textoClicado = true
-                                contaMutable = conta
+                                timeLineMutable = tempoModel
                             }
-
                     )
-
                 }
             }
             if (textoClicado){
-                Log.d(TAG, "ContaSecundaria: valor da conta: ${contaMutable.valor}")
+                Log.d(TAG, "ContaSecundaria: valor da conta: ${timeLineMutable.valor}")
                  ShowDetailsCard(
+                     linhaDoTempoModel = timeLineMutable,
                      onChangeTextoClicado = {textoClicado = it},
-                     id = contaMutable.id,
-                     nameAccount = contaMutable.name,
-                     date = contaMutable.dateTime.toLocalDateTime(),
-                     valor = contaMutable.valor,
-                     category = contaMutable.categoria,
-                     subCategory = contaMutable.subCategoria,
-                     isContaParcelada = contaMutable.isContaParcelada
                  )
             }
         }

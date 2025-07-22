@@ -1,18 +1,22 @@
 [versions]
 agp = "8.11.0"
-breezeIcons = "v1.0.10"
+breezeIcons = "v1.1.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.1"
+testRunner = "1.6.2"
+testCore = "1.6.1"
+testRules = "1.6.1"
+lifecycleRuntimeKtx = "2.9.2"
 activityCompose = "1.10.1"
-composeBom = "2025.06.01"
-material3 = "1.4.0-alpha16"
+composeBom = "2025.07.00"
+material3 = "1.4.0-alpha18"
 googleIcons = "1.7.8"
-navComposeVersion = "2.9.0"
+navComposeVersion = "2.9.2"
 roomVersion = "2.7.2"
+roomTesting = "2.7.2"
 ksp = "2.0.21-1.0.25"
 dagger-hilt = "2.56.2"
 hiltNavigationCompose = "1.2.0"
@@ -22,12 +26,14 @@ googleServices = "4.4.3"
 firebaseBom = "33.16.0"
 pluginCrashlyticsVersion = "3.0.4"
 
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 breeze-icons = { module = "com.github.MiguelDK17:Breeze-Icons", version.ref = "breezeIcons" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -42,6 +48,7 @@ androidx-navigation-compose = {group = "androidx.navigation", name = "navigation
 androidx-room-runtime = {group = "androidx.room", name = "room-runtime", version.ref = "roomVersion"}
 androidx-room-compiler = {group = "androidx.room", name = "room-compiler", version.ref = "roomVersion"}
 androidx-room-ktx = {group = "androidx.room", name = "room-ktx", version.ref = "roomVersion"}
+androidx-room-testing = {group = "androidx.room", name = "room-testing", version.ref = "roomTesting"}
 hilt-android = {group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt"}
 hilt-compiler = {group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger-hilt"}
 androidx-hilt-navigation-compose = {group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose"}
@@ -52,6 +59,10 @@ google-firebase-bom = {group = "com.google.firebase", name = "firebase-bom", ver
 google-firebase-crashlytics = {group = "com.google.firebase", name = "firebase-crashlytics"}
 google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics"}
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "googleIcons"}
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "testCore"}
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules"}
+
+
 
 
 

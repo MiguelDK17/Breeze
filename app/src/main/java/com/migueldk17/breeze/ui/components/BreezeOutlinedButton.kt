@@ -17,7 +17,7 @@ fun BreezeOutlinedButton(
     modifier: Modifier = Modifier,
     text: String,onClick: () -> Unit,
     enabled: Boolean = true,
-    colors: Color = if (isSystemInDarkTheme()) SkyBlue else DeepSkyBlue
+    colors: Color = if (!isSystemInDarkTheme()) SkyBlue else DeepSkyBlue
 ) {
     OutlinedButton(
         modifier = modifier,
