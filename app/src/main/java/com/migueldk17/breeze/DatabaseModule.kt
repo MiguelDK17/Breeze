@@ -35,7 +35,7 @@ object DatabaseModule {
                 """.trimIndent())
                 // Copia os dados da tabela saldo_table para a nova tabela
                 db.execSQL("""
-                    INSERTO INTO receita_entity (id, valor, descricao, data, icon)
+                    INSERT INTO receita_entity (id, valor, descricao, data, icon)
                     SELECT id, valor, descricao, data, '' FROM saldo_table
                 """.trimIndent())
 
