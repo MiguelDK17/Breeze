@@ -107,17 +107,18 @@ fun BreezeCard(
                 Row(
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = {
-                        onClick()
-                    }) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(Icons.Filled.Add, "Add")
-                            Spacer(modifier = Modifier.size(10.dp))
-                            Text("Editar Valor")
-                        }
-                    }
+                    // -- ATENÇÃO!!!! BOTÃO MUTADO POR FALTA DE USO. NÃO MEXA AQUI A NÃO SER SE FOR PARA ADICIONAR FUNCIONALIDADE A ELE --
+//                    TextButton(onClick = {
+//                        onClick()
+//                    }) {
+//                        Row(
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            Icon(Icons.Filled.Add, "Add")
+//                            Spacer(modifier = Modifier.size(10.dp))
+//                            Text("Editar Valor")
+//                        }
+//                    }
 
                     //Caso haja parcela no mês OU haja parcela nos meses subsequentes
                     if (parcela != null || semParcelaNoMes) {
