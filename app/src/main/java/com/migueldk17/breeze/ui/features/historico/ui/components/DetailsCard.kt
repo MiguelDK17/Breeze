@@ -66,75 +66,81 @@ fun DetailsCard(
     }
     val titleText = if (!isReceita) "Detalhes da Conta" else "Detalhes da Receita"
 
-        BasicAlertDialog(
-            onDismissRequest = {
-                //Dispensa o BasicAlertDialog
-                onChangeOpenDialog(false)
-            }
+    BasicAlertDialog(
+        onDismissRequest = {
+            //Dispensa o BasicAlertDialog
+            onChangeOpenDialog(false)
+        }
+    ) {
+        Surface(
+            shape = MaterialTheme.shapes.large,
+            tonalElevation = AlertDialogDefaults.TonalElevation
         ) {
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                tonalElevation = AlertDialogDefaults.TonalElevation
+            Column(
+                modifier = Modifier.padding(30.dp),
+                verticalArrangement = Arrangement.SpaceAround
             ) {
-                Column(modifier = Modifier.padding(30.dp),
-                    verticalArrangement = Arrangement.SpaceAround
-                ) {
-                    //Título do BasicAlertDialog
-                    TitleText(titleText,
-                        color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier
+                //Título do BasicAlertDialog
+                TitleText(
+                    titleText,
+                    color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(
+                    modifier = Modifier
                         .height(20.dp)
-                        .background(Color.Yellow))
-                    listaFiltrada.forEach { category ->
-                        val accountCategory = mapDeCategoriaMutavel[category]
-                        Row(
+                        .background(Color.Yellow)
+                )
+                listaFiltrada.forEach { category ->
+                    val accountCategory = mapDeCategoriaMutavel[category]
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        DescriptionText(
+                            category,
+                            fontWeight = FontWeight.Bold,
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.Top,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            DescriptionText(
-                                category,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                            )
-                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                                .padding(vertical = 5.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
-                            DescriptionText(
-                                text = accountCategory.toString(),
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                                    .align(Alignment.Top)
-                                )
+                        DescriptionText(
+                            text = accountCategory.toString(),
+                            modifier = Modifier
+                                .padding(vertical = 5.dp)
+                                .align(Alignment.Top)
+                        )
 
-
-
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
 
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Button(onClick = {
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        onClick = {
                             onChangeOpenDialog(false) //Botão de confirmar
                         },
-                            shapes = ButtonShapes(
-                                shape = ShapeDefaults.ExtraSmall,
-                                pressedShape = ShapeDefaults.ExtraSmall),
-                            modifier = Modifier
-                                    .height(48.dp)) {
-                            Text("Tudo bem!")
-                        }
+                        shapes = ButtonShapes(
+                            shape = ShapeDefaults.ExtraSmall,
+                            pressedShape = ShapeDefaults.ExtraSmall
+                        ),
+                        modifier = Modifier
+                            .height(48.dp)
+                    ) {
+                        Text("Tudo bem!")
                     }
                 }
             }
         }
+    }
 }
 
 

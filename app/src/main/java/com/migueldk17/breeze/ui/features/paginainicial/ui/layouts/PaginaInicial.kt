@@ -35,25 +35,27 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.PrimaryScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.components.BreezeButtonGroup
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PaginaInicial(
     viewModel: PaginaInicialViewModel = hiltViewModel()
@@ -78,11 +80,11 @@ fun PaginaInicial(
         activity.intent.removeExtra("showBottomSheet")
     }
 
-    var isTabContasSelected by remember { mutableStateOf(false) }
-
-    var isTabReceitasSelected by remember { mutableStateOf(false) }
-
-    val scrollState = rememberScrollState()
+    val options = mapOf(
+        BreezeIcons.Linear.Money.MoneySend to "Contas",
+        BreezeIcons.Linear.Money.MoneyRecive to "Receitas"
+    )
+    var selectedIndexButtonGroup by remember{ mutableIntStateOf(0) }
 
 
     Column(modifier = Modifier
@@ -122,41 +124,15 @@ fun PaginaInicial(
             }
         }
         Spacer(modifier = Modifier.size(15.dp))
-        Row {
-            PrimaryScrollableTabRow(
-                selectedTabIndex = if (isTabContasSelected) 0 else 2,
-                modifier = Modifier.fillMaxWidth(),
-                scrollState = scrollState,
-                containerColor = Color.Transparent
-            ) {
-                Tab(
-                selected = isTabContasSelected,
-                enabled = true,
-                onClick = {
-                    isTabContasSelected = true
-                    isTabReceitasSelected = false
-                    Log.d(TAG, "PaginaInicial: tab clicada")
-                },
-                text = {
-                    DescriptionText("Contas")
-                }
-            )
-                Spacer(modifier = Modifier
-                    .width(100.dp))
-                Tab(
-                    selected = isTabReceitasSelected,
-                    enabled = true,
-                    onClick = {
-                        isTabReceitasSelected = true
-                        isTabContasSelected = false
-                        Log.d(TAG, "PaginaInicial: tab clicada")
-                    },
-                    text = {
-                        DescriptionText("Receitas")
-                    }
-                )
+        BreezeButtonGroup(
+            options = options.values.toList(),
+            unCheckedIcons = options.keys.toList(),
+            checkedIcons = options.keys.toList(),
+            selectedIndex = selectedIndexButtonGroup,
+            onChangeSelectedIndex = {
+                selectedIndexButtonGroup = it
             }
-        }
+        )
         Spacer(modifier = Modifier.size(10.dp))
 
         when(contasState){
