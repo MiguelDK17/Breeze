@@ -28,7 +28,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.AdicionarReceitaBottomSheet
-import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCard
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardConta
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import android.content.ContentValues.TAG
@@ -37,20 +37,18 @@ import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
-import com.migueldk17.breeze.ui.utils.ToastManager
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import java.time.LocalDate
@@ -66,6 +64,8 @@ fun PaginaInicial(
 
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
 
+    val receitaState by viewModel.receitaState.collectAsStateWithLifecycle()
+
     val showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
 
     val context = LocalContext.current
@@ -80,9 +80,13 @@ fun PaginaInicial(
         activity.intent.removeExtra("showBottomSheet")
     }
 
-    val options = mapOf(
+    val optionsLinear = mapOf(
         BreezeIcons.Linear.Money.MoneySend to "Contas",
         BreezeIcons.Linear.Money.MoneyRecive to "Receitas"
+    )
+    val optionsOutlined = mapOf(
+        BreezeIcons.Outlined.Money.MoneySend to "Contas",
+        BreezeIcons.Outlined.Money.MoneyRecive to "Receitas"
     )
     var selectedIndexButtonGroup by remember{ mutableIntStateOf(0) }
 
@@ -125,107 +129,25 @@ fun PaginaInicial(
         }
         Spacer(modifier = Modifier.size(15.dp))
         BreezeButtonGroup(
-            options = options.values.toList(),
-            unCheckedIcons = options.keys.toList(),
-            checkedIcons = options.keys.toList(),
-            selectedIndex = selectedIndexButtonGroup,
+            options = optionsLinear.values.toList(),
+            unCheckedIcons = optionsOutlined.keys.toList(),
+            checkedIcons = optionsLinear.keys.toList(),
             onChangeSelectedIndex = {
                 selectedIndexButtonGroup = it
             }
         )
+        Log.d(TAG, "PaginaInicial:valor do botão $selectedIndexButtonGroup")
         Spacer(modifier = Modifier.size(10.dp))
 
-        when(contasState){
-            //Caso o ViewModel passe carregando como true
-             is UiState.Loading -> {
-                 LottieAnimation(
-                    animationRes = R.raw.loading_breeze,
-                    isPlaying = true,
-                    iterations = LottieConstants.IterateForever
-                )
-
-            }
-            //Caso não haja nenhuma conta registrada no Room
-            is UiState.Empty -> {
-                ContaNaoEncontrada()
-            }
-
-            is UiState.Error -> {
-                val message = (contasState as UiState.Error).exception
-                Log.d(TAG, "PaginaInicial: $message")
-            }
-
-            //Caso nenhuma das condições anteriores forem atendidas é entendido que
-            //Há contas registradas no Room
-            is UiState.Success -> {
-                val contas = (contasState as UiState.Success).data
-                LazyColumn {
-                    items(contas) { conta ->
-                        //Pega a lista de parcelas
-                        val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
-
-                        //Pega a última parcela
-                        val latestParcela = parcelas.lastOrNull()
-
-                        //Formata a data para consulta no Room
-                        val filtro = formataMesAno(LocalDate.now()) + "%"
-
-                        //Pega as parcelas com o UIState para cobrir os estados da lista
-                        val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
-
-                        //Pega a parcela do mês
-                        val parcelaDoMes = when(parcelaState){
-                            is UiState.Loading -> {
-                                null
-                            }
-                            is UiState.Empty -> {
-                                null
-                            }
-                            is UiState.Error -> {
-                                val message = parcelaState.exception
-                                Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
-                                null
-                            }
-                            is UiState.Success -> {
-                                val parcela = parcelaState.data
-                                parcela
-
-                            }
-                        }
-                        //Verifica se não há parcelas no mês
-                        val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
-
-                        //Pega a data da primeira parcela futura caso não haja parcelas nesse mês, mas haja nos meses subsequentes
-                        val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().data.toLocalDate() else null
-
-                        //Verifica se é a última parcela
-                        val isLatestParcela = parcelaDoMes == latestParcela
-
-
-                        BreezeCard(
-                            conta,
-                            onClick = {
-                                val intent = Intent(context, MainActivity3::class.java)
-                                intent.putExtra("id", conta.id)
-                                context.startActivity(intent)
-                            },
-                            apagarConta = {  viewModel.apagaConta(conta) },
-                            apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
-                                TAG,
-                                "PaginaInicial: Não há parcelas disponíveis pra apagar"
-                            ) },
-                            parcela = parcelaDoMes,
-                            isLatestParcela = isLatestParcela,
-                            semParcelaNoMes = semParcelaNoMes,
-                            dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura
-
-                        )
-                    }
-                }
-            }
+        if (selectedIndexButtonGroup == 0){
+            LazyColumnContas(contasState, viewModel)
         }
-
+        else {
+            LazyColumnReceitas(receitaState, viewModel)
+        }
     }
+
+
 
     if (showBottomSheet){
         AdicionarReceitaBottomSheet(
@@ -236,4 +158,138 @@ fun PaginaInicial(
         )
     }
 
+
+
+}
+
+@Composable
+private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: PaginaInicialViewModel){
+    val context = LocalContext.current
+
+    when(contasState){
+        //Caso o ViewModel passe carregando como true
+        is UiState.Loading -> {
+            LottieAnimation(
+                animationRes = R.raw.loading_breeze,
+                isPlaying = true,
+                iterations = LottieConstants.IterateForever
+            )
+        }
+        //Caso não haja nenhuma conta registrada no Room
+        is UiState.Empty -> {
+            ContaNaoEncontrada()
+        }
+
+        is UiState.Error -> {
+            val message = contasState.exception
+            Log.d(TAG, "PaginaInicial: $message")
+        }
+
+        //Caso nenhuma das condições anteriores forem atendidas é entendido que
+        //Há contas registradas no Room
+        is UiState.Success -> {
+            val contas = contasState.data
+            LazyColumn {
+                items(contas) { conta ->
+                    //Pega a lista de parcelas
+                    val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+
+                    //Pega a última parcela
+                    val latestParcela = parcelas.lastOrNull()
+
+                    //Formata a data para consulta no Room
+                    val filtro = formataMesAno(LocalDate.now()) + "%"
+
+                    //Pega as parcelas com o UIState para cobrir os estados da lista
+                    val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
+
+                    //Pega a parcela do mês
+                    val parcelaDoMes = when(parcelaState){
+                        is UiState.Loading -> {
+                            null
+                        }
+                        is UiState.Empty -> {
+                            null
+                        }
+                        is UiState.Error -> {
+                            val message = parcelaState.exception
+                            Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
+                            null
+                        }
+                        is UiState.Success -> {
+                            val parcela = parcelaState.data
+                            parcela
+
+                        }
+                    }
+                    //Verifica se não há parcelas no mês
+                    val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
+
+                    //Pega a data da primeira parcela futura caso não haja parcelas nesse mês, mas haja nos meses subsequentes
+                    val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().data.toLocalDate() else null
+
+                    //Verifica se é a última parcela
+                    val isLatestParcela = parcelaDoMes == latestParcela
+
+
+                    BreezeCardConta(
+                        conta,
+                        onClick = {
+                            val intent = Intent(context, MainActivity3::class.java)
+                            intent.putExtra("id", conta.id)
+                            context.startActivity(intent)
+                        },
+                        apagarConta = {  viewModel.apagaConta(conta) },
+                        apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
+                            TAG,
+                            "PaginaInicial: Não há parcelas disponíveis pra apagar"
+                        ) },
+                        parcela = parcelaDoMes,
+                        isLatestParcela = isLatestParcela,
+                        semParcelaNoMes = semParcelaNoMes,
+                        dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura
+
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LazyColumnReceitas(receitaState: UiState<List<Receita>>, viewModel: PaginaInicialViewModel){
+    when(receitaState){
+        //Caso o ViewModel passe carregando como true
+        is UiState.Loading -> {
+            LottieAnimation(
+                animationRes = R.raw.loading_breeze,
+                isPlaying = true,
+                iterations = LottieConstants.IterateForever
+            )
+        }
+        //Caso não haja nenhuma conta registrada no Room
+        is UiState.Empty -> {
+            ContaNaoEncontrada()
+        }
+
+        is UiState.Error -> {
+            val message = receitaState.exception
+            Log.d(TAG, "PaginaInicial: $message")
+        }
+
+        //Caso nenhuma das condições anteriores forem atendidas é entendido que
+        //Há contas registradas no Room
+        is UiState.Success -> {
+            val contas = receitaState.data
+            LazyColumn {
+                items(contas) { receita ->
+
+                    BreezeCardReceita(
+                        receita,
+                        apagarReceita = {  viewModel.apagaReceita(receita) },
+                    )
+                }
+            }
+        }
+    }
 }

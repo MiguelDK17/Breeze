@@ -19,8 +19,11 @@ interface ReceitaDao {
 
     //Busca o primeiro registro da tabela saldo_table
     @Query("SELECT * FROM receita_entity ORDER BY data DESC")
-    suspend fun getTodasAsReceitas(): List<Receita>? //Retorna null se a tabela estiver vazia
+    fun getTodasAsReceitas(): Flow<List<Receita>> //Retorna null se a tabela estiver vazia
 
     @Query("SELECT * FROM receita_entity WHERE data LIKE :mesAno || '%'")
     fun getReceitasDoMes(mesAno: String): Flow<List<Receita>>
+
+    @Query("DELETE FROM receita_entity WHERE id = :receitaId")
+    fun apagaReceita(receitaId: Long)
 }

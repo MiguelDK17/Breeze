@@ -2,12 +2,14 @@ package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.repository.ReceitaRepository
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -39,7 +41,11 @@ class PaginaInicialViewModel @Inject constructor(
     val carregando = MutableStateFlow(true)
 
     private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
-    val contaState: StateFlow<UiState<List<Conta>>> = _contaState
+    val contaState: StateFlow<UiState<List<Conta>>> = _contaState.asStateFlow()
+
+    private val _receitaState = MutableStateFlow<UiState<List<Receita>>>(UiState.Loading)
+    val receitaState: StateFlow<UiState<List<Receita>>> = _receitaState.asStateFlow()
+
     private val _conta = MutableStateFlow<List<Conta>>(emptyList())
     val conta: StateFlow<List<Conta>> = _conta
 
@@ -60,6 +66,8 @@ class PaginaInicialViewModel @Inject constructor(
         obterReceita()
 
         obterContas()
+
+        obterListaReceitas()
     }
 
     //Pega a receita
@@ -68,6 +76,21 @@ class PaginaInicialViewModel @Inject constructor(
             receitaRepository.getSaldoTotal().collect { receita ->
                 _receita.value = receita ?: 0.00 //Valor inicial
             }
+        }
+    }
+    private fun obterListaReceitas(){
+        viewModelScope.launch {
+            receitaRepository.getTodasAsReceitas()
+                .catch { e ->
+                    _receitaState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                }
+                .collectLatest { lista ->
+                    if (lista.isEmpty()) {
+                        _receitaState.value = UiState.Empty
+                    } else {
+                        delay(500) //Adiciona um pequeno delay
+                    }
+                }
         }
     }
     //Pega todas as contas cadastradas no app
@@ -82,12 +105,12 @@ class PaginaInicialViewModel @Inject constructor(
                         _contaState.value = UiState.Empty
                     } else {
                         delay(500) //Adiciona um pequeno delay
-
                         _contaState.value = UiState.Success(lista)
                     }
                 }
         }
     }
+
     fun atualizaBottomSheet(boolean: Boolean){
         _showBottomSheet.value = boolean
     }
@@ -122,6 +145,13 @@ class PaginaInicialViewModel @Inject constructor(
          viewModelScope.launch {
              contaRepository.apagaConta(conta)
          }
+    }
+    //Apaga a receita selecionada
+    fun apagaReceita(receita: Receita) {
+        viewModelScope.launch {
+            _receita.value = _receita.value?.minus(receita.valor)
+            receitaRepository.apagaReceita(receita)
+        }
     }
     //Pega todas as parcelas baseadas no ID da conta pai
      fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{

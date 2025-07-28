@@ -16,7 +16,4 @@ data class LinhaDoTempoModel(
     val category: String = "",
     val subCategory: String = "",
     val isReceita: Boolean = false,
-
-
-
     )

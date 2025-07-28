@@ -28,9 +28,9 @@ fun BreezeButtonGroup(
     options: List<String>,
     unCheckedIcons: List<BreezeIconsType>,
     checkedIcons: List<BreezeIconsType>,
-    selectedIndex: Int,
     onChangeSelectedIndex: (Int) -> Unit
 ){
+    var selectedIndex by remember { mutableIntStateOf(0) }
 
     Row(
         Modifier.padding(horizontal = 8.dp),
@@ -43,7 +43,8 @@ fun BreezeButtonGroup(
             ToggleButton(
                 checked = selectedIndex == index,
                 onCheckedChange = {
-                    onChangeSelectedIndex(selectedIndex == index)
+                    selectedIndex = index
+                    onChangeSelectedIndex(selectedIndex)
                 },
                 modifier = modifiers[index].semantics { role = Role.RadioButton },
                 shapes =
