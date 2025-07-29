@@ -53,7 +53,7 @@ class PaginaInicialViewModel @Inject constructor(
     private val _contaSelecionada = MutableStateFlow<Conta?>(null)
     val contaSelecionada: StateFlow<Conta?> = _contaSelecionada.asStateFlow()
 
-    private val _showBottomSheet = MutableStateFlow<Boolean>(false)
+    private val _showBottomSheet = MutableStateFlow(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
 
     private val _parcelaDoMes = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
@@ -89,6 +89,7 @@ class PaginaInicialViewModel @Inject constructor(
                         _receitaState.value = UiState.Empty
                     } else {
                         delay(500) //Adiciona um pequeno delay
+                        _receitaState.value = UiState.Success(lista)
                     }
                 }
         }
@@ -156,7 +157,6 @@ class PaginaInicialViewModel @Inject constructor(
     //Pega todas as parcelas baseadas no ID da conta pai
      fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
         return parcelaRepository.buscaParcelasDaConta(idContaPai)
-
     }
     //Função que observa as contas do mês
     fun observeParcelaDoMes(idContaPai: Long, mesAno: String): StateFlow<UiState<ParcelaEntity?>>{

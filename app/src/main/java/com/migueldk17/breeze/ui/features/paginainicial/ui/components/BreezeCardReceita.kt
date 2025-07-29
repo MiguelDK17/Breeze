@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,13 +28,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Receita
+import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 
@@ -45,11 +50,22 @@ fun BreezeCardReceita(
 ){
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
+    val descricao = receita.descricao.ifEmpty { "Receita sem descrição" }
+    val valor = receita.valor
+    val icon = if (receita.icon.toBreezeIconsType().enum == BreezeIconsEnum.ICON_UNSPECIFIED) {
+        BreezeIcons.Linear.Money.DollarCircle
+    } else {
+        receita.icon.toBreezeIconsType()
+    }
+    Log.d(TAG, "BreezeCardReceita: argb do icon green ${BreezeIcons.Colors.Vibrant.IconGreen.color}")
+    Log.d(TAG, "BreezeCardReceita: argb do icon blue ${BreezeIcons.Colors.Soft.SoftBlue.color}")
+    Log.d(TAG, "BreezeCardReceita: ${receita.icon.toBreezeIconsType().enum}")
+    Log.d(TAG, "BreezeCardReceita: valor do icon${receita.icon}")
 
     OutlinedCard (
         modifier = Modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.Blue)
+        colors = CardDefaults.cardColors(containerColor = BreezeIcons.Colors.Soft.SoftBlue.color)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -62,13 +78,13 @@ fun BreezeCardReceita(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BreezeIcon(
-                    breezeIcon = receita.icon.toBreezeIconsType(),
+                    breezeIcon = icon,
                     contentDescription = null,
-                    color = Color.Green,
+                    color = BreezeIcons.Colors.Vibrant.IconGreen.color,
                     modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.size(20.dp))
-                Text(receita.descricao,
+                Text(descricao,
                     modifier = Modifier
                         .weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
@@ -106,7 +122,7 @@ fun BreezeCardReceita(
             ) {
                 Spacer(modifier = Modifier.width(68.dp))
                 Text(
-                    retornaValorNoCard(receita.valor, null),
+                    retornaValorNoCard(valor, null),
                     color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
                 )
                 Box(modifier = Modifier.fillMaxWidth(),

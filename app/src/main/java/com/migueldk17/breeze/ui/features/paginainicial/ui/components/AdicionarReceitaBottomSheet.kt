@@ -142,6 +142,7 @@ fun AdicionarReceitaBottomSheet(
             // Botão salvar
             Button(
                 onClick = {
+                    Log.d(TAG, "AdicionarReceitaBottomSheet: referencia do icone: $icon")
                     adicionaReceita(
                         saldoInput.toDouble(),
                         descricaoInput,

@@ -132,9 +132,7 @@ private fun ColumnReceitas(
         ) {
             val historicoReceitas = viewModelReceita.organizaReceitas(receita)
 
-            LazyColumnReceitas(
-                historicoReceitas = historicoReceitas
-            )
+            LazyColumnReceitas(historicoReceitas = historicoReceitas)
 
             //Fade do final da lista
             Box(

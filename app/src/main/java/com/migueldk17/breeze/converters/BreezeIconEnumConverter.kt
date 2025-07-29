@@ -83,6 +83,16 @@ fun String.toBreezeIconsType() : BreezeIconsType {
         BreezeIcons.Linear.Files.FileText.enum.name -> {
             BreezeIcons.Linear.Files.FileText
         }
+        BreezeIcons.Linear.Money.DollarCircle.enum.name -> {
+            BreezeIcons.Linear.Money.DollarCircle
+        }
+        BreezeIcons.Linear.Money.MoneySend.enum.name -> {
+            BreezeIcons.Linear.Money.MoneySend
+        }
+        BreezeIcons.Linear.Money.MoneyRecive.enum.name -> {
+            BreezeIcons.Linear.Money.MoneyRecive
+        }
+
 
         else -> {
             BreezeIcons.Unspecified.IconUnspecified
