@@ -57,10 +57,6 @@ fun BreezeCardReceita(
     } else {
         receita.icon.toBreezeIconsType()
     }
-    Log.d(TAG, "BreezeCardReceita: argb do icon green ${BreezeIcons.Colors.Vibrant.IconGreen.color}")
-    Log.d(TAG, "BreezeCardReceita: argb do icon blue ${BreezeIcons.Colors.Soft.SoftBlue.color}")
-    Log.d(TAG, "BreezeCardReceita: ${receita.icon.toBreezeIconsType().enum}")
-    Log.d(TAG, "BreezeCardReceita: valor do icon${receita.icon}")
 
     OutlinedCard (
         modifier = Modifier
