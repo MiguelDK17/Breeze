@@ -35,8 +35,11 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.AddCircleOutline
+import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.mutableIntStateOf
@@ -67,8 +70,6 @@ fun PaginaInicial(
     val receitaState by viewModel.receitaState.collectAsStateWithLifecycle()
 
     val showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
-
-    val context = LocalContext.current
 
     val activity = LocalActivity.current
 
@@ -110,6 +111,7 @@ fun PaginaInicial(
                     "Seu Saldo: ${formataSaldo(saldoFormatado)}",
                     style = MaterialTheme.typography.titleMedium
                 )
+                Spacer(modifier = Modifier.width(5.dp))
                 //Botão para editar o saldo
                 IconButton(
                     onClick = {
@@ -117,10 +119,9 @@ fun PaginaInicial(
                     },
                     modifier = Modifier
                         .size(23.dp)
-                        .padding(0.dp)
                 ) {
                     Icon(
-                        Icons.Default.Edit,
+                        Icons.Default.AddCircleOutline,
                         "",
                         modifier = Modifier.size(30.dp)
                     )

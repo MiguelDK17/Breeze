@@ -23,8 +23,8 @@ class ReceitaRepository @Inject constructor(
         return receitaDao.getTodasAsReceitas()
     }
 
-    fun apagaReceita(receita: Receita) {
-        receitaDao.apagaReceita(receita.id)
+    suspend fun apagaReceita(receita: Receita) {
+        receitaDao.apagaReceita(receita)
     }
 
 

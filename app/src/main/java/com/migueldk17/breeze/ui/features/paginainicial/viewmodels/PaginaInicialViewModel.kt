@@ -150,7 +150,6 @@ class PaginaInicialViewModel @Inject constructor(
     //Apaga a receita selecionada
     fun apagaReceita(receita: Receita) {
         viewModelScope.launch {
-            _receita.value = _receita.value?.minus(receita.valor)
             receitaRepository.apagaReceita(receita)
         }
     }

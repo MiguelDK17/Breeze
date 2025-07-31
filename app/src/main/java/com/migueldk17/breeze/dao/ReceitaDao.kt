@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -24,6 +25,6 @@ interface ReceitaDao {
     @Query("SELECT * FROM receita_entity WHERE data LIKE :mesAno || '%'")
     fun getReceitasDoMes(mesAno: String): Flow<List<Receita>>
 
-    @Query("DELETE FROM receita_entity WHERE id = :receitaId")
-    fun apagaReceita(receitaId: Long)
+    @Delete
+    fun apagaReceita(receita: Receita)
 }
