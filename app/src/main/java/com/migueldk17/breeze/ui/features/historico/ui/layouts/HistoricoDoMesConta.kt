@@ -4,6 +4,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.layouts
 import android.content.Intent
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
@@ -32,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MainActivity3
+import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
@@ -83,6 +86,17 @@ fun HistoricoDoMesConta(
         modifier = modifier
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TitleText(
+                text = "Contas do Mês",
+                size = 19.sp,
+                fontWeight = FontWeight.W600
+            )
+        }
 
         GraficoDeBarras(contas, modifier)
 

@@ -12,6 +12,7 @@ import com.migueldk17.breeze.repository.ReceitaRepository
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -149,7 +150,7 @@ class PaginaInicialViewModel @Inject constructor(
     }
     //Apaga a receita selecionada
     fun apagaReceita(receita: Receita) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             receitaRepository.apagaReceita(receita)
         }
     }

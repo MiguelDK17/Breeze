@@ -26,6 +26,4 @@ class ReceitaRepository @Inject constructor(
     suspend fun apagaReceita(receita: Receita) {
         receitaDao.apagaReceita(receita)
     }
-
-
 }
