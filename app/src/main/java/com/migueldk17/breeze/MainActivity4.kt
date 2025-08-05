@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.ui.components.BreezeFABMenu
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesConta
 import com.migueldk17.breeze.ui.features.historico.ui.layouts.HistoricoDoMesReceita
@@ -141,20 +142,7 @@ class MainActivity4: ComponentActivity() {
 
                             }
                         )
-                    },
-                    floatingActionButton = {
-                        FloatingActionButton(
-                            onClick = {},
-                            shape = FloatingActionButtonDefaults.largeShape
-
-                        ) {
-                            BreezeIcon(
-                                BreezeIcons.Linear.Settings.SettingsLinear,
-                                contentDescription = null
-                            )
-                        }
-                    },
-                    floatingActionButtonPosition = FabPosition.End
+                    }
                 ) { paddingValues ->
                     if (selectedCategory == "Contas") {
                         HistoricoDoMesConta(
@@ -168,6 +156,7 @@ class MainActivity4: ComponentActivity() {
                             viewModelReceita = viewModelReceitas
                         )
                     }
+                    BreezeFABMenu()
                 }
 
             }
