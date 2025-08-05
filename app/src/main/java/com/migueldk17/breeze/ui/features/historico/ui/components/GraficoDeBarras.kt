@@ -41,6 +41,8 @@ fun GraficoDeBarras(
     val deslocamento = with(density) { 35.dp.toPx()}
     //Adiciona um deslocamento baseado na densidade da tela em pixels
     val larguraPx = with(density) { 290.dp.toPx()}
+    val isReceita = graficoDoDiaModel[0]?.isReceita
+    val superiorText = if (isReceita == true ) "Valor recebido" else "Valor gasto"
 
     OutlinedCard(
         modifier = Modifier
@@ -69,7 +71,7 @@ fun GraficoDeBarras(
                         .fillMaxHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Total gasto", fontSize = 12.sp)
+                    Text(superiorText, fontSize = 12.sp)
                     Spacer(modifier = Modifier.height(110.dp))
                     Text("Dias do mês", fontSize = 12.sp)
                 }

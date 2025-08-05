@@ -97,8 +97,9 @@ fun HistoricoDoMesConta(
                 fontWeight = FontWeight.W600
             )
         }
-
-        GraficoDeBarras(contas, modifier)
+        if (contas.isNotEmpty()) { //OBS: NÃO TIRA O ISEMPTY DAQUI, SERVE PARA VERIFICAÇÃO DE LISTA VAZIA POR AQUI
+            GraficoDeBarras(contas, modifier)
+        }
 
         Spacer(modifier = Modifier.height(30.dp))
 

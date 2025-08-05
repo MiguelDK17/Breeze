@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,10 +42,10 @@ import com.migueldk17.breeze.ui.utils.ToastManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity4: ComponentActivity() {
     private val viewModelContas by viewModels<HistoricoDoMesViewModel>()
     private val viewModelReceitas by viewModels<HistoricoReceitaViewModel>()
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -113,10 +116,45 @@ class MainActivity4: ComponentActivity() {
                                     )
 
                                 }
+                                Box(
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .combinedClickable(
+                                            onClick = {
+                                                selectedCategory = categories[1]
+                                            },
+                                            onLongClick = {
+                                                ToastManager.showToast(context, "Comparativo")
+                                            }
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    val isButtonMoneyReciveSelected = selectedCategory == categories[1]
+                                    BreezeIcon(
+                                        BreezeIcons.Linear.Money.DollarSquare,
+                                        contentDescription = null,
+                                        color = buttonColor(isButtonMoneyReciveSelected)
+                                    )
+
+                                }
 
                             }
                         )
-                    }
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = {},
+                            shape = FloatingActionButtonDefaults.largeShape
+
+                        ) {
+                            BreezeIcon(
+                                BreezeIcons.Linear.Settings.SettingsLinear,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    floatingActionButtonPosition = FabPosition.End
                 ) { paddingValues ->
                     if (selectedCategory == "Contas") {
                         HistoricoDoMesConta(
@@ -131,6 +169,7 @@ class MainActivity4: ComponentActivity() {
                         )
                     }
                 }
+
             }
         }
     }
