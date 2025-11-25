@@ -142,7 +142,11 @@ class MainActivity4: ComponentActivity() {
 
                             }
                         )
-                    }
+                    },
+                    floatingActionButton = {
+                        BreezeFABMenu()
+                    },
+                    floatingActionButtonPosition = FabPosition.End,
                 ) { paddingValues ->
                     if (selectedCategory == "Contas") {
                         HistoricoDoMesConta(
@@ -156,7 +160,7 @@ class MainActivity4: ComponentActivity() {
                             viewModelReceita = viewModelReceitas
                         )
                     }
-                    BreezeFABMenu()
+
                 }
 
             }

@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -48,7 +50,7 @@ fun BreezeFABMenu(){
     val listState = rememberLazyListState()
     val fabVisible by remember { derivedStateOf { listState.firstVisibleItemIndex == 0 } }
 
-    Box {
+    Box() {
         val items =
             listOf(
                 Icons.AutoMirrored.Filled.Message to "Reply",
@@ -69,17 +71,21 @@ fun BreezeFABMenu(){
             button = {
                 ToggleFloatingActionButton(
                     modifier =
-                        Modifier.semantics{
-                            traversalIndex = -1f
-                            stateDescription = if (fabMenuExpanded) "Expanded" else "Collapsed"
-                            contentDescription = "Toggle menu"
-                        }
+                        Modifier
+                            .semantics {
+                                traversalIndex = -1f
+                                stateDescription = if (fabMenuExpanded) "Expanded" else "Collapsed"
+                                contentDescription = "Toggle menu"
+                            }
                             .animateFloatingActionButton(
                                 visible = fabVisible || fabMenuExpanded,
                                 alignment = Alignment.BottomEnd
                             ),
                     checked = fabMenuExpanded,
-                    onCheckedChange = { fabMenuExpanded = !fabMenuExpanded},
+                    onCheckedChange = {
+                        fabMenuExpanded = !fabMenuExpanded
+                        Log.d(TAG, "BreezeFABMenu: $fabMenuExpanded")
+                                      },
                 ) {
                     val imageVector by remember {
                         derivedStateOf {
@@ -94,37 +100,39 @@ fun BreezeFABMenu(){
                 }
             },
         ) {
-            items.forEachIndexed { i, item ->
-                FloatingActionButtonMenu(
-                    modifier = Modifier.semantics {
-                        isTraversalGroup = true
+            if (fabMenuExpanded) {
+                items.forEachIndexed { i, item ->
+                    FloatingActionButtonMenu(
+                        modifier = Modifier.semantics {
+                            isTraversalGroup = true
 
-                        if (i == items.size -1){
-                            customActions =
-                                listOf(
-                                    CustomAccessibilityAction(
-                                        label = "Close menu",
-                                        action = {
-                                            fabMenuExpanded = false
-                                            true
-                                        },
+                            if (i == items.size - 1) {
+                                customActions =
+                                    listOf(
+                                        CustomAccessibilityAction(
+                                            label = "Close menu",
+                                            action = {
+                                                fabMenuExpanded = false
+                                                true
+                                            },
+                                        )
                                     )
-                                )
-                        }
-                    },
-                    button = {
-                        BreezeButton(
-                            text = item.second,
-                            onClick = {
-                                fabMenuExpanded = false
                             }
-                        )
-                    },
-                    expanded = fabMenuExpanded,
-                    content = {
+                        },
+                        button = {
+                            BreezeButton(
+                                text = item.second,
+                                onClick = {
+                                    fabMenuExpanded = false
+                                }
+                            )
+                        },
+                        expanded = fabMenuExpanded,
+                        content = {
 
-                    }
-                )
+                        }
+                    )
+                }
             }
         }
     }
