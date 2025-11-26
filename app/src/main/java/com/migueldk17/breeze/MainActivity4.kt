@@ -1,6 +1,8 @@
 package com.migueldk17.breeze
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +32,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsAnimationCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeFABMenu
@@ -52,13 +60,23 @@ class MainActivity4: ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            val view = LocalView.current
+
+            LaunchedEffect(Unit) {
+                val window = (view.context as Activity).window
+                WindowCompat.setDecorFitsSystemWindows(window, false)
+
+                val controller = WindowInsetsControllerCompat(window, view)
+                controller.hide(WindowInsetsCompat.Type.statusBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
             val mes = intent.getStringExtra("mes")
             val dataFormatada = intent.getStringExtra("dataFormatada")
             if (dataFormatada != null) {
                 viewModelContas.setData(dataFormatada)
                 viewModelReceitas.setData(dataFormatada)
             }
-            val context = LocalContext.current
             val categories = listOf("Contas", "Receitas")
             var selectedCategory by remember { mutableStateOf(categories[0]) }
             BreezeTheme {
@@ -70,84 +88,19 @@ class MainActivity4: ComponentActivity() {
                             },
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = Color.Transparent
-                            ),
-                            actions = {
-                                DescriptionText("Filtros:")
-                                val isButtonMoneySendSelected = selectedCategory == categories[0]
-
-                                Box(
-                                    modifier = Modifier
-                                        .size(48.dp)
-                                        .clip(CircleShape)
-                                        .combinedClickable(
-                                            onClick = {
-                                                selectedCategory = categories[0]
-                                            },
-                                            onLongClick = {
-                                                ToastManager.showToast(context, "Contas")
-                                            }
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    BreezeIcon(
-                                        BreezeIcons.Linear.Money.MoneySend,
-                                        contentDescription = null,
-                                        color = buttonColor(isButtonMoneySendSelected)
-                                    )
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .size(48.dp)
-                                        .clip(CircleShape)
-                                        .combinedClickable(
-                                            onClick = {
-                                                selectedCategory = categories[1]
-                                            },
-                                            onLongClick = {
-                                                ToastManager.showToast(context, "Receitas")
-                                            }
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    val isButtonMoneyReciveSelected = selectedCategory == categories[1]
-                                    BreezeIcon(
-                                        BreezeIcons.Linear.Money.MoneyRecive,
-                                        contentDescription = null,
-                                        color = buttonColor(isButtonMoneyReciveSelected)
-                                    )
-
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .size(48.dp)
-                                        .clip(CircleShape)
-                                        .combinedClickable(
-                                            onClick = {
-                                                selectedCategory = categories[1]
-                                            },
-                                            onLongClick = {
-                                                ToastManager.showToast(context, "Comparativo")
-                                            }
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    val isButtonMoneyReciveSelected = selectedCategory == categories[1]
-                                    BreezeIcon(
-                                        BreezeIcons.Linear.Money.DollarSquare,
-                                        contentDescription = null,
-                                        color = buttonColor(isButtonMoneyReciveSelected)
-                                    )
-
-                                }
-
-                            }
+                            )
                         )
                     },
                     floatingActionButton = {
-                        BreezeFABMenu()
+                        BreezeFABMenu(
+                            onChangeSelectedCategory = {
+                                selectedCategory = it
+                            }
+                        )
                     },
                     floatingActionButtonPosition = FabPosition.End,
                 ) { paddingValues ->
+
                     if (selectedCategory == "Contas") {
                         HistoricoDoMesConta(
                             modifier = Modifier.padding(paddingValues),
@@ -168,9 +121,3 @@ class MainActivity4: ComponentActivity() {
     }
 }
 
-@Composable
-private fun buttonColor(isButtonSelected: Boolean): Color{
-    val color = if (isButtonSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
-
-    return color
-}
