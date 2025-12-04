@@ -99,6 +99,7 @@ class MainActivity4: ComponentActivity() {
                         )
                     },
                     floatingActionButtonPosition = FabPosition.End,
+
                 ) { paddingValues ->
 
                     if (selectedCategory == "Contas") {

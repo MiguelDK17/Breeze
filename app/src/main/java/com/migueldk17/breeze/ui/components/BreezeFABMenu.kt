@@ -4,6 +4,7 @@ import android.util.Log
 import android.content.ContentValues.TAG
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -118,8 +119,9 @@ fun BreezeFABMenu(
                     Icon(
                         painter = rememberVectorPainter(imageVector),
                         contentDescription = null,
-                        modifier = Modifier.animateIcon( {checkedProgress} ),
-                        tint = Color.White
+                        modifier = Modifier
+                            .animateIcon( {checkedProgress} ),
+
                     )
                 }
             },
