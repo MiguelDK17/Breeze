@@ -60,14 +60,20 @@ fun Passo1(
     //Map de sub categoria baseado nas categorias estabelecidas
     val categorySubcategories = mapOf(
         "Alimentação" to listOf("Supermercado", "Restaurante", "Lanches", "Delivery"),
-        "Transporte" to listOf("Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
+        "Transporte" to listOf(
+            "Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
         "Educação" to listOf("Escola", "Faculdade", "Cursos online", "Material escolar"),
-        "Moradia" to listOf("Aluguel", "Condomínio", "Água", "Energia", "Internet"),
+        "Moradia" to listOf("Aluguel", "Decoração & Mobília", "Condomínio",
+            "Água", "Energia", "Internet"),
         "Lazer" to listOf("Cinema", "Viagens", "Assinaturas(Netflix, Spotify...)", "Jogos"),
         "Saúde" to listOf("Plano de saúde", "Farmácia", "Consulta médica", "Exames"),
-        "Trabalho/Negócios" to listOf("Ferramentas de trabalho", "Marketing", "Transporte a trabalho", "Assinaturas por trabalho"),
+        "Trabalho/Negócios" to listOf(
+            "Ferramentas de trabalho","Upgrade de Equipamento", "Marketing",
+            "Transporte a trabalho", "Assinaturas por trabalho"
+        ),
         "Pets" to listOf("Ração", "Veterinário", "Higiene", "Brinquedos"),
-        "Pessoais" to listOf("Roupas", "Cabelo/Beleza", "Presentes", "Academia"),
+        "Pessoais" to listOf("Roupas", "Cabelo/Beleza","Presentes",
+            "Acessórios Eletrônicos", "Compras Pessoais", "Academia"),
         "Outros" to listOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
     )
 
