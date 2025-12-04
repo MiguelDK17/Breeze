@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleFloatingActionButton
@@ -59,6 +61,8 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.ui.theme.DeepSkyBlue
+import com.migueldk17.breeze.ui.theme.SkyBlue
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -67,6 +71,7 @@ fun BreezeFABMenu(
 ){
     val listState = rememberLazyListState()
     val fabVisible by remember { derivedStateOf { listState.firstVisibleItemIndex == 0 } }
+    val isDarkModeActive = isSystemInDarkTheme()
 
     Box() {
         val items =
@@ -101,6 +106,9 @@ fun BreezeFABMenu(
                         fabMenuExpanded = !fabMenuExpanded
                         Log.d(TAG, "BreezeFABMenu: $fabMenuExpanded")
                                       },
+                    containerColor = {
+                        if (isDarkModeActive) DeepSkyBlue else SkyBlue
+                    }
                 ) {
                     val imageVector by remember {
                         derivedStateOf {
@@ -111,6 +119,7 @@ fun BreezeFABMenu(
                         painter = rememberVectorPainter(imageVector),
                         contentDescription = null,
                         modifier = Modifier.animateIcon( {checkedProgress} ),
+                        tint = Color.White
                     )
                 }
             },
@@ -152,7 +161,7 @@ fun BreezeFABMenu(
                                     contentDescription = item.second
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
-                                Text(item.second)
+                                DescriptionText(item.second)
 
                             }
 
