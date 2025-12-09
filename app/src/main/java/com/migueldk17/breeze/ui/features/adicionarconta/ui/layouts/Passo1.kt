@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,11 +81,18 @@ fun Passo1(
         "Outros" to listOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
     )
 
+    val focusManager = LocalFocusManager.current
+
 
 
     Column(
         modifier = Modifier
-            .padding(25.dp),
+            .padding(25.dp)
+            .pointerInput(Unit){
+                detectTapGestures {
+                    focusManager.clearFocus()
+                }
+            },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -103,6 +114,11 @@ fun Passo1(
                 text = text,
                 onValueChange = { text = it},
                 textLabel = "Adicionar nome",
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 isError = !textoCorreto(text)
 
@@ -122,7 +138,10 @@ fun Passo1(
             categoryName = "Insira uma categoria(Opcional)",
             categories = categories,
             selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it }
+            onCategorySelected = {
+                focusManager.clearFocus()
+                selectedCategory = it
+            }
         )
         if (selectedCategory != "Selecione uma categoria") {
             Row(
@@ -137,7 +156,10 @@ fun Passo1(
             selectedCategory = selectedCategory,
             subCategoriesMap = categorySubcategories,
             selectedSubcategory = selectedSubCategory,
-            onSubCategorySelected = { selectedSubCategory = it}
+            onSubCategorySelected = {
+                focusManager.clearFocus()
+                selectedSubCategory = it
+            }
         )
         //Botão para avançar de tela
         BreezeButton(

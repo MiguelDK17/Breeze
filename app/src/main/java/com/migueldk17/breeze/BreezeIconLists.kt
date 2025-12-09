@@ -7,27 +7,66 @@ object BreezeIconLists {
     //Lista de icones de tipo BreezeIcons
     @Composable
     fun getLinearIcons() = listOf(
-        BreezeIcons.Linear.SchoolLearning.BookLinear,
-        BreezeIcons.Linear.Delivery.GroupLinear,
-        BreezeIcons.Linear.Location.GlobeLinear,
-        BreezeIcons.Linear.Mobility.CarLinear,
-        BreezeIcons.Linear.Weather.CloudLinear,
-        BreezeIcons.Linear.Weather.DropLinear,
-        BreezeIcons.Linear.Mobility.AirplaneLinear,
-        BreezeIcons.Linear.Essetional.DiscoverLinear,
-        BreezeIcons.Linear.Security.KeyLinear,
-        BreezeIcons.Linear.VideoAudioImage.VideoCircleLinear,
-        BreezeIcons.Linear.VideoAudioImage.ForwardLinear,
-        BreezeIcons.Linear.Messages.ChatLinear,
-        BreezeIcons.Linear.Shop.Bag2,
-        BreezeIcons.Linear.Settings.SettingsLinear,
-        BreezeIcons.Linear.Mobility.BusLinear,
-        BreezeIcons.Linear.Mobility.GasStationLinear,
+        // Building
         BreezeIcons.Linear.Building.Hospital,
+        BreezeIcons.Linear.Building.HomeLinear,
+
+        // Delivery
+        BreezeIcons.Linear.Delivery.GroupLinear,
+
+        // ElectronicDevices
         BreezeIcons.Linear.ElectronicDevices.Airpods,
         BreezeIcons.Linear.ElectronicDevices.HeadphonesRound,
-        BreezeIcons.Linear.Files.FileText
+        BreezeIcons.Linear.ElectronicDevices.Laptop,
+        BreezeIcons.Linear.ElectronicDevices.Gamepad,
+
+        // Essetional
+        BreezeIcons.Linear.Essetional.DiscoverLinear,
+        BreezeIcons.Linear.Essetional.Hanger,
+        BreezeIcons.Linear.Essetional.Skirt,
+        BreezeIcons.Linear.Essetional.TShirt,
+        BreezeIcons.Linear.Essetional.ConfettiMinimalistic,
+        BreezeIcons.Linear.Essetional.Sleeping,
+
+        // Files
+        BreezeIcons.Linear.Files.FileText,
+
+        // FoodKitchen
+        BreezeIcons.Linear.FoodKitchen.TeaCup,
+
+        // Location
+        BreezeIcons.Linear.Location.GlobeLinear,
+
+        // Messages
+        BreezeIcons.Linear.Messages.ChatLinear,
+
+        // Mobility
+        BreezeIcons.Linear.Mobility.AirplaneLinear,
+        BreezeIcons.Linear.Mobility.BusLinear,
+        BreezeIcons.Linear.Mobility.CarLinear,
+        BreezeIcons.Linear.Mobility.GasStationLinear,
+
+        // SchoolLearning
+        BreezeIcons.Linear.SchoolLearning.BookLinear,
+
+        // Security
+        BreezeIcons.Linear.Security.KeyLinear,
+
+        // Settings
+        BreezeIcons.Linear.Settings.SettingsLinear,
+
+        // Shop
+        BreezeIcons.Linear.Shop.Bag2,
+
+        // VideoAudioImage
+        BreezeIcons.Linear.VideoAudioImage.ForwardLinear,
+        BreezeIcons.Linear.VideoAudioImage.VideoCircleLinear,
+
+        // Weather
+        BreezeIcons.Linear.Weather.CloudLinear,
+        BreezeIcons.Linear.Weather.DropLinear,
     )
+
     //Lista de icones de cores de tipo BreezeIcons
     @Composable
     fun getVibrantColorIcons() = listOf(

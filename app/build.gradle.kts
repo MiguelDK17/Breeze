@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.migueldk17.breeze"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.migueldk17.breeze"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.3.5-beta"
 

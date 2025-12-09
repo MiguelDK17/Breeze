@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.components
 
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -18,6 +19,7 @@ fun BreezeOutlinedTextField(
                             onValueChange: (String) -> Unit, //Função que é chamada quando o texto é alterado
                             textLabel: String, //Texto do label
                             isError: Boolean = false, //Booleano de erro
+                            keyboardActions: KeyboardActions = KeyboardActions.Default,
                             keyboardOptions: KeyboardOptions = KeyboardOptions.Default, //Opções de teclado padrão
                             visualTransformation: VisualTransformation = VisualTransformation.None, //Transformação visual padrão
 
@@ -37,6 +39,8 @@ fun BreezeOutlinedTextField(
             unfocusedContainerColor = if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol, //Cor do campo quando não está focado
             unfocusedBorderColor = if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol //Cor da borda do campo quando não está focado
         ),
+        keyboardActions = keyboardActions,
+
         visualTransformation = visualTransformation //Transformação visual do texto
     )
 }
