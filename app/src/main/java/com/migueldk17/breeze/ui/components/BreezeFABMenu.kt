@@ -153,17 +153,18 @@ fun BreezeFABMenu(
                                     Log.d(TAG, "BreezeFABMenu: você clicou em: ${item.second}")
                                     fabMenuExpanded = false
                                 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent
-                                    ),
                                 border = BorderStroke(width = 0.4.dp, color = Color(0xFFBDBDBD))
                             ) {
                                 BreezeIcon(
                                     item.first,
-                                    contentDescription = item.second
+                                    contentDescription = item.second,
+                                    color = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
-                                DescriptionText(item.second)
+                                DescriptionText(
+                                    text = item.second,
+                                    color = Color.White
+                                    )
 
                             }
 
