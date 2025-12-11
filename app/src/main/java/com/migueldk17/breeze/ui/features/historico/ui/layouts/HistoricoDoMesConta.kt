@@ -88,7 +88,9 @@ fun HistoricoDoMesConta(
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 30.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             TitleText(

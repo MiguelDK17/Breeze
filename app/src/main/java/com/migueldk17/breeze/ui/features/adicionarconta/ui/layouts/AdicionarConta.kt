@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +40,7 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrinci
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.SkyBlue
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AdicionarConta(
     modifier : Modifier = Modifier,
@@ -48,40 +51,52 @@ fun AdicionarConta(
      //Pega a rota atual do navController
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    //Column principal do ciclo de vida AdicionarContaOpcionaç
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(15.dp)
-    ) {
-        //Text de título
-        TitleText(
-            "Adicionar Conta"
-        )
-        Spacer(modifier = Modifier.size(20.dp))
-        //Contagem de passos
-        Text(
-            retornaPasso(currentRoute),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        Spacer(modifier = Modifier.size(15.dp))
-        //LinearProgressIndicator que evolui conforme os passos
-        LinearWavyProgressIndicator(
-            progress = {
-                progressIndicatorEvolution(currentRoute)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            color = SkyBlue,
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        //Card Principal que abriga os passos que serão gerenciados pelo NavigationCompose
-
-        CardPrincipal{
-            InstanciaRotasAdicionarConta(navController, viewModel)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    //Text de título
+                    TitleText(
+                        "Adicionar Conta"
+                    )
+                }
+            )
         }
+    ) { paddingValues ->
+        //Column principal do ciclo de vida AdicionarContaOpcionaç
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
 
+            Spacer(modifier = Modifier.size(20.dp))
+            //Contagem de passos
+            Text(
+                retornaPasso(currentRoute),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.size(15.dp))
+            //LinearProgressIndicator que evolui conforme os passos
+            LinearWavyProgressIndicator(
+                progress = {
+                    progressIndicatorEvolution(currentRoute)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                color = SkyBlue,
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            //Card Principal que abriga os passos que serão gerenciados pelo NavigationCompose
+
+            CardPrincipal{
+                InstanciaRotasAdicionarConta(navController, viewModel)
+            }
+
+        }
     }
+
+
 
 }
 

@@ -7,15 +7,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -69,7 +72,7 @@ class MainActivity4: ComponentActivity() {
                 val controller = WindowInsetsControllerCompat(window, view)
                 controller.hide(WindowInsetsCompat.Type.statusBars())
                 controller.systemBarsBehavior =
-                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
             val mes = intent.getStringExtra("mes")
             val dataFormatada = intent.getStringExtra("dataFormatada")
@@ -83,12 +86,23 @@ class MainActivity4: ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
+                            modifier = Modifier.border(width = 1.dp, color = Color(0xFFD1D0CA), shape = RoundedCornerShape(1.dp)),
                             title = {
                                 Text("Mês de $mes")
                             },
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = Color.Transparent
-                            )
+                            ), navigationIcon = {
+                                IconButton(onClick = {
+                                    finish()
+                                }) {
+                                    BreezeIcon(
+                                        breezeIcon = BreezeIcons.Linear.Arrows.AltArrowLeft,
+                                        contentDescription = "Voltar para a tela Histórico"
+                                    )
+                                }
+                            },
+
                         )
                     },
                     floatingActionButton = {

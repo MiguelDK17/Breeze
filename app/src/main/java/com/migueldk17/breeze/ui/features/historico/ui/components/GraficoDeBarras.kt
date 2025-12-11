@@ -41,8 +41,8 @@ fun GraficoDeBarras(
     val deslocamento = with(density) { 35.dp.toPx()}
     //Adiciona um deslocamento baseado na densidade da tela em pixels
     val larguraPx = with(density) { 290.dp.toPx()}
-    val isReceita = graficoDoDiaModel[0]?.isReceita
-    val superiorText = if (isReceita == true ) "Valor recebido" else "Valor gasto"
+    val isReceita = graficoDoDiaModel[0].isReceita
+    val superiorText = if (isReceita) "Valor recebido" else "Valor gasto"
 
     OutlinedCard(
         modifier = Modifier
