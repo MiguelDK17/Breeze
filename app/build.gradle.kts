@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.migueldk17.breeze"
-        minSdk = 26
+        minSdk = 28
         targetSdk = 36
         versionCode = 1
         versionName = "1.3.5-beta"

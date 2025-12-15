@@ -1,9 +1,9 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,11 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,9 +21,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -41,6 +36,7 @@ import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarCont
 import com.migueldk17.breeze.ui.theme.SkyBlue
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AdicionarConta(
     modifier : Modifier = Modifier,
@@ -62,12 +58,12 @@ fun AdicionarConta(
                 }
             )
         }
-    ) { paddingValues ->
+    ) {  _ ->
         //Column principal do ciclo de vida AdicionarContaOpcionaç
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                //.padding(paddingValues)
         ) {
 
             Spacer(modifier = Modifier.size(20.dp))

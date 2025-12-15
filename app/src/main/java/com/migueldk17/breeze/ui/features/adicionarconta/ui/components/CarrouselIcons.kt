@@ -2,7 +2,6 @@ package com.migueldk17.breeze.ui.features.adicionarconta.ui.components
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -33,11 +32,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
-import androidx.compose.ui.unit.lerp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.NavGraph2
@@ -47,8 +43,6 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.PastelLightBlue
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
 import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
-import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
-import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 @Composable
@@ -65,11 +59,11 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
 
-    val screenWithPx = configuration.screenWidthDp.dp
+    val screenWithDp = configuration.screenWidthDp.dp
     val pageWidth = 100.dp
 
     val sidePadding = with(density) {
-        val screenPx = screenWithPx.toPx()
+        val screenPx = screenWithDp.toPx()
         val pagePx = pageWidth.toPx()
 
         ((screenPx - pagePx) / 2).toDp()
@@ -100,7 +94,8 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
             BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
                 val containerWidth = maxWidth
 
-                val sidePadding = ((containerWidth - pageWidth) / 2).coerceAtLeast(0.dp)
+                val sidePadding = (screenWithDp - pageWidth) / 2
+                Log.d(TAG, "carrouselIcons: o valor do sidePadding é esse: $sidePadding")
 
                 //HorizontalPager responsável pela seleção de ícones
                 HorizontalPager(
