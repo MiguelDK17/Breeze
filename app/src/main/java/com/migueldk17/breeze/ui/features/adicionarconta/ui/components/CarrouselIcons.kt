@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -28,14 +29,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
@@ -56,18 +62,8 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
     }
 
     // ============ CENTRALIZAÇÃO AUTOMÁTICA ====================//
-    val configuration = LocalConfiguration.current
-    val density = LocalDensity.current
 
-    val screenWithDp = configuration.screenWidthDp.dp
-    val pageWidth = 100.dp
 
-    val sidePadding = with(density) {
-        val screenPx = screenWithDp.toPx()
-        val pagePx = pageWidth.toPx()
-
-        ((screenPx - pagePx) / 2).toDp()
-    }
     // ==========================================================
 
     val maxScale = 1.333f
@@ -92,11 +88,24 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
             )
         ) {
             BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-                val containerWidth = maxWidth
+                val containerWith = maxWidth
 
-                val sidePadding = (screenWithDp - pageWidth) / 2
-                Log.d(TAG, "carrouselIcons: o valor do sidePadding é esse: $sidePadding")
+                val configuration = LocalConfiguration.current
+                val density = LocalDensity.current
+                val windowInfo = LocalWindowInfo.current
 
+                val containerWithDp = with(LocalDensity.current) {
+                    windowInfo.containerSize.width.toDp()
+                }
+
+                val pagerWidth = maxWidth
+                val pageWidth = 100.dp
+                val iconMaxSize = 40.dp
+
+                val sidePadding = (pagerWidth - iconMaxSize) / 2
+                Log.d(TAG, "carrouselIcons: valor de sidePadding $sidePadding")
+
+                Log.d(TAG, "carrouselIcons: valor de sidePadding dentro de BoxWithConstraints: $sidePadding")
                 //HorizontalPager responsável pela seleção de ícones
                 HorizontalPager(
                     modifier = Modifier.fillMaxSize(),
@@ -104,7 +113,7 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
                     //Tamanho de cada página do HorizontalPager, pega um tamanho fixo
                     pageSize = PageSize.Fixed(pageWidth),
                     //Padding para deixar o ícone selecionado no centro
-                    contentPadding = PaddingValues(horizontal = sidePadding),
+                    contentPadding = PaddingValues(horizontal = sidePadding + 5.50.dp),
                     //Espaço de cada pagina, negativo para que não fique muito longe uma da outra
                     pageSpacing = pageSpacing,
                 ) { page -> //Página selecionada
@@ -116,8 +125,7 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
                     // Calcula a proximidade do ícone ao centro
                     val pageOffset =
                         (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-                    Log.d(TAG, "carrouselIcons: valor de page offset $pageOffset")
-                    val absOffset = pageOffset.absoluteValue.coerceIn(0f, 1f)
+                   val absOffset = pageOffset.absoluteValue.coerceIn(0f, 1f)
 
                     val targetScale = lerp(maxScale, minScale, absOffset)
                     //Scale reponsável por animar a troca dos ícones, entre selecionado e não selecionado
@@ -215,5 +223,17 @@ private fun verifyDarkMode(isCentered: Boolean): Color {
             if (isCentered) DeepSkyBlue else Color.Transparent
 
         }
+    }
+}
+
+@Composable
+@Preview
+private fun Preview(){
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        carrouselIcons(BreezeIconLists.getLinearIcons())
     }
 }

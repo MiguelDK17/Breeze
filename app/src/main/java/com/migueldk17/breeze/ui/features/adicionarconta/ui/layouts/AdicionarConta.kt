@@ -63,7 +63,7 @@ fun AdicionarConta(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                //.padding(paddingValues)
+                .padding(15.dp)
         ) {
 
             Spacer(modifier = Modifier.size(20.dp))

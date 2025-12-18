@@ -39,7 +39,7 @@ fun Passo2(
     Column {
         Column(
             modifier = Modifier
-                ,
+                .padding(25.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
