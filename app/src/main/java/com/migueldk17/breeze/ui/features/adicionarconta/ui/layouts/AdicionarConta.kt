@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -9,18 +11,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -29,6 +35,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrincipal
@@ -47,31 +55,20 @@ fun AdicionarConta(
      //Pega a rota atual do navController
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    //Text de título
-                    TitleText(
-                        "Adicionar Conta"
-                    )
-                }
-            )
-        }
-    ) {  _ ->
-        //Column principal do ciclo de vida AdicionarContaOpcionaç
+        //Column principal do ciclo de vida AdicionarContaOpcional
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .padding(15.dp)
         ) {
 
-            Spacer(modifier = Modifier.size(20.dp))
             //Contagem de passos
             Text(
                 retornaPasso(currentRoute),
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+
             )
             Spacer(modifier = Modifier.size(15.dp))
             //LinearProgressIndicator que evolui conforme os passos
@@ -88,12 +85,7 @@ fun AdicionarConta(
             CardPrincipal{
                 InstanciaRotasAdicionarConta(navController, viewModel)
             }
-
         }
-    }
-
-
-
 }
 
 private fun progressIndicatorEvolution(currentRoute: String?): Float{

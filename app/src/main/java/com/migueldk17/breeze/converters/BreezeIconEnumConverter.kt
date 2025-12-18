@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.converters
 
 import androidx.compose.runtime.Composable
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
@@ -92,6 +93,77 @@ fun String.toBreezeIconsType() : BreezeIconsType {
         BreezeIcons.Linear.Money.MoneyRecive.enum.name -> {
             BreezeIcons.Linear.Money.MoneyRecive
         }
+
+        BreezeIcons.Linear.Arrows.AltArrowLeft.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowLeft
+        }
+
+        BreezeIcons.Linear.Arrows.AltArrowUp.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowUp
+        }
+        BreezeIcons.Linear.Arrows.AltArrowDown.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowDown
+        }
+        BreezeIcons.Linear.Arrows.AltArrowRight.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowRight
+        }
+
+        BreezeIcons.Linear.Arrows.Refresh.enum.name -> {
+            BreezeIcons.Linear.Arrows.Refresh
+        }
+
+        BreezeIcons.Linear.Arrows.Restart.enum.name -> {
+            BreezeIcons.Linear.Arrows.Restart
+        }
+
+        BreezeIcons.Linear.Nature.ChristmasTree.enum.name -> {
+            BreezeIcons.Linear.Nature.ChristmasTree
+        }
+        BreezeIcons.Linear.Nature.Recycle.enum.name -> {
+            BreezeIcons.Linear.Nature.Recycle
+        }
+
+        BreezeIcons.Linear.Nature.Umbrella.enum.name -> {
+            BreezeIcons.Linear.Nature.Umbrella
+        }
+
+        BreezeIcons.Linear.FoodKitchen.TeaCup.enum.name -> {
+            BreezeIcons.Linear.FoodKitchen.TeaCup
+        }
+        BreezeIcons.Linear.Essetional.Hanger.enum.name -> {
+            BreezeIcons.Linear.Essetional.Hanger
+        }
+        BreezeIcons.Linear.Essetional.ConfettiMinimalistic.enum.name -> {
+            BreezeIcons.Linear.Essetional.ConfettiMinimalistic
+        }
+        BreezeIcons.Linear.Essetional.Sleeping.enum.name -> {
+            BreezeIcons.Linear.Essetional.Sleeping
+        }
+        BreezeIcons.Linear.ElectronicDevices.Laptop.enum.name -> {
+            BreezeIcons.Linear.ElectronicDevices.Laptop
+        }
+        BreezeIcons.Linear.ElectronicDevices.Gamepad.enum.name -> {
+            BreezeIcons.Linear.ElectronicDevices.Gamepad
+        }
+
+        BreezeIcons.Linear.Essetional.TShirt.enum.name -> {
+            BreezeIcons.Linear.Essetional.TShirt
+        }
+        BreezeIcons.Linear.Essetional.Skirt.enum.name -> {
+            BreezeIcons.Linear.Essetional.Skirt
+        }
+        BreezeIcons.Linear.Like.Heart.enum.name -> {
+            BreezeIcons.Linear.Like.Heart
+        }
+
+        BreezeIcons.Linear.School.CaseRoundMinimalistic.enum.name -> {
+            BreezeIcons.Linear.School.CaseRoundMinimalistic
+        }
+
+        BreezeIcons.Linear.School.SquareAcademicCap2.enum.name -> {
+            BreezeIcons.Linear.School.SquareAcademicCap2
+        }
+
 
 
         else -> {

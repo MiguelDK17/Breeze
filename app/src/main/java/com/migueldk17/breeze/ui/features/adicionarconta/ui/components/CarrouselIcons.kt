@@ -61,11 +61,6 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
         iconList.size
     }
 
-    // ============ CENTRALIZAÇÃO AUTOMÁTICA ====================//
-
-
-    // ==========================================================
-
     val maxScale = 1.333f
     val minScale = 1.0f
     val pageSpacing = (-31).dp
@@ -88,6 +83,8 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
             )
         ) {
             BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+
+                // ============ CENTRALIZAÇÃO AUTOMÁTICA ====================//
                 val containerWith = maxWidth
 
                 val configuration = LocalConfiguration.current
@@ -105,7 +102,8 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
                 val sidePadding = (pagerWidth - iconMaxSize) / 2
                 Log.d(TAG, "carrouselIcons: valor de sidePadding $sidePadding")
 
-                Log.d(TAG, "carrouselIcons: valor de sidePadding dentro de BoxWithConstraints: $sidePadding")
+                // ==========================================================
+
                 //HorizontalPager responsável pela seleção de ícones
                 HorizontalPager(
                     modifier = Modifier.fillMaxSize(),
