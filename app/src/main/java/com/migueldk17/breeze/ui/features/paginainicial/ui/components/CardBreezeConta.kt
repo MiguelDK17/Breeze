@@ -122,11 +122,14 @@ fun BreezeCardConta(
 //                    }
 
                     IconButton(
-                        onClick = {}
+                        onClick = {},
+                        modifier = Modifier
+                            .size(35.dp)
                     ) {
                         BreezeIcon(
                             breezeIcon = BreezeIcons.Linear.All.VerifiedCheck,
                             contentDescription = "Pagar Conta",
+                            modifier = Modifier.size(35.dp)
                         )
                     }
 
@@ -159,10 +162,12 @@ fun BreezeCardConta(
                     contentAlignment = Alignment.CenterEnd){
                     IconButton(onClick = {
                         openDialog.value = true
-                    }) {
+                    },
+                        modifier = Modifier.size(30.dp)) {
                         BreezeIcon(
                             breezeIcon = BreezeIcons.Linear.Essetional.MenuDots,
-                            contentDescription = "Três Pontos"
+                            contentDescription = "Três Pontos",
+                            modifier = Modifier.size(30.dp)
                         )
                     }
                 }
@@ -292,157 +297,157 @@ fun retornaValorNoCard(valor: Double,parcela: ParcelaEntity?): String {
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun EsqueletoBreezeCard(){
-    var isExpanded by remember { mutableStateOf(false) }
-
-    //Variavel que controla o estado do BasicAlertDialog
-    val openDialog = remember { mutableStateOf(false) }
-
-    OutlinedCard (
-        modifier = Modifier
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF80EF80))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-
-            ){
-            //Linha de cima(com ícone, texto e etc)
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                BreezeIcon(
-                    breezeIcon = BreezeIcons.Linear.Company.SpotifyLinear,
-                    contentDescription = null,
-                    color = Color(0xFF228B22),
-                    modifier = Modifier.size(48.dp)
-                )
-                Spacer(Modifier.size(20.dp))
-                Text("Spotify",
-                    modifier = Modifier,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue,
-                    //Caso o texto suma provavelmente deve ter algum elemento com fillMaxWidth na Row/Column
-                    overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
-                    maxLines = 1 //Limita o texto a 1 linha para evitar quebra
-
-                )
-                Row(
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    // -- ATENÇÃO!!!! BOTÃO MUTADO POR FALTA DE USO. NÃO MEXA AQUI A NÃO SER SE FOR PARA ADICIONAR FUNCIONALIDADE A ELE --
-//                    TextButton(onClick = {
-//                        onClick()
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//private fun EsqueletoBreezeCard(){
+//    var isExpanded by remember { mutableStateOf(false) }
+//
+//    //Variavel que controla o estado do BasicAlertDialog
+//    val openDialog = remember { mutableStateOf(false) }
+//
+//    OutlinedCard (
+//        modifier = Modifier
+//            .fillMaxWidth(),
+//        colors = CardDefaults.cardColors(containerColor = Color(0xFF80EF80))
+//    ) {
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//
+//            ){
+//            //Linha de cima(com ícone, texto e etc)
+//            Row(modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(10.dp),
+//                verticalAlignment = Alignment.CenterVertically,
+//            ) {
+//                BreezeIcon(
+//                    breezeIcon = BreezeIcons.Linear.Company.SpotifyLinear,
+//                    contentDescription = null,
+//                    color = Color(0xFF228B22),
+//                    modifier = Modifier.size(48.dp)
+//                )
+//                Spacer(Modifier.size(20.dp))
+//                Text("Spotify",
+//                    modifier = Modifier,
+//                    style = MaterialTheme.typography.bodyLarge,
+//                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue,
+//                    //Caso o texto suma provavelmente deve ter algum elemento com fillMaxWidth na Row/Column
+//                    overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
+//                    maxLines = 1 //Limita o texto a 1 linha para evitar quebra
+//
+//                )
+//                Row(
+//                    horizontalArrangement = Arrangement.End
+//                ) {
+//                    // -- ATENÇÃO!!!! BOTÃO MUTADO POR FALTA DE USO. NÃO MEXA AQUI A NÃO SER SE FOR PARA ADICIONAR FUNCIONALIDADE A ELE --
+////                    TextButton(onClick = {
+////                        onClick()
+////                    }) {
+////                        Row(
+////                            verticalAlignment = Alignment.CenterVertically
+////                        ) {
+////                            Icon(Icons.Filled.Add, "Add")
+////                            Spacer(modifier = Modifier.size(10.dp))
+////                            Text("Editar Valor")
+////                        }
+////                    }
+//
+//
+//                        IconButton(onClick = { isExpanded = !isExpanded }) {
+//                            Icon(
+//                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp
+//                                else Icons.Default.KeyboardArrowDown,
+//                                contentDescription = "Expandir detalhes"
+//                            )
+//
+//                }
+//
+//
+//            }
+//            //Linha de baixo com o valor monetário da categoria
+//            Row(
+//                modifier = Modifier.padding(10.dp)
+//
+//            ) {
+//                Spacer(modifier = Modifier.width(68.dp))
+//                Text(
+//                    "1 Parcela de 1",
+//                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
+//                )
+//                Box(modifier = Modifier.fillMaxWidth(),
+//                    contentAlignment = Alignment.CenterEnd){
+//                    IconButton(onClick = {
+//                        openDialog.value = true
 //                    }) {
+//                        BreezeIcon(
+//                            breezeIcon = BreezeIcons.Linear.Essetional.PaperBinLinear,
+//                            contentDescription = "Excluir Conta"
+//                        )
+//                    }
+//                }
+//            }
+//
+//        }
+//        if (openDialog.value){
+//            BasicAlertDialog(
+//                onDismissRequest = {
+//                    //Dispensa o BasicAlertDialog
+//                    openDialog.value = false
+//                }
+//
+//            ) {
+//                Surface(
+//                    modifier = Modifier.size(width = 312.dp, height = 200.dp),
+//                    shape = MaterialTheme.shapes.large,
+//                    tonalElevation = AlertDialogDefaults.TonalElevation
+//                ) {
+//                    Column(modifier = Modifier.padding(16.dp),
+//                        verticalArrangement = Arrangement.SpaceAround
+//                    ) {
+//
+//                        //Título do BasicAlertDialog
+//                        Text("Excluir Conta",
+//                            style = MaterialTheme.typography.titleMedium,
+//                            fontSize = 23.sp)
+//
+//                        //Texto do BasicAlertDialog
+//                        Text("Você está prestes a excluir esta conta, esta ação será irreversível. Prosseguir ?",
+//                            style = MaterialTheme.typography.bodyMedium)
+//
 //                        Row(
-//                            verticalAlignment = Alignment.CenterVertically
+//                            modifier = Modifier.fillMaxWidth(),
+//                            horizontalArrangement = Arrangement.End
 //                        ) {
-//                            Icon(Icons.Filled.Add, "Add")
-//                            Spacer(modifier = Modifier.size(10.dp))
-//                            Text("Editar Valor")
+//                            TextButton(onClick = {
+//                                openDialog.value = false //Botão de cancelar
+//                            }) {
+//                                Text("Cancelar")
+//                            }
+//                            TextButton(onClick = {
+//                                openDialog.value = false //Botão de confirmar
+//                            }) {
+//                                Text("Confirmar")
+//                            }
 //                        }
 //                    }
-
-
-                        IconButton(onClick = { isExpanded = !isExpanded }) {
-                            Icon(
-                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp
-                                else Icons.Default.KeyboardArrowDown,
-                                contentDescription = "Expandir detalhes"
-                            )
-
-                }
-
-
-            }
-            //Linha de baixo com o valor monetário da categoria
-            Row(
-                modifier = Modifier.padding(10.dp)
-
-            ) {
-                Spacer(modifier = Modifier.width(68.dp))
-                Text(
-                    "1 Parcela de 1",
-                    color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
-                )
-                Box(modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd){
-                    IconButton(onClick = {
-                        openDialog.value = true
-                    }) {
-                        BreezeIcon(
-                            breezeIcon = BreezeIcons.Linear.Essetional.PaperBinLinear,
-                            contentDescription = "Excluir Conta"
-                        )
-                    }
-                }
-            }
-
-        }
-        if (openDialog.value){
-            BasicAlertDialog(
-                onDismissRequest = {
-                    //Dispensa o BasicAlertDialog
-                    openDialog.value = false
-                }
-
-            ) {
-                Surface(
-                    modifier = Modifier.size(width = 312.dp, height = 200.dp),
-                    shape = MaterialTheme.shapes.large,
-                    tonalElevation = AlertDialogDefaults.TonalElevation
-                ) {
-                    Column(modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.SpaceAround
-                    ) {
-
-                        //Título do BasicAlertDialog
-                        Text("Excluir Conta",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 23.sp)
-
-                        //Texto do BasicAlertDialog
-                        Text("Você está prestes a excluir esta conta, esta ação será irreversível. Prosseguir ?",
-                            style = MaterialTheme.typography.bodyMedium)
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            TextButton(onClick = {
-                                openDialog.value = false //Botão de cancelar
-                            }) {
-                                Text("Cancelar")
-                            }
-                            TextButton(onClick = {
-                                openDialog.value = false //Botão de confirmar
-                            }) {
-                                Text("Confirmar")
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-
-    }
-    Spacer(modifier = Modifier.size(10.dp))
-}
-}
-
-@Composable
-@Preview
-private fun Preview(){
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        EsqueletoBreezeCard()
-    }
-}
+//                }
+//            }
+//
+//        }
+//
+//    }
+//    Spacer(modifier = Modifier.size(10.dp))
+//}
+//}
+//
+//@Composable
+//@Preview
+//private fun Preview(){
+//    Column(
+//        modifier = Modifier.fillMaxSize(),
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        EsqueletoBreezeCard()
+//    }
+//}
