@@ -25,6 +25,7 @@ import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
+import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 
 @Composable
@@ -60,12 +61,16 @@ fun PaymentHeader(
         BreezeRegularText(
             text = "R$ 300,00",
             size = 17.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = Blue
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        DescriptionText("Pagamento referente a Spotify")
+        DescriptionText(
+            text = "Pagamento referente a Spotify",
+            color = NavyBlue
+        )
 
         Spacer(modifier = Modifier.height(30.dp))
 

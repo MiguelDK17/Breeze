@@ -24,6 +24,7 @@ val blackPoppinsDarkMode = Color(0xFFD4D7DB)
 val greyTextMediumPoppinsLightMode = Color(0xFF5A5A5A)
 val greyTextMediumPoppinsDarkMode = Color(0xFFA6ACB2)
 val MediumGrey = Color(0xFF5E5E5E)
+val regularTextModoClaro = Color(0xFF6B6B6B)
 
 
 

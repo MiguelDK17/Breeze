@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.ui.theme.regularTextModoClaro
 
 @Composable
 fun BreezeRegularText(
@@ -15,7 +16,7 @@ fun BreezeRegularText(
     text: String,
     size: TextUnit = 14.sp,
     fontWeight: FontWeight = FontWeight.Normal,
-    color: Color = NavyBlue
+    color: Color = regularTextModoClaro
 ){
     Text(
         modifier = modifier,
