@@ -25,6 +25,8 @@ val greyTextMediumPoppinsLightMode = Color(0xFF5A5A5A)
 val greyTextMediumPoppinsDarkMode = Color(0xFFA6ACB2)
 val MediumGrey = Color(0xFF5E5E5E)
 val regularTextModoClaro = Color(0xFF6B6B6B)
+val grayforHint = Color(0xFF9E9E9E)
+val grayforTextColorInDropdown = Color(0xFF4A4A4A)
 
 
 

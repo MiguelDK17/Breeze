@@ -35,16 +35,15 @@ fun PaymentHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
             TitleText(
                 modifier = Modifier.padding(top = 10.dp),
                 text = "Confirmar pagamento",
                 fontWeight = FontWeight.Bold,
                 color = NavyBlue
             )
-
         HorizontalDivider(
             modifier = Modifier
                 .width(300.dp)
@@ -64,15 +63,11 @@ fun PaymentHeader(
             fontWeight = FontWeight.SemiBold,
             color = Blue
         )
-
         Spacer(modifier = Modifier.height(12.dp))
-
         DescriptionText(
             text = "Pagamento referente a Spotify",
             color = NavyBlue
         )
-
         Spacer(modifier = Modifier.height(30.dp))
-
     }
 }

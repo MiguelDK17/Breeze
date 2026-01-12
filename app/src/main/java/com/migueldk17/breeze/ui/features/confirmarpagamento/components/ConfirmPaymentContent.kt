@@ -30,14 +30,14 @@ fun ConfirmPaymentContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PaymentHeader(state)
 
         HorizontalDivider()
 
-        PaymentAmount()
+        PaymentAmount(state.isContaParcelada)
 
         HorizontalDivider()
 

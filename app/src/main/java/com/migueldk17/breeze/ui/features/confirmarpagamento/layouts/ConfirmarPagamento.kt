@@ -1,12 +1,11 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.layouts
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +26,7 @@ fun ConfirmarPagamentoDialog(
     onConfirm: () -> Unit,
     onPaymentMethodCLick: () -> Unit
 ){
+    val verticalScroll = rememberScrollState()
     if (!isVisible) return
 
     Dialog(
@@ -44,7 +44,7 @@ fun ConfirmarPagamentoDialog(
             ConfirmPaymentContent(
                 onConfirm = {},
                 onPaymentMethodClick = {},
-                state = ConfirmPaymentState(300.00)
+                state = ConfirmPaymentState(amount = 300.00, isContaParcelada = false)
             )
         }
     }
@@ -60,7 +60,7 @@ private fun Preview(){
         BreezeTheme() {
             ConfirmarPagamentoDialog(
                 isVisible = true,
-                state = ConfirmPaymentState(amount = 300.00),
+                state = ConfirmPaymentState(amount = 300.00, isContaParcelada = false),
                 onDismiss = {},
                 onConfirm = {},
                 onPaymentMethodCLick = {}

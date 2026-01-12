@@ -30,9 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.theme.NavyPetrol
+import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 
 @Composable
 fun BreezeDropdownMenu(
@@ -41,7 +43,9 @@ fun BreezeDropdownMenu(
     categories: List<String>,
     selectedCategory: String,
     onCategorySelected: (String) -> Unit,
-    showDescriptionText: Boolean = true
+    showDescriptionText: Boolean = true,
+    textSize: TextUnit = 16.sp,
+    textColor: Color = if(!isSystemInDarkTheme()) grayforTextColorInDropdown else Color(0xFFF5F5F5)
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -71,8 +75,8 @@ fun BreezeDropdownMenu(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = selectedCategory,
-                    fontSize = 16.sp,
-                    color = if(!isSystemInDarkTheme()) Color.Black else Color(0xFFF5F5F5))
+                    fontSize = textSize,
+                    color = textColor)
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = "Open menu"

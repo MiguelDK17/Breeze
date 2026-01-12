@@ -4,4 +4,5 @@ import java.math.BigDecimal
 
 data class ConfirmPaymentState(
     val amount: Double,
+    val isContaParcelada: Boolean
 )
