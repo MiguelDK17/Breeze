@@ -44,30 +44,6 @@ fun PaymentHeader(
                 fontWeight = FontWeight.Bold,
                 color = NavyBlue
             )
-        HorizontalDivider(
-            modifier = Modifier
-                .width(300.dp)
-                .padding(top = 10.dp)
-        )
-        Spacer(modifier = Modifier.height(17.dp))
-        BreezeIcon(
-            modifier = Modifier
-                .size(40.dp),
-            breezeIcon = BreezeIcons.Linear.All.SpotifyLinear,
-            contentDescription = "Spotify"
-        )
-        Spacer(modifier = Modifier.height(22.dp))
-        BreezeRegularText(
-            text = "R$ 300,00",
-            size = 17.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Blue
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        DescriptionText(
-            text = "Pagamento referente a Spotify",
-            color = NavyBlue
-        )
-        Spacer(modifier = Modifier.height(30.dp))
+
     }
 }
