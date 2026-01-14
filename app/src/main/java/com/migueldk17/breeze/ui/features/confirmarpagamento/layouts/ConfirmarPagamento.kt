@@ -43,8 +43,8 @@ fun ConfirmarPagamentoDialog(
             shape = RoundedCornerShape(24.dp),
         ) {
             ConfirmPaymentContent(
-                onConfirm = {},
-                onPaymentMethodClick = {},
+                onConfirm = {onConfirm()},
+                onPaymentMethodClick = {onPaymentMethodCLick()},
                 state = ConfirmPaymentState(
                     name = "Spotify",
                     valor = 300.00,
@@ -56,33 +56,4 @@ fun ConfirmarPagamentoDialog(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun Preview(){
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-        BreezeTheme() {
-            ConfirmarPagamentoDialog(
-                isVisible = true,
-                state = ConfirmPaymentState(
-                        name = "Spotify",
-                        valor = 300.00,
-                        juros = 0.00,
-                        icon = BreezeIcons.Linear.Company.SpotifyLinear,
-                        isContaParcelada = true,
-                        qtdParcelas = listOf("5", "6", "7", "8")
-                    ),
-                onDismiss = {},
-                onConfirm = {},
-                onPaymentMethodCLick = {}
-
-            )
-        }
-
-    }
-
 }

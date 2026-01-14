@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -7,19 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -33,9 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
@@ -46,11 +41,16 @@ import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
+import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
+import dagger.hilt.android.internal.Contexts
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 
 //Card de PaginaInicial
@@ -66,12 +66,27 @@ fun BreezeCardConta(
     semParcelaNoMes: Boolean,
     dataPrimeiraParcelaFutura: LocalDate?
 ){
-
-
+    val name = conta.name
+    val preco = conta.valor
+    val icon = conta.icon.toBreezeIconsType()
+    val isContaParcelada = conta.isContaParcelada
+    val juros = parcela?.porcentagemJuros ?: 0.00
     var isExpanded by remember { mutableStateOf(false) }
 
-    //Variavel que controla o estado do BasicAlertDialog
-    val openDialog = remember { mutableStateOf(false) }
+    //Variavel que controla o estado do BasicAlertDialog de Excluir Conta
+    var openDialogExcluirConta by remember { mutableStateOf(false) }
+    //Variavel que controla o estado do Dialog de Pagar Conta
+    var openDialogPagarConta by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    val confirmPaymentState = ConfirmPaymentState(
+        name = name,
+        juros = juros ,
+        valor = preco,
+        icon = icon,
+        isContaParcelada = isContaParcelada
+    )
 
     OutlinedCard (
         modifier = Modifier
@@ -122,7 +137,9 @@ fun BreezeCardConta(
 //                    }
 
                     IconButton(
-                        onClick = {},
+                        onClick = {
+                            openDialogPagarConta = true
+                        },
                         modifier = Modifier
                             .size(35.dp)
                     ) {
@@ -161,7 +178,7 @@ fun BreezeCardConta(
                 Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterEnd){
                     IconButton(onClick = {
-                        openDialog.value = true
+                        openDialogPagarConta = true
                     },
                         modifier = Modifier.size(30.dp)) {
                         BreezeIcon(
@@ -179,11 +196,20 @@ fun BreezeCardConta(
             }
 
         }
-        if (openDialog.value){
+        if (openDialogPagarConta) {
+            MostraDialogPagarConta(
+                openDialogPagarConta = openDialogPagarConta,
+                onOpenDialogPagarConta = { value ->
+                   openDialogPagarConta = value
+                },
+                confirmPaymentState = confirmPaymentState
+            )
+        }
+        if (openDialogExcluirConta){
             BasicAlertDialog(
                 onDismissRequest = {
                     //Dispensa o BasicAlertDialog
-                    openDialog.value = false
+                    openDialogExcluirConta = false
                 }
 
             ) {
@@ -210,14 +236,14 @@ fun BreezeCardConta(
                             horizontalArrangement = Arrangement.End
                         ) {
                             TextButton(onClick = {
-                                openDialog.value = false //Botão de cancelar
+                                openDialogExcluirConta = false //Botão de cancelar
                             }) {
                                 Text("Cancelar")
                             }
                             TextButton(onClick = {
                                 apagarConta()
                                 apagarParcelas()
-                                openDialog.value = false //Botão de confirmar
+                                openDialogExcluirConta = false //Botão de confirmar
                             }) {
                                 Text("Confirmar")
                             }
@@ -227,9 +253,30 @@ fun BreezeCardConta(
             }
 
         }
-
     }
     Spacer(modifier = Modifier.size(10.dp))
+}
+
+@Composable
+private fun MostraDialogPagarConta(
+    openDialogPagarConta: Boolean,
+    onOpenDialogPagarConta: (Boolean) -> Unit,
+    confirmPaymentState: ConfirmPaymentState
+){
+    val context = LocalContext.current
+    ConfirmarPagamentoDialog(
+        isVisible = openDialogPagarConta,
+        state = confirmPaymentState,
+        onDismiss = {
+            onOpenDialogPagarConta(false)
+        },
+        onConfirm = {
+            ToastManager.showToast(context, "Vc confirmou e pagou a conta kkkkkk")
+        },
+        onPaymentMethodCLick = {
+            ToastManager.showToast(context, "Sem função, plop!")
+        }
+    )
 }
 
 @Composable

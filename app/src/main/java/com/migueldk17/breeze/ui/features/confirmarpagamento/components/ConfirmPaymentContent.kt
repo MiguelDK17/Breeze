@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +27,8 @@ fun ConfirmPaymentContent(
     onConfirm: () -> Unit,
     onPaymentMethodClick: () -> Unit
 ){
+    var selectedCategory by remember { mutableStateOf("Nenhum") }
+    val isEnabled = selectedCategory != "Nenhum"
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +44,13 @@ fun ConfirmPaymentContent(
 
         HorizontalDivider()
 
-        PaymentMethodField(state)
+        PaymentMethodField(
+            state,
+            selectedCategory = selectedCategory,
+            onSelectCategory = {
+                selectedCategory = it
+            }
+        )
 
         InstallmentField(state)
 
@@ -53,7 +65,8 @@ fun ConfirmPaymentContent(
                 onClick = {},
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
-                color = Blue
+                color = Blue,
+                enabled = isEnabled
             )
         }
 

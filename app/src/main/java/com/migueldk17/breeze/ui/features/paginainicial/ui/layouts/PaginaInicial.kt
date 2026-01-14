@@ -284,7 +284,6 @@ private fun LazyColumnReceitas(receitaState: UiState<List<Receita>>, viewModel: 
             val contas = receitaState.data
             LazyColumn {
                 items(contas) { receita ->
-
                     BreezeCardReceita(
                         receita,
                         apagarReceita = {  viewModel.apagaReceita(receita) },

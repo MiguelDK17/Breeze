@@ -24,9 +24,11 @@ import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 
 @Composable
 fun PaymentMethodField(
-    state: ConfirmPaymentState
+    state: ConfirmPaymentState,
+    selectedCategory: String,
+    onSelectCategory: (String) -> Unit
 ){
-    var selectedCategory by remember { mutableStateOf("Nenhum") }
+
     val textColor = if (selectedCategory == "Nenhum") grayforHint else grayforTextColorInDropdown
     val juros = state.juros
 
@@ -56,7 +58,7 @@ fun PaymentMethodField(
                 categories = categories,
                 selectedCategory = selectedCategory,
                 onCategorySelected = {
-                    selectedCategory = it
+                    onSelectCategory(it)
                 },
                 showDescriptionText = false
             )
