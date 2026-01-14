@@ -27,6 +27,12 @@ fun ConfirmarPagamentoDialog(
     onConfirm: () -> Unit,
     onPaymentMethodCLick: () -> Unit
 ){
+    val name = state.name
+    val preco = state.valor
+    val juros = state.juros
+    val isContaParcelada = state.isContaParcelada
+    val icon = state.icon
+    val qdtParcelas = state.qtdParcelas
     val verticalScroll = rememberScrollState()
     if (!isVisible) return
 
@@ -46,12 +52,12 @@ fun ConfirmarPagamentoDialog(
                 onConfirm = {onConfirm()},
                 onPaymentMethodClick = {onPaymentMethodCLick()},
                 state = ConfirmPaymentState(
-                    name = "Spotify",
-                    valor = 300.00,
-                    juros = 0.00,
-                    icon = BreezeIcons.Linear.Company.SpotifyLinear,
-                    isContaParcelada = true,
-                    qtdParcelas = listOf("5", "6", "7", "8")
+                    name = name,
+                    valor = preco,
+                    juros = juros,
+                    icon = icon,
+                    isContaParcelada = isContaParcelada,
+                    qtdParcelas = qdtParcelas
                 )
             )
         }

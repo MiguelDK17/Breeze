@@ -62,7 +62,9 @@ fun ConfirmPaymentContent(
             BreezeButton(
                 modifier = Modifier.size(width = 120.dp, height = 56.dp),
                 text = "Confirmar",
-                onClick = {},
+                onClick = {
+                    onConfirm()
+                },
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
                 color = Blue,
