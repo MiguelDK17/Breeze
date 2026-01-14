@@ -141,7 +141,8 @@ fun Passo1(
             onCategorySelected = {
                 focusManager.clearFocus()
                 selectedCategory = it
-            }
+            },
+            showDescriptionText = true
         )
         if (selectedCategory != "Selecione uma categoria") {
             Row(

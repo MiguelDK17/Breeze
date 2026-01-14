@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,18 +47,19 @@ fun PaymentMethodField(
             BreezeRegularText(text = "Forma de pagamento:")
         }
         Column(
-            modifier = Modifier,
+            modifier = Modifier
+                .heightIn(min = 76.dp, max = 100.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             BreezeDropdownMenu(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
                 categoryName = "",
                 categories = categories,
                 selectedCategory = selectedCategory,
                 onCategorySelected = {
                     selectedCategory = it
-                }
+                },
+                showDescriptionText = false
             )
 
         }

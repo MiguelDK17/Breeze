@@ -1,7 +1,9 @@
 package com.migueldk17.breeze.ui.components
 
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -43,13 +45,16 @@ fun BreezeDropdownMenu(
     categories: List<String>,
     selectedCategory: String,
     onCategorySelected: (String) -> Unit,
-    showDescriptionText: Boolean = true,
+    showDescriptionText: Boolean,
     textSize: TextUnit = 16.sp,
     textColor: Color = if(!isSystemInDarkTheme()) grayforTextColorInDropdown else Color(0xFFF5F5F5)
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
         if (showDescriptionText) {
             Text(
                 text = categoryName,
@@ -62,7 +67,7 @@ fun BreezeDropdownMenu(
         }
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol)
                 .clickable { expanded = true }

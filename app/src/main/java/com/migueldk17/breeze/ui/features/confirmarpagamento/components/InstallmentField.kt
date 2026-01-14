@@ -4,8 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,13 +42,14 @@ fun InstallmentField() {
         )
         Column(
             modifier = Modifier
-                .padding(start = 10.dp, bottom = 23.dp),
+                .padding(start = 10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             BreezeDropdownMenu(
                 modifier = Modifier
-                    .size(60.dp),
+                    .widthIn(min = 53.dp, 60.dp)
+                    .heightIn(min = 53.dp, 60.dp),
                 categories = categories,
                 categoryName = "",
                 selectedCategory = selectedNumericalCategory,
@@ -51,7 +57,8 @@ fun InstallmentField() {
                     selectedNumericalCategory = it
                 },
                 textSize = 14.sp,
-                textColor = grayforTextColorInDropdown
+                textColor = grayforTextColorInDropdown,
+                showDescriptionText = false
             )
         }
 
