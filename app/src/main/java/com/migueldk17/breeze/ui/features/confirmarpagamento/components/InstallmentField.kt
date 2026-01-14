@@ -6,11 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,19 +18,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
-import com.migueldk17.breeze.ui.theme.grayforHint
+import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 
 @Composable
-fun InstallmentField() {
+fun InstallmentField(
+    state: ConfirmPaymentState
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        val categories = listOf("1", "2", "3", "4")
-        var selectedNumericalCategory by remember { mutableStateOf("1") }
+        val installments = state.qtdParcelas
+        val firstInstallment = installments.first()
+        var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
 
         BreezeRegularText(
             modifier = Modifier.padding(end = 10.dp),
@@ -50,7 +49,7 @@ fun InstallmentField() {
                 modifier = Modifier
                     .widthIn(min = 53.dp, 60.dp)
                     .heightIn(min = 53.dp, 60.dp),
-                categories = categories,
+                categories = installments,
                 categoryName = "",
                 selectedCategory = selectedNumericalCategory,
                 onCategorySelected = {

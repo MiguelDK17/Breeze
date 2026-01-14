@@ -3,12 +3,9 @@ package com.migueldk17.breeze.ui.features.confirmarpagamento.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,19 +30,17 @@ fun ConfirmPaymentContent(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        PaymentHeader(state)
+        PaymentHeader()
 
         HorizontalDivider()
 
-        PaymentAmount(state.isContaParcelada)
+        PaymentAmount(state)
 
         HorizontalDivider()
 
-        PaymentMethodField()
+        PaymentMethodField(state)
 
-        InterestField()
-
-        InstallmentField()
+        InstallmentField(state)
 
         Row(
             modifier = Modifier.fillMaxSize(),

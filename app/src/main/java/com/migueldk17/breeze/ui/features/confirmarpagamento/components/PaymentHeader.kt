@@ -29,9 +29,7 @@ import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 
 @Composable
-fun PaymentHeader(
-    state: ConfirmPaymentState
-){
+fun PaymentHeader(){
     Column(
         modifier = Modifier
             .fillMaxWidth(),

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.features.confirmarpagamento.components.ConfirmPaymentContent
 import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -44,7 +45,14 @@ fun ConfirmarPagamentoDialog(
             ConfirmPaymentContent(
                 onConfirm = {},
                 onPaymentMethodClick = {},
-                state = ConfirmPaymentState(amount = 300.00, isContaParcelada = false)
+                state = ConfirmPaymentState(
+                    name = "Spotify",
+                    valor = 300.00,
+                    juros = 0.00,
+                    icon = BreezeIcons.Linear.Company.SpotifyLinear,
+                    isContaParcelada = true,
+                    qtdParcelas = listOf("5", "6", "7", "8")
+                )
             )
         }
     }
@@ -60,7 +68,14 @@ private fun Preview(){
         BreezeTheme() {
             ConfirmarPagamentoDialog(
                 isVisible = true,
-                state = ConfirmPaymentState(amount = 300.00, isContaParcelada = false),
+                state = ConfirmPaymentState(
+                        name = "Spotify",
+                        valor = 300.00,
+                        juros = 0.00,
+                        icon = BreezeIcons.Linear.Company.SpotifyLinear,
+                        isContaParcelada = true,
+                        qtdParcelas = listOf("5", "6", "7", "8")
+                    ),
                 onDismiss = {},
                 onConfirm = {},
                 onPaymentMethodCLick = {}
