@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.content.Context
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -56,6 +57,7 @@ import java.time.LocalDate
 @Composable
 fun BreezeCardConta(
     conta: Conta,
+    listaDeParcelas: List<ParcelaEntity>,
     onClick: () -> Unit,
     apagarConta: () -> Unit,
     apagarParcelas: () -> Unit,
@@ -84,7 +86,7 @@ fun BreezeCardConta(
         valor = preco,
         icon = icon,
         isContaParcelada = isContaParcelada,
-
+        listaDeParcelas = listaDeParcelas
     )
 
     OutlinedCard (

@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.state
 
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import com.migueldk17.breeze.entity.ParcelaEntity
 
 data class ConfirmPaymentState(
     val name: String,
@@ -8,5 +9,5 @@ data class ConfirmPaymentState(
     val valor: Double,
     val icon: BreezeIconsType,
     val isContaParcelada: Boolean,
-    val qtdParcelas: List<String> = listOf("0")
+    val listaDeParcelas: List<ParcelaEntity>
 )

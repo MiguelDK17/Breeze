@@ -235,6 +235,7 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
 
                     BreezeCardConta(
                         conta,
+                        parcelas,
                         onClick = {
                             val intent = Intent(context, MainActivity3::class.java)
                             intent.putExtra("id", conta.id)

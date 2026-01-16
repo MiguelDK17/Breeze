@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,15 +30,20 @@ fun InstallmentField(
     state: ConfirmPaymentState
 ) {
     val context = LocalContext.current
-    ToastManager.showToast(context, "As parcelas disponíveis pra essa compra são essas: ${state.qtdParcelas}")
+    ToastManager.showToast(context, "As parcelas disponíveis pra essa compra são essas: ${state.listaDeParcelas}")
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        val installments = state.qtdParcelas
-        val firstInstallment = installments.first()
+        val list = mutableListOf<String>()
+        val listAntiga = state.listaDeParcelas.toMutableList()
+        for (parcela in listAntiga) {
+            list.add(parcela.numeroParcela.toString())
+        }
+        Log.d(TAG, "InstallmentField: $list")
+        val firstInstallment = list.first()
         var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
 
         BreezeRegularText(
@@ -53,7 +60,7 @@ fun InstallmentField(
                 modifier = Modifier
                     .widthIn(min = 53.dp, 60.dp)
                     .heightIn(min = 53.dp, 60.dp),
-                categories = installments,
+                categories = list,
                 categoryName = "",
                 selectedCategory = selectedNumericalCategory,
                 onCategorySelected = {
