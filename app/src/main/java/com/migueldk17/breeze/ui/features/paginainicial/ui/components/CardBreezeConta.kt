@@ -49,8 +49,6 @@ import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
-import dagger.hilt.android.internal.Contexts
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 
 //Card de PaginaInicial
@@ -85,7 +83,8 @@ fun BreezeCardConta(
         juros = juros ,
         valor = preco,
         icon = icon,
-        isContaParcelada = isContaParcelada
+        isContaParcelada = isContaParcelada,
+
     )
 
     OutlinedCard (
@@ -257,6 +256,7 @@ fun BreezeCardConta(
     Spacer(modifier = Modifier.size(10.dp))
 }
 
+//Função que faz aparecer o diálogo de Pagar Conta
 @Composable
 private fun MostraDialogPagarConta(
     openDialogPagarConta: Boolean,
@@ -268,15 +268,13 @@ private fun MostraDialogPagarConta(
         isVisible = openDialogPagarConta,
         state = confirmPaymentState,
         onDismiss = {
+            ToastManager.showToast(context, "Dialog fechado 🫨")
             onOpenDialogPagarConta(false)
         },
         onConfirm = {
             ToastManager.showToast(context, "Vc confirmou e pagou a conta kkkkkk")
             onOpenDialogPagarConta(false)
         },
-        onPaymentMethodCLick = {
-            ToastManager.showToast(context, "Sem função, plop!")
-        }
     )
 }
 

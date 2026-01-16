@@ -32,6 +32,7 @@ fun PaymentMethodField(
     val textColor = if (selectedCategory == "Nenhum") grayforHint else grayforTextColorInDropdown
     val juros = state.juros
 
+    // --------- Row das formas de pagamento -----------------//
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -65,6 +66,8 @@ fun PaymentMethodField(
 
         }
     }
+
+    //-------------Row dos Juros -------------------//
     Row(
         modifier = Modifier
             .fillMaxWidth()

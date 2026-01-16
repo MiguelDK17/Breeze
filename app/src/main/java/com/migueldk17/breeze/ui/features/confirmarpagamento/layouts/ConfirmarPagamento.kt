@@ -24,8 +24,7 @@ fun ConfirmarPagamentoDialog(
     isVisible: Boolean,
     state: ConfirmPaymentState,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    onPaymentMethodCLick: () -> Unit
+    onConfirm: () -> Unit
 ){
     val name = state.name
     val preco = state.valor
@@ -33,7 +32,6 @@ fun ConfirmarPagamentoDialog(
     val isContaParcelada = state.isContaParcelada
     val icon = state.icon
     val qdtParcelas = state.qtdParcelas
-    val verticalScroll = rememberScrollState()
     if (!isVisible) return
 
     Dialog(
@@ -50,7 +48,6 @@ fun ConfirmarPagamentoDialog(
         ) {
             ConfirmPaymentContent(
                 onConfirm = {onConfirm()},
-                onPaymentMethodClick = {onPaymentMethodCLick()},
                 state = ConfirmPaymentState(
                     name = name,
                     valor = preco,
