@@ -23,14 +23,12 @@ import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
-import com.migueldk17.breeze.ui.utils.ToastManager
 
 @Composable
 fun InstallmentField(
     state: ConfirmPaymentState
 ) {
     val context = LocalContext.current
-    ToastManager.showToast(context, "As parcelas disponíveis pra essa compra são essas: ${state.listaDeParcelas}")
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -38,7 +36,7 @@ fun InstallmentField(
         horizontalArrangement = Arrangement.Center
     ) {
         val list = mutableListOf<String>()
-        val listAntiga = state.listaDeParcelas.toMutableList()
+        val listAntiga = state.parcelas.toMutableList()
         for (parcela in listAntiga) {
             list.add(parcela.numeroParcela.toString())
         }

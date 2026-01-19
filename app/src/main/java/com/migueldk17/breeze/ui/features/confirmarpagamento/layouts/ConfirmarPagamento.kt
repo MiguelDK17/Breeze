@@ -24,7 +24,7 @@ fun ConfirmarPagamentoDialog(
     val juros = state.juros
     val isContaParcelada = state.isContaParcelada
     val icon = state.icon
-    val qdtParcelas = state.listaDeParcelas
+    val qdtParcelas = state.parcelas
     if (!isVisible) return
 
     Dialog(
@@ -47,7 +47,7 @@ fun ConfirmarPagamentoDialog(
                     juros = juros,
                     icon = icon,
                     isContaParcelada = isContaParcelada,
-                    listaDeParcelas = qdtParcelas
+                    parcelas = qdtParcelas
                 )
             )
         }

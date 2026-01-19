@@ -138,7 +138,7 @@ fun Passo4(
                     selectedCategory = selectedCategory, //Opção selecionada no Dropdown
                     onChangeCategoriesParcelamento = { selectedCategory = it}, //Função que atualiza a opção selecionada no Dropdown
                     textParcelas = textParcelas, //Valor do BreezeOutlinedTextField de parcelamento
-                    onChangeTextParcelas = { textParcelas = it} //Função que atualiza o valor do BreezeOutlinedTextField de parcelamento
+                    onChangeTextParcelas = { textParcelas = it}, //Função que atualiza o valor do BreezeOutlinedTextField de parcelamento
                     )
             }
 
