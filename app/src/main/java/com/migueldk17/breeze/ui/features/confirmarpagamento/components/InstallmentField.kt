@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,12 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
-import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 
 @Composable
 fun InstallmentField(
-    state: ConfirmPaymentState
+    state: ConfirmPaymentModel
 ) {
     val context = LocalContext.current
     Row(
@@ -38,9 +36,8 @@ fun InstallmentField(
         val list = mutableListOf<String>()
         val listAntiga = state.parcelas.toMutableList()
         for (parcela in listAntiga) {
-            list.add(parcela.numeroParcela.toString())
+            list.add(parcela.numero.toString())
         }
-        Log.d(TAG, "InstallmentField: $list")
         val firstInstallment = list.first()
         var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
 

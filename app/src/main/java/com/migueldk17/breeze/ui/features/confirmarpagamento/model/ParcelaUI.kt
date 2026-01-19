@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.confirmarpagamento.state
+package com.migueldk17.breeze.ui.features.confirmarpagamento.model
 
 import java.time.LocalDate
 

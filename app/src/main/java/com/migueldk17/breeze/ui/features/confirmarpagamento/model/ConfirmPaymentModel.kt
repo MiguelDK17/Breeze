@@ -1,8 +1,9 @@
-package com.migueldk17.breeze.ui.features.confirmarpagamento.state
+package com.migueldk17.breeze.ui.features.confirmarpagamento.model
 
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 
-data class ConfirmPaymentState(
+data class ConfirmPaymentModel(
+    val id: Long,
     val name: String,
     val juros: Double,
     val valor: Double,
