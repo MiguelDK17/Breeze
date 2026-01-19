@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
-import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.utils.arredondarValor
@@ -22,7 +22,7 @@ import com.migueldk17.breeze.ui.utils.formataValorConta
 
 @Composable
 fun PaymentAmount(
-    state: ConfirmPaymentState
+    state: ConfirmPaymentModel
 ){
     val name = state.name
     val icon = state.icon
