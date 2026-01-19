@@ -41,7 +41,8 @@ import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
-import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentState
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
@@ -69,7 +70,19 @@ fun BreezeCardConta(
     val icon = conta.icon.toBreezeIconsType()
     val isContaParcelada = conta.isContaParcelada
     val juros = parcela?.porcentagemJuros ?: 0.00
+    val idDaConta = conta.id
     var isExpanded by remember { mutableStateOf(false) }
+    val parcelasMutable = mutableListOf<ParcelaUI>()
+
+    for (item in listaDeParcelas){
+        val objectParcelaUI = ParcelaUI(
+            numero = item.numeroParcela,
+            valor = item.valor,
+            data = item.data.toLocalDate()
+        )
+        parcelasMutable.add(objectParcelaUI)
+    }
+
 
     //Variavel que controla o estado do BasicAlertDialog de Excluir Conta
     var openDialogExcluirConta by remember { mutableStateOf(false) }
@@ -78,13 +91,15 @@ fun BreezeCardConta(
 
     val context = LocalContext.current
 
-    val confirmPaymentState = ConfirmPaymentState(
+
+    val confirmPaymentModel = ConfirmPaymentModel(
+        id = idDaConta,
         name = name,
         juros = juros ,
         valor = preco,
         icon = icon,
         isContaParcelada = isContaParcelada,
-        parcelas = listaDeParcelas
+        parcelas = parcelasMutable.toList()
     )
 
     OutlinedCard (
@@ -201,7 +216,7 @@ fun BreezeCardConta(
                 onOpenDialogPagarConta = { value ->
                    openDialogPagarConta = value
                 },
-                confirmPaymentState = confirmPaymentState
+                confirmPaymentModel = confirmPaymentModel
             )
         }
         if (openDialogExcluirConta){
@@ -261,12 +276,12 @@ fun BreezeCardConta(
 private fun MostraDialogPagarConta(
     openDialogPagarConta: Boolean,
     onOpenDialogPagarConta: (Boolean) -> Unit,
-    confirmPaymentState: ConfirmPaymentState
+    confirmPaymentModel: ConfirmPaymentModel
 ){
     val context = LocalContext.current
     ConfirmarPagamentoDialog(
         isVisible = openDialogPagarConta,
-        state = confirmPaymentState,
+        state = confirmPaymentModel,
         onDismiss = {
             ToastManager.showToast(context, "Dialog fechado 🫨")
             onOpenDialogPagarConta(false)
