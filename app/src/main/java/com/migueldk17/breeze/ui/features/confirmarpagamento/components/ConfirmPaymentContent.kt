@@ -15,21 +15,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
+import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.Blue
+import com.migueldk17.breeze.ui.utils.ToastManager
 
 @Composable
 fun ConfirmPaymentContent(
     state: ConfirmPaymentModel,
     onConfirm: () -> Unit,
+    viewModel: ConfirmarPagamentoViewModel
 ){
     var selectedCategory by remember { mutableStateOf("Nenhum") }
+    val formaDePagamento = viewModel.formaDePagamento.collectAsStateWithLifecycle().value
     val isEnabled = selectedCategory != "Nenhum"
     val verticalScroll = rememberScrollState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -51,7 +59,8 @@ fun ConfirmPaymentContent(
             selectedCategory = selectedCategory,
             onSelectCategory = {
                 selectedCategory = it
-            }
+            },
+            viewModel = viewModel
         )
         if (state.isContaParcelada) {
             InstallmentField(state)
@@ -70,6 +79,9 @@ fun ConfirmPaymentContent(
                 text = "Confirmar",
                 onClick = {
                     onConfirm()
+                    viewModel.setFormaDePagamento(selectedCategory)
+                    ToastManager.showToast(context, "A forma de pagamento selecionada é: ${formaDePagamento}")
+
                 },
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,

@@ -44,7 +44,8 @@ fun ConfirmarPagamentoDialog(
         ) {
             ConfirmPaymentContent(
                 onConfirm = {onConfirm()},
-                state = state
+                state = state,
+                viewModel = viewModel
             )
         }
     }
