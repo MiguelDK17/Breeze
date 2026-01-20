@@ -12,9 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
+import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.grayforHint
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 
@@ -22,11 +25,13 @@ import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 fun PaymentMethodField(
     state: ConfirmPaymentModel,
     selectedCategory: String,
-    onSelectCategory: (String) -> Unit
+    onSelectCategory: (String) -> Unit,
+    viewModel: ConfirmarPagamentoViewModel
 ){
 
     val textColor = if (selectedCategory == "Nenhum") grayforHint else grayforTextColorInDropdown
     val juros = state.juros
+    var formaDePagamento = viewModel.formaDePagamento.collectAsStateWithLifecycle().value
 
     // --------- Row das formas de pagamento -----------------//
     Row(
