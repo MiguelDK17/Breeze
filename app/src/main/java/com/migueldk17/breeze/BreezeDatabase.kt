@@ -2,6 +2,8 @@ package com.migueldk17.breeze
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.migueldk17.breeze.converters.StatusContaConverter
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.dao.ParcelaDao
 import com.migueldk17.breeze.dao.ReceitaDao
@@ -10,8 +12,12 @@ import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.entity.Receita
 
 
-@Database(entities = [Conta::class, Receita::class, ParcelaEntity::class], version = 9, exportSchema = true)
+@Database(entities = [Conta::class, Receita::class, ParcelaEntity::class], version = 10, exportSchema = true)
 abstract class BreezeDatabase: RoomDatabase() {
+
+    @TypeConverters(StatusContaConverter::class)
+    abstract class BreezeDatabase: RoomDatabase()
+
     abstract fun receitaDao(): ReceitaDao
 
     abstract fun contaDao(): ContaDao

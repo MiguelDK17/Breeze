@@ -11,6 +11,15 @@ object BreezeIconLists {
         BreezeIcons.Linear.Building.Hospital,
         BreezeIcons.Linear.Building.HomeLinear,
 
+        //Company
+        BreezeIcons.Linear.Company.FacebookLinear,
+        BreezeIcons.Linear.Company.WhatsappLinear,
+        BreezeIcons.Linear.Company.GoogleLinear,
+        BreezeIcons.Linear.Company.GooglePlayLinear,
+        BreezeIcons.Linear.Company.AndroidLinear,
+        BreezeIcons.Linear.Company.WindowsLinear,
+        BreezeIcons.Linear.Company.SpotifyLinear,
+
         // Delivery
         BreezeIcons.Linear.Delivery.GroupLinear,
 

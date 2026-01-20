@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "3b1821b4225f34ab102b03d381080203",
+    "identityHash": "120457d39e48ce12065fa4ee7932552b",
     "entities": [
       {
         "tableName": "conta_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `category` TEXT NOT NULL, `sub_category` TEXT NOT NULL, `valor` REAL NOT NULL, `icon` TEXT NOT NULL, `color_icon` INTEGER NOT NULL, `color_card` INTEGER NOT NULL, `date_time` TEXT NOT NULL, `is_conta_parcelada` INTEGER NOT NULL DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `category` TEXT NOT NULL, `sub_category` TEXT NOT NULL, `valor` REAL NOT NULL, `icon` TEXT NOT NULL, `color_icon` INTEGER NOT NULL, `color_card` INTEGER NOT NULL, `date_time` TEXT NOT NULL, `status` TEXT NOT NULL DEFAULT '0', `data_pagamento` TEXT, `is_conta_parcelada` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -61,6 +61,18 @@
             "columnName": "date_time",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'0'"
+          },
+          {
+            "fieldPath": "dataPagamento",
+            "columnName": "data_pagamento",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "isContaParcelada",
@@ -183,7 +195,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b1821b4225f34ab102b03d381080203')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '120457d39e48ce12065fa4ee7932552b')"
     ]
   }
 }

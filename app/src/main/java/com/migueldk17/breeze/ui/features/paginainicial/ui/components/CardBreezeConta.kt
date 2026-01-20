@@ -287,7 +287,6 @@ private fun MostraDialogPagarConta(
             onOpenDialogPagarConta(false)
         },
         onConfirm = {
-            ToastManager.showToast(context, "Vc confirmou e pagou a conta kkkkkk")
             onOpenDialogPagarConta(false)
         },
     )
