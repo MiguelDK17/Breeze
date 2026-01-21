@@ -13,6 +13,7 @@ import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
+import com.migueldk17.breeze.ui.utils.StatusConta
 import com.migueldk17.breeze.ui.utils.arredondarValor
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -248,12 +249,13 @@ class AdicionarContaViewModel @Inject constructor(
                 colorIcon = colorIcon,
                 colorCard = colorCard,
                 dateTime = dateTime,
-                isContaParcelada = isContaParcelada
+                isContaParcelada = isContaParcelada,
             )
             try {
                 val idContaPai = contaRepository.adicionarConta(conta)
 
                 if (isContaParcelada) salvaParcelasDatabase(idContaPai)
+
 
                 _salvarContasState.value = UiState.Success(Unit)
             } catch (e: Exception) {

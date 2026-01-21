@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDateTime
@@ -10,8 +11,10 @@ import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.repository.ReceitaRepository
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -30,9 +33,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val receitaRepository: ReceitaRepository,
     private val contaRepository: ContaRepository,
-    private val parcelaRepository: ParcelaRepository
+    private val parcelaRepository: ParcelaRepository,
 ): ViewModel() {
     //Banco de dados
     private val _receita = MutableStateFlow<Double?>(null)
@@ -105,6 +109,7 @@ class PaginaInicialViewModel @Inject constructor(
                 .collectLatest { lista ->
                     if (lista.isEmpty()) {
                         _contaState.value = UiState.Empty
+                        getStatus()
                     } else {
                         delay(500) //Adiciona um pequeno delay
                         _contaState.value = UiState.Success(lista)
@@ -115,6 +120,24 @@ class PaginaInicialViewModel @Inject constructor(
 
     fun atualizaBottomSheet(boolean: Boolean){
         _showBottomSheet.value = boolean
+    }
+
+    fun getStatus(){
+        viewModelScope.launch {
+            contaRepository.getStatus()
+                .catch { e ->
+                    ToastManager.showToast(context, "Ocorreu o erro $e")
+                }
+                .collectLatest { lista ->
+                    if (lista.isEmpty()){
+                        ToastManager.showToast(context, "A lista de status está vazia")
+                    }
+                    else {
+                        ToastManager.showToast(context, "A lista: $lista")
+                    }
+
+                }
+        }
     }
 
 

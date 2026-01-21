@@ -38,6 +38,7 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.converters.toStatus
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
@@ -152,6 +153,7 @@ fun BreezeCardConta(
 
                     IconButton(
                         onClick = {
+                            ToastManager.showToast(context, "O estado atual da conta é ${conta.status.toStatus()}")
                             openDialogPagarConta = true
                         },
                         modifier = Modifier

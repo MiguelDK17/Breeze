@@ -20,7 +20,12 @@ class ContaRepository @Inject constructor(
         return contaDao.getContasMes(mesAno)
     }
 
+    fun getStatus(): Flow<String>{
+        return contaDao.getStatus()
+    }
+
     suspend fun getContaById(id: Long): Conta? = contaDao.getContaById(id)
+
     //Pega as contas por mes
     fun getContasPorMes(mes: String): Flow<List<Conta>> {
         return contaDao.getContasHistorico().map { contas ->
@@ -30,6 +35,10 @@ class ContaRepository @Inject constructor(
                 mesTraduzido == mes
             }
         }
+    }
+
+    suspend fun efetuarPagamentoConta(data: String, contaId: Long) {
+        contaDao.efetuarPagamentoConta(data, contaId)
     }
 
     suspend fun adicionarConta(conta: Conta): Long{

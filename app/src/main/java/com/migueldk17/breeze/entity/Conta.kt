@@ -37,7 +37,7 @@ data class Conta(
     val dateTime: String, //Data e gora de criação da conta
 
     @ColumnInfo(name = "status", defaultValue = "0")
-    val status: StatusConta = StatusConta.PENDENTE,
+    val status: Int = StatusConta.PENDENTE.ordinal,
 
     @ColumnInfo(name = "data_pagamento")
     val dataPagamento: String? = null,
