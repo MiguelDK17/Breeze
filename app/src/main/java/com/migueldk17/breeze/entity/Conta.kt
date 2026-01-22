@@ -42,6 +42,9 @@ data class Conta(
     @ColumnInfo(name = "data_pagamento")
     val dataPagamento: String? = null,
 
+    @ColumnInfo(name = "forma_de_pagamento")
+    val formaDePagamento: String? = null,
+
     @ColumnInfo(name = "is_conta_parcelada", defaultValue = "0")
     val isContaParcelada: Boolean = false // Booleano pra saber se a conta é parcelada ou não
 )

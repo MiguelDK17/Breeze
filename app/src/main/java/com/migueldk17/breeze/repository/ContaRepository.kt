@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.traduzData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -37,8 +38,16 @@ class ContaRepository @Inject constructor(
         }
     }
 
-    suspend fun efetuarPagamentoConta(data: String, contaId: Long) {
-        contaDao.efetuarPagamentoConta(data, contaId)
+    suspend fun efetuarPagamentoConta(data: String, contaId: Long, formaDePagamento: String): Int {
+       val resultado =  contaDao.efetuarPagamentoConta(data, contaId, formaDePagamento)
+        val conta = if (resultado == 1){
+            Log.d(TAG, "efetuarPagamentoConta: Operação feita com sucesso!")
+            resultado
+        } else {
+            Log.d(TAG, "efetuarPagamentoConta: Não foi possível atualizar a conta. Verifique o id e o formato da data e tente novamente")
+            resultado
+        }
+        return conta
     }
 
     suspend fun adicionarConta(conta: Conta): Long{

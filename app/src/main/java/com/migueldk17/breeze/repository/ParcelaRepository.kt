@@ -23,6 +23,10 @@ class ParcelaRepository @Inject constructor(
         return parcelaDao.getParcelaPorId(idParcela)
     }
 
+    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idDaParcela: Long){
+        parcelaDao.efetuarPagamentoParcela(data, idContaPai, idDaParcela)
+    }
+
     //Busca a parcela baseado no id da conta pai
      fun buscaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
         return parcelaDao.getParcelasDaConta(idContaPai)

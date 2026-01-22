@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,17 +33,49 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private val _formaDePagamento = MutableStateFlow("Nenhum")
     val formaDePagamento: StateFlow<String> = _formaDePagamento.asStateFlow()
 
-    private val _uiState = MutableStateFlow(ConfirmPaymentUIState())
-    val uiState: StateFlow<ConfirmPaymentUIState> = _uiState.asStateFlow()
+    private val _data = MutableStateFlow(LocalDate.now())
+    val data: StateFlow<LocalDate> = _data.asStateFlow()
+
+    private val _idDaConta: MutableStateFlow<Long> = MutableStateFlow(0)
+    val idDaConta: StateFlow<Long> = _idDaConta.asStateFlow()
+
+    private val _idDaParcela: MutableStateFlow<Long?> = MutableStateFlow(0)
+    val idDaParcela: StateFlow<Long?> = _idDaParcela.asStateFlow()
+
+    private val _numeroDaParcela: MutableStateFlow<Long> = MutableStateFlow(0)
+    val numeroDaParcela: StateFlow<Long> = _numeroDaParcela.asStateFlow()
+
+    fun setIdDaConta(id: Long){
+        _idDaConta.value = id
+    }
 
     fun setFormaDePagamento(value: String){
-        Toast.makeText(
-            context, "O texto do value é: $value", Toast.LENGTH_SHORT
-        ).show()
         _formaDePagamento.value = value
-        Toast.makeText(
-            context, "_formaDePagamento está assim: ${_formaDePagamento.value}", Toast.LENGTH_SHORT
-        ).show()
+        efetuarPagamentoNaConta()
+    }
+
+    fun setIdDaParcela(long: Long){
+        _idDaParcela.value = long
+    }
+
+    fun setNumeroDaParcela(long: Long){
+        _numeroDaParcela.value = long
+    }
+
+    private fun efetuarPagamentoNaConta() {
+        val data = _data.value.toDatabaseValue()
+        val idDaConta = _idDaConta.value
+        val idDaParcela = _idDaParcela.value
+        val formaDePagamento = _formaDePagamento.value
+        viewModelScope.launch {
+            if (_idDaParcela.value == null) {
+                contaRepository
+                    .efetuarPagamentoConta(data, idDaConta, formaDePagamento)
+            } else {
+                parcelaRepository.efetuarPagamentoParcela(data, idDaConta, idDaParcela!!)
+            }
+        }
+
     }
 
 

@@ -21,11 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.utils.ToastManager
+import java.time.LocalDate
 
 @Composable
 fun ConfirmPaymentContent(
@@ -34,6 +36,7 @@ fun ConfirmPaymentContent(
     viewModel: ConfirmarPagamentoViewModel
 ){
     var selectedCategory by remember { mutableStateOf("Nenhum") }
+    viewModel.setIdDaConta(state.id)
     val formaDePagamento = viewModel.formaDePagamento.collectAsStateWithLifecycle().value
     val isEnabled = selectedCategory != "Nenhum"
     val verticalScroll = rememberScrollState()

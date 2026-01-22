@@ -288,7 +288,7 @@ class AdicionarContaViewModel @Inject constructor(
                         porcentagemJuros = porcentagemJuros,
                         numeroParcela = i,
                         totalParcelas = totalParcelas,
-                        data = dataParcela
+                        dataDeVencimento = dataParcela
                     )
 
                     listaParcelas.add(parcela)

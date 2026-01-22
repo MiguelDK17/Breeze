@@ -87,7 +87,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                                     icon = contaPai.icon,
                                     colorIcon = contaPai.colorIcon,
                                     colorCard = contaPai.colorCard,
-                                    dateTime = parcela.data.toLocalDate().atStartOfDay(),
+                                    dateTime = parcela.dataDeVencimento.toLocalDate().atStartOfDay(),
                                 )
                             }
                         }
@@ -169,7 +169,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                             icon = it.icon,
                             colorIcon = it.colorIcon,
                             colorCard = it.colorCard,
-                            dateTime = parcela.data.toLocalDate().atStartOfDay(),
+                            dateTime = parcela.dataDeVencimento.toLocalDate().atStartOfDay(),
                         )
                     }
                 }

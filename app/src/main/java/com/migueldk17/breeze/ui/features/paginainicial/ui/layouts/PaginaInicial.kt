@@ -227,7 +227,7 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                     val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
 
                     //Pega a data da primeira parcela futura caso não haja parcelas nesse mês, mas haja nos meses subsequentes
-                    val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().data.toLocalDate() else null
+                    val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().dataDeVencimento.toLocalDate() else null
 
                     //Verifica se é a última parcela
                     val isLatestParcela = parcelaDoMes == latestParcela

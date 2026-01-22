@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ParcelaDao {
     //Busca todas as parcelas do mês atual
-    @Query("SELECT * FROM parcela_entity WHERE data LIKE :mesAno || '%'")
+    @Query("SELECT * FROM parcela_entity WHERE data_vencimento LIKE :mesAno || '%'")
      fun getParcelasDoMes(mesAno: String): Flow<List<ParcelaEntity>>
 
-    @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai AND data LIKE :mesAno LIMIT 1")
+    @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai AND data_vencimento LIKE :mesAno LIMIT 1")
     fun getParcelaDoMes(idContaPai: Long, mesAno: String): Flow<ParcelaEntity?>
     //Busca todas as parcelas de uma conta específica
     @Query("SELECT * FROM parcela_entity WHERE id_conta_pai = :idContaPai ORDER BY numero_parcela ASC")
@@ -26,6 +26,8 @@ interface ParcelaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun inserirParcelas(parcelas: List<ParcelaEntity>)
     //Atualiza uma parcela
+    @Query("UPDATE parcela_entity SET esta_paga = 1,  data_pagamento = :data WHERE id_conta_pai = :idContaPai AND id = :idParcela")
+    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idParcela: Long)
     @Update
     suspend fun atualizarParcela(parcela: ParcelaEntity)
     //Deleta uma parcela

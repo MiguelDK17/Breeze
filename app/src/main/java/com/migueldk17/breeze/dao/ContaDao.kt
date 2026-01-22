@@ -28,6 +28,7 @@ interface ContaDao {
      //Insere a conta no Room
      @Insert(onConflict = OnConflictStrategy.REPLACE) //Caso haja conflito de IDS a mais recente subistitui a mais antiga
     suspend fun insertConta(conta: Conta): Long
+
     @Query("SELECT * from conta_table")
     fun getContasHistorico(): Flow<List<Conta>>
 
@@ -36,8 +37,8 @@ interface ContaDao {
     suspend fun atualizarConta(conta: Conta)
 
     //É feito o pagamento da conta
-    @Query("UPDATE conta_table SET status = 1, data_pagamento = :data WHERE id = :contaId")
-    suspend fun efetuarPagamentoConta(data: String, contaId: Long)
+    @Query("UPDATE conta_table SET status = 1, data_pagamento = :data AND forma_de_pagamento = :formaDePagamento WHERE id = :contaId")
+    suspend fun efetuarPagamentoConta(data: String, contaId: Long, formaDePagamento: String): Int
 
     //Apaga a conta pra sempre do Room
     @Delete

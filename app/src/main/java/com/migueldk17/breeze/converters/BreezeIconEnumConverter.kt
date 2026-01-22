@@ -232,10 +232,6 @@ fun String.toBreezeIconsType() : BreezeIconsType {
             BreezeIcons.Linear.School.SquareAcademicCap2
         }
 
-
-
-
-
         else -> {
             BreezeIcons.Unspecified.IconUnspecified
         }

@@ -43,7 +43,9 @@ fun ConfirmarPagamentoDialog(
             shape = RoundedCornerShape(24.dp),
         ) {
             ConfirmPaymentContent(
-                onConfirm = {onConfirm()},
+                onConfirm = {
+                    onConfirm()
+                            },
                 state = state,
                 viewModel = viewModel
             )
