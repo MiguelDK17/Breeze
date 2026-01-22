@@ -41,7 +41,9 @@ object BreezeIconLists {
         BreezeIcons.Linear.Files.FileText,
 
         // FoodKitchen
+        BreezeIcons.Linear.FoodKitchen.ChefHat,
         BreezeIcons.Linear.FoodKitchen.TeaCup,
+
 
         // Location
         BreezeIcons.Linear.Location.GlobeLinear,
@@ -55,8 +57,14 @@ object BreezeIconLists {
         BreezeIcons.Linear.Mobility.CarLinear,
         BreezeIcons.Linear.Mobility.GasStationLinear,
 
+        // School
+        BreezeIcons.Linear.School.CaseRoundMinimalistic,
+        BreezeIcons.Linear.School.SquareAcademicCap2,
+
+
         // SchoolLearning
         BreezeIcons.Linear.SchoolLearning.BookLinear,
+
 
         // Security
         BreezeIcons.Linear.Security.KeyLinear,

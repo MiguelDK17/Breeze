@@ -80,8 +80,6 @@ fun ConfirmPaymentContent(
                 onClick = {
                     onConfirm()
                     viewModel.setFormaDePagamento(selectedCategory)
-                    ToastManager.showToast(context, "A forma de pagamento selecionada é: ${formaDePagamento}")
-
                 },
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,

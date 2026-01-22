@@ -31,7 +31,7 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 
 
 @Composable
-fun ContaNaoEncontrada(){
+fun ContaNaoEncontrada(categoria: String){
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun ContaNaoEncontrada(){
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Nenhuma conta encontrada!",
+        Text("Nenhuma $categoria encontrada!",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -57,7 +57,7 @@ fun ContaNaoEncontrada(){
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text("Que tal criar uma nova conta agora mesmo ?",
+        Text("Que tal criar uma nova $categoria agora mesmo ?",
             fontSize = 16.sp,
             textAlign = TextAlign.Center
         )
@@ -74,15 +74,7 @@ fun ContaNaoEncontrada(){
                 contentDescription = "Adicionar Conta",
                 modifier = Modifier.size(20.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Criar Conta")
+            Text("Criar $categoria")
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = false)
-private fun Preview(){
-    BreezeTheme {
-        ContaNaoEncontrada()
     }
 }

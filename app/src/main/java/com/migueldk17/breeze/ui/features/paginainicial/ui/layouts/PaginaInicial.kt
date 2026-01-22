@@ -178,7 +178,7 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
         }
         //Caso não haja nenhuma conta registrada no Room
         is UiState.Empty -> {
-            ContaNaoEncontrada()
+            ContaNaoEncontrada(categoria = "conta")
         }
 
         is UiState.Error -> {
@@ -271,7 +271,7 @@ private fun LazyColumnReceitas(receitaState: UiState<List<Receita>>, viewModel: 
         }
         //Caso não haja nenhuma conta registrada no Room
         is UiState.Empty -> {
-            ContaNaoEncontrada()
+            ContaNaoEncontrada("receita")
         }
 
         is UiState.Error -> {

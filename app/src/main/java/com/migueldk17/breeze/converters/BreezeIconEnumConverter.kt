@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.converters
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.runtime.Composable
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
@@ -15,6 +17,72 @@ fun BreezeIconsEnum.toDatabaseValue(): String {
 @Composable
 fun String.toBreezeIconsType() : BreezeIconsType {
     val icon = when(this){
+
+        BreezeIconsEnum.HOME_LINEAR.name -> {
+            BreezeIcons.Linear.Building.HomeLinear
+        }
+
+        BreezeIconsEnum.FACEBOOK_LINEAR.name -> {
+            BreezeIcons.Linear.Company.FacebookLinear
+        }
+        BreezeIconsEnum.GOOGLE_LINEAR.name -> {
+            BreezeIcons.Linear.Company.GoogleLinear
+        }
+        BreezeIconsEnum.GOOGLE_PLAY_LINEAR.name -> {
+            BreezeIcons.Linear.Company.GooglePlayLinear
+        }
+        BreezeIconsEnum.WHATSAPP_LINEAR.name -> {
+            BreezeIcons.Linear.Company.WhatsappLinear
+        }
+        BreezeIconsEnum.WINDOWS_LINEAR.name -> {
+            BreezeIcons.Linear.Company.WindowsLinear
+        }
+        BreezeIconsEnum.ANDROID_LINEAR.name -> {
+            BreezeIcons.Linear.Company.AndroidLinear
+        }
+        BreezeIconsEnum.SPOTIFY_LINEAR.name -> {
+            BreezeIcons.Linear.Company.SpotifyLinear
+        }
+
+        BreezeIconsEnum.DOCUMENT_LINEAR.name -> {
+            BreezeIcons.Linear.ContentEdit.DocumentLinear
+        }
+
+        BreezeIconsEnum.MAGIC_PEN_LINEAR.name -> {
+            BreezeIcons.Linear.DesignTools.MagicPen
+        }
+
+        BreezeIconsEnum.GROUP_LINEAR.name -> {
+            BreezeIcons.Linear.Delivery.GroupLinear
+        }
+
+        BreezeIconsEnum.FILE_TEXT_LINEAR.name -> {
+            BreezeIcons.Linear.Files.FileText
+        }
+
+        BreezeIconsEnum.LIKE_LINEAR.name -> {
+            BreezeIcons.Linear.SupportLikeQuestion.LikeLinear
+        }
+
+        BreezeIconsEnum.DOLLAR_SQUARE_LINEAR.name -> {
+            BreezeIcons.Linear.Money.DollarSquare
+        }
+
+        BreezeIconsEnum.VERIFIED_CHECK.name -> {
+            BreezeIcons.Linear.Money.VerifiedCheck
+        }
+        BreezeIconsEnum.NOTIFICATION_LINEAR.name -> {
+            BreezeIcons.Linear.Notification.NotificationLinear
+        }
+        BreezeIconsEnum.NOTIFICATION_BING_LINEAR.name -> {
+            BreezeIcons.Linear.Notification.NotificationBingLinear
+        }
+        BreezeIconsEnum.CALENDAR_LINEAR.name -> {
+            BreezeIcons.Linear.Time.CalendarLinear
+        }
+        BreezeIconsEnum.FORWARD_PLAYER_LINEAR.name -> {
+            BreezeIcons.Linear.VideoAudioImage.ForwardLinear
+        }
 
         BreezeIconsEnum.BOOK_LINEAR.name -> {
             BreezeIcons.Linear.SchoolLearning.BookLinear
@@ -163,6 +231,8 @@ fun String.toBreezeIconsType() : BreezeIconsType {
         BreezeIcons.Linear.School.SquareAcademicCap2.enum.name -> {
             BreezeIcons.Linear.School.SquareAcademicCap2
         }
+
+
 
 
 
