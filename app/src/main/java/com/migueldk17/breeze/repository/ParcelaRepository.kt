@@ -2,6 +2,7 @@ package com.migueldk17.breeze.repository
 
 import com.migueldk17.breeze.dao.ParcelaDao
 import com.migueldk17.breeze.entity.ParcelaEntity
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -23,8 +24,8 @@ class ParcelaRepository @Inject constructor(
         return parcelaDao.getParcelaPorId(idParcela)
     }
 
-    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idDaParcela: Long){
-        parcelaDao.efetuarPagamentoParcela(data, idContaPai, idDaParcela)
+    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idDaParcela: Long): Int {
+        return parcelaDao.efetuarPagamentoParcela(data, idContaPai, idDaParcela)
     }
 
     //Busca a parcela baseado no id da conta pai

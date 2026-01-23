@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
@@ -30,7 +31,9 @@ import com.migueldk17.breeze.ui.utils.ToastManager
 @Composable
 fun InstallmentField(
     state: ConfirmPaymentModel,
-    setIdParcela: (Long) -> Unit
+    setIdParcela: (Long) -> Unit,
+    setNumeroParcela: (Int) -> Unit,
+    setIsLatestInstallment: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     Row(
@@ -41,14 +44,19 @@ fun InstallmentField(
     ) {
         val list = mutableListOf<String>()
         val listAntiga = state.parcelas.toMutableList()
+        val map = mutableMapOf<Int, ParcelaUI>()
         for (parcela in listAntiga) {
             list.add(parcela.numero.toString())
+            map[parcela.numero] = parcela
         }
+        Log.d(TAG, "InstallmentField: conteúdo do map $map")
         val firstInstallment = list.first()
-        // ------------------CONTINUAR DAQUI -----------------------------
+        // ------------------CONTINUAR DAQUI ----------------------------- //
         var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
-        val id = firstInstallment.toLong() - 1
-        setIdParcela(id)
+        setIdParcela(returnIdDaParcela(map, selectedNumericalCategory.toInt(), context))
+        setNumeroParcela(selectedNumericalCategory.toInt())
+        setIsLatestInstallment(isLatestInstallment(listAntiga))
+
 
         BreezeRegularText(
             modifier = Modifier.padding(end = 10.dp),
@@ -68,9 +76,6 @@ fun InstallmentField(
                 categoryName = "",
                 selectedCategory = selectedNumericalCategory,
                 onCategorySelected = {
-                    val id = it.toInt() - 1
-                    returnIdDaParcela(listAntiga.toList(), it.toInt(), context)
-                    Log.d(TAG, "InstallmentField: Valor de it é $it, valor de id é $id")
                     selectedNumericalCategory = it
                 },
                 textSize = 14.sp,
@@ -82,28 +87,12 @@ fun InstallmentField(
     }
 }
 
-private fun returnIdDaParcela(list: List<ParcelaUI>, idDaLista: Int, context: Context): Long {
-    var id: Long = 0
-    Log.d(TAG, "returnIdDaParcela: $list")
+private fun returnIdDaParcela(map: Map<Int, ParcelaUI>, idDaLista: Int, context: Context): Long {
 
-
-    list.forEach {
-        if (idDaLista == it.numero){
-            id = it.idDaParcela
-        }
-        else {
-            id = 99.toLong()
-        }
-    }
-//    for (item in list){
-//        if (idDaLista == item.numero) {
-//            id = item.idDaParcela
-//            id
-//        } else {
-//            id = 99.toLong()
-//            id
-//        }
-//    }
+    val parcela = map.get(idDaLista)
+    val id = parcela?.idDaParcela ?: 99
     ToastManager.showToast(context, "A parcela selecionada é o numero $idDaLista, o id dela é $id")
     return id
 }
+
+private fun isLatestInstallment(parcela: List<ParcelaUI>) = parcela.size <= 1

@@ -22,12 +22,6 @@ fun ConfirmarPagamentoDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ){
-    val name = state.name
-    val preco = state.valor
-    val juros = state.juros
-    val isContaParcelada = state.isContaParcelada
-    val icon = state.icon
-    val qdtParcelas = state.parcelas
     if (!isVisible) return
 
     Dialog(
@@ -45,7 +39,7 @@ fun ConfirmarPagamentoDialog(
             ConfirmPaymentContent(
                 onConfirm = {
                     onConfirm()
-                            },
+                },
                 state = state,
                 viewModel = viewModel
             )

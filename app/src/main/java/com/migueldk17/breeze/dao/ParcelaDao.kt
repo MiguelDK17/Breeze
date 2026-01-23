@@ -27,7 +27,7 @@ interface ParcelaDao {
     suspend fun inserirParcelas(parcelas: List<ParcelaEntity>)
     //Atualiza uma parcela
     @Query("UPDATE parcela_entity SET esta_paga = 1,  data_pagamento = :data WHERE id_conta_pai = :idContaPai AND id = :idParcela")
-    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idParcela: Long)
+    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idParcela: Long): Int
     @Update
     suspend fun atualizarParcela(parcela: ParcelaEntity)
     //Deleta uma parcela

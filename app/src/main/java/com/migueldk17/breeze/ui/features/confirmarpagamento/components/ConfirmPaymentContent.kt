@@ -36,11 +36,10 @@ fun ConfirmPaymentContent(
     viewModel: ConfirmarPagamentoViewModel
 ){
     var selectedCategory by remember { mutableStateOf("Nenhum") }
+    viewModel.setNomeDaConta(state.name)
     viewModel.setIdDaConta(state.id)
-    val formaDePagamento = viewModel.formaDePagamento.collectAsStateWithLifecycle().value
     val isEnabled = selectedCategory != "Nenhum"
-    val verticalScroll = rememberScrollState()
-    val context = LocalContext.current
+    val isContaParcelada = state.isContaParcelada
 
     Column(
         modifier = Modifier
@@ -65,8 +64,13 @@ fun ConfirmPaymentContent(
             },
             viewModel = viewModel
         )
-        if (state.isContaParcelada) {
-            InstallmentField(state, setIdParcela = { viewModel.setIdDaParcela(it)})
+        if (isContaParcelada) {
+            InstallmentField(
+                state,
+                setIdParcela = { viewModel.setIdDaParcela(it)},
+                setNumeroParcela = { viewModel.setNumeroDaParcela(it)},
+                setIsLatestInstallment = { viewModel.setIsLatestInstallment(it)}
+            )
         }
 
         HorizontalDivider()
@@ -83,6 +87,7 @@ fun ConfirmPaymentContent(
                 onClick = {
                     onConfirm()
                     viewModel.setFormaDePagamento(selectedCategory)
+                    viewModel.efetuarPagamentos(isContaParcelada)
                 },
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
