@@ -1,5 +1,8 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,11 +23,14 @@ import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
+import com.migueldk17.breeze.ui.utils.ToastManager
 
 @Composable
 fun InstallmentField(
-    state: ConfirmPaymentModel
+    state: ConfirmPaymentModel,
+    setIdParcela: (Long) -> Unit
 ) {
     val context = LocalContext.current
     Row(
@@ -39,7 +45,10 @@ fun InstallmentField(
             list.add(parcela.numero.toString())
         }
         val firstInstallment = list.first()
+        // ------------------CONTINUAR DAQUI -----------------------------
         var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
+        val id = firstInstallment.toLong() - 1
+        setIdParcela(id)
 
         BreezeRegularText(
             modifier = Modifier.padding(end = 10.dp),
@@ -59,6 +68,9 @@ fun InstallmentField(
                 categoryName = "",
                 selectedCategory = selectedNumericalCategory,
                 onCategorySelected = {
+                    val id = it.toInt() - 1
+                    returnIdDaParcela(listAntiga.toList(), it.toInt(), context)
+                    Log.d(TAG, "InstallmentField: Valor de it é $it, valor de id é $id")
                     selectedNumericalCategory = it
                 },
                 textSize = 14.sp,
@@ -68,4 +80,30 @@ fun InstallmentField(
         }
 
     }
+}
+
+private fun returnIdDaParcela(list: List<ParcelaUI>, idDaLista: Int, context: Context): Long {
+    var id: Long = 0
+    Log.d(TAG, "returnIdDaParcela: $list")
+
+
+    list.forEach {
+        if (idDaLista == it.numero){
+            id = it.idDaParcela
+        }
+        else {
+            id = 99.toLong()
+        }
+    }
+//    for (item in list){
+//        if (idDaLista == item.numero) {
+//            id = item.idDaParcela
+//            id
+//        } else {
+//            id = 99.toLong()
+//            id
+//        }
+//    }
+    ToastManager.showToast(context, "A parcela selecionada é o numero $idDaLista, o id dela é $id")
+    return id
 }

@@ -66,7 +66,7 @@ fun ConfirmPaymentContent(
             viewModel = viewModel
         )
         if (state.isContaParcelada) {
-            InstallmentField(state)
+            InstallmentField(state, setIdParcela = { viewModel.setIdDaParcela(it)})
         }
 
         HorizontalDivider()
