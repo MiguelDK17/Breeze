@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
+import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
 import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.utils.ToastManager
@@ -35,7 +38,10 @@ fun ConfirmPaymentContent(
     onConfirm: () -> Unit,
     viewModel: ConfirmarPagamentoViewModel
 ){
+    val listaDeParcelas = state.parcelas
     var selectedCategory by remember { mutableStateOf("Nenhum") }
+    val primeiraParcela = listaDeParcelas.first().numero
+    val isLatestInstallment = viewModel.isLatestInstallment.collectAsStateWithLifecycle().value
     viewModel.setNomeDaConta(state.name)
     viewModel.setIdDaConta(state.id)
     val isEnabled = selectedCategory != "Nenhum"
@@ -65,6 +71,8 @@ fun ConfirmPaymentContent(
             viewModel = viewModel
         )
         if (isContaParcelada) {
+            viewModel.setNumeroDaParcela(primeiraParcela)
+            viewModel.setIsLatestInstallment(isLatestInstallment(listaDeParcelas))
             InstallmentField(
                 state,
                 setIdParcela = { viewModel.setIdDaParcela(it)},
@@ -95,8 +103,7 @@ fun ConfirmPaymentContent(
                 enabled = isEnabled
             )
         }
-
-
     }
-
 }
+
+private fun isLatestInstallment(parcela: List<ParcelaUI>) =  parcela.size <= 1

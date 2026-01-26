@@ -109,7 +109,6 @@ class PaginaInicialViewModel @Inject constructor(
                 .collectLatest { lista ->
                     if (lista.isEmpty()) {
                         _contaState.value = UiState.Empty
-                        getStatus()
                     } else {
                         delay(500) //Adiciona um pequeno delay
                         _contaState.value = UiState.Success(lista)
@@ -121,25 +120,6 @@ class PaginaInicialViewModel @Inject constructor(
     fun atualizaBottomSheet(boolean: Boolean){
         _showBottomSheet.value = boolean
     }
-
-    fun getStatus(){
-        viewModelScope.launch {
-            contaRepository.getStatus()
-                .catch { e ->
-                    ToastManager.showToast(context, "Ocorreu o erro $e")
-                }
-                .collectLatest { lista ->
-                    if (lista.isEmpty()){
-                        ToastManager.showToast(context, "A lista de status está vazia")
-                    }
-                    else {
-                        ToastManager.showToast(context, "A lista: $lista")
-                    }
-
-                }
-        }
-    }
-
 
     //Atualiza o saldo do usuário
     fun adicionaReceita(

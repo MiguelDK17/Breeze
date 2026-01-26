@@ -53,6 +53,8 @@ fun InstallmentField(
         // ------------------CONTINUAR DAQUI ----------------------------- //
         var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
         setIdParcela(returnIdDaParcela(map, selectedNumericalCategory.toInt(), context))
+        setNumeroParcela(firstInstallment.toInt())
+
 
 
         BreezeRegularText(
@@ -74,8 +76,9 @@ fun InstallmentField(
                 selectedCategory = selectedNumericalCategory,
                 onCategorySelected = {
                     selectedNumericalCategory = it
-                    setNumeroParcela(selectedNumericalCategory.toInt())
-                    setIsLatestInstallment(isLatestInstallment(listAntiga))
+                    setNumeroParcela(it.toInt())
+                    Log.d(TAG, "InstallmentField: numero parcela na função é $it")
+
                 },
                 textSize = 14.sp,
                 textColor = grayforTextColorInDropdown,
@@ -92,5 +95,4 @@ private fun returnIdDaParcela(map: Map<Int, ParcelaUI>, idDaLista: Int, context:
     val id = parcela?.idDaParcela ?: 99
     return id
 }
-
 private fun isLatestInstallment(parcela: List<ParcelaUI>) =  parcela.size <= 1

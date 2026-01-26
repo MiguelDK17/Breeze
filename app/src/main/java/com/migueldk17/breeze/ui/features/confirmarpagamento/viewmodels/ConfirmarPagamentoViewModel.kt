@@ -51,6 +51,7 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private val _numeroDaParcela: MutableStateFlow<Int> = MutableStateFlow(0)
 
     private val _isLatestInstallment = MutableStateFlow(false)
+    val isLatestInstallment: StateFlow<Boolean> = _isLatestInstallment.asStateFlow()
 
     fun setNomeDaConta(nome: String){
         _nomeDaConta.value = nome
@@ -69,10 +70,12 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     }
 
     fun setNumeroDaParcela(int: Int){
+        Log.d(TAG, "setNumeroDaParcela: numero da parcela no viewmodel: $int")
         _numeroDaParcela.value = int
     }
 
     fun setIsLatestInstallment(boolean: Boolean){
+        Log.d(TAG, "setIsLatestInstallment: valor de isLatest: $boolean")
         _isLatestInstallment.value = boolean
     }
 
@@ -80,12 +83,15 @@ class ConfirmarPagamentoViewModel @Inject constructor(
         viewModelScope.launch {
             when{
                 !isContaParcelada -> {
+                    Log.d(TAG, "efetuarPagamentos: Tá caindo no !isContaParcelada")
                     efetuarPagamentoNaConta()
                 }
                 isContaParcelada && !_isLatestInstallment.value-> {
+                    Log.d(TAG, "efetuarPagamentos: Tá caindo no segundo where")
                     efetuarPagamentoNasParcelas()
                 }
                 else -> {
+                    Log.d(TAG, "efetuarPagamentos: Tá caindo no else")
                     efetuarPagamentoNasParcelas()
                     efetuarPagamentoNaConta()
                 }
