@@ -49,13 +49,10 @@ fun InstallmentField(
             list.add(parcela.numero.toString())
             map[parcela.numero] = parcela
         }
-        Log.d(TAG, "InstallmentField: conteúdo do map $map")
         val firstInstallment = list.first()
         // ------------------CONTINUAR DAQUI ----------------------------- //
         var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
         setIdParcela(returnIdDaParcela(map, selectedNumericalCategory.toInt(), context))
-        setNumeroParcela(selectedNumericalCategory.toInt())
-        setIsLatestInstallment(isLatestInstallment(listAntiga))
 
 
         BreezeRegularText(
@@ -77,6 +74,8 @@ fun InstallmentField(
                 selectedCategory = selectedNumericalCategory,
                 onCategorySelected = {
                     selectedNumericalCategory = it
+                    setNumeroParcela(selectedNumericalCategory.toInt())
+                    setIsLatestInstallment(isLatestInstallment(listAntiga))
                 },
                 textSize = 14.sp,
                 textColor = grayforTextColorInDropdown,
@@ -91,8 +90,7 @@ private fun returnIdDaParcela(map: Map<Int, ParcelaUI>, idDaLista: Int, context:
 
     val parcela = map.get(idDaLista)
     val id = parcela?.idDaParcela ?: 99
-    ToastManager.showToast(context, "A parcela selecionada é o numero $idDaLista, o id dela é $id")
     return id
 }
 
-private fun isLatestInstallment(parcela: List<ParcelaUI>) = parcela.size <= 1
+private fun isLatestInstallment(parcela: List<ParcelaUI>) =  parcela.size <= 1

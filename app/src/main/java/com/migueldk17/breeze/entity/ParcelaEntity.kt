@@ -25,10 +25,14 @@ data class ParcelaEntity(
     val totalParcelas: Int, //Total de parcelas
 
     @ColumnInfo(name = "data_vencimento")
-    val dataDeVencimento: String, //Data das parcelas
+    val dataDeVencimento: String, //Data de vencimento das parcelas
 
-    @ColumnInfo(name = "data_pagamento")
+    @ColumnInfo(name = "data_pagamento") //Data de pagamento das parcelas
     val dataDePagamento: String? = null,
+
+    @ColumnInfo("forma_pagamento") //Forma de pagamento com que o usuário usou para pagar
+                                            //-as parcelas
+    val formaDePagamento: String? = null,
 
     @ColumnInfo(name = "esta_paga", defaultValue = "0")
     val estaPaga: Boolean = false //Booleano de verificação caso a parcela esteja paga

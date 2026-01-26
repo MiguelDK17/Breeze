@@ -26,8 +26,8 @@ interface ParcelaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun inserirParcelas(parcelas: List<ParcelaEntity>)
     //Atualiza uma parcela
-    @Query("UPDATE parcela_entity SET esta_paga = 1,  data_pagamento = :data WHERE id_conta_pai = :idContaPai AND id = :idParcela")
-    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idParcela: Long): Int
+    @Query("UPDATE parcela_entity SET esta_paga = 1,  data_pagamento = :data, forma_pagamento = :formaPagamento WHERE id_conta_pai = :idContaPai AND id = :idParcela")
+    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idParcela: Long, formaPagamento: String): Int
     @Update
     suspend fun atualizarParcela(parcela: ParcelaEntity)
     //Deleta uma parcela

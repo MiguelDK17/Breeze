@@ -24,8 +24,8 @@ class ParcelaRepository @Inject constructor(
         return parcelaDao.getParcelaPorId(idParcela)
     }
 
-    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idDaParcela: Long): Int {
-        return parcelaDao.efetuarPagamentoParcela(data, idContaPai, idDaParcela)
+    suspend fun efetuarPagamentoParcela(data: String, idContaPai: Long, idDaParcela: Long, formaPagamento: String): Int {
+        return parcelaDao.efetuarPagamentoParcela(data, idContaPai, idDaParcela, formaPagamento)
     }
 
     //Busca a parcela baseado no id da conta pai

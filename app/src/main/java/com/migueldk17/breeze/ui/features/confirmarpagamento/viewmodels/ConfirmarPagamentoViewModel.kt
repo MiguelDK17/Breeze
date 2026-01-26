@@ -49,10 +49,8 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     val idDaParcela: StateFlow<Long?> = _idDaParcela.asStateFlow()
 
     private val _numeroDaParcela: MutableStateFlow<Int> = MutableStateFlow(0)
-    val numeroDaParcela: StateFlow<Int> = _numeroDaParcela.asStateFlow()
 
     private val _isLatestInstallment = MutableStateFlow(false)
-    val isLatestInstallment: StateFlow<Boolean> = _isLatestInstallment.asStateFlow()
 
     fun setNomeDaConta(nome: String){
         _nomeDaConta.value = nome
@@ -64,7 +62,6 @@ class ConfirmarPagamentoViewModel @Inject constructor(
 
     fun setFormaDePagamento(value: String){
         _formaDePagamento.value = value
-        efetuarPagamentoNaConta()
     }
 
     fun setIdDaParcela(long: Long){
@@ -82,9 +79,13 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     fun efetuarPagamentos(isContaParcelada: Boolean){
         viewModelScope.launch {
             when{
-                !isContaParcelada -> efetuarPagamentoNaConta()
-                isContaParcelada && !_isLatestInstallment.value-> efetuarPagamentoNasParcelas()
-                isContaParcelada && _isLatestInstallment.value -> {
+                !isContaParcelada -> {
+                    efetuarPagamentoNaConta()
+                }
+                isContaParcelada && !_isLatestInstallment.value-> {
+                    efetuarPagamentoNasParcelas()
+                }
+                else -> {
                     efetuarPagamentoNasParcelas()
                     efetuarPagamentoNaConta()
                 }
@@ -108,11 +109,12 @@ class ConfirmarPagamentoViewModel @Inject constructor(
         val idDaConta = _idDaConta.value
         val idDaParcela = _idDaParcela.value
         val numeroDaParcela = _numeroDaParcela.value
+        val formaDePagamento = _formaDePagamento.value
         val mensagemDeErro = "Operação mal sucedida. Verifique a conta e tente novamente"
         val mensagemDeSucesso = "Pagamento da ${numeroDaParcela}ª parcela da conta $nomeDaConta"
 
         viewModelScope.launch {
-            val parcela = parcelaRepository.efetuarPagamentoParcela(data, idDaConta, idDaParcela!!) //Parcela está como Int porque o Room devolve booleano como Int
+            val parcela = parcelaRepository.efetuarPagamentoParcela(data, idDaConta, idDaParcela!!, formaDePagamento) //Parcela está como Int porque o Room devolve booleano como Int
             if (parcela == 1) {
                 ToastManager.showToast(context, mensagemDeSucesso)
             } else {
@@ -120,10 +122,4 @@ class ConfirmarPagamentoViewModel @Inject constructor(
             }
         }
     }
-
-
-
-
-
-
 }
