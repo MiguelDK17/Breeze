@@ -4,10 +4,28 @@ Breeze is a modern and visually appealing  financial organization app designed t
 
 ## ✨ Features
 
--  **Visual Financial Overview** - Easily track and manage your accounts.
--  **Customizable UI** - Personalize your experience with vibrant icons  from the BreezeIcons library.
--  **Smooth Animations** - Designed with Lottie animations  for a dynamic interface.
--  **Data Persistence** - Uses Room Database  for local data storage.
+*  **Account Management (Fixed & Installments)**  
+Create and manage **fixed** and **installment-based** accounts,with clear differentiation between them.
+-  **Account Status Control**  
+Mark accounts as **paid** or **pending**, enabling accurate tracking of your financial obligations.
+-  **Income Management**  
+Register and delete **income entries**, fully integrated into the app's financial flow.
+-  **Chronogical Feed**  
+Accounts and incomes are displayed in a **feed-style list**, ordered from the **most recent to the oldest**,
+  making daily tracking intuitive.
+- **Financial History & Insights**  
+Access a dedicated **History** section to review past accounts and incomes with:
+   * Detailed chronological data
+   * Visual **charts** showing financial evolution over time
+   * Clear separation between expenses and income history
+ - **Visual Financial Overview**  
+ Easily track and understand your finances through a clean and modern UI.
+ - **Customizable UI**  
+ Personalize your experience with expressive icons from the **Breeze Icons** library.
+ - **Smooth Animations**  
+ Fluid interactions and transitions designed to enhance the user experience.
+ - **Local Data Persistence**  
+ Uses **Room Database** for reliable and offline-first local data storage. 
 
 ## 🛠️ Technologies Used
 
