@@ -2,6 +2,7 @@ package com.migueldk17.breeze
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.EditarValorConta
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -27,6 +32,18 @@ class MainActivity2: ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val view = LocalView.current
+
+            LaunchedEffect(Unit) {
+                val window = (view.context as Activity).window
+                WindowCompat.setDecorFitsSystemWindows(window, false)
+
+                val controller = WindowInsetsControllerCompat(window, view)
+                controller.hide(WindowInsetsCompat.Type.statusBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+            }
             BreezeTheme {
             Scaffold { _ ->
                 val id = intent.getLongExtra("id", 0)

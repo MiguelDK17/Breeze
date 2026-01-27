@@ -38,11 +38,7 @@ fun ConfirmPaymentContent(
     onConfirm: () -> Unit,
     viewModel: ConfirmarPagamentoViewModel
 ){
-    val listaDeParcelas = state.parcelas
     var selectedCategory by remember { mutableStateOf("Nenhum") }
-    val primeiraParcela = listaDeParcelas.first().numero
-    val isLatestInstallment = viewModel.isLatestInstallment.collectAsStateWithLifecycle().value
-    viewModel.setNomeDaConta(state.name)
     viewModel.setIdDaConta(state.id)
     val isEnabled = selectedCategory != "Nenhum"
     val isContaParcelada = state.isContaParcelada
@@ -71,6 +67,11 @@ fun ConfirmPaymentContent(
             viewModel = viewModel
         )
         if (isContaParcelada) {
+            val listaDeParcelas = state.parcelas
+            val primeiraParcela = listaDeParcelas.first().numero
+            val isLatestInstallment = viewModel.isLatestInstallment.collectAsStateWithLifecycle().value
+            viewModel.setNomeDaConta(state.name)
+
             viewModel.setNumeroDaParcela(primeiraParcela)
             viewModel.setIsLatestInstallment(isLatestInstallment(listaDeParcelas))
             InstallmentField(

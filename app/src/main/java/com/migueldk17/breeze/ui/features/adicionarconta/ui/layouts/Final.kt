@@ -87,8 +87,13 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
             nomeConta = dadosDaConta.nome,
             icone = dadosDaConta.icone,
             corIcone = dadosDaConta.corIcone,
-            valorMascarado = formataSaldo(dadosDaConta.valor),
-            corCard = dadosDaConta.corCard)
+            valorMascarado = retornaValorFinal(
+                valorFixo = dadosDaConta.valor,
+                valorParcela = dadosDaConta.valorParcela,
+                totalParcelas = dadosDaConta.totalParcelas
+            ),
+            corCard = dadosDaConta.corCard
+        )
         Spacer(modifier = Modifier.size(35.dp))
 
 
@@ -119,4 +124,15 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
         },
             text = "Concluir")
     }
+}
+
+private fun retornaValorFinal(valorFixo: Double, valorParcela: Double, totalParcelas: Int): String {
+   val valorFinal = if(valorParcela == 0.00){
+        formataSaldo(valorFixo)
+    } else {
+        //Caso o valor de parcela esteja preenchido se espera que total parcelas obviamente também esteja
+        retornaValorTotalArredondado(valorParcela, totalParcelas)
+    }
+
+    return valorFinal
 }

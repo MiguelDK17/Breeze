@@ -99,6 +99,7 @@ fun DetailsCard(
                         verticalAlignment = Alignment.Top,
                         horizontalArrangement = Arrangement.Start
                     ) {
+                        //Categoria fixa da lista
                         DescriptionText(
                             category,
                             fontWeight = FontWeight.Bold,
@@ -106,7 +107,7 @@ fun DetailsCard(
                                 .padding(vertical = 5.dp)
                         )
                         Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-
+                        //Dados da conta que vieram do Room
                         DescriptionText(
                             text = accountCategory.toString(),
                             modifier = Modifier

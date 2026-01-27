@@ -53,7 +53,7 @@ fun AdicionarConta(
     //Cria o navController
     val navController = rememberNavController()
      //Pega a rota atual do navController
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val currentRoute=navController.currentBackStackEntryAsState().value?.destination?.route
 
         //Column principal do ciclo de vida AdicionarContaOpcional
         Column(
