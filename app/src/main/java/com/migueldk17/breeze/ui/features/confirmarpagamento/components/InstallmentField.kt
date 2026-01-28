@@ -33,6 +33,7 @@ import com.migueldk17.breeze.ui.utils.ToastManager
 fun InstallmentField(
     state: ConfirmPaymentModel,
     setIdParcela: (Long) -> Unit,
+    numeroParcela: Int,
     setNumeroParcela: (Int) -> Unit,
     setIsLatestInstallment: (Boolean) -> Unit,
     viewModel: ConfirmarPagamentoViewModel
@@ -56,9 +57,7 @@ fun InstallmentField(
         }
         val firstInstallment = list.first()
         // ------------------CONTINUAR DAQUI ----------------------------- //
-        var selectedNumericalCategory by remember { mutableStateOf(firstInstallment) }
-        setIdParcela(returnIdDaParcela(map, selectedNumericalCategory.toInt(), context))
-        setNumeroParcela(firstInstallment.toInt())
+        setIdParcela(returnIdDaParcela(map, numeroParcela, context))
 
 
 
@@ -78,9 +77,8 @@ fun InstallmentField(
                     .heightIn(min = 53.dp, 60.dp),
                 categories = list,
                 categoryName = "",
-                selectedCategory = selectedNumericalCategory,
+                selectedCategory = numeroParcela.toString(),
                 onCategorySelected = {
-                    selectedNumericalCategory = it
                     setNumeroParcela(it.toInt())
                     Log.d(TAG, "InstallmentField: numero parcela na função é $it")
 

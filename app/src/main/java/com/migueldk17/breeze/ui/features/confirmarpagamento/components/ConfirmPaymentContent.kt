@@ -75,6 +75,7 @@ fun ConfirmPaymentContent(
             InstallmentField(
                 state,
                 setIdParcela = { viewModel.setIdDaParcela(it)},
+                numeroParcela = numeroParcela,
                 setNumeroParcela = { viewModel.setNumeroDaParcela(it)},
                 setIsLatestInstallment = { viewModel.setIsLatestInstallment(it)},
                 viewModel = viewModel
