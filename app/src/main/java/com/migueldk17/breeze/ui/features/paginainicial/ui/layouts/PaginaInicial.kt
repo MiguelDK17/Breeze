@@ -232,6 +232,8 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                     //Verifica se é a última parcela
                     val isLatestParcela = parcelaDoMes == latestParcela
 
+                    val haveInstallment = parcelas.isNotEmpty()
+
 
                     BreezeCardConta(
                         conta,
@@ -249,8 +251,8 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                         parcela = parcelaDoMes,
                         isLatestParcela = isLatestParcela,
                         semParcelaNoMes = semParcelaNoMes,
-                        dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura
-
+                        dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura,
+                        haveInstallment = haveInstallment
                     )
                 }
             }
