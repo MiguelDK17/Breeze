@@ -48,7 +48,8 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private val _idDaParcela: MutableStateFlow<Long?> = MutableStateFlow(0)
     val idDaParcela: StateFlow<Long?> = _idDaParcela.asStateFlow()
 
-    private val _numeroDaParcela: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val _numeroDaParcela: MutableStateFlow<Int> = MutableStateFlow(1)
+    val numeroDaParcela: StateFlow<Int> = _numeroDaParcela.asStateFlow()
 
     private val _isLatestInstallment = MutableStateFlow(false)
     val isLatestInstallment: StateFlow<Boolean> = _isLatestInstallment.asStateFlow()

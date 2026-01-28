@@ -26,12 +26,11 @@ fun PaymentMethodField(
     state: ConfirmPaymentModel,
     selectedCategory: String,
     onSelectCategory: (String) -> Unit,
-    viewModel: ConfirmarPagamentoViewModel
+
 ){
 
     val textColor = if (selectedCategory == "Nenhum") grayforHint else grayforTextColorInDropdown
     val juros = state.juros
-    var formaDePagamento = viewModel.formaDePagamento.collectAsStateWithLifecycle().value
 
     // --------- Row das formas de pagamento -----------------//
     Row(

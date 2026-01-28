@@ -42,6 +42,7 @@ fun ConfirmPaymentContent(
     viewModel.setIdDaConta(state.id)
     val isEnabled = selectedCategory != "Nenhum"
     val isContaParcelada = state.isContaParcelada
+    val numeroParcela = viewModel.numeroDaParcela.collectAsStateWithLifecycle().value
 
     Column(
         modifier = Modifier
@@ -54,7 +55,12 @@ fun ConfirmPaymentContent(
 
         HorizontalDivider()
 
-        PaymentAmount(state)
+        PaymentAmount(
+            state = state,
+            numeroDaParcela = numeroParcela,
+            viewModel = viewModel,
+            haveInstallment = isContaParcelada
+        )
 
         HorizontalDivider()
 
@@ -64,21 +70,14 @@ fun ConfirmPaymentContent(
             onSelectCategory = {
                 selectedCategory = it
             },
-            viewModel = viewModel
         )
         if (isContaParcelada) {
-            val listaDeParcelas = state.parcelas
-            val primeiraParcela = listaDeParcelas.first().numero
-            val isLatestInstallment = viewModel.isLatestInstallment.collectAsStateWithLifecycle().value
-            viewModel.setNomeDaConta(state.name)
-
-            viewModel.setNumeroDaParcela(primeiraParcela)
-            viewModel.setIsLatestInstallment(isLatestInstallment(listaDeParcelas))
             InstallmentField(
                 state,
                 setIdParcela = { viewModel.setIdDaParcela(it)},
                 setNumeroParcela = { viewModel.setNumeroDaParcela(it)},
-                setIsLatestInstallment = { viewModel.setIsLatestInstallment(it)}
+                setIsLatestInstallment = { viewModel.setIsLatestInstallment(it)},
+                viewModel = viewModel
             )
         }
 

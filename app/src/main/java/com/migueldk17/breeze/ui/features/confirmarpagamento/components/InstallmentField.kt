@@ -25,6 +25,7 @@ import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
+import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 import com.migueldk17.breeze.ui.utils.ToastManager
 
@@ -33,8 +34,12 @@ fun InstallmentField(
     state: ConfirmPaymentModel,
     setIdParcela: (Long) -> Unit,
     setNumeroParcela: (Int) -> Unit,
-    setIsLatestInstallment: (Boolean) -> Unit
+    setIsLatestInstallment: (Boolean) -> Unit,
+    viewModel: ConfirmarPagamentoViewModel
 ) {
+    val listaDeParcelas = state.parcelas
+    viewModel.setNomeDaConta(state.name)
+    viewModel.setIsLatestInstallment(isLatestInstallment(listaDeParcelas))
     val context = LocalContext.current
     Row(
         modifier = Modifier
