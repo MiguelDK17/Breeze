@@ -58,7 +58,6 @@ fun ConfirmPaymentContent(
         PaymentAmount(
             state = state,
             numeroDaParcela = numeroParcela,
-            viewModel = viewModel,
             haveInstallment = isContaParcelada
         )
 
@@ -74,11 +73,11 @@ fun ConfirmPaymentContent(
         if (isContaParcelada) {
             InstallmentField(
                 state,
+                setNomeDaConta = { viewModel.setNomeDaConta(it) },
                 setIdParcela = { viewModel.setIdDaParcela(it)},
                 numeroParcela = numeroParcela,
                 setNumeroParcela = { viewModel.setNumeroDaParcela(it)},
                 setIsLatestInstallment = { viewModel.setIsLatestInstallment(it)},
-                viewModel = viewModel
             )
         }
 

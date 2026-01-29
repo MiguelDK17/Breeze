@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +37,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.mutableIntStateOf
@@ -54,6 +51,7 @@ import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
+import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -90,6 +88,7 @@ fun PaginaInicial(
         BreezeIcons.Outlined.Money.MoneyRecive to "Receitas"
     )
     var selectedIndexButtonGroup by remember{ mutableIntStateOf(0) }
+
 
 
     Column(modifier = Modifier
@@ -130,9 +129,9 @@ fun PaginaInicial(
         }
         Spacer(modifier = Modifier.size(15.dp))
         BreezeButtonGroup(
-            options = optionsLinear.values.toList(),
-            unCheckedIcons = optionsOutlined.keys.toList(),
-            checkedIcons = optionsLinear.keys.toList(),
+            options = optionsLinear.values.toImmutableList(),
+            unCheckedIcons = optionsOutlined.keys.toImmutableList(),
+            checkedIcons = optionsLinear.keys.toImmutableList(),
             onChangeSelectedIndex = {
                 selectedIndexButtonGroup = it
             }

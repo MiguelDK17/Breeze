@@ -26,63 +26,66 @@ fun PaymentMethodField(
     state: ConfirmPaymentModel,
     selectedCategory: String,
     onSelectCategory: (String) -> Unit,
-
 ){
 
     val textColor = if (selectedCategory == "Nenhum") grayforHint else grayforTextColorInDropdown
     val juros = state.juros
 
-    // --------- Row das formas de pagamento -----------------//
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        val categories = listOf("💵 Dinheiro", "💳 Cartão de Débito", "💳 Cartão de Crédito", "💸 Pix")
+    Column() {
+        // --------- Row das formas de pagamento -----------------//
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val categories = listOf("💵 Dinheiro", "💳 Cartão de Débito", "💳 Cartão de Crédito", "💸 Pix")
 
-        Box(
-            modifier = Modifier
-                .height(62.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            BreezeRegularText(text = "Forma de pagamento:")
+            Box(
+                modifier = Modifier
+                    .height(62.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                BreezeRegularText(text = "Forma de pagamento:")
+            }
+            Column(
+                modifier = Modifier
+                    .heightIn(min = 76.dp, max = 100.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                BreezeDropdownMenu(
+                    categoryName = "",
+                    categories = categories,
+                    selectedCategory = selectedCategory,
+                    onCategorySelected = {
+                        onSelectCategory(it)
+                    },
+                    showDescriptionText = false
+                )
+
+            }
         }
-        Column(
+
+        //-------------Row dos Juros -------------------//
+        Row(
             modifier = Modifier
-                .heightIn(min = 76.dp, max = 100.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            BreezeDropdownMenu(
-                categoryName = "",
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = {
-                    onSelectCategory(it)
-                },
-                showDescriptionText = false
+            BreezeRegularText(
+                modifier = Modifier.padding(10.dp),
+                text = "Juros:"
             )
-
+            BreezeRegularText(
+                modifier = Modifier.padding(10.dp),
+                text = "$juros% a.m"
+            )
         }
     }
 
-    //-------------Row dos Juros -------------------//
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        BreezeRegularText(
-            modifier = Modifier.padding(10.dp),
-            text = "Juros:"
-        )
-        BreezeRegularText(
-            modifier = Modifier.padding(10.dp),
-            text = "$juros% a.m"
-        )
-    }
+
 
 }

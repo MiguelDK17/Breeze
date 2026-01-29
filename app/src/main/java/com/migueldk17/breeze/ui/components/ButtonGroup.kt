@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -21,13 +22,14 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
+import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BreezeButtonGroup(
-    options: List<String>,
-    unCheckedIcons: List<BreezeIconsType>,
-    checkedIcons: List<BreezeIconsType>,
+    options: ImmutableList<String>,
+    unCheckedIcons: ImmutableList<BreezeIconsType>,
+    checkedIcons: ImmutableList<BreezeIconsType>,
     onChangeSelectedIndex: (Int) -> Unit
 ){
     var selectedIndex by remember { mutableIntStateOf(0) }

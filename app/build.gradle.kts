@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.kotlinx.collections.immutable)
 
 
     //Bibliotecas de terceiros

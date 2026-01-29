@@ -32,15 +32,15 @@ import com.migueldk17.breeze.ui.utils.ToastManager
 @Composable
 fun InstallmentField(
     state: ConfirmPaymentModel,
+    setNomeDaConta: (String) -> Unit,
     setIdParcela: (Long) -> Unit,
     numeroParcela: Int,
     setNumeroParcela: (Int) -> Unit,
-    setIsLatestInstallment: (Boolean) -> Unit,
-    viewModel: ConfirmarPagamentoViewModel
+    setIsLatestInstallment: (Boolean) -> Unit
 ) {
     val listaDeParcelas = state.parcelas
-    viewModel.setNomeDaConta(state.name)
-    viewModel.setIsLatestInstallment(isLatestInstallment(listaDeParcelas))
+    setNomeDaConta(state.name)
+    setIsLatestInstallment(isLatestInstallment((listaDeParcelas)))
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun InstallmentField(
         horizontalArrangement = Arrangement.Center
     ) {
         val list = mutableListOf<String>()
-        val listAntiga = state.parcelas.toMutableList()
+        val listAntiga = remember(state) { state.parcelas.toMutableList() }
         val map = mutableMapOf<Int, ParcelaUI>()
         for (parcela in listAntiga) {
             list.add(parcela.numero.toString())

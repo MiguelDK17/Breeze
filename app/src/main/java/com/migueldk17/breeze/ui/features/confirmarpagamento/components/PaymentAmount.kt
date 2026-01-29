@@ -1,11 +1,13 @@
 package com.migueldk17.breeze.ui.features.confirmarpagamento.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +28,6 @@ import com.migueldk17.breeze.ui.utils.formataValorConta
 fun PaymentAmount(
     state: ConfirmPaymentModel,
     numeroDaParcela: Int,
-    viewModel: ConfirmarPagamentoViewModel,
     haveInstallment: Boolean
 ){
     val name = state.name
@@ -35,22 +36,30 @@ fun PaymentAmount(
     val valorArrendondado = arredondarValor(valor)
     val valorConta = formataValorConta(valorArrendondado)
     val description = if (!haveInstallment) "Pagamento referente a $name" else "Pagamento referente a ${numeroDaParcela}ª parcela de $name"
-     BreezeIcon(
-        modifier = Modifier
-            .size(40.dp),
-        breezeIcon = icon,
-        contentDescription = "Icone de $icon"
-    )
-    BreezeRegularText(
-        text = valorConta,
-        size = 17.sp,
-        fontWeight = FontWeight.SemiBold,
-        color = Blue
-    )
-    DescriptionText(
-        text = description,
-        color = NavyBlue
-    )
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        BreezeIcon(
+            modifier = Modifier
+                .size(40.dp),
+            breezeIcon = icon,
+            contentDescription = "Icone de $icon"
+        )
+        BreezeRegularText(
+            text = valorConta,
+            size = 17.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Blue
+        )
+        DescriptionText(
+            text = description,
+            color = NavyBlue
+        )
+    }
+
 
 
 }
