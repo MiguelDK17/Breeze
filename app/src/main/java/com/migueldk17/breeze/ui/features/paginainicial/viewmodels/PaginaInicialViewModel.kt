@@ -45,6 +45,9 @@ class PaginaInicialViewModel @Inject constructor(
     //Variavwl que controla o estado de carregamente em PaginaInicial
     val carregando = MutableStateFlow(true)
 
+    private val _stateTest = MutableStateFlow(UiState.Loading)
+    val stateTest: StateFlow<UiState<List<Conta>>> = _stateTest.asStateFlow()
+
     private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
     val contaState: StateFlow<UiState<List<Conta>>> = _contaState.asStateFlow()
 
