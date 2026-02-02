@@ -236,21 +236,12 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
 
                     BreezeCardConta(
                         conta,
-                        parcelas,
-                        onClick = {
-                            val intent = Intent(context, MainActivity3::class.java)
-                            intent.putExtra("id", conta.id)
-                            context.startActivity(intent)
-                        },
+                        parcelas.toImmutableList(),
                         apagarConta = {  viewModel.apagaConta(conta) },
                         apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
                             TAG,
                             "PaginaInicial: Não há parcelas disponíveis pra apagar"
                         ) },
-                        parcela = parcelaDoMes,
-                        isLatestParcela = isLatestParcela,
-                        semParcelaNoMes = semParcelaNoMes,
-                        dataPrimeiraParcelaFutura = dataPrimeiraParcelaFutura,
                         haveInstallment = haveInstallment
                     )
                 }

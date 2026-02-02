@@ -1,9 +1,7 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
+
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,11 +14,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -35,12 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.isTraversalGroup
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,7 +41,6 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.converters.toStatus
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
@@ -59,9 +49,9 @@ import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
-import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
+import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDate
 
 //Card de PaginaInicial
@@ -69,14 +59,9 @@ import java.time.LocalDate
 @Composable
 fun BreezeCardConta(
     conta: Conta,
-    listaDeParcelas: List<ParcelaEntity>,
-    onClick: () -> Unit,
+    listaDeParcelas: ImmutableList<ParcelaEntity>,
     apagarConta: () -> Unit,
     apagarParcelas: () -> Unit,
-    parcela: ParcelaEntity?,
-    isLatestParcela: Boolean,
-    semParcelaNoMes: Boolean,
-    dataPrimeiraParcelaFutura: LocalDate?,
     haveInstallment: Boolean,
 ){
     val context = LocalContext.current
@@ -87,15 +72,10 @@ fun BreezeCardConta(
     val isContaParcelada = conta.isContaParcelada
     val juros = parcelaTeste?.porcentagemJuros ?: 0.00
     val idDaConta = conta.id
-    var isExpanded by remember { mutableStateOf(false) }
     val parcelasMutable = mutableListOf<ParcelaUI>()
 
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
-    val items =
-        listOf(
-            BreezeIcons.Linear.All.FileText to "Ver detalhes",
-            BreezeIcons.Linear.All.Recycle to "Excluir conta"
-        )
+
 
 
     for (item in listaDeParcelas){
@@ -184,18 +164,6 @@ fun BreezeCardConta(
                             modifier = Modifier.size(35.dp)
                         )
                     }
-
-                    //Caso haja parcela no mês OU haja parcela nos meses subsequentes
-                    //------------------ATENÇÃO !!! BOTÃO DE EXPANDIR CARD -----------------
-//                    if (parcela != null || semParcelaNoMes) {
-//                        IconButton(onClick = { isExpanded = !isExpanded }) {
-//                            Icon(
-//                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp
-//                                else Icons.Default.KeyboardArrowDown,
-//                                contentDescription = "Expandir detalhes"
-//                            )
-//                        }
-//                    }
                 }
 
 
@@ -223,11 +191,6 @@ fun BreezeCardConta(
                         )
                     }
                 }
-            }
-
-            //Caso haja parcela no mês OU haja parcela nos meses subsequentes
-            if (parcela != null || semParcelaNoMes) {
-                IsExpandableCard(conta, parcela, isLatestParcela, isExpanded, semParcelaNoMes, dataPrimeiraParcelaFutura)
             }
         }
         if (openDialogPagarConta) {
@@ -288,55 +251,6 @@ fun BreezeCardConta(
 
         }
 
-    }
-    if (fabMenuExpanded) {
-        Log.d(TAG, "BreezeFABMenu: tamanho da lista ${items.size}")
-        items.forEachIndexed { i, item ->
-            FloatingActionButtonMenu(
-                modifier = Modifier.semantics {
-                    isTraversalGroup = true
-
-                    if (i == items.size - 1) {
-                        customActions =
-                            listOf(
-                                CustomAccessibilityAction(
-                                    label = "Close menu",
-                                    action = {
-                                        fabMenuExpanded = false
-                                        true
-                                    },
-                                )
-                            )
-                    }
-                },
-                button = {
-                    Button(
-                        onClick = {
-                            Log.d(TAG, "BreezeFABMenu: você clicou em: ${item.second}")
-                            fabMenuExpanded = false
-                        },
-                        border = BorderStroke(width = 0.4.dp, color = Color(0xFFBDBDBD))
-                    ) {
-                        BreezeIcon(
-                            item.first,
-                            contentDescription = item.second,
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        DescriptionText(
-                            text = item.second,
-                            color = Color.White
-                        )
-
-                    }
-
-                },
-                expanded = fabMenuExpanded,
-                content = {
-
-                }
-            )
-        }
     }
     Spacer(modifier = Modifier.size(10.dp))
 }
