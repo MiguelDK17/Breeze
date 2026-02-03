@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.layouts
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +48,8 @@ import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.SwipeableBreezeCardConta
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.toImmutableList
@@ -57,6 +58,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PaginaInicial(
+    modifier: Modifier = Modifier,
     viewModel: PaginaInicialViewModel = hiltViewModel()
 ){
     val saldo by viewModel.receita.collectAsStateWithLifecycle()
@@ -91,7 +93,7 @@ fun PaginaInicial(
 
 
 
-    Column(modifier = Modifier
+    Column(modifier = modifier
         .fillMaxWidth()) {
         Spacer(modifier = Modifier.size(20.dp))
         //Card de saldo disponível
@@ -233,17 +235,22 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
 
                     val haveInstallment = parcelas.isNotEmpty()
 
+                    SwipeableBreezeCardConta(
+                        onDetalhes = { ToastManager.showToast(context, "Detalhes da Conta 👻")},
+                        onExcluir = { ToastManager.showToast(context, "Excluiu a conta boooo 👻")}
+                    ) {
+                        BreezeCardConta(
+                            conta,
+                            parcelas.toImmutableList(),
+                            apagarConta = {  viewModel.apagaConta(conta) },
+                            apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
+                                TAG,
+                                "PaginaInicial: Não há parcelas disponíveis pra apagar"
+                            ) },
+                            haveInstallment = haveInstallment
+                        )
+                    }
 
-                    BreezeCardConta(
-                        conta,
-                        parcelas.toImmutableList(),
-                        apagarConta = {  viewModel.apagaConta(conta) },
-                        apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
-                            TAG,
-                            "PaginaInicial: Não há parcelas disponíveis pra apagar"
-                        ) },
-                        haveInstallment = haveInstallment
-                    )
                 }
             }
         }

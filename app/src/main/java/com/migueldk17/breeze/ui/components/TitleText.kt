@@ -1,6 +1,5 @@
 package com.migueldk17.breeze.ui.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,11 +13,11 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TitleText(
     text: String,
-    size: TextUnit = 18.sp,
     modifier: Modifier = Modifier,
+    size: TextUnit = 18.sp,
     fontWeight: FontWeight? = null,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    textAlign: TextAlign? = null
+    textAlign: TextAlign? = null,
 ){
     Text(
         text,
@@ -27,6 +26,6 @@ fun TitleText(
         fontSize = size,
         modifier = modifier,
         fontWeight = fontWeight,
-        textAlign = textAlign
+        textAlign = textAlign,
     )
 }

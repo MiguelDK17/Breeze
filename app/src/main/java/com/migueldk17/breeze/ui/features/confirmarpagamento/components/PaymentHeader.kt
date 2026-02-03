@@ -21,8 +21,8 @@ fun PaymentHeader(){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
             TitleText(
-                modifier = Modifier.padding(top = 10.dp),
                 text = "Confirmar pagamento",
+                modifier = Modifier.padding(top = 10.dp),
                 fontWeight = FontWeight.Bold,
                 color = NavyBlue
             )

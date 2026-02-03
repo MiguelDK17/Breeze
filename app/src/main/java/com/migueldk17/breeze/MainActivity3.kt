@@ -20,7 +20,6 @@ import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts.AdicionarConta
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
-import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -83,8 +83,8 @@ fun DetailsCard(
                 //Título do BasicAlertDialog
                 TitleText(
                     titleText,
-                    color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue
                 )
                 Spacer(
                     modifier = Modifier
