@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.paginainicial.model.SwipeBackgroundConfig
 
 @Composable
@@ -50,10 +51,11 @@ fun SwipeBackground(
             .padding(horizontal = 20.dp),
         contentAlignment = alignment
     ) {
-        BreezeRegularText(
+        Text(
             text = text,
             color = textColor,
-            style = MaterialTheme.typography.labelLarge
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Medium
         )
     }
 }
