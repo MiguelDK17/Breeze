@@ -33,6 +33,7 @@ import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMainActivity
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
+import kotlinx.collections.immutable.persistentMapOf
 
 
 @Composable
@@ -48,7 +49,7 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
     val porcentagemJuros = viewModel.taxaDeJurosMensal.collectAsStateWithLifecycle().value
     var mostrarDetalhes by remember { mutableStateOf(false) }
     val map = if (isContaParcelada) {
-        mapOf(
+        persistentMapOf(
             "Nome" to dadosDaConta.nome,
             "Categoria" to dadosDaConta.categoria,
             "Sub Categoria" to dadosDaConta.subCategoria,
@@ -61,7 +62,7 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
             "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
         )
     } else {
-        mapOf(
+        persistentMapOf(
             "Nome" to dadosDaConta.nome,
             "Categoria" to dadosDaConta.categoria,
             "Sub Categoria" to dadosDaConta.subCategoria,

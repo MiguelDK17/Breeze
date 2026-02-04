@@ -44,7 +44,6 @@ import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarCont
 import com.migueldk17.breeze.ui.theme.SkyBlue
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AdicionarConta(
     modifier : Modifier = Modifier,
@@ -53,7 +52,7 @@ fun AdicionarConta(
     //Cria o navController
     val navController = rememberNavController()
      //Pega a rota atual do navController
-    val currentRoute=navController.currentBackStackEntryAsState().value?.destination?.route
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
         //Column principal do ciclo de vida AdicionarContaOpcional
         Column(
@@ -152,7 +151,7 @@ private fun InstanciaRotasAdicionarConta(
             Passo1(
                 navToPasso2 = {
                 navController.navigate(NavGraph2.Passo2.route)
-            }, viewModel
+            }
             )
         }
         composable(NavGraph2.Passo2.route) {
@@ -160,7 +159,6 @@ private fun InstanciaRotasAdicionarConta(
                 navToPasso3 = {
                     navController.navigate(NavGraph2.Passo3.route)},
                 currentState = navController.currentBackStackEntryAsState().value?.destination?.route,
-                viewModel
             )
         }
         composable(NavGraph2.Passo3.route){
@@ -169,20 +167,19 @@ private fun InstanciaRotasAdicionarConta(
                 navController.navigate(NavGraph2.Passo4.route)
             },
                 currentState = navController.currentBackStackEntryAsState().value?.destination?.route,
-                viewModel
+
             )
         }
         composable(NavGraph2.Passo4.route){
             Passo4(navToPasso5 = {
                 navController.navigate(NavGraph2.Passo5.route)
-            }, viewModel)
+            })
         }
         composable(NavGraph2.Passo5.route){
             Passo5(navToFinal = {
                 navController.navigate(NavGraph2.Final.route)
             },
-                currentState = navController.currentBackStackEntryAsState().value?.destination?.route,
-                viewModel)
+                currentState = navController.currentBackStackEntryAsState().value?.destination?.route,)
         }
         composable(NavGraph2.Final.route){
             Final( viewModel)

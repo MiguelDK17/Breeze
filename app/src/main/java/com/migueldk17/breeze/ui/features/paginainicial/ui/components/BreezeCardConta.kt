@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -41,17 +43,21 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
+import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.ui.utils.formataValorConta
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentMapOf
 import java.time.LocalDate
 
 //Card de PaginaInicial
@@ -63,16 +69,56 @@ fun BreezeCardConta(
     apagarConta: () -> Unit,
     apagarParcelas: () -> Unit,
     haveInstallment: Boolean,
+    showDialogConta: Boolean,
+    onShowDialogConta: (Boolean) -> Unit
 ){
     val context = LocalContext.current
-    val parcelaTeste = if (haveInstallment) listaDeParcelas.first() else null
+    val parcela = if (haveInstallment) listaDeParcelas.first() else null
     val name = conta.name
-    val preco = parcelaTeste?.valor ?: conta.valor
+    val preco = parcela?.valor ?: conta.valor
     val icon = conta.icon.toBreezeIconsType()
     val isContaParcelada = conta.isContaParcelada
-    val juros = parcelaTeste?.porcentagemJuros ?: 0.00
+    val juros = parcela?.porcentagemJuros ?: 0.00
     val idDaConta = conta.id
     val parcelasMutable = mutableListOf<ParcelaUI>()
+
+    val categoria = conta.categoria
+    val subCategoria = conta.subCategoria
+    val data = conta.dateTime.toLocalDateTime()
+    val valorDaConta = conta.valor
+
+    val valorDaParcela = parcela?.valor
+    val totalParcelas = parcela?.totalParcelas
+    val porcentagemJuros = parcela?.porcentagemJuros
+
+    val day = data.dayOfMonth
+    val month = data.monthValue
+    val year = data.year
+    val dataFormatada = "$day/$month/$year"
+    Log.d(TAG, "BreezeCardConta: nome da conta ${conta.name}")
+
+    val immutableMap = if (haveInstallment) {
+        persistentMapOf(
+            "Nome" to name,
+            "Categoria" to categoria,
+            "Sub Categoria" to subCategoria,
+            "Valor Total" to retornaValorTotalArredondado(
+                valorParcela = valorDaParcela!!,
+                totalParcelas = totalParcelas!!
+            ),
+            "Valor da parcela" to formataSaldo(valorDaParcela),
+            "Data de pagamento" to dataFormatada,
+            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros!!)} a.m"
+        )
+    } else {
+        persistentMapOf(
+            "Nome" to name,
+            "Categoria" to categoria,
+            "Sub Categoria" to subCategoria,
+            "Valor Total" to formataSaldo(valorDaConta),
+            "Data de pagamento" to dataFormatada
+        )
+    }
 
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -250,8 +296,19 @@ fun BreezeCardConta(
             }
 
         }
+        if (showDialogConta) {
+            DetailsCard(
+                mapDeCategoria = immutableMap,
+                onChangeOpenDialog = {
+                    onShowDialogConta(it)
+                },
+                isContaParcelada = haveInstallment,
+                isReceita = false
+            )
+        }
 
     }
+
     Spacer(modifier = Modifier.size(10.dp))
 }
 

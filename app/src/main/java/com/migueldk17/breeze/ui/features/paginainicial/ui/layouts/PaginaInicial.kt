@@ -174,7 +174,6 @@ fun PaginaInicial(
 @Composable
 private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: PaginaInicialViewModel){
     val context = LocalContext.current
-    var showDialogConta by remember { mutableStateOf(false) }
 
     when(contasState){
         //Caso o ViewModel passe carregando como true
@@ -200,10 +199,38 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
         is UiState.Success -> {
             val contas = contasState.data
             LazyColumn {
-                items(contas) { conta ->
+                items(
+                    items = contas,
+                    key = { it.id }) { conta ->
                     //Pega a lista de parcelas
                     val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
-                    val parcelaUnica = parcelas.first()
+
+                    //Formata a data para consulta no Room
+                    val filtro = formataMesAno(LocalDate.now()) + "%"
+
+
+                    //Pega as parcelas com o UIState para cobrir os estados da lista
+                    val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
+
+                    //Pega a parcela do mês
+                    val parcelaDoMes = when(parcelaState){
+                        is UiState.Loading -> {
+                            null
+                        }
+                        is UiState.Empty -> {
+                            null
+                        }
+                        is UiState.Error -> {
+                            val message = parcelaState.exception
+                            Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
+                            null
+                        }
+                        is UiState.Success -> {
+                            val parcela = parcelaState.data
+                            parcela
+
+                        }
+                    }
 
                     val haveInstallment = parcelas.isNotEmpty()
                     val nome = conta.name
@@ -212,27 +239,27 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                     val data = conta.dateTime.toLocalDateTime()
                     val valorDaConta = conta.valor
 
-                    val valorDaParcela = parcelaUnica.valor
-                    val totalParcelas = parcelaUnica.totalParcelas
-                    val porcentagemJuros = parcelaUnica.porcentagemJuros
+                    val valorDaParcela = parcelaDoMes?.valor
+                    val totalParcelas = parcelaDoMes?.totalParcelas
+                    val porcentagemJuros = parcelaDoMes?.porcentagemJuros
 
                     val day = data.dayOfMonth
                     val month = data.monthValue
                     val year = data.year
                     val dataFormatada = "$day/$month/$year"
 
-                    val immutableMap = if (haveInstallment) {
+                    val immutableMap = if (parcelaDoMes != null) {
                         persistentMapOf(
                             "Nome" to nome,
                             "Categoria" to categoria,
                             "Sub Categoria" to subCategoria,
                             "Valor Total" to retornaValorTotalArredondado(
-                                valorParcela = valorDaParcela,
-                                totalParcelas = totalParcelas
+                                valorParcela = valorDaParcela!!,
+                                totalParcelas = totalParcelas!!
                             ),
                             "Valor da parcela" to formataSaldo(valorDaParcela),
                             "Data de pagamento" to dataFormatada,
-                            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
+                            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros!!)} a.m"
                         )
                     } else {
                         persistentMapOf(
@@ -243,6 +270,11 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                             "Data de pagamento" to dataFormatada
                         )
                     }
+
+                    var showDialogConta by remember(conta.id) {
+                        mutableStateOf(false)
+                    }
+
 
                     SwipeableBreezeCardConta(
                         onDetalhes = { value ->
@@ -258,19 +290,12 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                                 TAG,
                                 "PaginaInicial: Não há parcelas disponíveis pra apagar"
                             ) },
-                            haveInstallment = haveInstallment
+                            haveInstallment = haveInstallment,
+                            showDialogConta = showDialogConta,
+                            onShowDialogConta = { showDialogConta = it}
                         )
                     }
-                    if (showDialogConta) {
-                        DetailsCard(
-                            mapDeCategoria = immutableMap,
-                            onChangeOpenDialog = {
-                                showDialogConta = it
-                            },
-                            isContaParcelada = haveInstallment,
-                            isReceita = false
-                        )
-                    }
+
                 }
             }
         }

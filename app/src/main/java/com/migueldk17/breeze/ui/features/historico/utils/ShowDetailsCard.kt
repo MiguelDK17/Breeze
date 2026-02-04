@@ -17,6 +17,7 @@ import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.uistate.UiState
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.delay
 
 @Composable
@@ -61,14 +62,14 @@ fun ShowDetailsCard(
     val dataFormatada = "$day/$month/$year"
     val map = when {
         linhaDoTempoModel.isReceita -> {
-            mapOf(
+            persistentMapOf(
                 "Nome" to nameAccount,
                 "Valor Total" to formataSaldo(valor),
                 "Data de pagamento" to dataFormatada
             )
     }
     parcela != null && isContaParcelada -> {
-        mapOf(
+        persistentMapOf(
             "Nome" to nameAccount,
             "Categoria" to category,
             "Sub Categoria" to subCategory,
@@ -79,7 +80,7 @@ fun ShowDetailsCard(
         )
     }
         else -> {
-            mapOf(
+            persistentMapOf(
                 "Nome" to nameAccount,
                 "Categoria" to category,
                 "Sub Categoria" to subCategory,
