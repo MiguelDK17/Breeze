@@ -39,19 +39,24 @@ import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
+import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
+import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.SwipeableBreezeCardConta
 import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataMesAno
+import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.uistate.UiState
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
 
@@ -90,6 +95,8 @@ fun PaginaInicial(
         BreezeIcons.Outlined.Money.MoneyRecive to "Receitas"
     )
     var selectedIndexButtonGroup by remember{ mutableIntStateOf(0) }
+
+
 
 
 
@@ -167,6 +174,7 @@ fun PaginaInicial(
 @Composable
 private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: PaginaInicialViewModel){
     val context = LocalContext.current
+    var showDialogConta by remember { mutableStateOf(false) }
 
     when(contasState){
         //Caso o ViewModel passe carregando como true
@@ -195,48 +203,51 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                 items(contas) { conta ->
                     //Pega a lista de parcelas
                     val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
-
-                    //Pega a última parcela
-                    val latestParcela = parcelas.lastOrNull()
-
-                    //Formata a data para consulta no Room
-                    val filtro = formataMesAno(LocalDate.now()) + "%"
-
-                    //Pega as parcelas com o UIState para cobrir os estados da lista
-                    val parcelaState = viewModel.observeParcelaDoMes(conta.id, filtro).collectAsStateWithLifecycle(initialValue = UiState.Loading).value
-
-                    //Pega a parcela do mês
-                    val parcelaDoMes = when(parcelaState){
-                        is UiState.Loading -> {
-                            null
-                        }
-                        is UiState.Empty -> {
-                            null
-                        }
-                        is UiState.Error -> {
-                            val message = parcelaState.exception
-                            Log.d(TAG, "PaginaInicial: Um erro foi encontrado: $message")
-                            null
-                        }
-                        is UiState.Success -> {
-                            val parcela = parcelaState.data
-                            parcela
-
-                        }
-                    }
-                    //Verifica se não há parcelas no mês
-                    val semParcelaNoMes = parcelas.isNotEmpty() && parcelaState is UiState.Empty
-
-                    //Pega a data da primeira parcela futura caso não haja parcelas nesse mês, mas haja nos meses subsequentes
-                    val dataPrimeiraParcelaFutura = if (semParcelaNoMes) parcelas.first().dataDeVencimento.toLocalDate() else null
-
-                    //Verifica se é a última parcela
-                    val isLatestParcela = parcelaDoMes == latestParcela
+                    val parcelaUnica = parcelas.first()
 
                     val haveInstallment = parcelas.isNotEmpty()
+                    val nome = conta.name
+                    val categoria = conta.categoria
+                    val subCategoria = conta.subCategoria
+                    val data = conta.dateTime.toLocalDateTime()
+                    val valorDaConta = conta.valor
+
+                    val valorDaParcela = parcelaUnica.valor
+                    val totalParcelas = parcelaUnica.totalParcelas
+                    val porcentagemJuros = parcelaUnica.porcentagemJuros
+
+                    val day = data.dayOfMonth
+                    val month = data.monthValue
+                    val year = data.year
+                    val dataFormatada = "$day/$month/$year"
+
+                    val immutableMap = if (haveInstallment) {
+                        persistentMapOf(
+                            "Nome" to nome,
+                            "Categoria" to categoria,
+                            "Sub Categoria" to subCategoria,
+                            "Valor Total" to retornaValorTotalArredondado(
+                                valorParcela = valorDaParcela,
+                                totalParcelas = totalParcelas
+                            ),
+                            "Valor da parcela" to formataSaldo(valorDaParcela),
+                            "Data de pagamento" to dataFormatada,
+                            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
+                        )
+                    } else {
+                        persistentMapOf(
+                            "Nome" to nome,
+                            "Categoria" to categoria,
+                            "Sub Categoria" to subCategoria,
+                            "Valor Total" to formataSaldo(valorDaConta),
+                            "Data de pagamento" to dataFormatada
+                        )
+                    }
 
                     SwipeableBreezeCardConta(
-                        onDetalhes = { ToastManager.showToast(context, "Detalhes da Conta 👻")},
+                        onDetalhes = { value ->
+                            showDialogConta = value
+                        },
                         onExcluir = { ToastManager.showToast(context, "Excluiu a conta boooo 👻")}
                     ) {
                         BreezeCardConta(
@@ -250,7 +261,16 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                             haveInstallment = haveInstallment
                         )
                     }
-
+                    if (showDialogConta) {
+                        DetailsCard(
+                            mapDeCategoria = immutableMap,
+                            onChangeOpenDialog = {
+                                showDialogConta = it
+                            },
+                            isContaParcelada = haveInstallment,
+                            isReceita = false
+                        )
+                    }
                 }
             }
         }

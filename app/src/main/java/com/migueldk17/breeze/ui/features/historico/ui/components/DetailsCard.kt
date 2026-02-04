@@ -29,14 +29,16 @@ import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
+import kotlinx.collections.immutable.ImmutableMap
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DetailsCard(
-    mapDeCategoria: Map<String, String>,
+    mapDeCategoria: ImmutableMap<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
     isContaParcelada: Boolean,
-    isReceita: Boolean
+    isReceita: Boolean,
+    modifier: Modifier = Modifier
     ){
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
@@ -67,6 +69,7 @@ fun DetailsCard(
     val titleText = if (!isReceita) "Detalhes da Conta" else "Detalhes da Receita"
 
     BasicAlertDialog(
+        modifier = modifier,
         onDismissRequest = {
             //Dispensa o BasicAlertDialog
             onChangeOpenDialog(false)

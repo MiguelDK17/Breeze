@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SwipeableBreezeCardConta(
-    onDetalhes: () -> Unit,
+    onDetalhes: (Boolean) -> Unit,
     onExcluir: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
@@ -22,7 +22,7 @@ fun SwipeableBreezeCardConta(
         confirmValueChange = { value ->
             when (value) {
                 SwipeToDismissBoxValue.StartToEnd -> {
-                    onDetalhes()
+                    onDetalhes(true)
                     false
                 }
                 SwipeToDismissBoxValue.EndToStart -> {
