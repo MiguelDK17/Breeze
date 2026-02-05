@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity3: ComponentActivity() {
-    private val viewModel by viewModels<AdicionarContaViewModel>()
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +58,7 @@ class MainActivity3: ComponentActivity() {
                     }
                 ) {
                     paddingValues ->
-                    AdicionarConta(modifier = Modifier.padding(paddingValues), viewModel)
+                    AdicionarConta(modifier = Modifier.padding(paddingValues))
                 }
             }
         }

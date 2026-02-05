@@ -43,6 +43,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.navigation.NavGraph
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
@@ -202,11 +203,11 @@ fun adicionaCorPadrao(currentState: String?, viewModel: AdicionarContaViewModel)
     val colorCardDefault = PastelLightBlue
     when(currentState) {
         //Caso esteja no Passo3 adiciona a cor ao icone
-        NavGraph2.Passo3.route -> {
+        NavGraph.Passo3.route -> {
             viewModel.guardaCorIconePadrao(colorIconDefault)
         }
         //Caso esteja no Passo5 adiciona a cor ao card
-        NavGraph2.Passo5.route -> {
+        NavGraph.Passo5.route -> {
             viewModel.guardaCorCardPadrao(colorCardDefault)
         }
     }
