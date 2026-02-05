@@ -17,7 +17,7 @@ fun AdicionarContaNavHost(
 ){
     NavHost(
         navController = navController,
-        startDestination = NavGraph.Passo1.route,
+        startDestination = NavGraphs.AdicionarConta,
         modifier = modifier
             .padding()
             .fillMaxHeight(0.9f),

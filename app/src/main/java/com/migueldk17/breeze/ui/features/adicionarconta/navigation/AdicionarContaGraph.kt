@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.remember
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -13,6 +14,8 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts.Passo3
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts.Passo4
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts.Passo5
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+
+
 
 fun NavGraphBuilder.adicionarContaGraph(
     navController: NavController

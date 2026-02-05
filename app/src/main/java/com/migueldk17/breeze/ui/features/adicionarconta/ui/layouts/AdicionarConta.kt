@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.migueldk17.breeze.ui.features.adicionarconta.navigation.AdicionarContaNavHost
@@ -27,28 +28,27 @@ import com.migueldk17.breeze.ui.theme.SkyBlue
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AdicionarConta(
+    navController: NavHostController,
     modifier : Modifier = Modifier
 ){
-    //Cria o navController
-    val navController = rememberNavController()
-     //Pega a rota atual do navController
+    //Pega a rota atual do navController
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-        //Column principal do ciclo de vida AdicionarContaOpcional
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(15.dp)
-        ) {
+    //Column principal do ciclo de vida AdicionarContaOpcional
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(15.dp)
+    ) {
 
-            //Contagem de passos
-            Text(
-                retornaPasso(currentRoute),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
+        //Contagem de passos
+        Text(
+            retornaPasso(currentRoute),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
 
-            )
+        )
             Spacer(modifier = Modifier.size(15.dp))
             //LinearProgressIndicator que evolui conforme os passos
             LinearWavyProgressIndicator(
