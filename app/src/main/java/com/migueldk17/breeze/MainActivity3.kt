@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.compose.rememberNavController
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.TitleText
@@ -31,6 +32,9 @@ class MainActivity3: ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            //Cria o navController
+            val navController = rememberNavController()
+
             BreezeTheme {
                 Scaffold(
                     topBar = {
@@ -58,7 +62,10 @@ class MainActivity3: ComponentActivity() {
                     }
                 ) {
                     paddingValues ->
-                    AdicionarConta(modifier = Modifier.padding(paddingValues))
+                    AdicionarConta(
+                        navController = navController,
+                        modifier = Modifier.padding(paddingValues)
+                    )
                 }
             }
         }
