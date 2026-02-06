@@ -162,19 +162,6 @@ fun BreezeCardConta(
                     formataSaldo(preco),
                     color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue
                 )
-                Box(modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd){
-                    IconButton(onClick = {
-                        fabMenuExpanded = true
-                    },
-                        modifier = Modifier.size(30.dp)) {
-                        BreezeIcon(
-                            breezeIcon = BreezeIcons.Linear.Essetional.MenuDots,
-                            contentDescription = "Três Pontos",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
-                }
             }
         }
         if (openDialogPagarConta) {
