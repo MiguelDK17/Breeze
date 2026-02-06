@@ -9,15 +9,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.BreezeIconLists
-import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCorPadrao
@@ -31,8 +28,8 @@ fun Passo3(
     currentState: String?,
     viewModel: AdicionarContaViewModel = hiltViewModel()){
 
-    val nomeConta = viewModel.nomeConta.collectAsState().value
-    val icone = viewModel.iconeCardConta.collectAsState().value
+    val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
+    val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
 
     //Column do Passo3
     Column {

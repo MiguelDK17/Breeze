@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
 
@@ -90,6 +91,13 @@ val Typography = Typography(
         letterSpacing = 1.sp,
 
     ),
+    labelLarge = TextStyle(
+        fontFamily = fontFamilyPoppins,
+        fontWeight = FontWeight.W400,
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 1.sp
+    )
 
     /* Other default text styles to override
     titleLarge = TextStyle(

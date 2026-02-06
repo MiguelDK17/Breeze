@@ -31,8 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.migueldk17.breeze.MainActivity
-import com.migueldk17.breeze.MainActivity2
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia

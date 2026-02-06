@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.BreezeIconLists
-import com.migueldk17.breeze.NavGraph2
+import com.migueldk17.breeze.ui.features.adicionarconta.navigation.NavGraph
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
@@ -176,16 +176,16 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
 fun insereIconeNoViewModel(currentState: String?, viewModel: AdicionarContaViewModel, icone: BreezeIconsType){
     when(currentState) {
         //Caso passo 2 adiciona um icone a conta
-        NavGraph2.Passo2.route -> {
+        NavGraph.Passo2.route -> {
             viewModel.guardaIconCard(icone)
         }
         //Caso passo 3 adiciona a cor do icone
-        NavGraph2.Passo3.route -> {
+        NavGraph.Passo3.route -> {
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
             viewModel.guardaCorIconeEscolhida(icone)
         }
         //Caso passo 5 adiciona a cor do card da conta
-        NavGraph2.Passo5.route -> {
+        NavGraph.Passo5.route -> {
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
             viewModel.guardaCorCardEscolhida(icone)
         }
@@ -202,11 +202,11 @@ fun adicionaCorPadrao(currentState: String?, viewModel: AdicionarContaViewModel)
     val colorCardDefault = PastelLightBlue
     when(currentState) {
         //Caso esteja no Passo3 adiciona a cor ao icone
-        NavGraph2.Passo3.route -> {
+        NavGraph.Passo3.route -> {
             viewModel.guardaCorIconePadrao(colorIconDefault)
         }
         //Caso esteja no Passo5 adiciona a cor ao card
-        NavGraph2.Passo5.route -> {
+        NavGraph.Passo5.route -> {
             viewModel.guardaCorCardPadrao(colorCardDefault)
         }
     }
