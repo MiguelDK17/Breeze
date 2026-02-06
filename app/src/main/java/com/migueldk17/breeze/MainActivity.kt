@@ -2,7 +2,9 @@ package com.migueldk17.breeze
 
 
 import android.content.Intent
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -55,6 +57,7 @@ class MainActivity : ComponentActivity() {
                     if (currentRoute == Screen.PaginaInicial.route) {
                         (context as? MainActivity)?.finish()
                     } else {
+                        Log.d(TAG, "onCreate: a rota atual é: $currentRoute")
                         navController.popBackStack()
                     }
                 }

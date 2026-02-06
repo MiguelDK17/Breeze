@@ -43,7 +43,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.Receita
@@ -51,8 +50,8 @@ import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DialogExcluirConta
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.SwipeableBreezeCardConta
-import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.uistate.UiState
@@ -156,8 +155,6 @@ fun PaginaInicial(
         }
     }
 
-
-
     if (showBottomSheet){
         AdicionarReceitaBottomSheet(
             atualizaBottomSheet = {viewModel.atualizaBottomSheet(it)},
@@ -166,9 +163,6 @@ fun PaginaInicial(
             }
         )
     }
-
-
-
 }
 
 @Composable
@@ -271,35 +265,55 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                         )
                     }
 
-                    var showDialogConta by remember(conta.id) {
+                    var showDialogDetalhes by remember(conta.id) {
+                        mutableStateOf(false)
+                    }
+                    var showDialogExcluir by remember(conta.id) {
                         mutableStateOf(false)
                     }
 
 
                     SwipeableBreezeCardConta(
                         onDetalhes = { value ->
-                            showDialogConta = value
+                            showDialogDetalhes = value
                         },
-                        onExcluir = { ToastManager.showToast(context, "Excluiu a conta boooo 👻")}
+                        onExcluir = { value ->
+                            showDialogExcluir = value
+                        }
                     ) {
                         BreezeCardConta(
                             conta,
                             parcelas.toImmutableList(),
-                            apagarConta = {  viewModel.apagaConta(conta) },
-                            apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
-                                TAG,
-                                "PaginaInicial: Não há parcelas disponíveis pra apagar"
-                            ) },
-                            haveInstallment = haveInstallment,
-                            showDialogConta = showDialogConta,
-                            onShowDialogConta = { showDialogConta = it}
+                            haveInstallment = haveInstallment
                         )
+                        if (showDialogDetalhes) {
+                            DetailsCard(
+                                mapDeCategoria = immutableMap,
+                                onChangeOpenDialog = {
+                                    showDialogDetalhes = false
+                                },
+                                isContaParcelada = haveInstallment,
+                                isReceita = false
+                            )
+                        }
+                        if (showDialogExcluir) {
+                            DialogExcluirConta(
+                                openDialogExcluirConta = {
+                                    showDialogExcluir = it
+                                },
+                                apagarConta = {  viewModel.apagaConta(conta) },
+                                apagarParcelas = { if (parcelas.isNotEmpty()) viewModel.apagaTodasAsParcelas(parcelas) else Log.d(
+                                    TAG,
+                                    "PaginaInicial: Não há parcelas disponíveis pra apagar"
+                                ) },
+                            )
+                        }
                     }
-
                 }
             }
         }
     }
+
 }
 
 @Composable

@@ -1,9 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-
-import android.util.Log
-import android.content.ContentValues.TAG
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,17 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,32 +25,24 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
-import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
-import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.ui.utils.formataValorConta
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentMapOf
-import java.time.LocalDate
 
 //Card de PaginaInicial
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -66,13 +50,9 @@ import java.time.LocalDate
 fun BreezeCardConta(
     conta: Conta,
     listaDeParcelas: ImmutableList<ParcelaEntity>,
-    apagarConta: () -> Unit,
-    apagarParcelas: () -> Unit,
     haveInstallment: Boolean,
-    showDialogConta: Boolean,
-    onShowDialogConta: (Boolean) -> Unit
+    modifier: Modifier = Modifier
 ){
-    val context = LocalContext.current
     val parcela = if (haveInstallment) listaDeParcelas.first() else null
     val name = conta.name
     val preco = parcela?.valor ?: conta.valor
@@ -82,46 +62,7 @@ fun BreezeCardConta(
     val idDaConta = conta.id
     val parcelasMutable = mutableListOf<ParcelaUI>()
 
-    val categoria = conta.categoria
-    val subCategoria = conta.subCategoria
-    val data = conta.dateTime.toLocalDateTime()
-    val valorDaConta = conta.valor
-
-    val valorDaParcela = parcela?.valor
-    val totalParcelas = parcela?.totalParcelas
-    val porcentagemJuros = parcela?.porcentagemJuros
-
-    val day = data.dayOfMonth
-    val month = data.monthValue
-    val year = data.year
-    val dataFormatada = "$day/$month/$year"
-    Log.d(TAG, "BreezeCardConta: nome da conta ${conta.name}")
-
-    val immutableMap = if (haveInstallment) {
-        persistentMapOf(
-            "Nome" to name,
-            "Categoria" to categoria,
-            "Sub Categoria" to subCategoria,
-            "Valor Total" to retornaValorTotalArredondado(
-                valorParcela = valorDaParcela!!,
-                totalParcelas = totalParcelas!!
-            ),
-            "Valor da parcela" to formataSaldo(valorDaParcela),
-            "Data de pagamento" to dataFormatada,
-            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros!!)} a.m"
-        )
-    } else {
-        persistentMapOf(
-            "Nome" to name,
-            "Categoria" to categoria,
-            "Sub Categoria" to subCategoria,
-            "Valor Total" to formataSaldo(valorDaConta),
-            "Data de pagamento" to dataFormatada
-        )
-    }
-
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
-
 
 
     for (item in listaDeParcelas){
@@ -135,7 +76,6 @@ fun BreezeCardConta(
             parcelasMutable.add(objectParcelaUI)
         }
     }
-
 
     //Variavel que controla o estado do BasicAlertDialog de Excluir Conta
     var openDialogExcluirConta by remember { mutableStateOf(false) }
@@ -163,7 +103,7 @@ fun BreezeCardConta(
     }
 
     OutlinedCard (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = conta.colorCard.toColor())
     ) {
@@ -211,8 +151,6 @@ fun BreezeCardConta(
                         )
                     }
                 }
-
-
             }
             //Linha de baixo com o valor monetário da categoria
             Row(
@@ -248,65 +186,6 @@ fun BreezeCardConta(
                 confirmPaymentModel = confirmPaymentModel
             )
         }
-        if (openDialogExcluirConta){
-            BasicAlertDialog(
-                onDismissRequest = {
-                    //Dispensa o BasicAlertDialog
-                    openDialogExcluirConta = false
-                }
-
-            ) {
-                Surface(
-                    modifier = Modifier.size(width = 312.dp, height = 200.dp),
-                    shape = MaterialTheme.shapes.large,
-                    tonalElevation = AlertDialogDefaults.TonalElevation
-                ) {
-                    Column(modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.SpaceAround
-                        ) {
-
-                        //Título do BasicAlertDialog
-                        Text("Excluir Conta",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 23.sp)
-
-                        //Texto do BasicAlertDialog
-                        Text("Você está prestes a excluir esta conta, esta ação será irreversível. Prosseguir ?",
-                            style = MaterialTheme.typography.bodyMedium)
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            TextButton(onClick = {
-                                openDialogExcluirConta = false //Botão de cancelar
-                            }) {
-                                Text("Cancelar")
-                            }
-                            TextButton(onClick = {
-                                apagarConta()
-                                apagarParcelas()
-                                openDialogExcluirConta = false //Botão de confirmar
-                            }) {
-                                Text("Confirmar")
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-        if (showDialogConta) {
-            DetailsCard(
-                mapDeCategoria = immutableMap,
-                onChangeOpenDialog = {
-                    onShowDialogConta(it)
-                },
-                isContaParcelada = haveInstallment,
-                isReceita = false
-            )
-        }
-
     }
 
     Spacer(modifier = Modifier.size(10.dp))
@@ -319,7 +198,6 @@ private fun MostraDialogPagarConta(
     onOpenDialogPagarConta: (Boolean) -> Unit,
     confirmPaymentModel: ConfirmPaymentModel
 ){
-    val context = LocalContext.current
     ConfirmarPagamentoDialog(
         isVisible = openDialogPagarConta,
         state = confirmPaymentModel,
@@ -330,61 +208,6 @@ private fun MostraDialogPagarConta(
             onOpenDialogPagarConta(false)
         },
     )
-}
-
-@Composable
-private fun IsExpandableCard(
-    conta: Conta,
-    parcela: ParcelaEntity?,
-    isLatestParcela: Boolean,
-    isExpandable: Boolean,
-    semParcelaNoMes: Boolean,
-    dataPrimeiraParcelaFutura: LocalDate?
-){
-     if(isExpandable){
-        AnimatedVisibility(visible = conta.isContaParcelada) {
-            if (semParcelaNoMes) {
-                val dia = dataPrimeiraParcelaFutura!!.dayOfMonth
-                val mes = dataPrimeiraParcelaFutura.monthValue
-                val ano = dataPrimeiraParcelaFutura.year
-                val dataFormatada =  "$dia/$mes/$ano"
-                Column(modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    DescriptionText(
-                        "Tá tudo quieto por aqui este mês!",
-                        size = 12.9.sp
-                    )
-                    DescriptionText(
-                        "Olha só, a próxima vem em: $dataFormatada",
-                        size = 12.9.sp)
-                }
-
-            }
-            else {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                val porcentagemJuros = parcela!!.porcentagemJuros
-
-                val data = parcela.dataDeVencimento.toLocalDate()
-                val dia = data.dayOfMonth
-                val mesSeguinte = data.monthValue + 1
-                val ano = data.year
-                val dataFormatada = if (!isLatestParcela) "$dia/$mesSeguinte/$ano" else "Esta é a última parcela"
-                DescriptionText("\uD83D\uDCA1 Conta Parcelada")
-
-                DescriptionText("Parcelas: ${parcela.numeroParcela} de ${parcela.totalParcelas}")
-                DescriptionText("Valor da parcela: ${formataSaldo(parcela.valor)}")
-                DescriptionText("Juros: $porcentagemJuros %")
-                DescriptionText("Próxima parcela: $dataFormatada")
-
-            }
-
-            }
-        }
-    }
 }
 
 fun retornaValorNoCard(valor: Double,parcela: ParcelaEntity?): String {
