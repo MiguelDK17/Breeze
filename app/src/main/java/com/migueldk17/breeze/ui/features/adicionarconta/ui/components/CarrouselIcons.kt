@@ -173,19 +173,25 @@ fun carrouselIcons(iconList: List<BreezeIconsType>): BreezeIconsType{
 }
 
 //Função que verifica o passo em que o navController está e apartir disso adiciona o ícone para a função correta do ViewModel
-fun insereIconeNoViewModel(currentState: String?, viewModel: AdicionarContaViewModel, icone: BreezeIconsType){
+fun insereIconeNoViewModel(
+    currentState: String?,
+    viewModel: AdicionarContaViewModel,
+    icone: BreezeIconsType){
     when(currentState) {
         //Caso passo 2 adiciona um icone a conta
         NavGraph.Passo2.route -> {
+            Log.d(TAG, "insereIconeNoViewModel: Rota lida: Passo2")
             viewModel.guardaIconCard(icone)
         }
         //Caso passo 3 adiciona a cor do icone
         NavGraph.Passo3.route -> {
+            Log.d(TAG, "insereIconeNoViewModel: Rota lida: Passo3")
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
             viewModel.guardaCorIconeEscolhida(icone)
         }
         //Caso passo 5 adiciona a cor do card da conta
         NavGraph.Passo5.route -> {
+            Log.d(TAG, "insereIconeNoViewModel: Rota lida: Passo5")
             Log.d(TAG, "insereIconeNoViewModel: ${icone.color}")
             viewModel.guardaCorCardEscolhida(icone)
         }
