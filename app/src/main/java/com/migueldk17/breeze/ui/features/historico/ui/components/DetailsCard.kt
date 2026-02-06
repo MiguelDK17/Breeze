@@ -29,14 +29,16 @@ import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
+import kotlinx.collections.immutable.ImmutableMap
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DetailsCard(
-    mapDeCategoria: Map<String, String>,
+    mapDeCategoria: ImmutableMap<String, String>,
     onChangeOpenDialog: (Boolean) -> Unit,
     isContaParcelada: Boolean,
-    isReceita: Boolean
+    isReceita: Boolean,
+    modifier: Modifier = Modifier
     ){
     val mapDeCategoriaMutavel = mapDeCategoria.toMutableMap()
 
@@ -66,75 +68,83 @@ fun DetailsCard(
     }
     val titleText = if (!isReceita) "Detalhes da Conta" else "Detalhes da Receita"
 
-        BasicAlertDialog(
-            onDismissRequest = {
-                //Dispensa o BasicAlertDialog
-                onChangeOpenDialog(false)
-            }
+    BasicAlertDialog(
+        modifier = modifier,
+        onDismissRequest = {
+            //Dispensa o BasicAlertDialog
+            onChangeOpenDialog(false)
+        }
+    ) {
+        Surface(
+            shape = MaterialTheme.shapes.large,
+            tonalElevation = AlertDialogDefaults.TonalElevation
         ) {
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                tonalElevation = AlertDialogDefaults.TonalElevation
+            Column(
+                modifier = Modifier.padding(30.dp),
+                verticalArrangement = Arrangement.SpaceAround
             ) {
-                Column(modifier = Modifier.padding(30.dp),
-                    verticalArrangement = Arrangement.SpaceAround
-                ) {
-                    //Título do BasicAlertDialog
-                    TitleText(titleText,
-                        color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier
+                //Título do BasicAlertDialog
+                TitleText(
+                    titleText,
+                    fontWeight = FontWeight.Bold,
+                    color = if (!isSystemInDarkTheme()) NavyBlue else DeepSkyBlue
+                )
+                Spacer(
+                    modifier = Modifier
                         .height(20.dp)
-                        .background(Color.Yellow))
-                    listaFiltrada.forEach { category ->
-                        val accountCategory = mapDeCategoriaMutavel[category]
-                        Row(
+                        .background(Color.Yellow)
+                )
+                listaFiltrada.forEach { category ->
+                    val accountCategory = mapDeCategoriaMutavel[category]
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        //Categoria fixa da lista
+                        DescriptionText(
+                            category,
+                            fontWeight = FontWeight.Bold,
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.Top,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            DescriptionText(
-                                category,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                            )
-                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                                .padding(vertical = 5.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                        //Dados da conta que vieram do Room
+                        DescriptionText(
+                            text = accountCategory.toString(),
+                            modifier = Modifier
+                                .padding(vertical = 5.dp)
+                                .align(Alignment.Top)
+                        )
 
-                            DescriptionText(
-                                text = accountCategory.toString(),
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                                    .align(Alignment.Top)
-                                )
-
-
-
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
 
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Button(onClick = {
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        onClick = {
                             onChangeOpenDialog(false) //Botão de confirmar
                         },
-                            shapes = ButtonShapes(
-                                shape = ShapeDefaults.ExtraSmall,
-                                pressedShape = ShapeDefaults.ExtraSmall),
-                            modifier = Modifier
-                                    .height(48.dp)) {
-                            Text("Tudo bem!")
-                        }
+                        shapes = ButtonShapes(
+                            shape = ShapeDefaults.ExtraSmall,
+                            pressedShape = ShapeDefaults.ExtraSmall
+                        ),
+                        modifier = Modifier
+                            .height(48.dp)
+                    ) {
+                        Text("Tudo bem!")
                     }
                 }
             }
         }
+    }
 }
 
 

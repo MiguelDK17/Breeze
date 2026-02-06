@@ -11,14 +11,14 @@ plugins {
 
 android {
     namespace = "com.migueldk17.breeze"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.migueldk17.breeze"
-        minSdk = 26
-        targetSdk = 35
+        minSdk = 28
+        targetSdk = 36
         versionCode = 1
-        versionName = "1.3-beta"
+        versionName = "1.3.5-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -47,8 +47,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
     buildFeatures {
         compose = true
@@ -91,6 +94,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.kotlinx.collections.immutable)
 
 
     //Bibliotecas de terceiros

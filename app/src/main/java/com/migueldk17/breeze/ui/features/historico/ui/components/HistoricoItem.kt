@@ -39,6 +39,7 @@ fun HistoricoItem(
     val expanded = remember{ mutableStateOf(false) }
     val density = LocalDensity.current
 
+
     Log.d(TAG, "HistoricoItem: breezeIcon ${linhaDoTempoPrincipal.icon.toBreezeIconsType().enum.name}")
 
     BoxWithConstraints(
@@ -56,7 +57,7 @@ fun HistoricoItem(
                     .align(Alignment.CenterStart)
                     .padding(start = 69.dp)
             ) {
-                val startY = with(density) { 15.dp.toPx()}
+                val startY = with(density) { 8.dp.toPx()}
                 val endOffset = with(density) { 5.dp.toPx() }
 
                 val finalHeight = if (lastIndex) {

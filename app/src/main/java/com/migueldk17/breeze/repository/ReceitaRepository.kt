@@ -19,5 +19,11 @@ class ReceitaRepository @Inject constructor(
     fun getReceitasDoMes(mesAno: String): Flow<List<Receita>> {
         return receitaDao.getReceitasDoMes(mesAno)
     }
+    fun getTodasAsReceitas(): Flow<List<Receita>> {
+        return receitaDao.getTodasAsReceitas()
+    }
 
+    suspend fun apagaReceita(receita: Receita) {
+        receitaDao.apagaReceita(receita)
+    }
 }

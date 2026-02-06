@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,10 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.migueldk17.breeze.BreezeIconLists
-import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
@@ -32,7 +34,7 @@ fun Passo2(
     navToPasso3: () -> Unit,
     currentState: String?,
     viewModel: AdicionarContaViewModel = hiltViewModel()){
-    val nomeConta = viewModel.nomeConta.collectAsState().value
+    val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
 
 
     //Column do Passo2
@@ -64,6 +66,7 @@ fun Passo2(
         {
             //Carrossel de icones
             val iconCarrousel = carrouselIcons(BreezeIconLists.getLinearIcons())
+            Log.d(TAG, "Passo2: icone selecionado: ${iconCarrousel.enum.name}")
             Spacer(modifier = Modifier.size(71.dp))
             //Botão para avançar de tela
             Button(onClick = {

@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.converters
 
+
 import androidx.compose.runtime.Composable
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
@@ -14,6 +15,72 @@ fun BreezeIconsEnum.toDatabaseValue(): String {
 @Composable
 fun String.toBreezeIconsType() : BreezeIconsType {
     val icon = when(this){
+
+        BreezeIconsEnum.HOME_LINEAR.name -> {
+            BreezeIcons.Linear.Building.HomeLinear
+        }
+
+        BreezeIconsEnum.FACEBOOK_LINEAR.name -> {
+            BreezeIcons.Linear.Company.FacebookLinear
+        }
+        BreezeIconsEnum.GOOGLE_LINEAR.name -> {
+            BreezeIcons.Linear.Company.GoogleLinear
+        }
+        BreezeIconsEnum.GOOGLE_PLAY_LINEAR.name -> {
+            BreezeIcons.Linear.Company.GooglePlayLinear
+        }
+        BreezeIconsEnum.WHATSAPP_LINEAR.name -> {
+            BreezeIcons.Linear.Company.WhatsappLinear
+        }
+        BreezeIconsEnum.WINDOWS_LINEAR.name -> {
+            BreezeIcons.Linear.Company.WindowsLinear
+        }
+        BreezeIconsEnum.ANDROID_LINEAR.name -> {
+            BreezeIcons.Linear.Company.AndroidLinear
+        }
+        BreezeIconsEnum.SPOTIFY_LINEAR.name -> {
+            BreezeIcons.Linear.Company.SpotifyLinear
+        }
+
+        BreezeIconsEnum.DOCUMENT_LINEAR.name -> {
+            BreezeIcons.Linear.ContentEdit.DocumentLinear
+        }
+
+        BreezeIconsEnum.MAGIC_PEN_LINEAR.name -> {
+            BreezeIcons.Linear.DesignTools.MagicPen
+        }
+
+        BreezeIconsEnum.GROUP_LINEAR.name -> {
+            BreezeIcons.Linear.Delivery.GroupLinear
+        }
+
+        BreezeIconsEnum.FILE_TEXT_LINEAR.name -> {
+            BreezeIcons.Linear.Files.FileText
+        }
+
+        BreezeIconsEnum.LIKE_LINEAR.name -> {
+            BreezeIcons.Linear.SupportLikeQuestion.LikeLinear
+        }
+
+        BreezeIconsEnum.DOLLAR_SQUARE_LINEAR.name -> {
+            BreezeIcons.Linear.Money.DollarSquare
+        }
+
+        BreezeIconsEnum.VERIFIED_CHECK.name -> {
+            BreezeIcons.Linear.Money.VerifiedCheck
+        }
+        BreezeIconsEnum.NOTIFICATION_LINEAR.name -> {
+            BreezeIcons.Linear.Notification.NotificationLinear
+        }
+        BreezeIconsEnum.NOTIFICATION_BING_LINEAR.name -> {
+            BreezeIcons.Linear.Notification.NotificationBingLinear
+        }
+        BreezeIconsEnum.CALENDAR_LINEAR.name -> {
+            BreezeIcons.Linear.Time.CalendarLinear
+        }
+        BreezeIconsEnum.FORWARD_PLAYER_LINEAR.name -> {
+            BreezeIcons.Linear.VideoAudioImage.ForwardLinear
+        }
 
         BreezeIconsEnum.BOOK_LINEAR.name -> {
             BreezeIcons.Linear.SchoolLearning.BookLinear
@@ -82,6 +149,85 @@ fun String.toBreezeIconsType() : BreezeIconsType {
         }
         BreezeIcons.Linear.Files.FileText.enum.name -> {
             BreezeIcons.Linear.Files.FileText
+        }
+        BreezeIcons.Linear.Money.DollarCircle.enum.name -> {
+            BreezeIcons.Linear.Money.DollarCircle
+        }
+        BreezeIcons.Linear.Money.MoneySend.enum.name -> {
+            BreezeIcons.Linear.Money.MoneySend
+        }
+        BreezeIcons.Linear.Money.MoneyRecive.enum.name -> {
+            BreezeIcons.Linear.Money.MoneyRecive
+        }
+
+        BreezeIcons.Linear.Arrows.AltArrowLeft.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowLeft
+        }
+
+        BreezeIcons.Linear.Arrows.AltArrowUp.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowUp
+        }
+        BreezeIcons.Linear.Arrows.AltArrowDown.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowDown
+        }
+        BreezeIcons.Linear.Arrows.AltArrowRight.enum.name -> {
+            BreezeIcons.Linear.Arrows.AltArrowRight
+        }
+
+        BreezeIcons.Linear.Arrows.Refresh.enum.name -> {
+            BreezeIcons.Linear.Arrows.Refresh
+        }
+
+        BreezeIcons.Linear.Arrows.Restart.enum.name -> {
+            BreezeIcons.Linear.Arrows.Restart
+        }
+
+        BreezeIcons.Linear.Nature.ChristmasTree.enum.name -> {
+            BreezeIcons.Linear.Nature.ChristmasTree
+        }
+        BreezeIcons.Linear.Nature.Recycle.enum.name -> {
+            BreezeIcons.Linear.Nature.Recycle
+        }
+
+        BreezeIcons.Linear.Nature.Umbrella.enum.name -> {
+            BreezeIcons.Linear.Nature.Umbrella
+        }
+
+        BreezeIcons.Linear.FoodKitchen.TeaCup.enum.name -> {
+            BreezeIcons.Linear.FoodKitchen.TeaCup
+        }
+        BreezeIcons.Linear.Essetional.Hanger.enum.name -> {
+            BreezeIcons.Linear.Essetional.Hanger
+        }
+        BreezeIcons.Linear.Essetional.ConfettiMinimalistic.enum.name -> {
+            BreezeIcons.Linear.Essetional.ConfettiMinimalistic
+        }
+        BreezeIcons.Linear.Essetional.Sleeping.enum.name -> {
+            BreezeIcons.Linear.Essetional.Sleeping
+        }
+        BreezeIcons.Linear.ElectronicDevices.Laptop.enum.name -> {
+            BreezeIcons.Linear.ElectronicDevices.Laptop
+        }
+        BreezeIcons.Linear.ElectronicDevices.Gamepad.enum.name -> {
+            BreezeIcons.Linear.ElectronicDevices.Gamepad
+        }
+
+        BreezeIcons.Linear.Essetional.TShirt.enum.name -> {
+            BreezeIcons.Linear.Essetional.TShirt
+        }
+        BreezeIcons.Linear.Essetional.Skirt.enum.name -> {
+            BreezeIcons.Linear.Essetional.Skirt
+        }
+        BreezeIcons.Linear.Like.Heart.enum.name -> {
+            BreezeIcons.Linear.Like.Heart
+        }
+
+        BreezeIcons.Linear.School.CaseRoundMinimalistic.enum.name -> {
+            BreezeIcons.Linear.School.CaseRoundMinimalistic
+        }
+
+        BreezeIcons.Linear.School.SquareAcademicCap2.enum.name -> {
+            BreezeIcons.Linear.School.SquareAcademicCap2
         }
 
         else -> {

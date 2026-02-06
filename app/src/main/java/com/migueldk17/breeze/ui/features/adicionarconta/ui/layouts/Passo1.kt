@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.ui.features.adicionarconta.ui.layouts
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,13 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
@@ -60,22 +63,35 @@ fun Passo1(
     //Map de sub categoria baseado nas categorias estabelecidas
     val categorySubcategories = mapOf(
         "Alimentação" to listOf("Supermercado", "Restaurante", "Lanches", "Delivery"),
-        "Transporte" to listOf("Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
+        "Transporte" to listOf(
+            "Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
         "Educação" to listOf("Escola", "Faculdade", "Cursos online", "Material escolar"),
-        "Moradia" to listOf("Aluguel", "Condomínio", "Água", "Energia", "Internet"),
+        "Moradia" to listOf("Aluguel", "Decoração & Mobília", "Condomínio",
+            "Água", "Energia", "Internet"),
         "Lazer" to listOf("Cinema", "Viagens", "Assinaturas(Netflix, Spotify...)", "Jogos"),
         "Saúde" to listOf("Plano de saúde", "Farmácia", "Consulta médica", "Exames"),
-        "Trabalho/Negócios" to listOf("Ferramentas de trabalho", "Marketing", "Transporte a trabalho", "Assinaturas por trabalho"),
+        "Trabalho/Negócios" to listOf(
+            "Ferramentas de trabalho","Upgrade de Equipamento", "Marketing",
+            "Transporte a trabalho", "Assinaturas por trabalho"
+        ),
         "Pets" to listOf("Ração", "Veterinário", "Higiene", "Brinquedos"),
-        "Pessoais" to listOf("Roupas", "Cabelo/Beleza", "Presentes", "Academia"),
+        "Pessoais" to listOf("Roupas", "Cabelo/Beleza","Presentes",
+            "Acessórios Eletrônicos", "Compras Pessoais", "Academia"),
         "Outros" to listOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
     )
+
+    val focusManager = LocalFocusManager.current
 
 
 
     Column(
         modifier = Modifier
-            .padding(25.dp),
+            .padding(25.dp)
+            .pointerInput(Unit){
+                detectTapGestures {
+                    focusManager.clearFocus()
+                }
+            },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -97,6 +113,11 @@ fun Passo1(
                 text = text,
                 onValueChange = { text = it},
                 textLabel = "Adicionar nome",
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 isError = !textoCorreto(text)
 
@@ -116,7 +137,11 @@ fun Passo1(
             categoryName = "Insira uma categoria(Opcional)",
             categories = categories,
             selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it }
+            onCategorySelected = {
+                focusManager.clearFocus()
+                selectedCategory = it
+            },
+            showDescriptionText = true
         )
         if (selectedCategory != "Selecione uma categoria") {
             Row(
@@ -131,7 +156,10 @@ fun Passo1(
             selectedCategory = selectedCategory,
             subCategoriesMap = categorySubcategories,
             selectedSubcategory = selectedSubCategory,
-            onSubCategorySelected = { selectedSubCategory = it}
+            onSubCategorySelected = {
+                focusManager.clearFocus()
+                selectedSubCategory = it
+            }
         )
         //Botão para avançar de tela
         BreezeButton(

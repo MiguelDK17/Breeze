@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,6 +37,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
+import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
@@ -111,6 +114,17 @@ private fun ColumnReceitas(
     ) {
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TitleText(
+                text = "Receitas do Mês",
+                size = 19.sp,
+                fontWeight = FontWeight.W600
+            )
+        }
+
         GraficoDeBarras(receita, modifier)
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -132,9 +146,7 @@ private fun ColumnReceitas(
         ) {
             val historicoReceitas = viewModelReceita.organizaReceitas(receita)
 
-            LazyColumnReceitas(
-                historicoReceitas = historicoReceitas
-            )
+            LazyColumnReceitas(historicoReceitas = historicoReceitas)
 
             //Fade do final da lista
             Box(

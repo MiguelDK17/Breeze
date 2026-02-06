@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.migueldk17.breeze.MoneyVisualTransformation
-import com.migueldk17.breeze.NavGraph2
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.DescriptionText
@@ -138,7 +137,7 @@ fun Passo4(
                     selectedCategory = selectedCategory, //Opção selecionada no Dropdown
                     onChangeCategoriesParcelamento = { selectedCategory = it}, //Função que atualiza a opção selecionada no Dropdown
                     textParcelas = textParcelas, //Valor do BreezeOutlinedTextField de parcelamento
-                    onChangeTextParcelas = { textParcelas = it} //Função que atualiza o valor do BreezeOutlinedTextField de parcelamento
+                    onChangeTextParcelas = { textParcelas = it}, //Função que atualiza o valor do BreezeOutlinedTextField de parcelamento
                     )
             }
 

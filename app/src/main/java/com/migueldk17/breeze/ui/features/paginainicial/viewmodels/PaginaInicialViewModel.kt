@@ -1,15 +1,21 @@
 package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.entity.Receita
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.repository.ReceitaRepository
+import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,9 +33,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val receitaRepository: ReceitaRepository,
     private val contaRepository: ContaRepository,
-    private val parcelaRepository: ParcelaRepository
+    private val parcelaRepository: ParcelaRepository,
 ): ViewModel() {
     //Banco de dados
     private val _receita = MutableStateFlow<Double?>(null)
@@ -38,8 +45,15 @@ class PaginaInicialViewModel @Inject constructor(
     //Variavwl que controla o estado de carregamente em PaginaInicial
     val carregando = MutableStateFlow(true)
 
+    private val _stateTest = MutableStateFlow(UiState.Loading)
+    val stateTest: StateFlow<UiState<List<Conta>>> = _stateTest.asStateFlow()
+
     private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
-    val contaState: StateFlow<UiState<List<Conta>>> = _contaState
+    val contaState: StateFlow<UiState<List<Conta>>> = _contaState.asStateFlow()
+
+    private val _receitaState = MutableStateFlow<UiState<List<Receita>>>(UiState.Loading)
+    val receitaState: StateFlow<UiState<List<Receita>>> = _receitaState.asStateFlow()
+
     private val _conta = MutableStateFlow<List<Conta>>(emptyList())
     val conta: StateFlow<List<Conta>> = _conta
 
@@ -47,7 +61,7 @@ class PaginaInicialViewModel @Inject constructor(
     private val _contaSelecionada = MutableStateFlow<Conta?>(null)
     val contaSelecionada: StateFlow<Conta?> = _contaSelecionada.asStateFlow()
 
-    private val _showBottomSheet = MutableStateFlow<Boolean>(false)
+    private val _showBottomSheet = MutableStateFlow(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
 
     private val _parcelaDoMes = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
@@ -60,6 +74,8 @@ class PaginaInicialViewModel @Inject constructor(
         obterReceita()
 
         obterContas()
+
+        obterListaReceitas()
     }
 
     //Pega a receita
@@ -68,6 +84,22 @@ class PaginaInicialViewModel @Inject constructor(
             receitaRepository.getSaldoTotal().collect { receita ->
                 _receita.value = receita ?: 0.00 //Valor inicial
             }
+        }
+    }
+    private fun obterListaReceitas(){
+        viewModelScope.launch {
+            receitaRepository.getTodasAsReceitas()
+                .catch { e ->
+                    _receitaState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                }
+                .collectLatest { lista ->
+                    if (lista.isEmpty()) {
+                        _receitaState.value = UiState.Empty
+                    } else {
+                        delay(500) //Adiciona um pequeno delay
+                        _receitaState.value = UiState.Success(lista)
+                    }
+                }
         }
     }
     //Pega todas as contas cadastradas no app
@@ -82,16 +114,15 @@ class PaginaInicialViewModel @Inject constructor(
                         _contaState.value = UiState.Empty
                     } else {
                         delay(500) //Adiciona um pequeno delay
-
                         _contaState.value = UiState.Success(lista)
                     }
                 }
         }
     }
+
     fun atualizaBottomSheet(boolean: Boolean){
         _showBottomSheet.value = boolean
     }
-
 
     //Atualiza o saldo do usuário
     fun adicionaReceita(
@@ -123,10 +154,15 @@ class PaginaInicialViewModel @Inject constructor(
              contaRepository.apagaConta(conta)
          }
     }
+    //Apaga a receita selecionada
+    fun apagaReceita(receita: Receita) {
+        viewModelScope.launch(Dispatchers.IO) {
+            receitaRepository.apagaReceita(receita)
+        }
+    }
     //Pega todas as parcelas baseadas no ID da conta pai
      fun pegaParcelasDaConta(idContaPai: Long): Flow<List<ParcelaEntity>>{
         return parcelaRepository.buscaParcelasDaConta(idContaPai)
-
     }
     //Função que observa as contas do mês
     fun observeParcelaDoMes(idContaPai: Long, mesAno: String): StateFlow<UiState<ParcelaEntity?>>{

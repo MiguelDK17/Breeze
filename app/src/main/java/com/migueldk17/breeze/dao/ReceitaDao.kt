@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,8 +20,11 @@ interface ReceitaDao {
 
     //Busca o primeiro registro da tabela saldo_table
     @Query("SELECT * FROM receita_entity ORDER BY data DESC")
-    suspend fun getTodasAsReceitas(): List<Receita>? //Retorna null se a tabela estiver vazia
+    fun getTodasAsReceitas(): Flow<List<Receita>> //Retorna null se a tabela estiver vazia
 
     @Query("SELECT * FROM receita_entity WHERE data LIKE :mesAno || '%'")
     fun getReceitasDoMes(mesAno: String): Flow<List<Receita>>
+
+    @Delete
+    fun apagaReceita(receita: Receita)
 }

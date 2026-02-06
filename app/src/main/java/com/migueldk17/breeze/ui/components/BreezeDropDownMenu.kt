@@ -1,7 +1,9 @@
 package com.migueldk17.breeze.ui.components
 
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -30,9 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.theme.NavyPetrol
+import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 
 @Composable
 fun BreezeDropdownMenu(
@@ -41,11 +45,16 @@ fun BreezeDropdownMenu(
     categories: List<String>,
     selectedCategory: String,
     onCategorySelected: (String) -> Unit,
-    showDescriptionText: Boolean = true
+    showDescriptionText: Boolean,
+    textSize: TextUnit = 16.sp,
+    textColor: Color = if(!isSystemInDarkTheme()) grayforTextColorInDropdown else Color(0xFFF5F5F5)
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
         if (showDescriptionText) {
             Text(
                 text = categoryName,
@@ -58,7 +67,7 @@ fun BreezeDropdownMenu(
         }
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(if(!isSystemInDarkTheme()) Color(0xFFF5F5F5) else NavyPetrol)
                 .clickable { expanded = true }
@@ -71,8 +80,8 @@ fun BreezeDropdownMenu(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = selectedCategory,
-                    fontSize = 16.sp,
-                    color = if(!isSystemInDarkTheme()) Color.Black else Color(0xFFF5F5F5))
+                    fontSize = textSize,
+                    color = textColor)
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = "Open menu"

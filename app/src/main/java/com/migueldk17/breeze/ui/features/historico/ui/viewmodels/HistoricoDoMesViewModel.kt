@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
@@ -18,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -61,7 +58,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                         //Mapeia as contas baseado no id
                         val contasMapeadas = contas.associateBy { it.id }
                         val idsContaPai = parcelas.map { it.idContaPai }.toSet()
-                        val transformaContaEmLinhaDoMesViewModel = contas.map {
+                        val contaDoMes = contas.map {
                             LinhaDoTempoModel(
                                 id = it.id,
                                 name = it.name,
@@ -77,7 +74,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                             .filterNot { it.id in idsContaPai }
                             .filterNot { it.isContaParcelada }
 
-                        val contasDasParcelas = parcelas.mapNotNull { parcela ->
+                        val parcelasDoMes = parcelas.mapNotNull { parcela ->
                             val contaPai = contasMapeadas[parcela.idContaPai]
                                 ?: contaRepository.getContaById(parcela.idContaPai)
                             contaPai?.let { contaPai ->
@@ -90,11 +87,11 @@ class HistoricoDoMesViewModel @Inject constructor(
                                     icon = contaPai.icon,
                                     colorIcon = contaPai.colorIcon,
                                     colorCard = contaPai.colorCard,
-                                    dateTime = parcela.data.toLocalDate().atStartOfDay(),
+                                    dateTime = parcela.dataDeVencimento.toLocalDate().atStartOfDay(),
                                 )
                             }
                         }
-                        val todasAsContas = transformaContaEmLinhaDoMesViewModel + contasDasParcelas
+                        val todasAsContas = contaDoMes + parcelasDoMes
                         todasAsContas.sortedBy { it.dateTime }
                     }.collectLatest { contasOrdenadas ->
                         _contasPorMes.value = contasOrdenadas
@@ -172,7 +169,7 @@ class HistoricoDoMesViewModel @Inject constructor(
                             icon = it.icon,
                             colorIcon = it.colorIcon,
                             colorCard = it.colorCard,
-                            dateTime = parcela.data.toLocalDate().atStartOfDay(),
+                            dateTime = parcela.dataDeVencimento.toLocalDate().atStartOfDay(),
                         )
                     }
                 }

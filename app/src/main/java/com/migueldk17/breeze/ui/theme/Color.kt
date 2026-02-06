@@ -9,6 +9,7 @@ val PastelLightBlue = Color(0xFFDCEDFF)
 val NavyBlue = Color(0xFF1D4576)
 val Branco = Color(0xFFFFFFFF)
 
+
 //Cores principais do app no modo escuro
 val DarkBlue = Color(0xFF0D1B2A) //Cor principal (background)
 val MidnightBlue = Color(0xFF152840) //Superfícies e cards (surface)
@@ -23,6 +24,9 @@ val blackPoppinsDarkMode = Color(0xFFD4D7DB)
 val greyTextMediumPoppinsLightMode = Color(0xFF5A5A5A)
 val greyTextMediumPoppinsDarkMode = Color(0xFFA6ACB2)
 val MediumGrey = Color(0xFF5E5E5E)
+val regularTextModoClaro = Color(0xFF6B6B6B)
+val grayforHint = Color(0xFF9E9E9E)
+val grayforTextColorInDropdown = Color(0xFF4A4A4A)
 
 
 

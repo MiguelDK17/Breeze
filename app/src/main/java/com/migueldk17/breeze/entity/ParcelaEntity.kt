@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "parcela_entity")
 data class ParcelaEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0, //Id da parcela
+    val id: Long = 0, //Id da parcela
 
     @ColumnInfo(name = "id_conta_pai")
     val idContaPai: Long, //Id da conta pai
@@ -24,8 +24,15 @@ data class ParcelaEntity(
     @ColumnInfo(name = "total_parcelas")
     val totalParcelas: Int, //Total de parcelas
 
-    @ColumnInfo(name = "data")
-    val data: String, //Data das parcelas
+    @ColumnInfo(name = "data_vencimento")
+    val dataDeVencimento: String, //Data de vencimento das parcelas
+
+    @ColumnInfo(name = "data_pagamento") //Data de pagamento das parcelas
+    val dataDePagamento: String? = null,
+
+    @ColumnInfo("forma_pagamento") //Forma de pagamento com que o usuário usou para pagar
+                                            //-as parcelas
+    val formaDePagamento: String? = null,
 
     @ColumnInfo(name = "esta_paga", defaultValue = "0")
     val estaPaga: Boolean = false //Booleano de verificação caso a parcela esteja paga

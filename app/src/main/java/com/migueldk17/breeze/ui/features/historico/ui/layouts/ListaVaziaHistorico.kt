@@ -58,8 +58,8 @@ fun ListaVaziaHistorico(
             )
             TitleText(
                 titleText,
-                fontWeight = FontWeight.Bold,
                 size = 20.sp,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))

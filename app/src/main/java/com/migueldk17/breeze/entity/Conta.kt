@@ -4,6 +4,7 @@ package com.migueldk17.breeze.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.migueldk17.breeze.ui.utils.StatusConta
 
 
 @Entity(tableName = "conta_table")
@@ -33,10 +34,19 @@ data class Conta(
     val colorCard: Int, //Cor do card já transformada em Int
 
     @ColumnInfo(name = "date_time")
-    val dateTime: String,
+    val dateTime: String, //Data e gora de criação da conta
+
+    @ColumnInfo(name = "status", defaultValue = "0")
+    val status: Int = StatusConta.PENDENTE.ordinal,
+
+    @ColumnInfo(name = "data_pagamento")
+    val dataPagamento: String? = null,
+
+    @ColumnInfo(name = "forma_de_pagamento")
+    val formaDePagamento: String? = null,
 
     @ColumnInfo(name = "is_conta_parcelada", defaultValue = "0")
-    val isContaParcelada: Boolean = false
+    val isContaParcelada: Boolean = false // Booleano pra saber se a conta é parcelada ou não
 )
 
 
