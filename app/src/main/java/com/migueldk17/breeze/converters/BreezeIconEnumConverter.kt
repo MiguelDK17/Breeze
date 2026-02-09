@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.converters
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.runtime.Composable
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
@@ -17,6 +19,7 @@ fun BreezeIconsEnum.toDatabaseValue(): String {
 //Converte String para BreezeIconsType
 @Composable
 fun String.toBreezeIconsType() : BreezeIconsType {
+    Log.d(TAG, "toBreezeIconsType: o cache tá assim: $breezeIconsCache")
     return breezeIconsCache[this] ?: BreezeIcons.Unspecified.IconUnspecified
 }
 
