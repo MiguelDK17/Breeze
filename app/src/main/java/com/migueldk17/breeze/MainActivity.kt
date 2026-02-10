@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
@@ -36,13 +38,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             //Tema do app
             BreezeTheme {
+
                 //Cria o navController
                 val navController = rememberNavController()
                 //Pega a rota atual do navController
-                val currentRoute =
-                    navController.currentBackStackEntryAsState().value?.destination?.route
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
 
                 val context = LocalContext.current
+                val activity = LocalActivity.current
+                BackHandler {
+                    activity!!.finishAffinity()
+                    Log.d(TAG, "onCreate: backHandler acionado")
+                }
 
                 //Caso a rota depender das barras de navegação elas irão aparecer, do contrário não
                 val showToolbarAndToolbar = when (currentRoute) {
@@ -53,14 +61,6 @@ class MainActivity : ComponentActivity() {
                     else -> false
                 }
 
-                BackHandler {
-                    if (currentRoute == Screen.PaginaInicial.route) {
-                        (context as? MainActivity)?.finish()
-                    } else {
-                        Log.d(TAG, "onCreate: a rota atual é: $currentRoute")
-                        navController.popBackStack()
-                    }
-                }
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize(),
