@@ -2,13 +2,12 @@ package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
@@ -21,6 +20,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.Lottie
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.paginainicial.model.SwipeBackgroundConfig
@@ -32,6 +32,7 @@ fun SwipeBackground(
     modifier: Modifier = Modifier,
 ){
     val direction = dismissState.dismissDirection
+
     val detailsColor = lerp(
         Color.Transparent,
         MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
@@ -43,65 +44,90 @@ fun SwipeBackground(
         alpha
     )
 
-    val (text, backgroundColor, alignment, textColor) = when (direction) {
+    val (
+        text,
+        backgroundColor,
+        arrangementHorizontal,
+        textColor,
+        animationRes
+    ) = when (direction) {
         SwipeToDismissBoxValue.StartToEnd -> SwipeBackgroundConfig(
             text = "Detalhes",
-            backgroundColor = Color.Transparent,
-            alignment = Alignment.CenterStart,
-            textColor = MaterialTheme.colorScheme.primary
+            backgroundColor = detailsColor,
+            arrangementHorizontal = Arrangement.Start,
+            textColor = MaterialTheme.colorScheme.primary,
+            animationRes = R.raw.payment_verify_loader
         )
+
         SwipeToDismissBoxValue.EndToStart -> SwipeBackgroundConfig(
             text = "Excluir",
             backgroundColor = deleteColor,
-            alignment = Alignment.CenterEnd,
-            textColor = MaterialTheme.colorScheme.error
+            arrangementHorizontal = Arrangement.End,
+            textColor = MaterialTheme.colorScheme.error,
+            animationRes = R.raw.delete_files
         )
+
         else -> SwipeBackgroundConfig(
             text = "",
             backgroundColor = Color.Transparent,
-            alignment = Alignment.Center,
-            textColor = Color.Transparent
+            arrangementHorizontal = Arrangement.Center,
+            textColor = Color.Transparent,
+            animationRes = null
         )
     }
-
-    Box(
+    OutlinedCard(
         modifier = modifier
-            .fillMaxSize()
-            .background(backgroundColor)
-            .padding(horizontal = 20.dp),
-        contentAlignment = alignment
+            .fillMaxSize(),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = backgroundColor
+        )
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = arrangementHorizontal
         ) {
-            LottieAnimation(
-                animationRes = R.raw.payment_verify_loader,
-                isPlaying = true,
-                size = 80.dp,
-            )
-            Text(
-                text = text,
-                color = textColor,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Medium
-            )
+            val hasAnimation = animationRes != null
+
+            when (direction) {
+                SwipeToDismissBoxValue.StartToEnd -> {
+                    if (hasAnimation) {
+                        LottieAnimation(
+                            animationRes = animationRes,
+                            isPlaying = true,
+                            size = 80.dp,
+                            iterations = 1
+                        )
+                    }
+                    Text(
+                        text = text,
+                        color = textColor,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                SwipeToDismissBoxValue.EndToStart -> {
+                    Text(
+                        text = text,
+                        color = textColor,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+
+                    if (hasAnimation) {
+                        LottieAnimation(
+                            animationRes = animationRes,
+                            isPlaying = true,
+                            size = 80.dp,
+                            iterations = 1,
+                        )
+                    }
+                }
+                else -> Unit
+            }
         }
-
     }
-}
 
-@Preview
-@Composable
-private fun Preview(){
-    val swipe = rememberSwipeToDismissBoxState(
-
-    )
-    SwipeBackground(
-        dismissState =swipe,
-        alpha = 1.0f,
-
-    )
 }

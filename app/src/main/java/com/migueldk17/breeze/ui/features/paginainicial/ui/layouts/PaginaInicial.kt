@@ -271,6 +271,8 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                     var showDialogExcluir by remember(conta.id) {
                         mutableStateOf(false)
                     }
+                    val modifier = Modifier.fillMaxWidth()
+
 
 
                     SwipeableBreezeCardConta(
@@ -279,12 +281,14 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                         },
                         onExcluir = { value ->
                             showDialogExcluir = value
-                        }
+                        },
+                        modifier = modifier
                     ) {
                         BreezeCardConta(
                             conta,
                             parcelas.toImmutableList(),
-                            haveInstallment = haveInstallment
+                            haveInstallment = haveInstallment,
+                            modifier = modifier
                         )
                         if (showDialogDetalhes) {
                             DetailsCard(

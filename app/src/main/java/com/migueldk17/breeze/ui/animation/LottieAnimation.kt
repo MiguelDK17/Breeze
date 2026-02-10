@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.animation
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ fun LottieAnimation(
 ){
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(animationRes))
     val animationSize = if (size != null) Modifier.size(size) else Modifier
+    Log.d(TAG, "LottieAnimation: $iterations")
     val progress by animateLottieCompositionAsState(
         composition = composition,
         isPlaying = isPlaying,
