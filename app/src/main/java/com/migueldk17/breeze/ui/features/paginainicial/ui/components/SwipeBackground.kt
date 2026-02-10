@@ -1,10 +1,13 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -24,6 +27,7 @@ import com.airbnb.lottie.Lottie
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.paginainicial.model.SwipeBackgroundConfig
+import com.migueldk17.breeze.ui.theme.MediumGrey
 
 @Composable
 fun SwipeBackground(
@@ -75,16 +79,11 @@ fun SwipeBackground(
             animationRes = null
         )
     }
-    OutlinedCard(
-        modifier = modifier
-            .fillMaxSize(),
-        colors = CardDefaults.outlinedCardColors(
-            containerColor = backgroundColor
-        )
-    ) {
+
         Row(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(backgroundColor),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = arrangementHorizontal
         ) {
@@ -129,5 +128,3 @@ fun SwipeBackground(
             }
         }
     }
-
-}
