@@ -42,6 +42,10 @@ fun ConfirmPaymentContent(
     viewModel.setIdDaConta(state.id)
     val isEnabled = selectedCategory != "Nenhum"
     val isContaParcelada = state.isContaParcelada
+    val firstInstallment = state.parcelas.first()
+    val numeroParcelaList = firstInstallment.numero
+    viewModel.setNumeroDaParcela(numeroParcelaList)
+
     val numeroParcela = viewModel.numeroDaParcela.collectAsStateWithLifecycle().value
 
     Column(
@@ -90,15 +94,15 @@ fun ConfirmPaymentContent(
             horizontalArrangement = Arrangement.Center
         ) {
             BreezeButton(
-                modifier = Modifier.size(width = 120.dp, height = 56.dp),
+                modifier = Modifier.size(width = 130.dp, height = 56.dp),
                 text = "Confirmar",
                 onClick = {
                     onConfirm()
                     viewModel.setFormaDePagamento(selectedCategory)
                     viewModel.efetuarPagamentos(isContaParcelada)
                 },
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
                 color = Blue,
                 enabled = isEnabled
             )

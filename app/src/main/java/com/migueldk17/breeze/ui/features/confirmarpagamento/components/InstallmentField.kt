@@ -55,7 +55,6 @@ fun InstallmentField(
             list.add(parcela.numero.toString())
             map[parcela.numero] = parcela
         }
-        val firstInstallment = list.first()
         // ------------------CONTINUAR DAQUI ----------------------------- //
         setIdParcela(returnIdDaParcela(map, numeroParcela, context))
 
