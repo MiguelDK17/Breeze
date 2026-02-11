@@ -42,9 +42,11 @@ fun ConfirmPaymentContent(
     viewModel.setIdDaConta(state.id)
     val isEnabled = selectedCategory != "Nenhum"
     val isContaParcelada = state.isContaParcelada
-    val firstInstallment = state.parcelas.first()
-    val numeroParcelaList = firstInstallment.numero
-    viewModel.setNumeroDaParcela(numeroParcelaList)
+    val firstInstallment = state.parcelas.firstOrNull()
+    if (firstInstallment != null) {
+        val numeroParcelaList = firstInstallment.numero
+        viewModel.setNumeroDaParcela(numeroParcelaList)
+    }
 
     val numeroParcela = viewModel.numeroDaParcela.collectAsStateWithLifecycle().value
 
