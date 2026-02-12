@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,32 +33,37 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.entity.Receita
-import com.migueldk17.breeze.ui.theme.Blue
+import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 //Card de PaginaInicial
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreezeCardReceita(
-    receita: Receita,
-    apagarReceita: () -> Unit
-){
+    movimentacaoEntity: MovimentacaoEntity,
+    apagarReceita: () -> Unit,
+    modifier: Modifier = Modifier,
+
+     ){
     //Variavel que controla o estado do BasicAlertDialog
     val openDialog = remember { mutableStateOf(false) }
-    val descricao = receita.descricao.ifEmpty { "Receita sem descrição" }
-    val valor = receita.valor
-    val icon = if (receita.icon.toBreezeIconsType().enum == BreezeIconsEnum.ICON_UNSPECIFIED) {
+    val descricao = movimentacaoEntity.descricao.ifEmpty { "Receita sem descrição" }
+    val valor = movimentacaoEntity.valor
+    val icon = if (movimentacaoEntity.icon.toBreezeIconsType().enum == BreezeIconsEnum.ICON_UNSPECIFIED) {
         BreezeIcons.Linear.Money.DollarCircle
     } else {
-        receita.icon.toBreezeIconsType()
+        movimentacaoEntity.icon.toBreezeIconsType()
     }
+    val tipoMovimentacao = movimentacaoEntity.tipo
 
     OutlinedCard (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = BreezeIcons.Colors.Soft.SoftBlue.color)
+        colors = CardDefaults.cardColors(containerColor = retornaCor(tipoMovimentacao).component1())
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -76,7 +78,7 @@ fun BreezeCardReceita(
                 BreezeIcon(
                     breezeIcon = icon,
                     contentDescription = null,
-                    color = BreezeIcons.Colors.Vibrant.IconGreen.color,
+                    color = retornaCor(tipoMovimentacao).component2(),
                     modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.size(20.dp))
@@ -86,26 +88,13 @@ fun BreezeCardReceita(
                     style = MaterialTheme.typography.bodyLarge,
                     color = if (!isSystemInDarkTheme()) blackPoppinsLightMode else DeepSkyBlue,
                     //Caso o texto suma provavelmente deve ter algum elemento com fillMaxWidth na Row/Column
-                    overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
+                    overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca três pontos no final
                     maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
                 )
                 Row(
                     horizontalArrangement = Arrangement.End
                 ) {
-                    // -- ATENÇÃO!!!! BOTÃO MUTADO POR FALTA DE USO. NÃO MEXA AQUI A NÃO SER SE FOR PARA ADICIONAR FUNCIONALIDADE A ELE --
-//                    TextButton(onClick = {
-//                        onClick()
-//                    }) {
-//                        Row(
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            Icon(Icons.Filled.Add, "Add")
-//                            Spacer(modifier = Modifier.size(10.dp))
-//                            Text("Editar Valor")
-//                        }
-//                    }
-
 
                 }
 
@@ -184,4 +173,19 @@ fun BreezeCardReceita(
 
     }
     Spacer(modifier = Modifier.size(10.dp))
+}
+
+
+private fun retornaCor(tipoMovimentacao: TipoMovimentacao): ImmutableList<Color> {
+    val corDoCardReceita = Color(0xFFE3F2FD) //SoftBlue da BreezeIcons
+    val corDoIconeReceita =  Color(0xFF6DED57) //SoftGreen da BreezeIcons
+
+    val corDoCardDespesa = Color(0xFFFFEBEE) //SoftRed da BreezeIcons
+    val corDoIconeDespesa = Color(0xFFE74C3C) //SoftYellow da BreezeIcons
+
+    val result = when(tipoMovimentacao){
+        TipoMovimentacao.ENTRADA -> persistentListOf(corDoCardReceita, corDoIconeReceita )
+        TipoMovimentacao.SAIDA -> persistentListOf(corDoCardDespesa, corDoIconeDespesa)
+    }
+    return result
 }
