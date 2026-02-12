@@ -38,15 +38,21 @@ fun ConfirmPaymentContent(
     onConfirm: () -> Unit,
     viewModel: ConfirmarPagamentoViewModel
 ){
+    //-------------------Controles de estado---------------------//
     var selectedCategory by remember { mutableStateOf("Nenhum") }
-    viewModel.setIdDaConta(state.id)
     val isEnabled = selectedCategory != "Nenhum"
+    //-----------------------------------------------------///
+
+    //-------------------Variaveis do state---------------------//
     val isContaParcelada = state.isContaParcelada
     val firstInstallment = state.parcelas.firstOrNull()
-    if (firstInstallment != null) {
-        val numeroParcelaList = firstInstallment.numero
-        viewModel.setNumeroDaParcela(numeroParcelaList)
-    }
+    //-----------------------------------------------------///
+
+    //-------------------Setters do ViewModel---------------------//
+    viewModel.setNomeDaConta(state.name)
+    viewModel.setIdDaConta(state.id)
+    viewModel.setValor(state.valor)
+    //-----------------------------------------------------///
 
     val numeroParcela = viewModel.numeroDaParcela.collectAsStateWithLifecycle().value
 
@@ -111,5 +117,3 @@ fun ConfirmPaymentContent(
         }
     }
 }
-
-private fun isLatestInstallment(parcela: List<ParcelaUI>) =  parcela.size <= 1

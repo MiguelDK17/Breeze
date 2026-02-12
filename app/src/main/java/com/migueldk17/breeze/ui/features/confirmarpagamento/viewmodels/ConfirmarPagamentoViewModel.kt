@@ -8,8 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.entity.MovimentacaoEntity
 import com.migueldk17.breeze.entity.ParcelaEntity
+import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.repository.ContaRepository
+import com.migueldk17.breeze.repository.MovimentacaoRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.confirmarpagamento.state.ConfirmPaymentUIState
 import com.migueldk17.breeze.ui.utils.ToastManager
@@ -28,6 +31,7 @@ import javax.inject.Inject
 class ConfirmarPagamentoViewModel @Inject constructor(
     private val contaRepository: ContaRepository,
     private val parcelaRepository: ParcelaRepository,
+    private val movimentacaoRepository: MovimentacaoRepository,
     @ApplicationContext private val context: Context
 ): ViewModel() {
     private val _conta = MutableStateFlow<Conta?>(null)
@@ -51,6 +55,9 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private val _numeroDaParcela: MutableStateFlow<Int> = MutableStateFlow(1)
     val numeroDaParcela: StateFlow<Int> = _numeroDaParcela.asStateFlow()
 
+    private val _valor = MutableStateFlow(1.0)
+    val valor: StateFlow<Double> = _valor.asStateFlow()
+
     private val _isLatestInstallment = MutableStateFlow(false)
     val isLatestInstallment: StateFlow<Boolean> = _isLatestInstallment.asStateFlow()
 
@@ -64,6 +71,10 @@ class ConfirmarPagamentoViewModel @Inject constructor(
 
     fun setFormaDePagamento(value: String){
         _formaDePagamento.value = value
+    }
+
+    fun setValor(double: Double){
+        _valor.value = double
     }
 
     fun setIdDaParcela(long: Long){
@@ -101,11 +112,24 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     }
 
     private fun efetuarPagamentoNaConta() {
+        val nome = _nomeDaConta.value
         val data = _data.value.toDatabaseValue()
         val idDaConta = _idDaConta.value
         val formaDePagamento = _formaDePagamento.value
+        val valor = _valor.value
         viewModelScope.launch {
-            contaRepository.efetuarPagamentoConta(data, idDaConta, formaDePagamento)
+            val resultado = contaRepository.efetuarPagamentoConta(data, idDaConta, formaDePagamento)
+            if (resultado == 1){
+                movimentacaoRepository.adicionarMovimentacao(
+                    MovimentacaoEntity(
+                        valor = -valor,
+                        descricao = "Pagamento da conta $nome",
+                        data = data,
+                        contaId = idDaConta,
+                        tipo = TipoMovimentacao.SAIDA
+                    )
+                )
+            }
         }
 
     }

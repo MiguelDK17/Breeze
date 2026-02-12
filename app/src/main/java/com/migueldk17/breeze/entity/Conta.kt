@@ -4,7 +4,7 @@ package com.migueldk17.breeze.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.migueldk17.breeze.ui.utils.StatusConta
+import com.migueldk17.breeze.enums.StatusConta
 
 
 @Entity(tableName = "conta_table")
