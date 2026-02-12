@@ -3,9 +3,10 @@ package com.migueldk17.breeze.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.migueldk17.breeze.enums.TipoMovimentacao
 
-@Entity(tableName = "receita_entity")
-data class Receita(
+@Entity(tableName = "movimentacao_entity")
+data class MovimentacaoEntity(
     //Chave primária do banco de dados
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
@@ -20,5 +21,10 @@ data class Receita(
     val data: String, //Está sendo salvo como LocalDate.toString()
 
     @ColumnInfo(name = "icon")
-    val icon: String = ""
+    val icon: String = "",
+
+    @ColumnInfo("tipo")
+    val tipo: TipoMovimentacao,
+
+    val contaId: Long? = null
 )

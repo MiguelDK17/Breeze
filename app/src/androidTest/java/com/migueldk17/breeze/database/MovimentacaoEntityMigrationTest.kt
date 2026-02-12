@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
 import org.junit.Assert.assertEquals
 
 @RunWith(AndroidJUnit4::class)
-class ReceitaMigrationTest {
+class MovimentacaoEntityMigrationTest {
     private val TEST_DB = "breeze-test.db"
 
     private val helper = MigrationTestHelper(
