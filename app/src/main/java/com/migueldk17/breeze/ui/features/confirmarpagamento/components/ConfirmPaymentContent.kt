@@ -46,7 +46,8 @@ fun ConfirmPaymentContent(
 
     //-------------------Variaveis do state---------------------//
     val isContaParcelada = state.isContaParcelada
-    val firstInstallment = state.parcelas.first()
+    val firstInstallment = state.parcelas.firstOrNull()
+    val numeroDaParcela = firstInstallment?.numero ?: 0
     //-----------------------------------------------------///
 
     //-------------------Setters do ViewModel---------------------//
@@ -55,7 +56,7 @@ fun ConfirmPaymentContent(
     viewModel.setValor(state.valor)
     //-----------------------------------------------------///
 
-    var numeroParcela by remember { mutableIntStateOf(firstInstallment.numero) }
+    var numeroParcela by remember { mutableIntStateOf(numeroDaParcela) }
 
     Column(
         modifier = Modifier

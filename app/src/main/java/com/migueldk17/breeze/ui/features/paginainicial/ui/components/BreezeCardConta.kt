@@ -77,8 +77,6 @@ fun BreezeCardConta(
         }
     }
 
-    //Variavel que controla o estado do BasicAlertDialog de Excluir Conta
-    var openDialogExcluirConta by remember { mutableStateOf(false) }
     //Variavel que controla o estado do Dialog de Pagar Conta
     var openDialogPagarConta by remember { mutableStateOf(false) }
 

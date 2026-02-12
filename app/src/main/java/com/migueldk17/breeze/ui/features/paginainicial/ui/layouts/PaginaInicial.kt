@@ -254,7 +254,7 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                                 totalParcelas = parcelaTeste.totalParcelas
                             ),
                             "Valor da parcela" to formataSaldo(parcelaTeste.valor),
-                            "Data para pagamento" to dataFormatada,
+                            "Data de criação" to dataFormatada,
                             "Taxa de juros" to "${formataTaxaDeJuros(parcelaTeste.porcentagemJuros)} a.m"
                         )
                     } else {
@@ -263,7 +263,7 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                             "Categoria" to categoria,
                             "Sub Categoria" to subCategoria,
                             "Valor Total" to formataSaldo(valorDaConta),
-                            "Data de pagamento" to dataFormatada
+                            "Data de criação" to dataFormatada
                         )
                     }
 
