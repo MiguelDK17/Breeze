@@ -5,7 +5,7 @@ import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.repository.ReceitaRepository
+import com.migueldk17.breeze.repository.MovimentacaoRepository
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoricoReceitaViewModel @Inject constructor(
-    private val receitaRepository: ReceitaRepository
+    private val movimentacaoRepository: MovimentacaoRepository
 ): ViewModel() {
     private val _data = MutableStateFlow("")
     val data: MutableStateFlow<String> = _data
@@ -37,7 +37,7 @@ class HistoricoReceitaViewModel @Inject constructor(
             _data
                 .filter { it.isNotBlank() && it.matches(Regex("""\d{4}-\d{2}%""")) }
                 .collectLatest { mes ->
-                    receitaRepository.getReceitasDoMes(mes)
+                    movimentacaoRepository.getMovimentacoesDoMes(mes)
                         .collectLatest { receitas ->
                             if (receitas.isEmpty()) {
                                 _receitasPorMes.value = UiState.Empty

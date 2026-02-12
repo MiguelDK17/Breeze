@@ -2,11 +2,9 @@ package com.migueldk17.breeze
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.migueldk17.breeze.dao.ContaDao
 import com.migueldk17.breeze.dao.ParcelaDao
-import com.migueldk17.breeze.dao.ReceitaDao
+import com.migueldk17.breeze.dao.MovimentacaoDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +30,7 @@ object DatabaseModule {
 
     }
     @Provides
-    fun provideSaldoDao(database: BreezeDatabase): ReceitaDao {
+    fun provideSaldoDao(database: BreezeDatabase): MovimentacaoDao {
         return database.receitaDao()
     }
     @Provides
