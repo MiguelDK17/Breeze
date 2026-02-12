@@ -2,7 +2,7 @@ package com.migueldk17.breeze.converters
 
 
 import androidx.room.TypeConverter
-import com.migueldk17.breeze.ui.utils.StatusConta
+import com.migueldk17.breeze.enums.StatusConta
 
 
 fun fromStatus(status: StatusConta): Int = status.ordinal

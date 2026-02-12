@@ -45,7 +45,7 @@ import androidx.compose.runtime.setValue
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.Receita
+import com.migueldk17.breeze.entity.MovimentacaoEntity
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
@@ -71,7 +71,7 @@ fun PaginaInicial(
 
     val contasState by viewModel.contaState.collectAsStateWithLifecycle()
 
-    val receitaState by viewModel.receitaState.collectAsStateWithLifecycle()
+    val receitaState by viewModel.movimentacaoEntityState.collectAsStateWithLifecycle()
 
     val showBottomSheet = viewModel.showBottomSheet.collectAsStateWithLifecycle().value
 
@@ -241,19 +241,21 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                     val month = data.monthValue
                     val year = data.year
                     val dataFormatada = "$day/$month/$year"
+                    val parcelaTeste = parcelas.firstOrNull()
+                    Log.d(TAG, "LazyColumnContas: $parcelaTeste")
 
-                    val immutableMap = if (parcelaDoMes != null) {
+                    val immutableMap = if (parcelaTeste != null) {
                         persistentMapOf(
                             "Nome" to nome,
                             "Categoria" to categoria,
                             "Sub Categoria" to subCategoria,
                             "Valor Total" to retornaValorTotalArredondado(
-                                valorParcela = valorDaParcela!!,
-                                totalParcelas = totalParcelas!!
+                                valorParcela = parcelaTeste.valor,
+                                totalParcelas = parcelaTeste.totalParcelas
                             ),
-                            "Valor da parcela" to formataSaldo(valorDaParcela),
-                            "Data de pagamento" to dataFormatada,
-                            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros!!)} a.m"
+                            "Valor da parcela" to formataSaldo(parcelaTeste.valor),
+                            "Data para pagamento" to dataFormatada,
+                            "Taxa de juros" to "${formataTaxaDeJuros(parcelaTeste.porcentagemJuros)} a.m"
                         )
                     } else {
                         persistentMapOf(
@@ -321,8 +323,8 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
 }
 
 @Composable
-private fun LazyColumnReceitas(receitaState: UiState<List<Receita>>, viewModel: PaginaInicialViewModel){
-    when(receitaState){
+private fun LazyColumnReceitas(movimentacaoEntityState: UiState<List<MovimentacaoEntity>>, viewModel: PaginaInicialViewModel){
+    when(movimentacaoEntityState){
         //Caso o ViewModel passe carregando como true
         is UiState.Loading -> {
             LottieAnimation(
@@ -337,14 +339,14 @@ private fun LazyColumnReceitas(receitaState: UiState<List<Receita>>, viewModel: 
         }
 
         is UiState.Error -> {
-            val message = receitaState.exception
+            val message = movimentacaoEntityState.exception
             Log.d(TAG, "PaginaInicial: $message")
         }
 
         //Caso nenhuma das condições anteriores forem atendidas é entendido que
         //Há contas registradas no Room
         is UiState.Success -> {
-            val contas = receitaState.data
+            val contas = movimentacaoEntityState.data
             LazyColumn {
                 items(contas) { receita ->
                     BreezeCardReceita(

@@ -3,15 +3,13 @@ package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.entity.Conta
 import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.entity.Receita
+import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
-import com.migueldk17.breeze.repository.ReceitaRepository
-import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
-import com.migueldk17.breeze.ui.utils.ToastManager
+import com.migueldk17.breeze.repository.MovimentacaoRepository
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,7 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val receitaRepository: ReceitaRepository,
+    private val movimentacaoRepository: MovimentacaoRepository,
     private val contaRepository: ContaRepository,
     private val parcelaRepository: ParcelaRepository,
 ): ViewModel() {
@@ -51,8 +49,8 @@ class PaginaInicialViewModel @Inject constructor(
     private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
     val contaState: StateFlow<UiState<List<Conta>>> = _contaState.asStateFlow()
 
-    private val _receitaState = MutableStateFlow<UiState<List<Receita>>>(UiState.Loading)
-    val receitaState: StateFlow<UiState<List<Receita>>> = _receitaState.asStateFlow()
+    private val _movimentacaoEntityState = MutableStateFlow<UiState<List<MovimentacaoEntity>>>(UiState.Loading)
+    val movimentacaoEntityState: StateFlow<UiState<List<MovimentacaoEntity>>> = _movimentacaoEntityState.asStateFlow()
 
     private val _conta = MutableStateFlow<List<Conta>>(emptyList())
     val conta: StateFlow<List<Conta>> = _conta
@@ -81,23 +79,23 @@ class PaginaInicialViewModel @Inject constructor(
     //Pega a receita
     private fun obterReceita() {
         viewModelScope.launch {
-            receitaRepository.getSaldoTotal().collect { receita ->
+            movimentacaoRepository.getSaldoTotal().collect { receita ->
                 _receita.value = receita ?: 0.00 //Valor inicial
             }
         }
     }
     private fun obterListaReceitas(){
         viewModelScope.launch {
-            receitaRepository.getTodasAsReceitas()
+            movimentacaoRepository.getAllMovimentacoes()
                 .catch { e ->
-                    _receitaState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                    _movimentacaoEntityState.value = UiState.Error(e.message ?: "Erro desconhecido")
                 }
                 .collectLatest { lista ->
                     if (lista.isEmpty()) {
-                        _receitaState.value = UiState.Empty
+                        _movimentacaoEntityState.value = UiState.Empty
                     } else {
                         delay(500) //Adiciona um pequeno delay
-                        _receitaState.value = UiState.Success(lista)
+                        _movimentacaoEntityState.value = UiState.Success(lista)
                     }
                 }
         }
@@ -132,13 +130,14 @@ class PaginaInicialViewModel @Inject constructor(
         icon: String
     ) {
         viewModelScope.launch {
-            val receita = Receita(
+            val movimentacaoEntity = MovimentacaoEntity(
                 valor = valor / 100,
                 descricao = descricao,
                 data = data.toString(),
+                tipo = TipoMovimentacao.ENTRADA,
                 icon = icon
             )
-            receitaRepository.adicionarReceita(receita)
+            movimentacaoRepository.adicionarMovimentacao(movimentacaoEntity)
         }
     }
 
@@ -155,9 +154,9 @@ class PaginaInicialViewModel @Inject constructor(
          }
     }
     //Apaga a receita selecionada
-    fun apagaReceita(receita: Receita) {
+    fun apagaReceita(movimentacaoEntity: MovimentacaoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            receitaRepository.apagaReceita(receita)
+            movimentacaoRepository.apagaMovimentacao(movimentacaoEntity)
         }
     }
     //Pega todas as parcelas baseadas no ID da conta pai
