@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,7 +46,7 @@ fun ConfirmPaymentContent(
 
     //-------------------Variaveis do state---------------------//
     val isContaParcelada = state.isContaParcelada
-    val firstInstallment = state.parcelas.firstOrNull()
+    val firstInstallment = state.parcelas.first()
     //-----------------------------------------------------///
 
     //-------------------Setters do ViewModel---------------------//
@@ -54,7 +55,7 @@ fun ConfirmPaymentContent(
     viewModel.setValor(state.valor)
     //-----------------------------------------------------///
 
-    val numeroParcela = viewModel.numeroDaParcela.collectAsStateWithLifecycle().value
+    var numeroParcela by remember { mutableIntStateOf(firstInstallment.numero) }
 
     Column(
         modifier = Modifier
@@ -88,7 +89,7 @@ fun ConfirmPaymentContent(
                 setNomeDaConta = { viewModel.setNomeDaConta(it) },
                 setIdParcela = { viewModel.setIdDaParcela(it)},
                 numeroParcela = numeroParcela,
-                setNumeroParcela = { viewModel.setNumeroDaParcela(it)},
+                setNumeroParcela = { numeroParcela = it},
                 setIsLatestInstallment = { viewModel.setIsLatestInstallment(it)},
             )
         }
@@ -106,6 +107,7 @@ fun ConfirmPaymentContent(
                 text = "Confirmar",
                 onClick = {
                     onConfirm()
+                    viewModel.setNumeroDaParcela(numeroParcela)
                     viewModel.setFormaDePagamento(selectedCategory)
                     viewModel.efetuarPagamentos(isContaParcelada)
                 },
