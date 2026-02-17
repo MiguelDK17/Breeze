@@ -58,10 +58,10 @@ fun HistoricoDoMesConta(
 
     val activity = LocalActivity.current
 
-    LaunchedEffect(Unit) {
-        if (dataFormatada.isNotEmpty()) {
-            viewModelContas.observarContaPorMes()
-        }
+    val observeContasMes = dataFormatada.isNotEmpty()
+
+    LaunchedEffect(observeContasMes) {
+        viewModelContas.observarContaPorMes()
     }
 
     if (listaVazia){
@@ -82,9 +82,8 @@ fun HistoricoDoMesConta(
 
     Column(
         modifier = modifier
+            .background(Color.Red)
     ) {
-        val modifier = Modifier.size(width = 360.dp, height = 295.dp)
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,8 +96,11 @@ fun HistoricoDoMesConta(
                 fontWeight = FontWeight.W600
             )
         }
+
+        val modifierGraficoDeBarras = Modifier.size(width = 360.dp, height = 295.dp)
+
         if (contas.isNotEmpty()) { //OBS: NÃO TIRA O ISEMPTY DAQUI, SERVE PARA VERIFICAÇÃO DE LISTA VAZIA POR AQUI
-            GraficoDeBarras(contas, modifier)
+            GraficoDeBarras(contas, modifierGraficoDeBarras)
         }
 
         Spacer(modifier = Modifier.height(30.dp))

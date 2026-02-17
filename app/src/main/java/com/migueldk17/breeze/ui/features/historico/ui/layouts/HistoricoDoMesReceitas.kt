@@ -59,10 +59,11 @@ fun HistoricoDoMesReceita(
 
     val activity = LocalActivity.current
 
-    LaunchedEffect(Unit) {
-        if (dataFormatada.isNotEmpty()) {
+    val observeReceitasMes = dataFormatada.isNotEmpty()
+
+
+    LaunchedEffect(observeReceitasMes) {
             viewModelReceita.observarReceitasPorMes()
-        }
     }
     when (receitaState) {
         is UiState.Loading -> {
@@ -115,7 +116,9 @@ private fun ColumnReceitas(
         val modifier = Modifier.size(width = 360.dp, height = 295.dp)
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 30.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             TitleText(
