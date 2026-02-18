@@ -22,7 +22,7 @@ interface MovimentacaoDao {
     @Query("SELECT * FROM movimentacao_entity ORDER BY data DESC")
     fun getAllMovimentacoes(): Flow<List<MovimentacaoEntity>> //Retorna null se a tabela estiver vazia
 
-    @Query("SELECT * FROM movimentacao_entity WHERE data LIKE :mesAno || '%'")
+    @Query("SELECT * FROM movimentacao_entity WHERE data LIKE :mesAno || '%' AND tipo = 0")
     fun getReceitasDoMes(mesAno: String): Flow<List<MovimentacaoEntity>>
 
     @Delete
