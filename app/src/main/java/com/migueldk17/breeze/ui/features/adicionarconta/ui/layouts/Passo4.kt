@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.ui.components.BreezeButton
@@ -32,13 +33,16 @@ import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.ParcelamentoColumn
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.ResponsiveDateParcelaSection
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
 import java.time.LocalDate
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun Passo4(
     navToPasso5: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: AdicionarContaViewModel = hiltViewModel()) {
     //Valor bruto da conta em reais
     var valorConta by remember{
@@ -67,14 +71,16 @@ fun Passo4(
     //Caso a quantidade desejada não estiver em categories esta variável serve para armazenar o valor do BreezeOutlinedTextField em ParcelamentoColumn
     var textParcelas by remember { mutableStateOf("") }
 
-    val nomeConta = viewModel.nomeConta.collectAsState().value
-    val icone = viewModel.iconeCardConta.collectAsState().value
-    val corIcone = viewModel.corIcone.collectAsState().value
+    val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
+    val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
+    val corIcone = viewModel.corIcone.collectAsStateWithLifecycle().value
 
     //Column do Passo4
     BoxWithConstraints{
         val horizontalPadding = if (maxWidth < 380.dp) 16.dp else 25.dp //Padding responsivo de acordo com a largura da tela
         val isSmallScreen = maxWidth < 380.dp //Boolean que controla se a tela é pequena ou não
+        var showDatePicker by remember { mutableStateOf(false)}
+
 
         Column(
             modifier = Modifier
@@ -139,7 +145,22 @@ fun Passo4(
                     textParcelas = textParcelas, //Valor do BreezeOutlinedTextField de parcelamento
                     onChangeTextParcelas = { textParcelas = it}, //Função que atualiza o valor do BreezeOutlinedTextField de parcelamento
                     )
+            } else {
+                ResponsiveDateParcelaSection(
+                    isSmallScreen = isSmallScreen,
+                    selectedDate = selectedDate,
+                    showDatePicker = {
+                        showDatePicker = true
+                    },
+                    descriptionText = "Selecione a data de vencimento:"
+                )
             }
+
+            BreezeDatePicker(
+                showDialog = showDatePicker,
+                onDismiss = { showDatePicker = false},
+                onDateSelected = { selectedDate = it}
+            ) //Date Picker usado para alterar a data da conta
 
             //Botão para avançar de tela
             BreezeButton(
@@ -163,8 +184,10 @@ fun Passo4(
                 )
             )
         }
+
+
+        }
     }
-}
 //Função usada para controlar o estado do BreezeButton
 @Composable
 private fun buttonAvancaEnabled(
@@ -174,7 +197,6 @@ private fun buttonAvancaEnabled(
     selectedCategory: String,
     isCheckedPasso4: Boolean,
     isCheckedParcelamento: Boolean): Boolean {
-    Log.d(TAG, "buttonAvancaEnabled: O valor de textParcelas é de: $textParcelas ")
 
     val condicao = when {
         //Caso o valor da conta não esteja vazio e o checkbox esteja marcado o valor é true

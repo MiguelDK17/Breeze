@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContaDao {
-    @Query("SELECT * FROM conta_table WHERE status = 0")
+    @Query("SELECT * FROM conta_table WHERE status = 0 OR status = 2")
     fun getContas(): Flow<List<Conta>>
 
     @Query("SELECT typeof(status) FROM conta_table LIMIT 1")

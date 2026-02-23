@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LinearWavyProgressIndicator
@@ -24,6 +26,7 @@ import com.migueldk17.breeze.ui.features.adicionarconta.navigation.NavGraph
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.CardPrincipal
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.theme.SkyBlue
+import kotlin.math.min
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +64,12 @@ fun AdicionarConta(
             Spacer(modifier = Modifier.size(10.dp))
             //Card Principal que abriga os passos que serão gerenciados pelo NavigationCompose
 
-            CardPrincipal{
+            CardPrincipal(
+                modifier = Modifier
+                    .widthIn(min = 383.dp)
+                    .heightIn(min = 620.dp)
+                    .padding(5.dp)
+            ){
                 AdicionarContaNavHost(navController = navController)
             }
         }

@@ -42,6 +42,9 @@ data class Conta(
     @ColumnInfo(name = "data_pagamento")
     val dataPagamento: String? = null,
 
+    @ColumnInfo(name = "data_vencimento")
+    val dataVencimento: String,
+
     @ColumnInfo(name = "forma_de_pagamento")
     val formaDePagamento: String? = null,
 

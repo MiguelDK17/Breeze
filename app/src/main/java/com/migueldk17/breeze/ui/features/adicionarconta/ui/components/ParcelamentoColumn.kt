@@ -131,7 +131,8 @@ fun ParcelamentoColumn(
         }
             ResponsiveDateParcelaSection(isSmallScreen, selectedDate, showDatePicker = {
                 showDatePicker = true
-            })
+            },
+                descriptionText = "Data da primeira parcela:")
         //Date Picker usado para alterar a data da conta
         BreezeDatePicker(
             showDialog = showDatePicker,
@@ -188,10 +189,13 @@ private fun ResponsiveJurosSection(
 }
 
 @Composable
-private fun ResponsiveDateParcelaSection(
+fun ResponsiveDateParcelaSection(
     isSmallScreen: Boolean,
     selectedDate: LocalDate,
-    showDatePicker: () -> Unit){
+    showDatePicker: () -> Unit,
+    descriptionText: String,
+    modifier: Modifier = Modifier
+){
     val iconSize = if (isSmallScreen) 24.dp else 26.dp
     val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
@@ -214,7 +218,7 @@ private fun ResponsiveDateParcelaSection(
                     contentDescription = null
                 )
                 DescriptionText(
-                    "Data da primeira parcela:",
+                    descriptionText,
                     size = 12.9.sp,
                     modifier = Modifier.padding(horizontal = 5.dp)
                 )

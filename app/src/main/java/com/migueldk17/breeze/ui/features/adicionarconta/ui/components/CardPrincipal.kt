@@ -23,13 +23,13 @@ import com.migueldk17.breeze.ui.theme.SkyBlue
 
 @Composable
 fun CardPrincipal(
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
     ) {
 
     Card(
-        modifier = Modifier
-            .size(width = 383.dp, height = 620.dp)
-            .padding(5.dp),
+        modifier = modifier
+            ,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(10.dp),
         colors = CardColors(
