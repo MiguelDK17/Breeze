@@ -41,11 +41,14 @@ fun traduzData(mes: String): String {
     return mesTraduzido
 }
 
-fun arredondarValor(valor: Double, casasDecimais: Int = 2): Double {
-    return BigDecimal(valor)
-        .setScale(casasDecimais, RoundingMode.HALF_EVEN)
-        .toDouble()
+object MoneyUtils {
+    fun arredondarValor(valor: Double, casasDecimais: Int = 2): Double {
+        return BigDecimal(valor)
+            .setScale(casasDecimais, RoundingMode.HALF_EVEN)
+            .toDouble()
+    }
 }
+
 
 fun formataMesAno(localDate: LocalDate): String {
     return "%04d-%02d".format(localDate.year, localDate.monthValue)

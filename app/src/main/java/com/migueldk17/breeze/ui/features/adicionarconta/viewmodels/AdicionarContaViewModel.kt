@@ -14,7 +14,7 @@ import com.migueldk17.breeze.entity.ParcelaEntity
 import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
-import com.migueldk17.breeze.ui.utils.arredondarValor
+import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -277,7 +277,7 @@ class AdicionarContaViewModel @Inject constructor(
                 Log.d(TAG, "salvaParcelasDatabase: valor das parcelas sem formatação: ${_valorDasParcelas.value}")
 
                 val idContaPai = idContaPai
-                val valor = arredondarValor(_valorDasParcelas.value)
+                val valor = MoneyUtils.arredondarValor(_valorDasParcelas.value)
                 val porcentagemJuros = _taxaDeJurosMensal.value
                 val totalParcelas = _quantidadeDeParcelas.value
                 val dataInicial = _dataDaConta.value
