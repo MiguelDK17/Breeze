@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.repository.ContaRepository
-import com.migueldk17.breeze.repository.ParcelaRepository
+import com.migueldk17.breeze.data.local.entity.ParcelaEntity
+import com.migueldk17.breeze.data.local.repository.ContaRepository
+import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState

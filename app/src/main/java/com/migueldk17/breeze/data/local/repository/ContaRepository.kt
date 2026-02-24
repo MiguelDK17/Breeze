@@ -1,11 +1,11 @@
-package com.migueldk17.breeze.repository
+package com.migueldk17.breeze.data.local.repository
 
 import android.util.Log
 import android.content.ContentValues.TAG
 import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.dao.ContaDao
-import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.ui.utils.ToastManager
+import com.migueldk17.breeze.data.local.dao.ContaDao
+import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.relation.ContaComParcelas
 import com.migueldk17.breeze.ui.utils.traduzData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,9 +21,7 @@ class ContaRepository @Inject constructor(
         return contaDao.getContasMes(mesAno)
     }
 
-    fun getStatus(): Flow<String>{
-        return contaDao.getStatus()
-    }
+    fun getContasComParcelas(): Flow<List<ContaComParcelas>> = contaDao.getContasComParcelas()
 
     suspend fun getContaById(id: Long): Conta? = contaDao.getContaById(id)
 

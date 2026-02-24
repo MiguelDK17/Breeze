@@ -52,7 +52,7 @@ import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.data.local.entity.Conta
 import com.migueldk17.breeze.ui.features.paginainicial.ui.animation.ColorTransitionFromCenter
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode

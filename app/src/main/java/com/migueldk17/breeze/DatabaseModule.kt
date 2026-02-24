@@ -2,9 +2,9 @@ package com.migueldk17.breeze
 
 import android.content.Context
 import androidx.room.Room
-import com.migueldk17.breeze.dao.ContaDao
-import com.migueldk17.breeze.dao.ParcelaDao
-import com.migueldk17.breeze.dao.MovimentacaoDao
+import com.migueldk17.breeze.data.local.dao.ContaDao
+import com.migueldk17.breeze.data.local.dao.ParcelaDao
+import com.migueldk17.breeze.data.local.dao.MovimentacaoDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
