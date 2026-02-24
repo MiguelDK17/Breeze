@@ -49,8 +49,9 @@ import androidx.compose.ui.graphics.Color
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.converters.toStatus
-import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
+import com.migueldk17.breeze.domain.ContaComParcelas
 import com.migueldk17.breeze.enums.StatusConta
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
@@ -58,12 +59,10 @@ import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTot
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DialogExcluirConta
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.SwipeableBreezeCardConta
-import com.migueldk17.breeze.ui.utils.formataMesAno
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -75,7 +74,7 @@ fun PaginaInicial(
 
     val saldoFormatado = saldo
 
-    val contasState by viewModel.contaState.collectAsStateWithLifecycle()
+    val contasState by viewModel.contaComParcelasState.collectAsStateWithLifecycle()
 
     val receitaState by viewModel.movimentacaoEntityState.collectAsStateWithLifecycle()
 
@@ -172,7 +171,7 @@ fun PaginaInicial(
 }
 
 @Composable
-private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: PaginaInicialViewModel){
+private fun LazyColumnContas(contasState: UiState<List<ContaComParcelas>>, viewModel: PaginaInicialViewModel){
     val context = LocalContext.current
 
     when(contasState){
@@ -201,9 +200,11 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
             LazyColumn {
                 items(
                     items = contas,
-                    key = { it.id }) { conta ->
+                    key = { it.conta.id }) { wrapper ->
                     //Pega a lista de parcelas
-                    val parcelas = viewModel.pegaParcelasDaConta(conta.id).collectAsStateWithLifecycle(emptyList()).value
+                    val conta = wrapper.conta
+                    val parcelas = wrapper.parcelas
+                    val status = wrapper.status
 
                     val haveInstallment = parcelas.isNotEmpty()
                     val nome = conta.name
@@ -248,7 +249,6 @@ private fun LazyColumnContas(contasState: UiState<List<Conta>>, viewModel: Pagin
                     var showDialogExcluir by remember(conta.id) {
                         mutableStateOf(false)
                     }
-                    val statusConta = conta.status.toStatus()
 
                     Log.d(TAG, "LazyColumnContas: $statusConta")
 

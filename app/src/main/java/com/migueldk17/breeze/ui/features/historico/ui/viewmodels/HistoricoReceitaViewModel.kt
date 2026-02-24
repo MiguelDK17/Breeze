@@ -5,7 +5,7 @@ import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.repository.MovimentacaoRepository
+import com.migueldk17.breeze.data.local.repository.MovimentacaoRepository
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState

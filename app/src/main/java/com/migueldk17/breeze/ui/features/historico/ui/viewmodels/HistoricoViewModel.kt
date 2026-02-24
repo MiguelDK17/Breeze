@@ -1,28 +1,19 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import android.content.Context
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.repository.ContaRepository
-import com.migueldk17.breeze.repository.ParcelaRepository
-import com.migueldk17.breeze.ui.utils.ToastManager
-import com.migueldk17.breeze.ui.utils.traduzData
+import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.repository.ContaRepository
+import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

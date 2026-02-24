@@ -1,11 +1,11 @@
-package com.migueldk17.breeze.dao
+package com.migueldk17.breeze.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

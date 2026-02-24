@@ -1,7 +1,7 @@
-package com.migueldk17.breeze.repository
+package com.migueldk17.breeze.data.local.repository
 
-import com.migueldk17.breeze.dao.MovimentacaoDao
-import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.data.local.dao.MovimentacaoDao
+import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

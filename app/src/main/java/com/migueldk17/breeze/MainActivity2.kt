@@ -3,16 +3,13 @@ package com.migueldk17.breeze
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -50,7 +47,7 @@ class MainActivity2: ComponentActivity() {
                 //Pega a conta uma vez
                 LaunchedEffect(id) { viewModel.pegaContaSelecionada(id)}
 
-                val conta by viewModel.contaSelecionada.collectAsStateWithLifecycle()
+                val conta by viewModel.contaComParcelasSelecionada.collectAsStateWithLifecycle()
 
                 if (conta != null) conta?.let { EditarValorConta(it) } else Carregando()
 
