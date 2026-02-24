@@ -240,7 +240,6 @@ class AdicionarContaViewModel @Inject constructor(
             val dateTime = LocalDateTime.now().toDatabaseValue()
             val isContaParcelada = _isContaParcelada.value
             val dataVencimento = _dataDaConta.value.toDatabaseValue()
-            val status = if(dataVencimento < LocalDate.now().toDatabaseValue()) 2 else 0
 
 
 
@@ -249,7 +248,6 @@ class AdicionarContaViewModel @Inject constructor(
                 categoria = categoria,
                 subCategoria = subCategoria,
                 valor = valor,
-                status = status,
                 icon = icon,
                 colorIcon = colorIcon,
                 colorCard = colorCard,

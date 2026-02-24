@@ -21,7 +21,7 @@ import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPayment
 import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.Blue
 import com.migueldk17.breeze.ui.theme.NavyBlue
-import com.migueldk17.breeze.ui.utils.arredondarValor
+import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.ui.utils.formataValorConta
 
 @Composable
@@ -33,7 +33,7 @@ fun PaymentAmount(
     val name = state.name
     val icon = state.icon
     val valor = state.valor
-    val valorArrendondado = arredondarValor(valor)
+    val valorArrendondado = MoneyUtils.arredondarValor(valor)
     val valorConta = formataValorConta(valorArrendondado)
     val description = if (!haveInstallment) "Pagamento referente a $name" else "Pagamento referente a ${numeroDaParcela}ª parcela de $name"
 

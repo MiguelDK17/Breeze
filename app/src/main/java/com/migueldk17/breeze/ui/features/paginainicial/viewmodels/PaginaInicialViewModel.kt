@@ -11,6 +11,7 @@ import com.migueldk17.breeze.repository.ContaRepository
 import com.migueldk17.breeze.repository.ParcelaRepository
 import com.migueldk17.breeze.repository.MovimentacaoRepository
 import com.migueldk17.breeze.uistate.UiState
+import com.migueldk17.breeze.usecases.GetContasUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +32,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaginaInicialViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val movimentacaoRepository: MovimentacaoRepository,
     private val contaRepository: ContaRepository,
     private val parcelaRepository: ParcelaRepository,
+    private val getContasUseCase: GetContasUseCase
 ): ViewModel() {
     //Banco de dados
     private val _receita = MutableStateFlow<Double?>(null)
@@ -103,16 +104,15 @@ class PaginaInicialViewModel @Inject constructor(
     //Pega todas as contas cadastradas no app
     private fun obterContas() {
         viewModelScope.launch {
-            contaRepository.getContas()
+            getContasUseCase()
                 .catch { e ->
-                    _contaState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                    _contaState.value =
+                        UiState.Error(e.message ?: "Erro desconhecido")
                 }
                 .collectLatest { lista ->
-                    if (lista.isEmpty()) {
-                        _contaState.value = UiState.Empty
-                    } else {
-                        delay(500) //Adiciona um pequeno delay
-                        _contaState.value = UiState.Success(lista)
+                    _contaState.value = when {
+                        lista.isEmpty() -> UiState.Empty
+                        else -> UiState.Success(lista)
                     }
                 }
         }

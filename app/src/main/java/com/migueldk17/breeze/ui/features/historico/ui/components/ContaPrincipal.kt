@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +26,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
-import com.migueldk17.breeze.ui.utils.arredondarValor
+import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
 
@@ -77,10 +75,10 @@ fun ContaPrincipal(
                 fontSize = 15.sp,
                 modifier = Modifier
                     .weight(1f) //Adiciona peso ao Text
-                    .padding(end = 8.dp)
                     .clickable {
                         textoClicado = true
-                    },
+                    }
+                    .padding(end = 8.dp),
                 overflow = TextOverflow.Ellipsis, //Caso o texto seja grande demais coloca ... no final
                 maxLines = 1 //Limita o texto a 1 linha para evitar quebra
 
@@ -111,7 +109,7 @@ fun ContaPrincipal(
 
 internal fun retornaValorTotalArredondado(valorParcela: Double, totalParcelas: Int): String {
     val valorTotal = valorParcela * totalParcelas
-    val totalArredondado = arredondarValor(valorTotal)
+    val totalArredondado = MoneyUtils.arredondarValor(valorTotal)
     val totalFormatado = formataValorConta(totalArredondado)
     return totalFormatado
 }

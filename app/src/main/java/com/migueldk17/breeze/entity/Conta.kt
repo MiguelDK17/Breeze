@@ -1,10 +1,13 @@
 package com.migueldk17.breeze.entity
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.migueldk17.breeze.enums.StatusConta
+import java.time.LocalDate
 
 
 @Entity(tableName = "conta_table")
@@ -51,5 +54,20 @@ data class Conta(
     @ColumnInfo(name = "is_conta_parcelada", defaultValue = "0")
     val isContaParcelada: Boolean = false // Booleano pra saber se a conta é parcelada ou não
 )
+
+fun Conta.calcularStatus(today: LocalDate): StatusConta {
+    Log.d(TAG, "calcularStatus: data de pagamento: $dataPagamento")
+    Log.d(TAG, "calcularStatus: data de vencimento: $dataVencimento")
+
+    val result = when {
+        dataPagamento != null -> StatusConta.PAGA
+        dataVencimento < today.toString() -> StatusConta.ATRASADA
+        else -> StatusConta.PENDENTE
+    }
+
+    Log.d(TAG, "calcularStatus: após a formatação status conta está assim: $result")
+
+    return result
+}
 
 
