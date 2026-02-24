@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.entity
+package com.migueldk17.breeze.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

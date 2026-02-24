@@ -1,19 +1,18 @@
 package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ParcelaEntity
+import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.enums.TipoMovimentacao
-import com.migueldk17.breeze.repository.ContaRepository
-import com.migueldk17.breeze.repository.ParcelaRepository
-import com.migueldk17.breeze.repository.MovimentacaoRepository
+import com.migueldk17.breeze.data.local.repository.ContaRepository
+import com.migueldk17.breeze.data.local.repository.ParcelaRepository
+import com.migueldk17.breeze.data.local.repository.MovimentacaoRepository
+import com.migueldk17.breeze.domain.ContaComParcelas
 import com.migueldk17.breeze.uistate.UiState
 import com.migueldk17.breeze.usecases.GetContasUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -45,20 +44,20 @@ class PaginaInicialViewModel @Inject constructor(
     val carregando = MutableStateFlow(true)
 
     private val _stateTest = MutableStateFlow(UiState.Loading)
-    val stateTest: StateFlow<UiState<List<Conta>>> = _stateTest.asStateFlow()
+    val stateTest: StateFlow<UiState<List<ContaComParcelas>>> = _stateTest.asStateFlow()
 
-    private val _contaState = MutableStateFlow<UiState<List<Conta>>>(UiState.Loading)
-    val contaState: StateFlow<UiState<List<Conta>>> = _contaState.asStateFlow()
+    private val _contaComParcelasState = MutableStateFlow<UiState<List<ContaComParcelas>>>(UiState.Loading)
+    val contaComParcelasState: StateFlow<UiState<List<ContaComParcelas>>> = _contaComParcelasState.asStateFlow()
 
     private val _movimentacaoEntityState = MutableStateFlow<UiState<List<MovimentacaoEntity>>>(UiState.Loading)
     val movimentacaoEntityState: StateFlow<UiState<List<MovimentacaoEntity>>> = _movimentacaoEntityState.asStateFlow()
 
-    private val _conta = MutableStateFlow<List<Conta>>(emptyList())
-    val conta: StateFlow<List<Conta>> = _conta
+    private val _contaComParcelas = MutableStateFlow<List<ContaComParcelas>>(emptyList())
+    val contaComParcelas: StateFlow<List<ContaComParcelas>> = _contaComParcelas
 
 
-    private val _contaSelecionada = MutableStateFlow<Conta?>(null)
-    val contaSelecionada: StateFlow<Conta?> = _contaSelecionada.asStateFlow()
+    private val _contaComParcelasSelecionada = MutableStateFlow<Conta?>(null)
+    val contaComParcelasSelecionada: StateFlow<Conta?> = _contaComParcelasSelecionada.asStateFlow()
 
     private val _showBottomSheet = MutableStateFlow(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
@@ -106,11 +105,11 @@ class PaginaInicialViewModel @Inject constructor(
         viewModelScope.launch {
             getContasUseCase()
                 .catch { e ->
-                    _contaState.value =
+                    _contaComParcelasState.value =
                         UiState.Error(e.message ?: "Erro desconhecido")
                 }
                 .collectLatest { lista ->
-                    _contaState.value = when {
+                    _contaComParcelasState.value = when {
                         lista.isEmpty() -> UiState.Empty
                         else -> UiState.Success(lista)
                     }
@@ -144,13 +143,13 @@ class PaginaInicialViewModel @Inject constructor(
     //Pega as informações da conta selecionada em PaginaInicial baseada no ID fornecido
     fun pegaContaSelecionada(id: Long){
         viewModelScope.launch {
-            _contaSelecionada.value = contaRepository.getContaById(id)
+            _contaComParcelasSelecionada.value = contaRepository.getContaById(id)
         }
     }
     //Apaga a conta selecionada
-     fun apagaConta(conta: Conta) {
+     fun apagaConta(contaComParcelas: Conta) {
          viewModelScope.launch {
-             contaRepository.apagaConta(conta)
+             contaRepository.apagaConta(contaComParcelas)
          }
     }
     //Apaga a receita selecionada

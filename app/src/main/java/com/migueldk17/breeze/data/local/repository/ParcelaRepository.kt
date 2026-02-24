@@ -1,8 +1,7 @@
-package com.migueldk17.breeze.repository
+package com.migueldk17.breeze.data.local.repository
 
-import com.migueldk17.breeze.dao.ParcelaDao
-import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
+import com.migueldk17.breeze.data.local.dao.ParcelaDao
+import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
