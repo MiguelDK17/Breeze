@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.dao
+package com.migueldk17.breeze.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,13 +6,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.relation.ContaComParcelas
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContaDao {
     @Query("SELECT * FROM conta_table WHERE status = 0 OR status = 2")
     fun getContas(): Flow<List<Conta>>
+
+    @Query("SELECT * FROM conta_table")
+    fun getContasComParcelas(): Flow<List<ContaComParcelas>>
 
     @Query("SELECT typeof(status) FROM conta_table LIMIT 1")
     fun getStatus(): Flow<String>

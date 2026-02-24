@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.entity
+package com.migueldk17.breeze.data.local.entity
 
 
 import android.util.Log
@@ -39,14 +39,11 @@ data class Conta(
     @ColumnInfo(name = "date_time")
     val dateTime: String, //Data e gora de criação da conta
 
-    @ColumnInfo(name = "status", defaultValue = "0")
-    val status: Int = StatusConta.PENDENTE.ordinal,
-
     @ColumnInfo(name = "data_pagamento")
     val dataPagamento: String? = null,
 
     @ColumnInfo(name = "data_vencimento")
-    val dataVencimento: String,
+    val dataVencimento: String? = null,
 
     @ColumnInfo(name = "forma_de_pagamento")
     val formaDePagamento: String? = null,
@@ -61,7 +58,7 @@ fun Conta.calcularStatus(today: LocalDate): StatusConta {
 
     val result = when {
         dataPagamento != null -> StatusConta.PAGA
-        dataVencimento < today.toString() -> StatusConta.ATRASADA
+        dataVencimento!! < today.toString() -> StatusConta.ATRASADA
         else -> StatusConta.PENDENTE
     }
 
