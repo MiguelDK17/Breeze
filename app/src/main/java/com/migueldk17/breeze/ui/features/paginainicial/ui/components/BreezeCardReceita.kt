@@ -33,7 +33,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsEnum
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.entity.MovimentacaoEntity
+import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode

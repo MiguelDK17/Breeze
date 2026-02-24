@@ -8,11 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toDatabaseValue
-import com.migueldk17.breeze.converters.toStatus
-import com.migueldk17.breeze.entity.Conta
-import com.migueldk17.breeze.entity.ParcelaEntity
-import com.migueldk17.breeze.repository.ContaRepository
-import com.migueldk17.breeze.repository.ParcelaRepository
+import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ParcelaEntity
+import com.migueldk17.breeze.data.local.repository.ContaRepository
+import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
 import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.uistate.UiState
@@ -239,7 +238,7 @@ class AdicionarContaViewModel @Inject constructor(
             val colorCard = _corCard.value.toDatabaseValue()
             val dateTime = LocalDateTime.now().toDatabaseValue()
             val isContaParcelada = _isContaParcelada.value
-            val dataVencimento = _dataDaConta.value.toDatabaseValue()
+            val dataVencimento = if (isContaParcelada) _dataDaConta.value.toDatabaseValue() else null
 
 
 

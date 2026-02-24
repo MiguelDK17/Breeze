@@ -2,7 +2,6 @@ package com.migueldk17.breeze.ui.features.paginainicial.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,10 +29,10 @@ import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.entity.Conta
+import com.migueldk17.breeze.data.local.entity.Conta
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.entity.ParcelaEntity
+import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
