@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.data.local.relation
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.migueldk17.breeze.converters.toLocalDate
@@ -37,9 +39,11 @@ fun ContaComParcelas.calcularStatusParcelado(
         it.dataDeVencimento.toLocalDate().isBefore(today)
     }
 
-    return if (existeAtrasada) {
+    val status =  if (existeAtrasada) {
         StatusConta.ATRASADA
     } else {
         StatusConta.PENDENTE
     }
+    Log.d(TAG, "calcularStatusParcelado: status das parcelas $status")
+    return status
 }

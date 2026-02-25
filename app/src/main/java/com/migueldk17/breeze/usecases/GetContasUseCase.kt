@@ -20,16 +20,25 @@ class GetContasUseCase @Inject constructor(
         return  repository.getContasComParcelas()
             .map { lista ->
                 val today = dateProvider.today() // Provider já vem com LocalDate.now()
-                Log.d(TAG, "GetContasUseCase: a data de hoje é ${today.dayOfMonth}/0${today.month}/${today.year}")
                 lista.map { wrapper ->
                     val conta = wrapper.conta
                     val parcelas = wrapper.parcelas
 
+                    val dataPagamento = conta.dataPagamento
+                    val dataVencimento = conta.dataVencimento
+
                     val status = if (!conta.isContaParcelada) {
-                    conta.calcularStatus(today)
+                        val status = conta.calcularStatus(today, dataPagamento, dataVencimento)
+                        Log.d(TAG, "GetContasUseCase: status desta conta fixa está retornando como $status")
+                        status
+
                     } else {
-                        wrapper.calcularStatusParcelado(parcelas, today)
+                        val status = wrapper.calcularStatusParcelado(parcelas, today)
+                        Log.d(TAG, "GetContasUseCase: status desta conta parcelada está retornando como $status")
+                        status
                     }
+
+                    Log.d(TAG, "invoke: status está retornando como $status")
                     ContaComParcelas(
                         conta = conta,
                         parcelas = parcelas,
@@ -40,5 +49,5 @@ class GetContasUseCase @Inject constructor(
 
             }
 
-    }
+     }
 }

@@ -48,7 +48,7 @@ fun DetailsCard(
         "Sub Categoria",
         "Valor Total",
         "Valor da parcela",
-        "Data de criação",
+        "Data de vencimento",
         "Taxa de juros"
     )
     //Caso for conta fixa remove os campos 4(Valor da parcela) e 6(taxa de juros)

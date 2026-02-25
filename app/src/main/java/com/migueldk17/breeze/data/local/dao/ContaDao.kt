@@ -12,14 +12,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContaDao {
-    @Query("SELECT * FROM conta_table WHERE status = 0 OR status = 2")
+    @Query("SELECT * FROM conta_table")
     fun getContas(): Flow<List<Conta>>
 
     @Query("SELECT * FROM conta_table")
     fun getContasComParcelas(): Flow<List<ContaComParcelas>>
-
-    @Query("SELECT typeof(status) FROM conta_table LIMIT 1")
-    fun getStatus(): Flow<String>
 
      //Pega as contas de um mes
      @Query("SELECT * FROM conta_table WHERE date_time LIKE :mesAno || '%'")
@@ -41,7 +38,7 @@ interface ContaDao {
     suspend fun atualizarConta(conta: Conta)
 
     //É feito o pagamento da conta
-    @Query("UPDATE conta_table SET status = 1, data_pagamento = :data, forma_de_pagamento = :formaDePagamento WHERE id = :contaId")
+    @Query("UPDATE conta_table SET  data_pagamento = :data, forma_de_pagamento = :formaDePagamento WHERE id = :contaId")
     suspend fun efetuarPagamentoConta(data: String, contaId: Long, formaDePagamento: String): Int
 
     //Apaga a conta pra sempre do Room

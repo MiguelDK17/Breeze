@@ -149,7 +149,6 @@ fun PaginaInicial(
                 selectedIndexButtonGroup = it
             }
         )
-        Log.d(TAG, "PaginaInicial:valor do botão $selectedIndexButtonGroup")
         Spacer(modifier = Modifier.size(10.dp))
 
         if (selectedIndexButtonGroup == 0){
@@ -249,6 +248,7 @@ private fun LazyColumnContas(contasState: UiState<List<ContaComParcelas>>, viewM
                     var showDialogExcluir by remember(conta.id) {
                         mutableStateOf(false)
                     }
+                    val statusConta = wrapper.status
 
                     Log.d(TAG, "LazyColumnContas: $statusConta")
 

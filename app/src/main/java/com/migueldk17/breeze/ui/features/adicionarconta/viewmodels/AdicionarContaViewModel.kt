@@ -238,7 +238,7 @@ class AdicionarContaViewModel @Inject constructor(
             val colorCard = _corCard.value.toDatabaseValue()
             val dateTime = LocalDateTime.now().toDatabaseValue()
             val isContaParcelada = _isContaParcelada.value
-            val dataVencimento = if (isContaParcelada) _dataDaConta.value.toDatabaseValue() else null
+            val dataVencimento = if (!isContaParcelada) _dataDaConta.value.toDatabaseValue() else null
 
 
 

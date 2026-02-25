@@ -37,7 +37,10 @@ import kotlinx.collections.immutable.persistentMapOf
 
 
 @Composable
-fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
+fun Final(
+    modifier: Modifier = Modifier,
+    viewModel: AdicionarContaViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val dadosDaConta = viewModel.dadosContaUI.collectAsStateWithLifecycle().value
     val day = dadosDaConta.data.dayOfMonth
@@ -58,7 +61,7 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
                 dadosDaConta.totalParcelas
             ),
             "Valor da parcela" to formataSaldo(dadosDaConta.valorParcela),
-            "Data de pagamento" to dataFormatada,
+            "Data de vencimento" to dataFormatada,
             "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
         )
     } else {
@@ -67,7 +70,7 @@ fun Final(viewModel: AdicionarContaViewModel = hiltViewModel()) {
             "Categoria" to dadosDaConta.categoria,
             "Sub Categoria" to dadosDaConta.subCategoria,
             "Valor Total" to formataSaldo(dadosDaConta.valor),
-            "Data de pagamento" to dataFormatada
+            "Data de vencimento" to dataFormatada
         )
     }
 

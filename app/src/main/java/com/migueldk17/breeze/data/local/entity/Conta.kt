@@ -52,19 +52,23 @@ data class Conta(
     val isContaParcelada: Boolean = false // Booleano pra saber se a conta é parcelada ou não
 )
 
-fun Conta.calcularStatus(today: LocalDate): StatusConta {
-    Log.d(TAG, "calcularStatus: data de pagamento: $dataPagamento")
-    Log.d(TAG, "calcularStatus: data de vencimento: $dataVencimento")
+fun Conta.calcularStatus(today: LocalDate, dataPagamento: String?, dataVencimento: String?): StatusConta {
 
-    val result = when {
-        dataPagamento != null -> StatusConta.PAGA
-        dataVencimento!! < today.toString() -> StatusConta.ATRASADA
-        else -> StatusConta.PENDENTE
+     return when {
+        dataPagamento != null -> {
+            Log.d(TAG, "calcularStatus: Deu como paga")
+            StatusConta.PAGA
+        }
+        dataVencimento!! < today.toString() -> {
+            Log.d(TAG, "calcularStatus: Deu como atrasada")
+            StatusConta.ATRASADA
+        }
+        else -> {
+            Log.d(TAG, "calcularStatus: Caiu no else, como PENDENTE")
+            StatusConta.PENDENTE
+        }
+
     }
-
-    Log.d(TAG, "calcularStatus: após a formatação status conta está assim: $result")
-
-    return result
 }
 
 
