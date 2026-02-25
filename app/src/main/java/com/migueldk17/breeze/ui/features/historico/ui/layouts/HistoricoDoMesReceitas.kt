@@ -44,12 +44,14 @@ import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.uistate.UiState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.text.ifEmpty
 
 @Composable
 fun HistoricoDoMesReceita(
-    modifier: Modifier,
     viewModelReceita: HistoricoReceitaViewModel,
+    modifier: Modifier = Modifier,
 ) {
     val receitaState = viewModelReceita.receitaState.collectAsStateWithLifecycle().value
 
@@ -97,7 +99,7 @@ fun HistoricoDoMesReceita(
             val receitas = receitaState.data
             ColumnReceitas(
                 modifier = modifier,
-                receita = receitas,
+                receita = receitas.toImmutableList(),
                 viewModelReceita = viewModelReceita
             )
         }
@@ -107,7 +109,7 @@ fun HistoricoDoMesReceita(
 @Composable
 private fun ColumnReceitas(
     modifier: Modifier,
-    receita: List<LinhaDoTempoModel>,
+    receita: ImmutableList<LinhaDoTempoModel>,
     viewModelReceita: HistoricoReceitaViewModel
 ){
     Column(

@@ -118,15 +118,15 @@ class MainActivity4: ComponentActivity() {
 
                     if (selectedCategory == "Contas") {
                         HistoricoDoMesConta(
-                            modifier = Modifier.padding(paddingValues),
                             viewModelContas,
+                            modifier = Modifier.padding(paddingValues),
                         )
                     }
                     else {
                         HistoricoDoMesReceita(
+                            viewModelReceita = viewModelReceitas,
                             modifier = Modifier.padding(paddingValues),
-                            viewModelReceita = viewModelReceitas
-                        )
+                            )
                     }
 
                 }

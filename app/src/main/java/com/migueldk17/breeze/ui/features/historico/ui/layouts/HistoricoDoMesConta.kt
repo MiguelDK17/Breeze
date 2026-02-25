@@ -42,8 +42,8 @@ import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesV
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoricoDoMesConta(
-    modifier: Modifier,
     viewModelContas: HistoricoDoMesViewModel,
+    modifier: Modifier = Modifier,
     ) {
     val contas = viewModelContas.contasPorMes.collectAsStateWithLifecycle().value
 
@@ -82,7 +82,6 @@ fun HistoricoDoMesConta(
 
     Column(
         modifier = modifier
-            .background(Color.Red)
     ) {
         Row(
             modifier = Modifier
@@ -177,5 +176,3 @@ private fun LazyColumnContas(historicoContas: List<HistoricoDoDia>) {
 
     }
 }
-
-
