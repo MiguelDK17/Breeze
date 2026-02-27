@@ -9,19 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.components.ConfirmPaymentContent
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
-import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 
 @Composable
 fun ConfirmarPagamentoDialog(
-    viewModel: ConfirmarPagamentoViewModel = hiltViewModel(),
-    isVisible: Boolean,
-    state: ConfirmPaymentModel,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit
-){
+     isVisible: Boolean,
+     state: ConfirmPaymentModel,
+     onDismiss: () -> Unit,
+     onConfirm: () -> Unit,
+     modifier: Modifier = Modifier,
+     ){
     if (!isVisible) return
 
     Dialog(
@@ -31,7 +29,7 @@ fun ConfirmarPagamentoDialog(
         )
     ) {
         Surface(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(24.dp),
@@ -41,7 +39,6 @@ fun ConfirmarPagamentoDialog(
                     onConfirm()
                 },
                 state = state,
-                viewModel = viewModel
             )
         }
     }

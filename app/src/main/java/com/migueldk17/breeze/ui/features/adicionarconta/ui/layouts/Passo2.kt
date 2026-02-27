@@ -12,14 +12,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.migueldk17.breeze.BreezeIconLists
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
@@ -65,7 +62,7 @@ fun Passo2(
         )
         {
             //Carrossel de icones
-            val iconCarrousel = carrouselIcons(BreezeIconLists.getLinearIcons())
+            val iconCarrousel = carrouselIcons(BreezeIconLists.GetLinearIcons())
             Log.d(TAG, "Passo2: icone selecionado: ${iconCarrousel.enum.name}")
             Spacer(modifier = Modifier.size(71.dp))
             //Botão para avançar de tela

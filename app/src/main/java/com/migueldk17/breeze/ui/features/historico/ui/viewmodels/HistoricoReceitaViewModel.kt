@@ -1,7 +1,5 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
-import android.util.Log
-import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
@@ -41,9 +39,7 @@ class HistoricoReceitaViewModel @Inject constructor(
                         .collectLatest { receitas ->
                             if (receitas.isEmpty()) {
                                 _receitasPorMes.value = UiState.Empty
-                                Log.d(TAG, "observarReceitasPorMes: Receitas vazias")
-                            } else {
-                                Log.d(TAG, "observarReceitasPorMes: Receitas recebidas")
+                                } else {
                                 val linhaDoTempoModel = receitas.map { receita ->
                                     LinhaDoTempoModel(
                                         id = receita.id,
@@ -72,8 +68,6 @@ class HistoricoReceitaViewModel @Inject constructor(
                     val receitasOrdenadas = receitasDoDia.sortedByDescending { it.dateTime }
                     val primeira = receitasOrdenadas.first()
                     val outras = receitasOrdenadas.drop(1)
-                    Log.d(TAG, "organizaReceitas: primeira receita: $primeira")
-                    Log.d(TAG, "organizaReceitas:outras receitas: $outras")
 
                     HistoricoDoDia(
                         data = data,

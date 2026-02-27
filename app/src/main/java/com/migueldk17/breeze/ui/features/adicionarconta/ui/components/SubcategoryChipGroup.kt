@@ -16,15 +16,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 
 @Composable
 fun SubcategoryChipGroup(
-    modifier: Modifier = Modifier,
     selectedCategory: String,
-    subCategoriesMap: Map<String, List<String>>,
+    subCategoriesMap: ImmutableMap<String, ImmutableList<String>>,
     selectedSubcategory: String,
-    onSubCategorySelected: (String) -> Unit
-){
+    onSubCategorySelect: (String) -> Unit,
+    modifier: Modifier = Modifier,
+
+    ){
     //Pega o map de sub categorias enviado do Passo1 e seleciona apenas a lista correspondente a categoria selecionada
     val subCategories = subCategoriesMap[selectedCategory] ?: emptyList() //Caso não tenha sub categorias com base na categoria ele irá retornar uma lista vazia
 
@@ -51,7 +54,7 @@ fun SubcategoryChipGroup(
                         shape = RoundedCornerShape(50),
                         color = if (isSelected) MaterialTheme.colorScheme.primary else Color(0xFFE0E0E0),
                         modifier = Modifier
-                            .clickable { onSubCategorySelected(subCategory) }
+                            .clickable { onSubCategorySelect(subCategory) }
                     ) {
                         Text(
                             text = subCategory,

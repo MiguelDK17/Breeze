@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -26,20 +27,20 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.ui.features.historico.model.GraficoDoDiaModel
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun GraficoDeBarras(
-    graficoDoDiaModel: List<LinhaDoTempoModel>,
+    graficoDoDiaModel: ImmutableList<LinhaDoTempoModel>,
     modifier: Modifier = Modifier
 ){
     //Pega a densidade da tela
     val density = LocalDensity.current
-    //Adiciona um deslocamento baseado na densidade da tela em pixels
+    //Adiciona um deslocamento baseado na densidade da tela em pixeis
     val deslocamento = with(density) { 35.dp.toPx()}
-    //Adiciona um deslocamento baseado na densidade da tela em pixels
+    //Adiciona um deslocamento baseado na densidade da tela em pixeis
     val larguraPx = with(density) { 290.dp.toPx()}
     val isReceita = graficoDoDiaModel[0].isReceita
     val superiorText = if (isReceita) "Valor recebido" else "Valor gasto"
@@ -82,7 +83,7 @@ fun GraficoDeBarras(
                         .height(300.dp)
                 ) {
                     val endY = size.height
-                    val linhaFinal = endY - deslocamento //Calcula a posição da linha com base na densidade de pixels calculada acima e o height da Canvas para que fique responsivo
+                    val linhaFinal = endY - deslocamento //Calcula a posição da linha com base na densidade de pixeis calculada acima e o height da Canvas para ficar responsivo
                     //Linha de cima
                     drawLine(
                         color = Color.Black,
@@ -101,8 +102,11 @@ fun GraficoDeBarras(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+
                     itemsIndexed(graficoDoDiaModel) { index, grafico ->
-                        val alturaMaxima = graficoDoDiaModel.maxOfOrNull { it.valor.toFloat() } ?: 1f
+                        val alturaMaxima = remember(graficoDoDiaModel) {
+                            graficoDoDiaModel.maxOfOrNull { it.valor.toFloat() } ?: 1f
+                        }
                         val texto = formataSaldo(grafico.valor)
                         val listColors = listOf(grafico.colorIcon.toColor(), grafico.colorCard.toColor())
                         val brush = Brush.verticalGradient(colors = listColors)

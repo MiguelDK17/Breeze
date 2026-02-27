@@ -16,11 +16,12 @@ import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewMo
 import com.migueldk17.breeze.uistate.UiState
 
 
+@Suppress("EffectKeys")
 @Composable
 fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
     val context = LocalContext.current
 
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         viewModel.navegarParaTela.collect { (mes, dataFormatada) ->
             val context = context
             val intent = Intent(context, MainActivity4::class.java)

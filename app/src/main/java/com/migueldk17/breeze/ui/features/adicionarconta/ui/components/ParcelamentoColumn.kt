@@ -39,6 +39,7 @@ import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
+import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -83,9 +84,9 @@ fun ParcelamentoColumn(
                     BreezeDropdownMenu(
                         modifier = if(isSmallScreen) Modifier.width(120.dp) else Modifier.width(162.dp),
                         categoryName = "",
-                        categories = categoriesParcelamento,
+                        categories = categoriesParcelamento.toImmutableList(),
                         selectedCategory = selectedCategory,
-                        onCategorySelected = onChangeCategoriesParcelamento,
+                        onCategorySelect = onChangeCategoriesParcelamento,
                         showDescriptionText = false
                     )
                     //Caso a categoria selecionada seja Outro irá aparecer um OutlinedTextField para inserir a quantidade de parcelas

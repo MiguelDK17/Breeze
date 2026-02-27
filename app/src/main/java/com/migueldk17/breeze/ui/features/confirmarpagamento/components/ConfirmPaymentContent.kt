@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.converters.toDatabaseValue
@@ -37,7 +38,7 @@ import java.time.LocalDate
 fun ConfirmPaymentContent(
     state: ConfirmPaymentModel,
     onConfirm: () -> Unit,
-    viewModel: ConfirmarPagamentoViewModel
+    viewModel: ConfirmarPagamentoViewModel = hiltViewModel()
 ){
     //-------------------Controles de estado---------------------//
     var selectedCategory by remember { mutableStateOf("Nenhum") }

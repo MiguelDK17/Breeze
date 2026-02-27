@@ -12,29 +12,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
-import com.migueldk17.breeze.ui.features.confirmarpagamento.viewmodels.ConfirmarPagamentoViewModel
 import com.migueldk17.breeze.ui.theme.grayforHint
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PaymentMethodField(
     state: ConfirmPaymentModel,
     selectedCategory: String,
     onSelectCategory: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ){
-
-    val textColor = if (selectedCategory == "Nenhum") grayforHint else grayforTextColorInDropdown
     val juros = state.juros
 
     Column() {
         // --------- Row das formas de pagamento -----------------//
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -56,9 +53,9 @@ fun PaymentMethodField(
             ) {
                 BreezeDropdownMenu(
                     categoryName = "",
-                    categories = categories,
+                    categories = categories.toImmutableList(),
                     selectedCategory = selectedCategory,
-                    onCategorySelected = {
+                    onCategorySelect = {
                         onSelectCategory(it)
                     },
                     showDescriptionText = false

@@ -2,11 +2,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
-import com.migueldk17.breeze.data.local.repository.ContaRepository
-import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.domain.GetParcelaPorIdUseCase
 import com.migueldk17.breeze.domain.ObservarContasDoMesUseCase
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
@@ -18,8 +14,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -31,19 +27,14 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoricoDoMesViewModel @Inject constructor(
     private val observarContasDoMesUseCase: ObservarContasDoMesUseCase,
-    private val getParcelaPorIdUseCase: GetParcelaPorIdUseCase,
-    private val parcelaRepository: ParcelaRepository
+    private val getParcelaPorIdUseCase: GetParcelaPorIdUseCase
 ): ViewModel() {
     //Pega a data do mes
     private val _data = MutableStateFlow("")
     val data: StateFlow<String> = _data.asStateFlow()
 
-    private val _contasPorMes = MutableStateFlow<List<LinhaDoTempoModel>>(emptyList())
-    val contasPorMes: StateFlow<List<LinhaDoTempoModel>> = _contasPorMes.asStateFlow()
-
-    private val _listaVazia = MutableStateFlow(false)
-    val listaVazia: StateFlow<Boolean> = _listaVazia.asStateFlow()
-
+    private val _contasPorMesState = MutableStateFlow <UiState<List<LinhaDoTempoModel>>>(UiState.Loading)
+    val contasPorMesState: StateFlow<UiState<List<LinhaDoTempoModel>>> = _contasPorMesState.asStateFlow()
 
     private val _parcela = MutableStateFlow<UiState<ParcelaEntity>>(UiState.Loading)
     val parcela: StateFlow<UiState<ParcelaEntity>> = _parcela.asStateFlow()
@@ -57,9 +48,15 @@ class HistoricoDoMesViewModel @Inject constructor(
                 .flatMapLatest { mes ->
                     observarContasDoMesUseCase(mes)
                 }
+                .catch { e ->
+                    _contasPorMesState.value = UiState.Error(e.message ?: "Erro desconhecido")
+                }
                 .collectLatest { lista ->
-                    _contasPorMes.value = lista
-                    _listaVazia.value = lista.isEmpty()
+                    when {
+                        lista.isEmpty() -> _contasPorMesState.value = UiState.Empty
+                        else -> _contasPorMesState.value = UiState.Success(lista)
+
+                    }
                 }
         }
     }

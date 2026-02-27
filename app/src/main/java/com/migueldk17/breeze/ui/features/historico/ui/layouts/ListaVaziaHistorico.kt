@@ -28,6 +28,7 @@ import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import kotlinx.coroutines.delay
 
+@Suppress("EffectKeys") //Efeito da animação deve permanecer na tela
 @Composable
 fun ListaVaziaHistorico(
     animationRes: Int,
@@ -35,7 +36,8 @@ fun ListaVaziaHistorico(
     descriptionText1: String,
     descriptionText2: String,
     buttonText: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ){
     var showContent by remember { mutableStateOf(false) }
 

@@ -36,11 +36,16 @@ import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun Passo1(
     navToPasso2: () -> Unit,
-    viewModel: AdicionarContaViewModel = hiltViewModel()){
+    modifier: Modifier = Modifier,
+    viewModel: AdicionarContaViewModel = hiltViewModel(),
+){
     var text by remember{
         mutableStateOf("")
     }
@@ -61,23 +66,23 @@ fun Passo1(
     //Variavel que armazena a sub categoria selecionada
     var selectedSubCategory by remember { mutableStateOf("") }
     //Map de sub categoria baseado nas categorias estabelecidas
-    val categorySubcategories = mapOf(
-        "Alimentação" to listOf("Supermercado", "Restaurante", "Lanches", "Delivery"),
-        "Transporte" to listOf(
+    val categorySubcategories = persistentMapOf(
+        "Alimentação" to persistentListOf("Supermercado", "Restaurante", "Lanches", "Delivery"),
+        "Transporte" to persistentListOf(
             "Combustível", "Uber/99", "Ônibus/Transporte público", "Estacionamento"),
-        "Educação" to listOf("Escola", "Faculdade", "Cursos online", "Material escolar"),
-        "Moradia" to listOf("Aluguel", "Decoração & Mobília", "Condomínio",
+        "Educação" to persistentListOf("Escola", "Faculdade", "Cursos online", "Material escolar"),
+        "Moradia" to persistentListOf("Aluguel", "Decoração & Mobília", "Condomínio",
             "Água", "Energia", "Internet"),
-        "Lazer" to listOf("Cinema", "Viagens", "Assinaturas(Netflix, Spotify...)", "Jogos"),
-        "Saúde" to listOf("Plano de saúde", "Farmácia", "Consulta médica", "Exames"),
-        "Trabalho/Negócios" to listOf(
+        "Lazer" to persistentListOf("Cinema", "Viagens", "Assinaturas(Netflix, Spotify...)", "Jogos"),
+        "Saúde" to persistentListOf("Plano de saúde", "Farmácia", "Consulta médica", "Exames"),
+        "Trabalho/Negócios" to persistentListOf(
             "Ferramentas de trabalho","Upgrade de Equipamento", "Marketing",
             "Transporte a trabalho", "Assinaturas por trabalho"
         ),
-        "Pets" to listOf("Ração", "Veterinário", "Higiene", "Brinquedos"),
-        "Pessoais" to listOf("Roupas", "Cabelo/Beleza","Presentes",
+        "Pets" to persistentListOf("Ração", "Veterinário", "Higiene", "Brinquedos"),
+        "Pessoais" to persistentListOf("Roupas", "Cabelo/Beleza","Presentes",
             "Acessórios Eletrônicos", "Compras Pessoais", "Academia"),
-        "Outros" to listOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
+        "Outros" to persistentListOf("Doações", "Imprevistos", "Dívidas antigas", "Sem subcategoria")
     )
 
     val focusManager = LocalFocusManager.current
@@ -135,9 +140,9 @@ fun Passo1(
         BreezeDropdownMenu(
             modifier = Modifier.padding(vertical = 10.dp),
             categoryName = "Insira uma categoria(Opcional)",
-            categories = categories,
+            categories = categories.toImmutableList(),
             selectedCategory = selectedCategory,
-            onCategorySelected = {
+            onCategorySelect = {
                 focusManager.clearFocus()
                 selectedCategory = it
             },
@@ -156,7 +161,7 @@ fun Passo1(
             selectedCategory = selectedCategory,
             subCategoriesMap = categorySubcategories,
             selectedSubcategory = selectedSubCategory,
-            onSubCategorySelected = {
+            onSubCategorySelect = {
                 focusManager.clearFocus()
                 selectedSubCategory = it
             }

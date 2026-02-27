@@ -1,9 +1,6 @@
 package com.migueldk17.breeze.ui.components
 
-
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -37,15 +34,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.theme.NavyPetrol
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun BreezeDropdownMenu(
-    modifier: Modifier = Modifier,
     categoryName: String,
-    categories: List<String>,
+    categories: ImmutableList<String>,
     selectedCategory: String,
-    onCategorySelected: (String) -> Unit,
+    onCategorySelect: (String) -> Unit,
     showDescriptionText: Boolean,
+    modifier: Modifier = Modifier,
     textSize: TextUnit = 16.sp,
     textColor: Color = if(!isSystemInDarkTheme()) grayforTextColorInDropdown else Color(0xFFF5F5F5)
 ) {
@@ -103,7 +101,7 @@ fun BreezeDropdownMenu(
                             }
                         },
                         onClick = {
-                            onCategorySelected(category)
+                            onCategorySelect(category)
                             expanded = false
                         }
                     )

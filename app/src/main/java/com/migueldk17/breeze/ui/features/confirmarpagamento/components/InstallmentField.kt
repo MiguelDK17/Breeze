@@ -22,6 +22,7 @@ import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
 import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun InstallmentField(
@@ -68,10 +69,10 @@ fun InstallmentField(
                 modifier = Modifier
                     .widthIn(min = 53.dp, 60.dp)
                     .heightIn(min = 53.dp, 60.dp),
-                categories = list,
+                categories = list.toImmutableList(),
                 categoryName = "",
                 selectedCategory = numeroParcela.toString(),
-                onCategorySelected = {
+                onCategorySelect = {
                     setNumeroParcela(it.toInt())
                     Log.d(TAG, "InstallmentField: numero parcela na função é $it")
 

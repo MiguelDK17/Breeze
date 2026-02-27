@@ -2,11 +2,13 @@ package com.migueldk17.breeze
 
 import androidx.compose.runtime.Composable
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import kotlinx.collections.immutable.persistentListOf
 
 object BreezeIconLists {
     //Lista de icones de tipo BreezeIcons
+    @Suppress("ModifierRequired") //Não é necessário modifier
     @Composable
-    fun getLinearIcons() = listOf(
+    fun GetLinearIcons() = persistentListOf(
         // Building
         BreezeIcons.Linear.Building.Hospital,
         BreezeIcons.Linear.Building.HomeLinear,
@@ -101,7 +103,7 @@ object BreezeIconLists {
     )
 
     @Composable
-    fun getSoftColorIcons() = listOf(
+    fun getSoftColorIcons() = persistentListOf(
             BreezeIcons.Colors.Soft.SoftRed,
             BreezeIcons.Colors.Soft.SoftOrange,
             BreezeIcons.Colors.Soft.SoftYellow,
