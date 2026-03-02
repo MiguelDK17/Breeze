@@ -87,7 +87,6 @@ class MainActivity4: ComponentActivity() {
                                     )
                                 }
                             },
-
                         )
                     },
                     floatingActionButton = {

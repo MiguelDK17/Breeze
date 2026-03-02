@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import kotlinx.collections.immutable.ImmutableList
 
@@ -31,6 +32,7 @@ fun BreezeButtonGroup(
     unCheckedIcons: ImmutableList<BreezeIconsType>,
     checkedIcons: ImmutableList<BreezeIconsType>,
     onChangeSelectedIndex: (Int) -> Unit,
+    hasIcon: Boolean = true,
     modifier: Modifier = Modifier
 ){
     var selectedIndex by remember { mutableIntStateOf(0) }
@@ -57,8 +59,10 @@ fun BreezeButtonGroup(
                         else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                     },
             ) {
+                val condicaoIcon = if (selectedIndex == index) checkedIcons[index] else unCheckedIcons[index]
+
                 BreezeIcon(
-                    if (selectedIndex == index) checkedIcons[index] else unCheckedIcons[index],
+                    if (hasIcon) condicaoIcon else BreezeIcons.Unspecified.IconUnspecified,
                     contentDescription = label,
                 )
                 Spacer(Modifier.size(ToggleButtonDefaults.IconSpacing))

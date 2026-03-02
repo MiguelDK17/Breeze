@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
@@ -25,14 +26,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun HistoricoDoMesComparativo(
     modifier: Modifier = Modifier
 ){
-    val optionsLinear = mapOf(
-        BreezeIcons.Unspecified.IconUnspecified to "Dia",
-        BreezeIcons.Unspecified.IconUnspecified to "Categoria"
-    )
-    val optionsOutlined = mapOf(
-        BreezeIcons.Outlined.Money.MoneySend to "Contas",
-        BreezeIcons.Outlined.Money.MoneyRecive to "Receitas"
-    )
+
     val options = persistentListOf(
         "Dia",
         "Categoria",
@@ -49,14 +43,12 @@ fun HistoricoDoMesComparativo(
             .background(color = RedError)
             .height(10.dp)
         )
-        BreezeButtonGroup(
-            options = optionsLinear.values.toImmutableList(),
-            unCheckedIcons = optionsOutlined.keys.toImmutableList(),
-            checkedIcons = optionsLinear.keys.toImmutableList(),
-            onChangeSelectedIndex = {
 
-            }
-        )
+        SaldoDoMesCard()
+
+        GastoCard()
+
+
     }
 }
 
