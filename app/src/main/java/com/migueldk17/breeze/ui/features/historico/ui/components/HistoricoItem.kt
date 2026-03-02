@@ -27,6 +27,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
+import com.migueldk17.breeze.ui.features.historico.ui.conta.components.ContaPrincipal
+import com.migueldk17.breeze.ui.features.historico.ui.conta.components.ContaSecundaria
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable

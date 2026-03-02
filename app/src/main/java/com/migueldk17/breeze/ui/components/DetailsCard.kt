@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.historico.ui.components
+package com.migueldk17.breeze.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -25,8 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.components.DescriptionText
-import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import kotlinx.collections.immutable.ImmutableMap

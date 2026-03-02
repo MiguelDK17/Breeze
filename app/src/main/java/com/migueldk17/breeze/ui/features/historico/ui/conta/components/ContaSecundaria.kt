@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.historico.ui.components
+package com.migueldk17.breeze.ui.features.historico.ui.conta.components
 
 
 import android.content.ContentValues.TAG

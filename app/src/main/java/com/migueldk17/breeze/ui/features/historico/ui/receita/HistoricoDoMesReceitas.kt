@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.historico.ui.layouts
+package com.migueldk17.breeze.ui.features.historico.ui.receita
 
 import android.util.Log
 import android.content.ContentValues.TAG
@@ -15,7 +15,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
-import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoDoMesReceitaBody
+import com.migueldk17.breeze.ui.features.historico.ui.receita.components.HistoricoDoMesReceitaBody
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.ListaVaziaHistorico
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.toImmutableList

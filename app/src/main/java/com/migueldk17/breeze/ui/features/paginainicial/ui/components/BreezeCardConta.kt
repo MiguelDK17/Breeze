@@ -36,7 +36,7 @@ import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.ui.features.confirmarpagamento.layouts.ConfirmarPagamentoDialog
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ParcelaUI
-import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
+import com.migueldk17.breeze.ui.features.historico.ui.conta.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo

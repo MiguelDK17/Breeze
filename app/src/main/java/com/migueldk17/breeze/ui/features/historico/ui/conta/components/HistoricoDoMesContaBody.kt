@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.historico.ui.components
+package com.migueldk17.breeze.ui.features.historico.ui.conta.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
+import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
+import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 

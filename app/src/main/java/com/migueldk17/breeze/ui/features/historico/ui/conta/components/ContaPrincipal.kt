@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.historico.ui.components
+package com.migueldk17.breeze.ui.features.historico.ui.conta.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -25,6 +25,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
+import com.migueldk17.breeze.ui.features.historico.ui.components.BoxDate
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.ui.utils.formataSaldo

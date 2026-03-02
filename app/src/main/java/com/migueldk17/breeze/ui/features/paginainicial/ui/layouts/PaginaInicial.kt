@@ -48,14 +48,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toLocalDateTime
-import com.migueldk17.breeze.converters.toStatus
-import com.migueldk17.breeze.data.local.entity.Conta
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.domain.ContaComParcelas
 import com.migueldk17.breeze.enums.StatusConta
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
-import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
-import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
+import com.migueldk17.breeze.ui.components.DetailsCard
+import com.migueldk17.breeze.ui.features.historico.ui.conta.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeCardReceita
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.DialogExcluirConta
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.SwipeableBreezeCardConta

@@ -43,7 +43,7 @@ fun BarraAnimada(
 
     val alturaFinal = (valor / maxValue) * 230f //Altura final calculada apartir do valor da conta e o valor máximo
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(cor) {
         delay(delayAnimacao.toLong())
         alturaAnimada.animateTo(
             targetValue = alturaFinal,

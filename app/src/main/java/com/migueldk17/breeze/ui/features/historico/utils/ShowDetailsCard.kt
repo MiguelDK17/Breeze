@@ -11,9 +11,9 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
-import com.migueldk17.breeze.ui.features.historico.ui.components.retornaValorTotalArredondado
+import com.migueldk17.breeze.ui.features.historico.ui.conta.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
-import com.migueldk17.breeze.ui.features.historico.ui.components.DetailsCard
+import com.migueldk17.breeze.ui.components.DetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import com.migueldk17.breeze.uistate.UiState

@@ -9,6 +9,10 @@ val PastelLightBlue = Color(0xFFDCEDFF)
 val NavyBlue = Color(0xFF1D4576)
 val Branco = Color(0xFFFFFFFF)
 
+val RedError = Color(0xFFDF4258)
+
+val GreenSuccess = Color(0xFF319A51)
+
 
 //Cores principais do app no modo escuro
 val DarkBlue = Color(0xFF0D1B2A) //Cor principal (background)

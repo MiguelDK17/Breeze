@@ -30,12 +30,13 @@ fun BreezeButtonGroup(
     options: ImmutableList<String>,
     unCheckedIcons: ImmutableList<BreezeIconsType>,
     checkedIcons: ImmutableList<BreezeIconsType>,
-    onChangeSelectedIndex: (Int) -> Unit
+    onChangeSelectedIndex: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ){
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Row(
-        Modifier.padding(horizontal = 8.dp),
+        modifier.padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
 
     ) {

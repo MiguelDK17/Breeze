@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.ui.features.historico.ui.layouts
+package com.migueldk17.breeze.ui.features.historico.ui.conta
 
 import android.content.Intent
 import android.util.Log
@@ -16,7 +16,8 @@ import com.migueldk17.breeze.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.ui.animation.LottieAnimation
-import com.migueldk17.breeze.ui.features.historico.ui.components.HistoricoDoMesContaBody
+import com.migueldk17.breeze.ui.features.historico.ui.conta.components.HistoricoDoMesContaBody
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.ListaVaziaHistorico
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.toImmutableList
