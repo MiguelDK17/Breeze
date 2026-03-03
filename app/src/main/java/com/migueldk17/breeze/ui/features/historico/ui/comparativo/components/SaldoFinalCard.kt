@@ -35,7 +35,7 @@ fun SaldoFinal(
 ){
     val listColors = persistentListOf(
         Color(0XFFE9F1FC),
-        Color(0xFFFFFFFF)
+        Color(0xFFF2F6FD)
     )
 
     val brushColor = Brush.verticalGradient(

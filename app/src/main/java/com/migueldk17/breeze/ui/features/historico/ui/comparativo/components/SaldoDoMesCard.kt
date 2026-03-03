@@ -47,14 +47,14 @@ fun SaldoDoMesCard(
         BreezeIcons.Outlined.Money.MoneyRecive to "Categoria",
         BreezeIcons.Outlined.All.MoneyRecive to "Mês"
     )
-
+    //Datas fixas para o modelo de teste
     val firstDate = LocalDate.of(2026, 2, 23).atStartOfDay()
     val secondDate = LocalDate.of(2026, 2, 24).atStartOfDay()
     val thirdDate = LocalDate.of(2026, 2, 25).atStartOfDay()
     val fourthDate = LocalDate.of(2026, 2, 26).atStartOfDay()
     val fifthDate = LocalDate.of(2026, 2, 27).atStartOfDay()
 
-
+    //Modelo de testes que virá a ser substituído por dados do Room
     val graficoDoDiaModel = persistentListOf(
         LinhaDoTempoModel(
             name = "Salário",
@@ -107,6 +107,7 @@ fun SaldoDoMesCard(
             isReceita = true
         )
     )
+
     //Elevated Card Pai
     ElevatedCard(
         modifier = modifier
@@ -145,6 +146,7 @@ fun SaldoDoMesCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(

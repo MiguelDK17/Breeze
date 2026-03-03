@@ -82,9 +82,6 @@ fun HistoricoDoMesConta(
                 modifier = modifier
             )
         }
-        else -> {
-            Log.d(TAG, "HistoricoDoMesConta: carregando")
-        }
     }
     }
 
