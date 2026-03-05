@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.DestaquesCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -26,6 +29,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun HistoricoDoMesComparativo(
     modifier: Modifier = Modifier
 ){
+    val scroll = rememberScrollState()
 
     val options = persistentListOf(
         "Dia",
@@ -36,7 +40,8 @@ fun HistoricoDoMesComparativo(
         modifier = modifier
             .widthIn(min = 389.dp)
             .heightIn(min = 464.dp)
-            .padding(7.dp),
+            .padding(7.dp)
+            .verticalScroll(scroll),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier
@@ -47,6 +52,8 @@ fun HistoricoDoMesComparativo(
         SaldoDoMesCard()
 
         GastoCard()
+
+        DestaquesCard()
 
 
     }

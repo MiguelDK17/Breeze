@@ -37,66 +37,66 @@ fun GastoCard(
     var isEllipsisGastoActive by remember { mutableStateOf(true) }
     var isEllipsisCategoria by remember { mutableStateOf(true) }
 
-    ElevatedCard(
+    BreezeElevatedCard(
         modifier = modifier
-            .widthIn(min = 389.dp)
+            .fillMaxWidth()
             .heightIn(min = 80.dp)
-            .padding(5.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color(0xFFFFFFFF)
-        )
+            .padding(
+                vertical = 5.dp
+            )
     ) {
-            Row(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Default.Lightbulb,
+                contentDescription = null
+            )
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
             ) {
-                Icon(
-                    Icons.Default.Lightbulb,
-                    contentDescription = null
-                )
-                Column(
+                DescriptionText(
+                    text = "Você gastou 15% a mais que mês passado",
+                    fontWeight = FontWeight.SemiBold,
+                    size = 12.sp,
                     modifier = Modifier
-                        .weight(1f),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    DescriptionText(
-                        text = "Você gastou 15% a mais que mês passado",
-                        fontWeight = FontWeight.SemiBold,
-                        size = 12.sp,
-                        modifier = Modifier
-                            .clickable(true, onClick = {
-                                isEllipsisGastoActive = !isEllipsisGastoActive
-                            })
-                            .padding(horizontal = 15.dp),
-                        overflow = if (isEllipsisGastoActive) TextOverflow.Ellipsis else TextOverflow.Clip,
-                        maxLines = if (isEllipsisGastoActive) 1 else Int.MAX_VALUE
-                    )
-                    DescriptionText(
-                        "Alimentação foi sua maior despesa",
-                        size = 12.sp,
-                        modifier = Modifier
-                            .clickable(true, onClick = {
-                                isEllipsisCategoria = !isEllipsisCategoria
-                            })
-                            .padding(
-                                vertical = 5.dp,
-                                horizontal = 15.dp),
-                        overflow = if (isEllipsisCategoria) TextOverflow.Ellipsis else TextOverflow.Clip,
-                        maxLines = if (isEllipsisCategoria) 1 else Int.MAX_VALUE
-                    )
-                }
-                IconButton(
-                    onClick = {}
-                ) {
-                    BreezeIcon(
-                        breezeIcon = BreezeIcons.Linear.Arrows.AltArrowRight,
-                        contentDescription = "Ir para histórico"
-                    )
-                }
-
+                        .clickable(true, onClick = {
+                            isEllipsisGastoActive = !isEllipsisGastoActive
+                        })
+                        .padding(horizontal = 15.dp),
+                    overflow = if (isEllipsisGastoActive) TextOverflow.Ellipsis else TextOverflow.Clip,
+                    maxLines = if (isEllipsisGastoActive) 1 else Int.MAX_VALUE
+                )
+                DescriptionText(
+                    "Alimentação foi sua maior despesa",
+                    size = 12.sp,
+                    modifier = Modifier
+                        .clickable(true, onClick = {
+                            isEllipsisCategoria = !isEllipsisCategoria
+                        })
+                        .padding(
+                            vertical = 5.dp,
+                            horizontal = 15.dp
+                        ),
+                    overflow = if (isEllipsisCategoria) TextOverflow.Ellipsis else TextOverflow.Clip,
+                    maxLines = if (isEllipsisCategoria) 1 else Int.MAX_VALUE
+                )
             }
+            IconButton(
+                onClick = {}
+            ) {
+                BreezeIcon(
+                    breezeIcon = BreezeIcons.Linear.Arrows.AltArrowRight,
+                    contentDescription = "Ir para histórico"
+                )
+            }
+
         }
+    }
 }

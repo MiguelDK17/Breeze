@@ -37,11 +37,6 @@ fun SaldoFinal(
         Color(0XFFE9F1FC),
         Color(0xFFF2F6FD)
     )
-
-    val brushColor = Brush.verticalGradient(
-        colors = listColors
-    )
-
     //Card do saldo final
     GradientCard(
         modifier =  modifier

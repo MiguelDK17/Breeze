@@ -109,22 +109,16 @@ fun SaldoDoMesCard(
     )
 
     //Elevated Card Pai
-    ElevatedCard(
-        modifier = modifier
-            .padding(5.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color(0xFFFFFFFF)
-        )
-    ) {
+    BreezeElevatedCard() {
         Column(
             modifier = Modifier
                 .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-           TitleText(
+            TitleText(
                 text = "Saldo do mês",
-               color = NavyBlue,
-               modifier = Modifier
+                color = NavyBlue,
+                modifier = Modifier
             )
             //Card de Saldo Final
             SaldoFinal()
