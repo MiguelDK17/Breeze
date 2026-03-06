@@ -15,8 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.features.confirmarpagamento.model.ConfirmPaymentModel
-import com.migueldk17.breeze.ui.theme.grayforHint
-import com.migueldk17.breeze.ui.theme.grayforTextColorInDropdown
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

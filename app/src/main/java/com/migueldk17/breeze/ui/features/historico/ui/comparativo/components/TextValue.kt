@@ -6,27 +6,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.DescriptionText
+import java.math.BigDecimal
 import kotlin.Double
 
 
 @Composable
 fun TextValue(
-    value: Double,
+    value: BigDecimal,
     modifier: Modifier = Modifier,
+    size: TextUnit = 14.sp,
+    colors: Color = Color(0xFF1D1D1D)
 ) {
-    Row() {
-        DescriptionText("R$")
+    Row(
+        modifier = modifier
+    ) {
+        DescriptionText(
+            text = "R$",
+            size = size,
+            color = colors)
 
         DescriptionText(
             text = value.toString(),
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 2.dp),
-            color = Color(0xFF1D1D1D)
-
-
+            color = colors,
+            size = size
         )
     }
 }

@@ -43,8 +43,9 @@ fun traduzData(mes: String): String {
 
 object MoneyUtils {
     fun arredondarValor(valor: Double, casasDecimais: Int = 2): Double {
-        return BigDecimal(valor)
+        return BigDecimal.valueOf(valor)
             .setScale(casasDecimais, RoundingMode.HALF_EVEN)
+            .stripTrailingZeros()
             .toDouble()
     }
 }
