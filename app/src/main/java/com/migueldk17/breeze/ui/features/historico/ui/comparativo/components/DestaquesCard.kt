@@ -4,17 +4,15 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,16 +25,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.NavyBlue
-import com.migueldk17.breeze.ui.utils.MoneyUtils
+import kotlinx.collections.immutable.persistentListOf
 import java.math.BigDecimal
+import java.time.LocalDate
 
 @Composable
 fun DestaquesCard(
-    modifier: Modifier = Modifier
+    nomeDaConta: String,
+    valor: Double,
+    category: String,
+    icon: BreezeIconsType,
+    date: LocalDate,
+    progressBush: Brush,
+    modifier: Modifier = Modifier,
 ){
     BreezeElevatedCard(
         modifier = modifier
@@ -50,7 +56,7 @@ fun DestaquesCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 BreezeIcon(
-                    breezeIcon = BreezeIcons.Linear.All.NotificationLinear,
+                    breezeIcon = BreezeIcons.Linear.All.NotificationLinear, //Icone de Destaques
                     contentDescription = null
                 )
                 BreezeRegularText(
@@ -78,7 +84,7 @@ fun DestaquesCard(
                             .fillMaxWidth()
                     ) {
                     BreezeIcon(
-                        breezeIcon = BreezeIcons.Linear.Delivery.GroupLinear,
+                        breezeIcon = icon, //Icone de movimentacao
                         contentDescription = "Icone",
                         modifier = Modifier.size(30.dp)
                     )
@@ -105,7 +111,7 @@ fun DestaquesCard(
                                 overflow = TextOverflow.Ellipsis,
                                 color = NavyBlue
                             )
-                            val valorFormatado = BigDecimal.valueOf(458.0).stripTrailingZeros()
+                            val valorFormatado = BigDecimal.valueOf(valor).stripTrailingZeros()
 
                             //Valor da conta
                             TextValue(
@@ -115,27 +121,31 @@ fun DestaquesCard(
                             )
 
                         }
+                        val dataFormatada = "${date.dayOfMonth} / ${date.month}"
                         //Localização
                         DescriptionText(
-                            text = "25/2 - Mercado Central",
+                            text = "$dataFormatada - $nomeDaConta",
                             size = 11.5.sp,
                             color = Color(0xFF5F748F),
                             modifier = Modifier.padding(top = 5.dp),
                         )
+                        val progressBushConta = Brush.horizontalGradient(
+                            listOf(
+                                Color(0xFFF3A7B1),
+                                Color(0xFFF09299)
+                            )
+                        )
 
+                        //Barra de progresso
                         HighlightProgressBar(
                             modifier = Modifier.padding(top= 12.dp),
                             progress = 0.55f,
-                            progressBrush = Brush.horizontalGradient(
-                                listOf(
-                                    Color(0xFFF3A7B1),
-                                    Color(0xFFF09299)
-                                )
-                            )
+                            progressBrush = progressBush
                         )
+
                         //Categoria da conta
                         DescriptionText(
-                            text = "Compras e Supermercado",
+                            text = category,
                             size = 11.sp,
                             color = Color(0xFF5F748F),
                             modifier = Modifier
@@ -148,16 +158,11 @@ fun DestaquesCard(
     }
 }
 
-@Composable
-@Preview
-private fun Preview(){
-    BreezeTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            DestaquesCard()
-        }
-    }
-}
+private data class MovimentacaoTeste(
+    val nomeDaConta: String,
+    val icon: BreezeIconsType,
+    val valor: Double,
+    val category: String,
+    val date: LocalDate,
+    val progressBush: Brush
+)

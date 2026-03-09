@@ -90,7 +90,7 @@ fun Passo1(
 
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(25.dp)
             .pointerInput(Unit){
                 detectTapGestures {

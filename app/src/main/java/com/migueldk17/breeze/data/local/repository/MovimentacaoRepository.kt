@@ -2,7 +2,10 @@ package com.migueldk17.breeze.data.local.repository
 
 import com.migueldk17.breeze.data.local.dao.MovimentacaoDao
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
+import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.mapper.entity.toDomain
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MovimentacaoRepository @Inject constructor(
@@ -25,5 +28,13 @@ class MovimentacaoRepository @Inject constructor(
 
     suspend fun apagaMovimentacao(movimentacaoEntity: MovimentacaoEntity) {
         movimentacaoDao.apagaMovimentacao(movimentacaoEntity)
+    }
+
+    fun getMovimentacoes(): Flow<List<MovimentacaoDomain>> {
+        return movimentacaoDao.getAllMovimentacoes().map { list ->
+            list.map {
+                it.toDomain()
+            }
+        }
     }
 }
