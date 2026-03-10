@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.ui.utils.MoneyUtils
 import kotlinx.collections.immutable.persistentListOf
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -50,10 +53,11 @@ fun DestaquesCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
             ) {
                 BreezeIcon(
                     breezeIcon = BreezeIcons.Linear.All.NotificationLinear, //Icone de Destaques
@@ -80,7 +84,8 @@ fun DestaquesCard(
                         modifier = Modifier
                             .padding(
                                 top = 15.dp,
-                                start = 15.dp)
+                                start = 15.dp
+                            )
                             .fillMaxWidth()
                     ) {
                     BreezeIcon(
@@ -94,7 +99,7 @@ fun DestaquesCard(
                             .padding(
                                 start = 15.dp,
                                 end = 15.dp
-                                )
+                            )
                             .weight(1f)
                     ) {
                         Row(
@@ -111,7 +116,10 @@ fun DestaquesCard(
                                 overflow = TextOverflow.Ellipsis,
                                 color = NavyBlue
                             )
-                            val valorFormatado = BigDecimal.valueOf(valor).stripTrailingZeros()
+                            val valorFormatado = MoneyUtils.arredondarValor(valor)
+
+                            Log.d(TAG, "DestaquesCard: $valorFormatado")
+
 
                             //Valor da conta
                             TextValue(
@@ -121,19 +129,13 @@ fun DestaquesCard(
                             )
 
                         }
-                        val dataFormatada = "${date.dayOfMonth} / ${date.month}"
+                        val dataFormatada = "${date.dayOfMonth} / ${date.monthValue}"
                         //Localização
                         DescriptionText(
                             text = "$dataFormatada - $nomeDaConta",
                             size = 11.5.sp,
                             color = Color(0xFF5F748F),
                             modifier = Modifier.padding(top = 5.dp),
-                        )
-                        val progressBushConta = Brush.horizontalGradient(
-                            listOf(
-                                Color(0xFFF3A7B1),
-                                Color(0xFFF09299)
-                            )
                         )
 
                         //Barra de progresso

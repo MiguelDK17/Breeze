@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.migueldk17.breeze.enums.StatusConta
+import java.math.BigDecimal
 import java.time.LocalDate
 
 
@@ -25,7 +26,7 @@ data class Conta(
     val subCategoria: String,
 
     @ColumnInfo(name = "valor")
-    val valor: Double, //Valor monetário da conta
+    val valor: BigDecimal, //Valor monetário da conta
 
     @ColumnInfo(name = "icon")
     val icon: String, //Referencia do icone de tipo BreezeIconsType

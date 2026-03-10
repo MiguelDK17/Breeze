@@ -1,12 +1,13 @@
 package com.migueldk17.breeze.ui.features.historico.model
 
 
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class LinhaDoTempoModel(
     val id: Long,
     var name: String,
-    val valor: Double,
+    val valor: BigDecimal,
     val dateTime: LocalDateTime,
     val icon: String,
     val colorIcon: Int = -9573033, //Valor padrão remete ao IconGreen do BreezeIcons

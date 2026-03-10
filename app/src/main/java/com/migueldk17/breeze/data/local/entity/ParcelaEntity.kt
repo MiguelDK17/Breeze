@@ -3,6 +3,7 @@ package com.migueldk17.breeze.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.math.BigDecimal
 
 @Entity(tableName = "parcela_entity")
 data class ParcelaEntity(
@@ -13,7 +14,7 @@ data class ParcelaEntity(
     val idContaPai: Long, //Id da conta pai
 
     @ColumnInfo(name = "valor")
-    val valor: Double, //Valor das parcelas
+    val valor: BigDecimal, //Valor das parcelas
 
     @ColumnInfo(name = "porcentagem_juros")
     val porcentagemJuros: Double,

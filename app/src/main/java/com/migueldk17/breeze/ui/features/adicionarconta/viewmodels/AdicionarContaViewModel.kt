@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -53,11 +55,11 @@ class AdicionarContaViewModel @Inject constructor(
     private val _quantidadeDeParcelas = MutableStateFlow(0)
     val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
 
-    private val _taxaDeJurosMensal = MutableStateFlow(0.00)
-    val taxaDeJurosMensal: StateFlow<Double> = _taxaDeJurosMensal.asStateFlow()
+    private val _taxaDeJurosMensal = MutableStateFlow(BigDecimal.ZERO)
+    val taxaDeJurosMensal: StateFlow<BigDecimal> = _taxaDeJurosMensal.asStateFlow()
 
-    private val _valorDasParcelas = MutableStateFlow(1.0)
-    val valorDasParcelas: StateFlow<Double> = _valorDasParcelas.asStateFlow()
+    private val _valorDasParcelas = MutableStateFlow(BigDecimal.ZERO)
+    val valorDasParcelas: StateFlow<BigDecimal> = _valorDasParcelas.asStateFlow()
 
     private val _iconeCardConta = MutableStateFlow(BreezeIcons.Unspecified.IconUnspecified)
     val iconeCardConta: StateFlow<BreezeIconsType> get() = _iconeCardConta.asStateFlow()
@@ -68,8 +70,8 @@ class AdicionarContaViewModel @Inject constructor(
     private val _corCard = MutableStateFlow(Color.Unspecified)
     val corCard: StateFlow<Color> get() = _corCard.asStateFlow()
 
-    private val _valorConta = MutableStateFlow(1.0)
-    val valorConta: StateFlow<Double> get() = _valorConta.asStateFlow()
+    private val _valorConta = MutableStateFlow("")
+    val valorConta: StateFlow<String> get() = _valorConta.asStateFlow()
 
     private val _salvarContasState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
 
@@ -168,8 +170,8 @@ class AdicionarContaViewModel @Inject constructor(
         _corCard.value = color
     }
     //Guarda o valor da conta
-    fun guardaValorConta(valor: Double) {
-        _valorConta.value = valor / 100
+    fun guardaValorConta(valor: String) {
+        _valorConta.value = valor //Olho aqui pq tiramos o /10
     }
 
     fun guardaIsContaParcelada(boolean: Boolean){
@@ -199,28 +201,52 @@ class AdicionarContaViewModel @Inject constructor(
         _valorDasParcelas.value = guardaValorDaParcela()
     }
 
-    private fun guardaValorDaParcela(): Double{
-        return if (_taxaDeJurosMensal.value == 0.00) calculaParcelasSemJuros() else calculaParcelasComJuros()
+    private fun guardaValorDaParcela(): BigDecimal{
+        return if (_taxaDeJurosMensal.value == BigDecimal.ZERO) calculaParcelasSemJuros() else calculaParcelasComJuros()
     }
 
-    private fun calculaParcelasSemJuros(): Double{
+    private fun calculaParcelasSemJuros(): BigDecimal {
         Log.d(TAG, "calculaParcelasSemJuros: Parcelas sem juros acionada")
+        val valorDaConta = BigDecimal(valorConta.value)
+        val quantidadeDeParcelas = _quantidadeDeParcelas.value
+
         return if (_quantidadeDeParcelas.value > 0){
-            _valorConta.value / quantidadeDeParcelas.value
+            val valorParcela = valorDaConta.divide(
+                BigDecimal.valueOf(quantidadeDeParcelas.toLong()),
+                2,
+                RoundingMode.HALF_EVEN
+            )
+            valorParcela
         }
         else {
-            0.0
+            BigDecimal("0.0")
         }
     }
 
-    private fun calculaParcelasComJuros(): Double {
+    private fun calculaParcelasComJuros(): BigDecimal {
         Log.d(TAG, "calculaParcelasComJuros: Parcelas com juros acionada")
-        if (_quantidadeDeParcelas.value <= 0 || _taxaDeJurosMensal.value < 0) return 0.0
 
+        if (_quantidadeDeParcelas.value <= 0 || _taxaDeJurosMensal.value < BigDecimal.ZERO) {
+            return BigDecimal.ZERO
+        }
+
+        val valorConta = BigDecimal(_valorConta.value)
         val i = _taxaDeJurosMensal.value
         val n = _quantidadeDeParcelas.value
 
-        return (_valorConta.value * i) / (1 - (1 + i).pow(-n))
+        val um = BigDecimal.ONE
+
+        val umMaisI = um.add(i)
+
+        val potencia = umMaisI.pow(n)
+
+        val inverso = um.divide(potencia, 10, RoundingMode.HALF_EVEN)
+
+        val denominador = um.subtract(inverso)
+
+        return valorConta
+            .multiply(i)
+            .divide(denominador, 2, RoundingMode.HALF_EVEN)
     }
 
 

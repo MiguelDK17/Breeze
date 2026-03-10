@@ -26,13 +26,16 @@ import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarCont
 fun Passo3(
     navToPasso4: () -> Unit,
     currentState: String?,
+    modifier: Modifier = Modifier,
     viewModel: AdicionarContaViewModel = hiltViewModel()){
 
     val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
     val icone = viewModel.iconeCardConta.collectAsStateWithLifecycle().value
 
     //Column do Passo3
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Column(
             modifier = Modifier
                 .padding(25.dp),

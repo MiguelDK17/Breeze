@@ -16,7 +16,7 @@ import kotlin.Double
 
 @Composable
 fun TextValue(
-    value: BigDecimal,
+    value: Double,
     modifier: Modifier = Modifier,
     size: TextUnit = 14.sp,
     colors: Color = Color(0xFF1D1D1D)

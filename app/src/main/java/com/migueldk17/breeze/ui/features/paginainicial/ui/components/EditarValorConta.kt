@@ -74,7 +74,7 @@ fun EditarValorConta(
 
 
     var text by remember {
-        mutableStateOf("${valorAtual * 10}")
+        mutableStateOf("${valorAtual * 10.toBigDecimal()}")
     }
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize()) {
