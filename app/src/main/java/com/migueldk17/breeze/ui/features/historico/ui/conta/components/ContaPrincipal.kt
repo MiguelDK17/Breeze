@@ -30,6 +30,7 @@ import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
+import java.math.BigDecimal
 
 @Composable
 fun ContaPrincipal(
@@ -108,8 +109,8 @@ fun ContaPrincipal(
 
 }
 
-internal fun retornaValorTotalArredondado(valorParcela: Double, totalParcelas: Int): String {
-    val valorTotal = valorParcela * totalParcelas
+internal fun retornaValorTotalArredondado(valorParcela: BigDecimal, totalParcelas: Int): String {
+    val valorTotal = valorParcela * BigDecimal(totalParcelas)
     val totalArredondado = MoneyUtils.arredondarValor(valorTotal)
     val totalFormatado = formataValorConta(totalArredondado)
     return totalFormatado

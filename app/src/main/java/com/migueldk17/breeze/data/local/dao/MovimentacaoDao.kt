@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import kotlinx.coroutines.flow.Flow
+import java.math.BigDecimal
 
 @Dao
 interface MovimentacaoDao {
@@ -16,7 +17,7 @@ interface MovimentacaoDao {
 
     //Pega a soma de todos os valores em saldo_table
     @Query("SELECT SUM(valor) FROM movimentacao_entity")
-    fun getSaldoTotal(): Flow<Double?>
+    fun getSaldoTotal(): Flow<BigDecimal?>
 
     //Busca o primeiro registro da tabela saldo_table
     @Query("SELECT * FROM movimentacao_entity ORDER BY data DESC")

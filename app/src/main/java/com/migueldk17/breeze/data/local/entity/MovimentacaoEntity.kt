@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.migueldk17.breeze.enums.TipoMovimentacao
+import java.math.BigDecimal
 
 @Entity(tableName = "movimentacao_entity")
 data class MovimentacaoEntity(
@@ -12,7 +13,7 @@ data class MovimentacaoEntity(
     val id: Long = 0L,
     //Nome da coluna do SQLite
     @ColumnInfo(name = "valor")
-    val valor: Double,
+    val valor: BigDecimal,
 
     @ColumnInfo(name = "descricao")
     val descricao: String,

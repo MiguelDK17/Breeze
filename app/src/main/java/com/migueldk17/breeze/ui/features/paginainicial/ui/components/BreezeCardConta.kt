@@ -42,6 +42,7 @@ import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataValorConta
 import kotlinx.collections.immutable.ImmutableList
+import java.math.BigDecimal
 
 //Card de PaginaInicial
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -57,7 +58,7 @@ fun BreezeCardConta(
     val preco = parcela?.valor ?: conta.valor
     val icon = conta.icon.toBreezeIconsType()
     val isContaParcelada = conta.isContaParcelada
-    val juros = parcela?.porcentagemJuros ?: 0.00
+    val juros = parcela?.porcentagemJuros ?: BigDecimal.ZERO
     val idDaConta = conta.id
     val parcelasMutable = mutableListOf<ParcelaUI>()
 
@@ -193,7 +194,7 @@ private fun MostraDialogPagarConta(
     )
 }
 
-fun retornaValorNoCard(valor: Double,parcela: ParcelaEntity?): String {
+fun retornaValorNoCard(valor: BigDecimal,parcela: ParcelaEntity?): String {
     val valor = if (parcela == null) {
         formataValorConta(valor)
     } else {

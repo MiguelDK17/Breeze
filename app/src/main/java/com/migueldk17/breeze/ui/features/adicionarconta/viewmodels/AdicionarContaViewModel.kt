@@ -184,7 +184,7 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     fun guardaPorcentagemJuros(string: String){
-        val valor = string.toDoubleOrNull()?.div(100) ?: 0.0
+        val valor = string.toBigDecimalOrNull()?.div(BigDecimal.valueOf(100)) ?: BigDecimal.ZERO
         _taxaDeJurosMensal.value = valor
         Log.d(TAG, "guardaPorcentagemJuros: ${_taxaDeJurosMensal.value}")
     }
@@ -258,7 +258,7 @@ class AdicionarContaViewModel @Inject constructor(
             val name = _nomeConta.value
             val categoria = _categoriaConta.value
             val subCategoria = _subcategoriaConta.value
-            val valor = _valorConta.value
+            val valor = BigDecimal(_valorConta.value)
             val icon = _iconeCardConta.value.enum.toDatabaseValue()
             val colorIcon = _corIcone.value.toDatabaseValue()
             val colorCard = _corCard.value.toDatabaseValue()
@@ -300,7 +300,7 @@ class AdicionarContaViewModel @Inject constructor(
                 Log.d(TAG, "salvaParcelasDatabase: valor das parcelas sem formatação: ${_valorDasParcelas.value}")
 
                 val idContaPai = idContaPai
-                val valor = MoneyUtils.arredondarValor(_valorDasParcelas.value)
+                val valor = valorDasParcelas.value.setScale(2, RoundingMode.HALF_EVEN)
                 val porcentagemJuros = _taxaDeJurosMensal.value
                 val totalParcelas = _quantidadeDeParcelas.value
                 val dataInicial = _dataDaConta.value

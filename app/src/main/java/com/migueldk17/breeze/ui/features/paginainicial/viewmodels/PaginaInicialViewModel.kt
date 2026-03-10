@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -37,8 +38,8 @@ class PaginaInicialViewModel @Inject constructor(
     private val getContasUseCase: GetContasUseCase
 ): ViewModel() {
     //Banco de dados
-    private val _receita = MutableStateFlow<Double?>(null)
-    val receita: StateFlow<Double?> = _receita.asStateFlow()
+    private val _receita = MutableStateFlow<BigDecimal?>(null)
+    val receita: StateFlow<BigDecimal?> = _receita.asStateFlow()
 
     //Variavwl que controla o estado de carregamente em PaginaInicial
     val carregando = MutableStateFlow(true)
@@ -74,7 +75,7 @@ class PaginaInicialViewModel @Inject constructor(
     private fun obterReceita() {
         viewModelScope.launch {
             movimentacaoRepository.getSaldoTotal().collect { receita ->
-                _receita.value = receita ?: 0.00 //Valor inicial
+                _receita.value = receita ?: BigDecimal.ZERO //Valor inicial
             }
         }
     }
@@ -117,14 +118,14 @@ class PaginaInicialViewModel @Inject constructor(
 
     //Atualiza o saldo do usuário
     fun adicionaReceita(
-        valor: Double,
+        valor: BigDecimal,
         descricao: String,
         data: LocalDate,
         icon: String
     ) {
         viewModelScope.launch {
             val movimentacaoEntity = MovimentacaoEntity(
-                valor = valor / 100,
+                valor = valor.div(BigDecimal(100)),
                 descricao = descricao,
                 data = data.toString(),
                 tipo = TipoMovimentacao.ENTRADA,

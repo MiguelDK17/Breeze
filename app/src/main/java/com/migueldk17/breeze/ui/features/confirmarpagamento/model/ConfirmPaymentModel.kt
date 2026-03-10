@@ -7,7 +7,7 @@ data class ConfirmPaymentModel(
     val id: Long,
     val name: String,
     val formaDePagamento: String = "Nenhum",
-    val juros: Double,
+    val juros: BigDecimal,
     val valor: BigDecimal,
     val icon: BreezeIconsType,
     val isContaParcelada: Boolean,

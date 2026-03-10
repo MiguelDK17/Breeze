@@ -59,7 +59,8 @@ import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 
 @Composable
 fun EditarValorConta(
-    conta: Conta
+    conta: Conta,
+    modifier: Modifier = Modifier
 ){
     val cardColor = conta.colorCard.toColor()
     val nome = conta.name
@@ -77,7 +78,7 @@ fun EditarValorConta(
         mutableStateOf("${valorAtual * 10.toBigDecimal()}")
     }
     val context = LocalContext.current
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         //Animação de fundo
         ColorTransitionFromCenter(cardColor)
 

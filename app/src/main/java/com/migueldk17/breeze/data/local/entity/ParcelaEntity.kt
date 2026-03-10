@@ -17,7 +17,7 @@ data class ParcelaEntity(
     val valor: BigDecimal, //Valor das parcelas
 
     @ColumnInfo(name = "porcentagem_juros")
-    val porcentagemJuros: Double,
+    val porcentagemJuros: BigDecimal,
 
     @ColumnInfo(name = "numero_parcela")
     val numeroParcela: Int, //Número da parcela

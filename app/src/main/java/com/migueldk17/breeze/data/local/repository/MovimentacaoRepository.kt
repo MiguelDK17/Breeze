@@ -6,6 +6,7 @@ import com.migueldk17.breeze.domain.MovimentacaoDomain
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.mapper.entity.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.math.BigDecimal
 import javax.inject.Inject
 
 class MovimentacaoRepository @Inject constructor(
@@ -16,7 +17,7 @@ class MovimentacaoRepository @Inject constructor(
         movimentacaoDao.inserirReceita(movimentacaoEntity)
     }
     //Pega a receita já armazanada no Room
-      fun getSaldoTotal(): Flow<Double?> {
+      fun getSaldoTotal(): Flow<BigDecimal?> {
         return movimentacaoDao.getSaldoTotal()
     }
     fun getMovimentacoesDoMes(mesAno: String): Flow<List<MovimentacaoEntity>> {
