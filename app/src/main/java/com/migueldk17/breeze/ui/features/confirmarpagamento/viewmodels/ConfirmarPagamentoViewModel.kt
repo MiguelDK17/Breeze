@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -50,8 +51,8 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private val _numeroDaParcela: MutableStateFlow<Int> = MutableStateFlow(1)
     val numeroDaParcela: StateFlow<Int> = _numeroDaParcela.asStateFlow()
 
-    private val _valor = MutableStateFlow(1.0)
-    val valor: StateFlow<Double> = _valor.asStateFlow()
+    private val _valor = MutableStateFlow(BigDecimal.ONE)
+    val valor: StateFlow<BigDecimal> = _valor.asStateFlow()
 
     private val _isLatestInstallment = MutableStateFlow(false)
     val isLatestInstallment: StateFlow<Boolean> = _isLatestInstallment.asStateFlow()
@@ -68,8 +69,8 @@ class ConfirmarPagamentoViewModel @Inject constructor(
         _formaDePagamento.value = value
     }
 
-    fun setValor(double: Double){
-        _valor.value = double
+    fun setValor(valor: BigDecimal){
+        _valor.value = valor
     }
 
     fun setIdDaParcela(long: Long){

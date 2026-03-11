@@ -29,6 +29,7 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @Composable
@@ -43,7 +44,7 @@ fun HistoricoDoMesComparativo(
     val primeiraMovimentacao = MovimentacaoTeste(
         nomeDaConta = "Aluguel do Mês",
         icon = BreezeIcons.Linear.Money.MoneySend,
-        valor = 650.0,
+        valor = BigDecimal("650.0"),
         category = "Moradia",
         date = primeiraData,
         progressBush = Brush.horizontalGradient(
@@ -57,7 +58,7 @@ fun HistoricoDoMesComparativo(
     val segundaMovimentacao = MovimentacaoTeste(
         nomeDaConta = "Salário",
         icon = BreezeIcons.Linear.Money.MoneyRecive,
-        valor = 3500.0,
+        valor = BigDecimal("3500.0"),
         category = "Receita",
         date = segundaData,
         progressBush = Brush.horizontalGradient(
@@ -112,7 +113,7 @@ fun HistoricoDoMesComparativo(
 private data class MovimentacaoTeste(
     val nomeDaConta: String,
     val icon: BreezeIconsType,
-    val valor: Double,
+    val valor: BigDecimal,
     val category: String,
     val date: LocalDate,
     val progressBush: Brush

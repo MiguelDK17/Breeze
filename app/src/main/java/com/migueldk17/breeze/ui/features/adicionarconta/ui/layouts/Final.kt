@@ -34,6 +34,7 @@ import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMain
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import kotlinx.collections.immutable.persistentMapOf
+import java.math.BigDecimal
 
 
 @Composable
@@ -130,8 +131,8 @@ fun Final(
     }
 }
 
-private fun retornaValorFinal(valorFixo: Double, valorParcela: Double, totalParcelas: Int): String {
-   val valorFinal = if(valorParcela == 0.00){
+private fun retornaValorFinal(valorFixo: BigDecimal, valorParcela: BigDecimal, totalParcelas: Int): String {
+   val valorFinal = if(valorParcela.compareTo(BigDecimal.ZERO) == 0){
         formataSaldo(valorFixo)
     } else {
         //Caso o valor de parcela esteja preenchido se espera que total parcelas obviamente também esteja

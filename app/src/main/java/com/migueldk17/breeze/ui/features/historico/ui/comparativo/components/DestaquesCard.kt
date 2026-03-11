@@ -40,7 +40,7 @@ import java.time.LocalDate
 @Composable
 fun DestaquesCard(
     nomeDaConta: String,
-    valor: Double,
+    valor: BigDecimal,
     category: String,
     icon: BreezeIconsType,
     date: LocalDate,
@@ -163,7 +163,7 @@ fun DestaquesCard(
 private data class MovimentacaoTeste(
     val nomeDaConta: String,
     val icon: BreezeIconsType,
-    val valor: Double,
+    val valor: BigDecimal,
     val category: String,
     val date: LocalDate,
     val progressBush: Brush
