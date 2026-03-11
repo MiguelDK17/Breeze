@@ -24,11 +24,13 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIcon
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.utils.formataValorConta
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.math.BigDecimal
 
 @Composable
 fun Passo5(
     navToFinal: () -> Unit,
     currentState: String?,
+    modifier: Modifier = Modifier,
     viewModel: AdicionarContaViewModel = hiltViewModel()) {
 
     val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
@@ -39,7 +41,9 @@ fun Passo5(
     val valorMascarado = formataValorConta(valorConta)
 
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         //Column do Passo5
         Column(
             modifier = Modifier

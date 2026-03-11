@@ -36,6 +36,7 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.Personaliz
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.ResponsiveDateParcelaSection
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -76,7 +77,9 @@ fun Passo4(
     val corIcone = viewModel.corIcone.collectAsStateWithLifecycle().value
 
     //Column do Passo4
-    BoxWithConstraints{
+    BoxWithConstraints(
+        modifier = modifier
+    ){
         val horizontalPadding = if (maxWidth < 380.dp) 16.dp else 25.dp //Padding responsivo de acordo com a largura da tela
         val isSmallScreen = maxWidth < 380.dp //Boolean que controla se a tela é pequena ou não
         var showDatePicker by remember { mutableStateOf(false)}
@@ -168,7 +171,7 @@ fun Passo4(
                     .padding(vertical = 74.dp),
                 text = "Avançar",
                 onClick = {
-                    viewModel.guardaValorConta(valorConta)
+                    viewModel.guardaValorConta(BigDecimal(valorConta))
                     if (textJuros != "") viewModel.guardaPorcentagemJuros(textJuros) //Guarda a porcentagem de juros
                     viewModel.guardaDataConta(selectedDate) //Guarda a data da conta
                     if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas) //Guarda a quantidade de parcelas

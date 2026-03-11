@@ -70,8 +70,8 @@ class AdicionarContaViewModel @Inject constructor(
     private val _corCard = MutableStateFlow(Color.Unspecified)
     val corCard: StateFlow<Color> get() = _corCard.asStateFlow()
 
-    private val _valorConta = MutableStateFlow("")
-    val valorConta: StateFlow<String> get() = _valorConta.asStateFlow()
+    private val _valorConta = MutableStateFlow(BigDecimal.ZERO)
+    val valorConta: StateFlow<BigDecimal> get() = _valorConta.asStateFlow()
 
     private val _salvarContasState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
 
@@ -170,7 +170,7 @@ class AdicionarContaViewModel @Inject constructor(
         _corCard.value = color
     }
     //Guarda o valor da conta
-    fun guardaValorConta(valor: String) {
+    fun guardaValorConta(valor: BigDecimal) {
         _valorConta.value = valor //Olho aqui pq tiramos o /10
     }
 
@@ -207,16 +207,11 @@ class AdicionarContaViewModel @Inject constructor(
 
     private fun calculaParcelasSemJuros(): BigDecimal {
         Log.d(TAG, "calculaParcelasSemJuros: Parcelas sem juros acionada")
-        val valorDaConta = BigDecimal(valorConta.value)
+        val valorDaConta = valorConta.value
         val quantidadeDeParcelas = _quantidadeDeParcelas.value
 
         return if (_quantidadeDeParcelas.value > 0){
-            val valorParcela = valorDaConta.divide(
-                BigDecimal.valueOf(quantidadeDeParcelas.toLong()),
-                2,
-                RoundingMode.HALF_EVEN
-            )
-            valorParcela
+            valorDaConta / BigDecimal(quantidadeDeParcelas)
         }
         else {
             BigDecimal.ZERO
@@ -230,7 +225,7 @@ class AdicionarContaViewModel @Inject constructor(
             return BigDecimal.ZERO
         }
 
-        val valorConta = BigDecimal(_valorConta.value)
+        val valorConta = valorConta.value
         val i = _taxaDeJurosMensal.value
         val n = _quantidadeDeParcelas.value
 
@@ -258,7 +253,7 @@ class AdicionarContaViewModel @Inject constructor(
             val name = _nomeConta.value
             val categoria = _categoriaConta.value
             val subCategoria = _subcategoriaConta.value
-            val valor = BigDecimal(_valorConta.value)
+            val valor = _valorConta.value
             val icon = _iconeCardConta.value.enum.toDatabaseValue()
             val colorIcon = _corIcone.value.toDatabaseValue()
             val colorCard = _corCard.value.toDatabaseValue()
