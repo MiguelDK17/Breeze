@@ -168,7 +168,7 @@ fun Passo4(
                     .padding(vertical = 74.dp),
                 text = "Avançar",
                 onClick = {
-                    viewModel.guardaValorConta(valorConta.toDouble())
+                    viewModel.guardaValorConta(valorConta)
                     if (textJuros != "") viewModel.guardaPorcentagemJuros(textJuros) //Guarda a porcentagem de juros
                     viewModel.guardaDataConta(selectedDate) //Guarda a data da conta
                     if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas) //Guarda a quantidade de parcelas

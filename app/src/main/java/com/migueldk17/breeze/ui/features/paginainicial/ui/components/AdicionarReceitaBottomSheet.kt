@@ -37,13 +37,14 @@ import com.migueldk17.breeze.ui.features.paginainicial.viewmodels.PaginaInicialV
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.math.BigDecimal
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdicionarReceitaBottomSheet(
     atualizaBottomSheet: (Boolean) -> Unit,
-    adicionaReceita: (Double, String, LocalDate, String) -> Unit
+    adicionaReceita: (BigDecimal, String, LocalDate, String) -> Unit
 ){
     //Estados para controlar o ModalBottomSheet
      val scope = rememberCoroutineScope()
@@ -144,7 +145,7 @@ fun AdicionarReceitaBottomSheet(
                 onClick = {
                     Log.d(TAG, "AdicionarReceitaBottomSheet: referencia do icone: $icon")
                     adicionaReceita(
-                        saldoInput.toDouble(),
+                        saldoInput.toBigDecimalOrNull() ?: BigDecimal.ZERO,
                         descricaoInput,
                         selectedDate,
                         icon

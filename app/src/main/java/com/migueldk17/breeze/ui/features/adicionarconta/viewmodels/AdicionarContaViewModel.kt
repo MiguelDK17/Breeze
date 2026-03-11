@@ -99,28 +99,28 @@ class AdicionarContaViewModel @Inject constructor(
             icone = valores[1] as BreezeIconsType,
             corIcone = valores[2] as Color,
             corCard = valores[3] as Color,
-            valor = valores[4] as Double,
+            valor = (valores[4] as String).toBigDecimalOrNull() ?: BigDecimal.ZERO,
             categoria = valores[5] as String,
             subCategoria = valores[6] as String,
-            valorParcela = valores[7] as Double,
+            valorParcela = valores[7] as BigDecimal,
             totalParcelas = valores[8] as Int,
             data = valores[9] as LocalDate,
             isParcelada = valores[10] as Boolean,
-            taxaJuros = valores[11] as Double
+            taxaJuros = valores[11] as BigDecimal
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DadosContaUI(
         nome = "",
         icone = BreezeIcons.Unspecified.IconUnspecified,
         corIcone = Color.Unspecified,
         corCard = Color.Unspecified,
-        valor = 0.0,
+        valor = BigDecimal.ZERO,
         categoria = "",
         subCategoria = "",
-        valorParcela = 0.0,
+        valorParcela = BigDecimal.ZERO,
         totalParcelas = 0,
         data = LocalDate.now(),
         isParcelada = false,
-        taxaJuros = 0.0
+        taxaJuros = BigDecimal.ZERO
     ))
 
     init {
@@ -219,7 +219,7 @@ class AdicionarContaViewModel @Inject constructor(
             valorParcela
         }
         else {
-            BigDecimal("0.0")
+            BigDecimal.ZERO
         }
     }
 
