@@ -108,7 +108,8 @@ fun Passo4(
                 modifier = Modifier.fillMaxWidth(),
                 text = valorConta,
                 onValueChange = { text ->
-                    valorConta = text.filter { it.isDigit() }
+                    valorConta = text
+                        .filter { it.isDigit() }
 
                 },
                 textLabel = "Adicionar Valor",
@@ -171,7 +172,12 @@ fun Passo4(
                     .padding(vertical = 74.dp),
                 text = "Avançar",
                 onClick = {
-                    viewModel.guardaValorConta(BigDecimal(valorConta))
+                    val valorBigDecimal = valorConta
+                        .replace(".", "")
+                        .replace(",", ".")
+                        .toBigDecimalOrNull()
+                        ?: BigDecimal.ZERO
+                    viewModel.guardaValorConta(valorBigDecimal)
                     if (textJuros != "") viewModel.guardaPorcentagemJuros(textJuros) //Guarda a porcentagem de juros
                     viewModel.guardaDataConta(selectedDate) //Guarda a data da conta
                     if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas) //Guarda a quantidade de parcelas
