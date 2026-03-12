@@ -40,7 +40,7 @@ import com.migueldk17.breeze.ui.features.historico.ui.conta.components.retornaVa
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.formataSaldo
-import com.migueldk17.breeze.ui.utils.formataValorConta
+import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import kotlinx.collections.immutable.ImmutableList
 import java.math.BigDecimal
 
@@ -196,7 +196,7 @@ private fun MostraDialogPagarConta(
 
 fun retornaValorNoCard(valor: BigDecimal,parcela: ParcelaEntity?): String {
     val valor = if (parcela == null) {
-        formataValorConta(valor)
+        valor.formatarValorEmReal()
     } else {
         retornaValorTotalArredondado(parcela.valor, parcela.totalParcelas)
     }

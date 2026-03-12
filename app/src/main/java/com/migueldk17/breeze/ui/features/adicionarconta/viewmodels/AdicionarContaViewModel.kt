@@ -14,6 +14,7 @@ import com.migueldk17.breeze.data.local.repository.ContaRepository
 import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
 import com.migueldk17.breeze.ui.utils.MoneyUtils
+import com.migueldk17.breeze.ui.utils.parseCentavos
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -99,7 +100,7 @@ class AdicionarContaViewModel @Inject constructor(
             icone = valores[1] as BreezeIconsType,
             corIcone = valores[2] as Color,
             corCard = valores[3] as Color,
-            valor = (valores[4] as String).toBigDecimalOrNull() ?: BigDecimal.ZERO,
+            valor = valores[4] as BigDecimal,
             categoria = valores[5] as String,
             subCategoria = valores[6] as String,
             valorParcela = valores[7] as BigDecimal,
@@ -171,7 +172,9 @@ class AdicionarContaViewModel @Inject constructor(
     }
     //Guarda o valor da conta
     fun guardaValorConta(valor: BigDecimal) {
-        _valorConta.value = valor //Olho aqui pq tiramos o /10
+        Log.d(TAG, "guardaValorConta: valor antes da formatação: $valor")
+        _valorConta.value = valor  //Olho aqui pq tiramos o /10
+        Log.d(TAG, "guardaValorConta: valor depois da formatação: ${_valorConta.value}")
     }
 
     fun guardaIsContaParcelada(boolean: Boolean){
@@ -184,8 +187,8 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     fun guardaPorcentagemJuros(string: String){
-        val valor = string.toBigDecimalOrNull()?.div(BigDecimal.valueOf(100)) ?: BigDecimal.ZERO
-        _taxaDeJurosMensal.value = valor
+        val taxaDeJuros = parseCentavos(string)
+        _taxaDeJurosMensal.value = taxaDeJuros
         Log.d(TAG, "guardaPorcentagemJuros: ${_taxaDeJurosMensal.value}")
     }
 
@@ -202,6 +205,7 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     private fun guardaValorDaParcela(): BigDecimal{
+        Log.d(TAG, "guardaValorDaParcela: taxa de juros tá assim no view model: ${_taxaDeJurosMensal.value}")
         return if (_taxaDeJurosMensal.value == BigDecimal.ZERO) calculaParcelasSemJuros() else calculaParcelasComJuros()
     }
 

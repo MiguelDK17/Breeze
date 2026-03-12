@@ -61,16 +61,16 @@ fun Final(
                 dadosDaConta.valorParcela,
                 dadosDaConta.totalParcelas
             ),
-            "Valor da parcela" to formataSaldo(dadosDaConta.valorParcela),
+            "Valor da parcela" to dadosDaConta.valorParcela.toPlainString(),
             "Data de vencimento" to dataFormatada,
-            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
+           "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
         )
     } else {
         persistentMapOf(
             "Nome" to dadosDaConta.nome,
             "Categoria" to dadosDaConta.categoria,
             "Sub Categoria" to dadosDaConta.subCategoria,
-            "Valor Total" to formataSaldo(dadosDaConta.valor),
+            "Valor Total" to dadosDaConta.valor.toPlainString(),
             "Data de vencimento" to dataFormatada
         )
     }

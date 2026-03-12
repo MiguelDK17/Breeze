@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,8 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.Personaliz
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.ResponsiveDateParcelaSection
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
 import com.migueldk17.breeze.ui.features.paginainicial.ui.components.BreezeDatePicker
+import com.migueldk17.breeze.ui.utils.ToastManager
+import com.migueldk17.breeze.ui.utils.parseCentavos
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -45,6 +48,7 @@ fun Passo4(
     navToPasso5: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AdicionarContaViewModel = hiltViewModel()) {
+    val context = LocalContext.current
     //Valor bruto da conta em reais
     var valorConta by remember{
         mutableStateOf("")
@@ -110,7 +114,6 @@ fun Passo4(
                 onValueChange = { text ->
                     valorConta = text
                         .filter { it.isDigit() }
-
                 },
                 textLabel = "Adicionar Valor",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
@@ -172,12 +175,9 @@ fun Passo4(
                     .padding(vertical = 74.dp),
                 text = "Avançar",
                 onClick = {
-                    val valorBigDecimal = valorConta
-                        .replace(".", "")
-                        .replace(",", ".")
-                        .toBigDecimalOrNull()
-                        ?: BigDecimal.ZERO
+                    val valorBigDecimal = parseCentavos(valorConta)
                     viewModel.guardaValorConta(valorBigDecimal)
+                    Log.d(TAG, "Passo4: $textJuros")
                     if (textJuros != "") viewModel.guardaPorcentagemJuros(textJuros) //Guarda a porcentagem de juros
                     viewModel.guardaDataConta(selectedDate) //Guarda a data da conta
                     if (textParcelas.isEmpty()) viewModel.guardaQtdParcelas(selectedCategory) else viewModel.guardaQtdParcelas(textParcelas) //Guarda a quantidade de parcelas
@@ -193,10 +193,8 @@ fun Passo4(
                 )
             )
         }
-
-
-        }
     }
+}
 //Função usada para controlar o estado do BreezeButton
 @Composable
 private fun buttonAvancaEnabled(

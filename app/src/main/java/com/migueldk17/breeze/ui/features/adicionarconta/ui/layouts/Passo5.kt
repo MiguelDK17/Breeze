@@ -22,7 +22,6 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCo
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
-import com.migueldk17.breeze.ui.utils.formataValorConta
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import java.math.BigDecimal
@@ -40,6 +39,7 @@ fun Passo5(
     val valorConta = viewModel.valorConta.collectAsStateWithLifecycle().value
     //Pega o valor da conta do viewModel e formata para valores monetários
     val valorMascarado = valorConta.formatarValorEmReal()
+
 
 
     Column(

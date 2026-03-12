@@ -22,12 +22,12 @@ fun formataSaldo(valor: BigDecimal?): String {
     return "Carregando..."
 }
 
-fun formataValorConta(valor: BigDecimal?): String {
-    return String.format(Locale.getDefault(), "R$: %.2f",
-        valor ?: BigDecimal.ZERO
-    )
+fun parseCentavos(valor: String): BigDecimal {
+    val numero = valor.toBigDecimalOrNull() ?: BigDecimal.ZERO
+    return numero
+        .divide(BigDecimal(100))
+        .setScale(2, RoundingMode.HALF_EVEN)
 }
-
 fun BigDecimal.formatarValorEmReal(): String {
     Log.d(TAG, "formatarValorEmReal: Antes da formatacao $this")
     val format = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
