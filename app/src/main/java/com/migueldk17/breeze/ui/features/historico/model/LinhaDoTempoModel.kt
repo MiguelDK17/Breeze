@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.model
 
 
+import com.migueldk17.breeze.enums.TipoComparacao
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -15,5 +16,5 @@ data class LinhaDoTempoModel(
     val isContaParcelada: Boolean = false,
     val category: String = "",
     val subCategory: String = "",
-    val isReceita: Boolean = false,
+    val tipoComparacao: TipoComparacao
     )

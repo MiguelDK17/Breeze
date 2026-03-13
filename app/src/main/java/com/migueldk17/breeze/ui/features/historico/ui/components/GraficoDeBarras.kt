@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.converters.toColor
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import kotlinx.collections.immutable.ImmutableList
@@ -42,7 +43,7 @@ fun GraficoDeBarras(
     val deslocamento = with(density) { 35.dp.toPx()}
     //Adiciona um deslocamento baseado na densidade da tela em pixeis
     val larguraPx = with(density) { 290.dp.toPx()}
-    val isReceita = graficoDoDiaModel[0].isReceita
+    val isReceita = graficoDoDiaModel[0].tipoComparacao == TipoComparacao.RECEITA
     val superiorText = if (isReceita) "Valor recebido" else "Valor gasto"
 
     OutlinedCard(

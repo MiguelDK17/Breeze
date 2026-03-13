@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
@@ -119,7 +120,8 @@ private fun LazyColumnContas(historicoContas: ImmutableList<HistoricoDoDia>) {
                     id = dia.primaryTimeline.id,
                     dateTime = dia.primaryTimeline.dateTime,
                     category = dia.primaryTimeline.category,
-                    subCategory = dia.primaryTimeline.subCategory
+                    subCategory = dia.primaryTimeline.subCategory,
+                    tipoComparacao = TipoComparacao.CONTA
                 )
 
             HistoricoItem(

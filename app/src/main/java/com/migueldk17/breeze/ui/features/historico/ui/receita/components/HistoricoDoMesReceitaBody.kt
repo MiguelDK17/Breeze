@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
@@ -119,7 +120,7 @@ private fun LazyColumnReceitas(historicoReceitas: ImmutableList<HistoricoDoDia>)
                 valor = dia.primaryTimeline.valor,
                 id = dia.primaryTimeline.id,
                 dateTime = dia.primaryTimeline.dateTime,
-                isReceita = true
+                tipoComparacao = TipoComparacao.RECEITA
             )
 
             HistoricoItem(

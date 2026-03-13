@@ -15,11 +15,7 @@ import java.util.Locale
 import kotlin.math.pow
 
 fun formataSaldo(valor: BigDecimal?): String {
-    if (valor != null) {
-        val formatacao = String.format(Locale.getDefault(),"R$ %.2f", valor)
-        return formatacao
-    }
-    return "Carregando..."
+    return valor?.formatarValorEmReal() ?: "Carregando..."
 }
 
 fun parseCentavos(valor: String): BigDecimal {
@@ -67,22 +63,6 @@ fun formataMesAno(localDate: LocalDate): String {
     return "%04d-%02d".format(localDate.year, localDate.monthValue)
 }
 
-//fun calculaValorTotalConta(
-//    valorParcela: Double,
-//    taxaJurosMensal: Double,
-//    qtdParcelas: Int
-//): Double {
-//    if (qtdParcelas <= 0 || taxaJurosMensal < 0) return 0.0
-//
-//    val i = taxaJurosMensal
-//    val n = qtdParcelas
-//
-//    return if (i == 0.0){
-//        valorParcela * n
-//    } else {
-//        valorParcela * (1 - (1 + i).pow(-n)) / i
-//    }
-//}
 fun formataTaxaDeJuros(taxaDeJurosMensal: BigDecimal): String {
     val formato = DecimalFormat("#.##%") // Define a máscara: duas casas decimais e símbolo de porcentagem
     return formato.format(taxaDeJurosMensal)

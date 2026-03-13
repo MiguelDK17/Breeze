@@ -4,6 +4,7 @@ import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.data.local.repository.ContaRepository
 import com.migueldk17.breeze.data.local.repository.ParcelaRepository
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -40,6 +41,7 @@ class ObservarContasDoMesUseCase @Inject constructor(
                     colorIcon = it.colorIcon,
                     colorCard = it.colorCard,
                     dateTime = it.dateTime.toLocalDateTime(),
+                    tipoComparacao = TipoComparacao.CONTA
                 )
             }
                 .filterNot { it.id in idsContaPai }
@@ -63,6 +65,7 @@ class ObservarContasDoMesUseCase @Inject constructor(
                         colorCard = pai.colorCard,
                         dateTime = parcela.dataDeVencimento.toLocalDate()
                             .atStartOfDay(),
+                        tipoComparacao = TipoComparacao.CONTA
                     )
                 }
             }

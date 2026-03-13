@@ -31,6 +31,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import java.math.BigDecimal
 import java.time.LocalDate
+import androidx.compose.runtime.remember
 
 @Composable
 fun HistoricoDoMesComparativo(
@@ -42,7 +43,7 @@ fun HistoricoDoMesComparativo(
     val segundaData = LocalDate.of(2026, 2, 5)
 
     val primeiraMovimentacao = MovimentacaoTeste(
-        nomeDaConta = "Aluguel do Mês",
+        nomeDaConta = "Transferência Pix",
         icon = BreezeIcons.Linear.Money.MoneySend,
         valor = BigDecimal("650.00"),
         category = "Moradia",
@@ -68,6 +69,14 @@ fun HistoricoDoMesComparativo(
             )
         )
     )
+
+    val lista = persistentListOf(
+        primeiraMovimentacao,
+        segundaMovimentacao
+    )
+
+    val total = remember { lista.sumOf { it.valor } }
+
 
     val options = persistentListOf(
         "Dia",

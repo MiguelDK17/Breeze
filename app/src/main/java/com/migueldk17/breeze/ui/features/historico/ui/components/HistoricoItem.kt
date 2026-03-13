@@ -29,13 +29,15 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.conta.components.ContaPrincipal
 import com.migueldk17.breeze.ui.features.historico.ui.conta.components.ContaSecundaria
+import kotlinx.collections.immutable.ImmutableList
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HistoricoItem(
     linhaDoTempoPrincipal: LinhaDoTempoModel, //Conta principal
     lastIndex: Boolean, //Booleano que indica se a conta é a última da lista ou não
-    linhaDoTempoOther: List<LinhaDoTempoModel>, //Lista de outras contas que ficam escondidas sob o estado
+    linhaDoTempoOther: ImmutableList<LinhaDoTempoModel>, //Lista de outras contas que ficam escondidas sob o estado
+    modifier: Modifier = Modifier
 ){
     //Controla a expanção/contração das outras contas
     val expanded = remember{ mutableStateOf(false) }
@@ -45,7 +47,7 @@ fun HistoricoItem(
     Log.d(TAG, "HistoricoItem: breezeIcon ${linhaDoTempoPrincipal.icon.toBreezeIconsType().enum.name}")
 
     BoxWithConstraints(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
         ) {

@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.conta.components.retornaValorTotalArredondado
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
@@ -61,7 +62,7 @@ fun ShowDetailsCard(
     val year = date.year
     val dataFormatada = "$day/$month/$year"
     val map = when {
-        linhaDoTempoModel.isReceita -> {
+        linhaDoTempoModel.tipoComparacao == TipoComparacao.RECEITA -> {
             persistentMapOf(
                 "Nome" to nameAccount,
                 "Valor Total" to formataSaldo(valor),
@@ -101,7 +102,7 @@ fun ShowDetailsCard(
                 map,
                 onChangeOpenDialog = onChangeTextoClicado,
                 isContaParcelada = isContaParcelada,
-                isReceita = linhaDoTempoModel.isReceita
+                isReceita = linhaDoTempoModel.tipoComparacao == TipoComparacao.RECEITA
             )
         }
 

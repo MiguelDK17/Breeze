@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
@@ -65,7 +66,7 @@ fun SaldoDoMesCard(
             colorIcon = Color(0xFFACE1C1).toArgb(),
             id = 1,
             dateTime = firstDate,
-            isReceita = true
+            tipoComparacao = TipoComparacao.RECEITA
         ),
         LinhaDoTempoModel(
             name = "Mercado",
@@ -75,7 +76,7 @@ fun SaldoDoMesCard(
             colorIcon = Color(0xFFF69297).toArgb(),
             id = 2,
             dateTime = secondDate,
-            isReceita = false
+            tipoComparacao = TipoComparacao.CONTA
         ),
         LinhaDoTempoModel(
             name = "Spotify",
@@ -85,7 +86,7 @@ fun SaldoDoMesCard(
             colorIcon = Color(0xFFF69297).toArgb(),
             id = 3,
             dateTime = thirdDate,
-            isReceita = false
+            tipoComparacao = TipoComparacao.CONTA
     ),
         LinhaDoTempoModel(
             name = "Compra na Google Play",
@@ -95,7 +96,7 @@ fun SaldoDoMesCard(
             colorIcon = Color(0xFFF69297).toArgb(),
             id = 4,
             dateTime = fourthDate,
-            isReceita = false
+            tipoComparacao = TipoComparacao.CONTA
         ),
         LinhaDoTempoModel(
             name = "Freelancer",
@@ -105,7 +106,7 @@ fun SaldoDoMesCard(
             colorIcon = Color(0xFFACE1C1).toArgb(),
             id = 5,
             dateTime = fifthDate,
-            isReceita = true
+            tipoComparacao = TipoComparacao.RECEITA
         )
     )
 

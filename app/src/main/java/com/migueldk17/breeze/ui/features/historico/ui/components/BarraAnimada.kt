@@ -41,7 +41,7 @@ fun BarraAnimada(
     val alturaAnimada = remember { Animatable(0f) }
     val density = LocalDensity.current
 
-    val alturaFinal = (valor / maxValue) * 230f //Altura final calculada apartir do valor da conta e o valor máximo
+    val alturaFinal = (valor / maxValue) * 300f //Altura final calculada apartir do valor da conta e o valor máximo
 
     LaunchedEffect(cor) {
         delay(delayAnimacao.toLong())

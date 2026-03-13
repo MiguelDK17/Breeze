@@ -9,6 +9,7 @@ import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -82,12 +83,12 @@ class HistoricoDoMesViewModel @Inject constructor(
                         contasDoDia.sortedByDescending { it.dateTime }
 
                     val primeira = contasOrdenadas.first()
-                    val outras = contasOrdenadas.drop(1)
+                    val outras = contasOrdenadas.drop(1).toImmutableList()
 
                     HistoricoDoDia(
                         data = data,
                         primaryTimeline = primeira,
-                        otherTimeline = outras
+                        otherTimeline = outras,
                     )
                 }
                 .sortedByDescending { it.data }

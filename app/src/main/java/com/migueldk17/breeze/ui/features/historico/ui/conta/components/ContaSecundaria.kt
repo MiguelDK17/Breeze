@@ -28,15 +28,17 @@ import androidx.compose.ui.unit.sp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import kotlinx.collections.immutable.ImmutableList
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Composable
 fun ContaSecundaria(
-    linhaDoTempoModel: List<LinhaDoTempoModel>,
+    linhaDoTempoModel: ImmutableList<LinhaDoTempoModel>,
     expanded: MutableState<Boolean>
 ){
 
@@ -51,7 +53,8 @@ fun ContaSecundaria(
         colorIcon = 0,
         colorCard = 0,
         dateTime = LocalDateTime.now(),
-        isContaParcelada = false
+        isContaParcelada = false,
+        tipoComparacao = TipoComparacao.CONTA
     )) }
     Column {
         if (expanded.value) {

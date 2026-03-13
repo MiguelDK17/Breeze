@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.data.local.repository.MovimentacaoRepository
+import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,7 +49,7 @@ class HistoricoReceitaViewModel @Inject constructor(
                                         valor = receita.valor,
                                         dateTime = receita.data.toLocalDate().atStartOfDay(),
                                         icon = receita.icon,
-                                        isReceita = true
+                                        tipoComparacao = TipoComparacao.RECEITA
                                     )
                                 }
                                 _receitasPorMes.value = UiState.Success(linhaDoTempoModel)
@@ -67,7 +69,7 @@ class HistoricoReceitaViewModel @Inject constructor(
                 .mapNotNull { (data, receitasDoDia) ->
                     val receitasOrdenadas = receitasDoDia.sortedByDescending { it.dateTime }
                     val primeira = receitasOrdenadas.first()
-                    val outras = receitasOrdenadas.drop(1)
+                    val outras = receitasOrdenadas.drop(1).toImmutableList()
 
                     HistoricoDoDia(
                         data = data,
