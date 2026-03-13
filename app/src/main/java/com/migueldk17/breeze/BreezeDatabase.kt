@@ -13,7 +13,7 @@ import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 
 
-@Database(entities = [Conta::class, MovimentacaoEntity::class, ParcelaEntity::class], version = 19, exportSchema = true)
+@Database(entities = [Conta::class, MovimentacaoEntity::class, ParcelaEntity::class], version = 20, exportSchema = true)
 @TypeConverters(TipoMovimentacaoConverter::class, BigDecimalConverter::class)
 abstract class BreezeDatabase: RoomDatabase() {
 

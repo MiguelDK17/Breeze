@@ -30,12 +30,15 @@ import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 fun Passo2(
     navToPasso3: () -> Unit,
     currentState: String?,
+    modifier: Modifier = Modifier,
     viewModel: AdicionarContaViewModel = hiltViewModel()){
     val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
 
 
     //Column do Passo2
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Column(
             modifier = Modifier
                 .padding(25.dp),
@@ -49,7 +52,7 @@ fun Passo2(
 
             Spacer(modifier = Modifier.size(26.dp))
 
-            DescriptionText("Agora escolha um nome para representar essa conta.")
+            DescriptionText("Agora escolha um ícone para representar essa conta.")
             Spacer(Modifier.size(18.dp))
             Text("Qual combina melhor ?",
                 style = MaterialTheme.typography.bodySmall,

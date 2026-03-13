@@ -14,6 +14,7 @@ import com.migueldk17.breeze.data.local.repository.ContaRepository
 import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
 import com.migueldk17.breeze.ui.utils.MoneyUtils
+import com.migueldk17.breeze.ui.utils.parseCentavos
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,8 +71,8 @@ class AdicionarContaViewModel @Inject constructor(
     private val _corCard = MutableStateFlow(Color.Unspecified)
     val corCard: StateFlow<Color> get() = _corCard.asStateFlow()
 
-    private val _valorConta = MutableStateFlow("")
-    val valorConta: StateFlow<String> get() = _valorConta.asStateFlow()
+    private val _valorConta = MutableStateFlow(BigDecimal.ZERO)
+    val valorConta: StateFlow<BigDecimal> get() = _valorConta.asStateFlow()
 
     private val _salvarContasState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
 
@@ -99,28 +100,28 @@ class AdicionarContaViewModel @Inject constructor(
             icone = valores[1] as BreezeIconsType,
             corIcone = valores[2] as Color,
             corCard = valores[3] as Color,
-            valor = valores[4] as Double,
+            valor = valores[4] as BigDecimal,
             categoria = valores[5] as String,
             subCategoria = valores[6] as String,
-            valorParcela = valores[7] as Double,
+            valorParcela = valores[7] as BigDecimal,
             totalParcelas = valores[8] as Int,
             data = valores[9] as LocalDate,
             isParcelada = valores[10] as Boolean,
-            taxaJuros = valores[11] as Double
+            taxaJuros = valores[11] as BigDecimal
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DadosContaUI(
         nome = "",
         icone = BreezeIcons.Unspecified.IconUnspecified,
         corIcone = Color.Unspecified,
         corCard = Color.Unspecified,
-        valor = 0.0,
+        valor = BigDecimal.ZERO,
         categoria = "",
         subCategoria = "",
-        valorParcela = 0.0,
+        valorParcela = BigDecimal.ZERO,
         totalParcelas = 0,
         data = LocalDate.now(),
         isParcelada = false,
-        taxaJuros = 0.0
+        taxaJuros = BigDecimal.ZERO
     ))
 
     init {
@@ -170,8 +171,10 @@ class AdicionarContaViewModel @Inject constructor(
         _corCard.value = color
     }
     //Guarda o valor da conta
-    fun guardaValorConta(valor: String) {
-        _valorConta.value = valor //Olho aqui pq tiramos o /10
+    fun guardaValorConta(valor: BigDecimal) {
+        Log.d(TAG, "guardaValorConta: valor antes da formatação: $valor")
+        _valorConta.value = valor  //Olho aqui pq tiramos o /10
+        Log.d(TAG, "guardaValorConta: valor depois da formatação: ${_valorConta.value}")
     }
 
     fun guardaIsContaParcelada(boolean: Boolean){
@@ -184,8 +187,8 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     fun guardaPorcentagemJuros(string: String){
-        val valor = string.toBigDecimalOrNull()?.div(BigDecimal.valueOf(100)) ?: BigDecimal.ZERO
-        _taxaDeJurosMensal.value = valor
+        val taxaDeJuros = parseCentavos(string)
+        _taxaDeJurosMensal.value = taxaDeJuros
         Log.d(TAG, "guardaPorcentagemJuros: ${_taxaDeJurosMensal.value}")
     }
 
@@ -202,24 +205,20 @@ class AdicionarContaViewModel @Inject constructor(
     }
 
     private fun guardaValorDaParcela(): BigDecimal{
+        Log.d(TAG, "guardaValorDaParcela: taxa de juros tá assim no view model: ${_taxaDeJurosMensal.value}")
         return if (_taxaDeJurosMensal.value == BigDecimal.ZERO) calculaParcelasSemJuros() else calculaParcelasComJuros()
     }
 
     private fun calculaParcelasSemJuros(): BigDecimal {
         Log.d(TAG, "calculaParcelasSemJuros: Parcelas sem juros acionada")
-        val valorDaConta = BigDecimal(valorConta.value)
+        val valorDaConta = valorConta.value
         val quantidadeDeParcelas = _quantidadeDeParcelas.value
 
         return if (_quantidadeDeParcelas.value > 0){
-            val valorParcela = valorDaConta.divide(
-                BigDecimal.valueOf(quantidadeDeParcelas.toLong()),
-                2,
-                RoundingMode.HALF_EVEN
-            )
-            valorParcela
+            valorDaConta / BigDecimal(quantidadeDeParcelas)
         }
         else {
-            BigDecimal("0.0")
+            BigDecimal.ZERO
         }
     }
 
@@ -230,7 +229,7 @@ class AdicionarContaViewModel @Inject constructor(
             return BigDecimal.ZERO
         }
 
-        val valorConta = BigDecimal(_valorConta.value)
+        val valorConta = valorConta.value
         val i = _taxaDeJurosMensal.value
         val n = _quantidadeDeParcelas.value
 
@@ -258,7 +257,7 @@ class AdicionarContaViewModel @Inject constructor(
             val name = _nomeConta.value
             val categoria = _categoriaConta.value
             val subCategoria = _subcategoriaConta.value
-            val valor = BigDecimal(_valorConta.value)
+            val valor = _valorConta.value
             val icon = _iconeCardConta.value.enum.toDatabaseValue()
             val colorIcon = _corIcone.value.toDatabaseValue()
             val colorCard = _corCard.value.toDatabaseValue()

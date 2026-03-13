@@ -2,11 +2,14 @@ package com.migueldk17.breeze.ui.utils
 
 
 import android.content.Context
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavController
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.Locale
 import kotlin.math.pow
@@ -19,7 +22,17 @@ fun formataSaldo(valor: BigDecimal?): String {
     return "Carregando..."
 }
 
-fun formataValorConta(valor: BigDecimal?): String = String.format(Locale.getDefault(), "R$: %.2f", valor)
+fun parseCentavos(valor: String): BigDecimal {
+    val numero = valor.toBigDecimalOrNull() ?: BigDecimal.ZERO
+    return numero
+        .divide(BigDecimal(100))
+        .setScale(2, RoundingMode.HALF_EVEN)
+}
+fun BigDecimal.formatarValorEmReal(): String {
+    Log.d(TAG, "formatarValorEmReal: Antes da formatacao $this")
+    val format = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+    return format.format(this)
+}
 
 fun traduzData(mes: String): String {
 

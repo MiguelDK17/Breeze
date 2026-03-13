@@ -11,12 +11,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.ui.components.DescriptionText
 import java.math.BigDecimal
-import kotlin.Double
 
 
 @Composable
 fun TextValue(
-    value: Double,
+    value: BigDecimal,
     modifier: Modifier = Modifier,
     size: TextUnit = 14.sp,
     colors: Color = Color(0xFF1D1D1D)

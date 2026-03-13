@@ -22,13 +22,15 @@ import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.adicionaCo
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.carrouselIcons
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.insereIconeNoViewModel
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
-import com.migueldk17.breeze.ui.utils.formataValorConta
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.ui.utils.formatarValorEmReal
+import java.math.BigDecimal
 
 @Composable
 fun Passo5(
     navToFinal: () -> Unit,
     currentState: String?,
+    modifier: Modifier = Modifier,
     viewModel: AdicionarContaViewModel = hiltViewModel()) {
 
     val nomeConta = viewModel.nomeConta.collectAsStateWithLifecycle().value
@@ -36,10 +38,13 @@ fun Passo5(
     val corIcone = viewModel.corIcone.collectAsStateWithLifecycle().value
     val valorConta = viewModel.valorConta.collectAsStateWithLifecycle().value
     //Pega o valor da conta do viewModel e formata para valores monetários
-    val valorMascarado = formataValorConta(valorConta)
+    val valorMascarado = valorConta.formatarValorEmReal()
 
 
-    Column {
+
+    Column(
+        modifier = modifier
+    ) {
         //Column do Passo5
         Column(
             modifier = Modifier

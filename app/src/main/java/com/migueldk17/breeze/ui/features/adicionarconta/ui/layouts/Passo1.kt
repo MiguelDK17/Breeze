@@ -33,6 +33,7 @@ import com.migueldk17.breeze.ui.components.BreezeDropdownMenu
 import com.migueldk17.breeze.ui.components.BreezeOutlinedTextField
 import com.migueldk17.breeze.ui.components.InfoIconWithPopup
 import com.migueldk17.breeze.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PassoColumnPai
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.PersonalizationCard
 import com.migueldk17.breeze.ui.features.adicionarconta.ui.components.SubcategoryChipGroup
 import com.migueldk17.breeze.ui.features.adicionarconta.viewmodels.AdicionarContaViewModel
@@ -88,9 +89,11 @@ fun Passo1(
     val focusManager = LocalFocusManager.current
 
 
-
-    Column(
+    PassoColumnPai(
         modifier = modifier
+    ) { }
+    Column(
+        modifier = Modifier
             .padding(25.dp)
             .pointerInput(Unit){
                 detectTapGestures {
@@ -187,7 +190,7 @@ private fun textoCorreto(text: String): Boolean {
 private fun isBreezeButtonEnabled(text: String, categorySelected: String, subcategorySelected: String): Boolean {
     val verificacaoText = text.isNotEmpty() && textoCorreto(text)
     val verificacaoCategory = categorySelected.isNotEmpty() && categorySelected != "Selecione uma categoria"
-    val verificacaoSubCategory = verificacaoCategory == true && subcategorySelected.isNotEmpty()
+    val verificacaoSubCategory = verificacaoCategory && subcategorySelected.isNotEmpty()
 
     return verificacaoText && verificacaoCategory && verificacaoSubCategory
 }

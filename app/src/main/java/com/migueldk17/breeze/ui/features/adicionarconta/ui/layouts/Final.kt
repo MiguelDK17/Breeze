@@ -34,6 +34,7 @@ import com.migueldk17.breeze.ui.features.paginainicial.ui.components.avançaMain
 import com.migueldk17.breeze.ui.utils.formataSaldo
 import com.migueldk17.breeze.ui.utils.formataTaxaDeJuros
 import kotlinx.collections.immutable.persistentMapOf
+import java.math.BigDecimal
 
 
 @Composable
@@ -60,16 +61,16 @@ fun Final(
                 dadosDaConta.valorParcela,
                 dadosDaConta.totalParcelas
             ),
-            "Valor da parcela" to formataSaldo(dadosDaConta.valorParcela),
+            "Valor da parcela" to dadosDaConta.valorParcela.toPlainString(),
             "Data de vencimento" to dataFormatada,
-            "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
+           "Taxa de juros" to "${formataTaxaDeJuros(porcentagemJuros)} a.m"
         )
     } else {
         persistentMapOf(
             "Nome" to dadosDaConta.nome,
             "Categoria" to dadosDaConta.categoria,
             "Sub Categoria" to dadosDaConta.subCategoria,
-            "Valor Total" to formataSaldo(dadosDaConta.valor),
+            "Valor Total" to dadosDaConta.valor.toPlainString(),
             "Data de vencimento" to dataFormatada
         )
     }
@@ -130,8 +131,8 @@ fun Final(
     }
 }
 
-private fun retornaValorFinal(valorFixo: Double, valorParcela: Double, totalParcelas: Int): String {
-   val valorFinal = if(valorParcela == 0.00){
+private fun retornaValorFinal(valorFixo: BigDecimal, valorParcela: BigDecimal, totalParcelas: Int): String {
+   val valorFinal = if (valorParcela.compareTo(BigDecimal.ZERO) == 0) {
         formataSaldo(valorFixo)
     } else {
         //Caso o valor de parcela esteja preenchido se espera que total parcelas obviamente também esteja

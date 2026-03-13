@@ -30,6 +30,7 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 
@@ -59,7 +60,7 @@ fun SaldoDoMesCard(
         LinhaDoTempoModel(
             name = "Salário",
             icon = BreezeIcons.Linear.Money.MoneyRecive.enum.name,
-            valor = 1000.0,
+            valor = BigDecimal("1000.00"),
             colorCard = Color(0xFFACE1C1).toArgb(),
             colorIcon = Color(0xFFACE1C1).toArgb(),
             id = 1,
@@ -69,7 +70,7 @@ fun SaldoDoMesCard(
         LinhaDoTempoModel(
             name = "Mercado",
             icon = BreezeIcons.Linear.Shop.Bag2.enum.name,
-            valor = 200.0,
+            valor = BigDecimal("200.00"),
             colorCard = Color(0xFFF69297).toArgb(),
             colorIcon = Color(0xFFF69297).toArgb(),
             id = 2,
@@ -79,7 +80,7 @@ fun SaldoDoMesCard(
         LinhaDoTempoModel(
             name = "Spotify",
             icon = BreezeIcons.Linear.Company.SpotifyLinear.enum.name,
-            valor = 23.90,
+            valor = BigDecimal("23.90"),
             colorCard = Color(0xFFF69297).toArgb(),
             colorIcon = Color(0xFFF69297).toArgb(),
             id = 3,
@@ -89,7 +90,7 @@ fun SaldoDoMesCard(
         LinhaDoTempoModel(
             name = "Compra na Google Play",
             icon = BreezeIcons.Linear.Company.GooglePlayLinear.enum.name,
-            valor = 55.90,
+            valor = BigDecimal("55.90"),
             colorCard = Color(0xFFF69297).toArgb(),
             colorIcon = Color(0xFFF69297).toArgb(),
             id = 4,
@@ -99,7 +100,7 @@ fun SaldoDoMesCard(
         LinhaDoTempoModel(
             name = "Freelancer",
             icon = BreezeIcons.Linear.Money.MoneyRecive.enum.name,
-            valor = 200.0,
+            valor = BigDecimal("200.00"),
             colorCard = Color(0xFFACE1C1).toArgb(),
             colorIcon = Color(0xFFACE1C1).toArgb(),
             id = 5,

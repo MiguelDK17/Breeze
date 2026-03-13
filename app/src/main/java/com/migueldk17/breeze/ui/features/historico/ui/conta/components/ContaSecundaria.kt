@@ -31,6 +31,7 @@ import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.utils.ShowDetailsCard
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Composable
@@ -45,7 +46,7 @@ fun ContaSecundaria(
         name = "",
         category = "",
         subCategory = "",
-        valor = 0.0,
+        valor = BigDecimal.ZERO,
         icon = "",
         colorIcon = 0,
         colorCard = 0,
