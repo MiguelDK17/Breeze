@@ -37,7 +37,7 @@ class HistoricoReceitaViewModel @Inject constructor(
             _data
                 .filter { it.isNotBlank() && it.matches(Regex("""\d{4}-\d{2}%""")) }
                 .collectLatest { mes ->
-                    movimentacaoRepository.getMovimentacoesDoMes(mes)
+                    movimentacaoRepository.getReceitasDoMes(mes)
                         .collectLatest { receitas ->
                             if (receitas.isEmpty()) {
                                 _receitasPorMes.value = UiState.Empty

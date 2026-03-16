@@ -20,7 +20,7 @@ class MovimentacaoRepository @Inject constructor(
       fun getSaldoTotal(): Flow<BigDecimal?> {
         return movimentacaoDao.getSaldoTotal()
     }
-    fun getMovimentacoesDoMes(mesAno: String): Flow<List<MovimentacaoEntity>> {
+    fun getReceitasDoMes(mesAno: String): Flow<List<MovimentacaoEntity>> {
         return movimentacaoDao.getReceitasDoMes(mesAno)
     }
     fun getAllMovimentacoes(): Flow<List<MovimentacaoEntity>> {
@@ -33,6 +33,14 @@ class MovimentacaoRepository @Inject constructor(
 
     fun getMovimentacoes(): Flow<List<MovimentacaoDomain>> {
         return movimentacaoDao.getAllMovimentacoes().map { list ->
+            list.map {
+                it.toDomain()
+            }
+        }
+    }
+
+    fun getMovimentacoesDoMes(mesAno: String): Flow<List<MovimentacaoDomain>> {
+        return movimentacaoDao.getMovimentacoesDoMes(mesAno).map { list ->
             list.map {
                 it.toDomain()
             }

@@ -38,7 +38,7 @@ fun HistoricoDoMesReceita(
 
 
     LaunchedEffect(observeReceitasMes) {
-            viewModelReceita.observarReceitasPorMes()
+        viewModelReceita.observarReceitasPorMes()
     }
     when (receitaState) {
         is UiState.Loading -> {

@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.domain
+package com.migueldk17.breeze.usecases
 
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.data.local.repository.ParcelaRepository

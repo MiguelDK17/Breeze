@@ -26,6 +26,9 @@ interface MovimentacaoDao {
     @Query("SELECT * FROM movimentacao_entity WHERE data LIKE :mesAno || '%' AND tipo = 0")
     fun getReceitasDoMes(mesAno: String): Flow<List<MovimentacaoEntity>>
 
+    @Query("SELECT * FROM movimentacao_entity WHERE data LIKE:mesAno || '%'")
+    fun getMovimentacoesDoMes(mesAno: String): Flow<List<MovimentacaoEntity>>
+
     @Delete
     fun apagaMovimentacao(movimentacaoEntity: MovimentacaoEntity)
 }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -32,11 +33,16 @@ import kotlinx.collections.immutable.toImmutableList
 import java.math.BigDecimal
 import java.time.LocalDate
 import androidx.compose.runtime.remember
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 
 @Composable
 fun HistoricoDoMesComparativo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HistoricoComparativoViewModel = hiltViewModel()
 ){
+
+    val observeMovimentacao = viewModel.observaContasPoMes()
     val scroll = rememberScrollState()
 
     val primeiraData = LocalDate.of( 2026,  2, 8)
@@ -70,19 +76,8 @@ fun HistoricoDoMesComparativo(
         )
     )
 
-    val lista = persistentListOf(
-        primeiraMovimentacao,
-        segundaMovimentacao
-    )
+    LaunchedEffect() { }
 
-    val total = remember { lista.sumOf { it.valor } }
-
-
-    val options = persistentListOf(
-        "Dia",
-        "Categoria",
-        "Mês"
-    )
     Column(
         modifier = modifier
             .widthIn(min = 389.dp)
@@ -91,9 +86,10 @@ fun HistoricoDoMesComparativo(
             .verticalScroll(scroll),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier
-            .background(color = RedError)
-            .height(10.dp)
+        Spacer(
+            modifier = Modifier
+                .background(color = RedError)
+                .height(10.dp)
         )
 
         SaldoDoMesCard()

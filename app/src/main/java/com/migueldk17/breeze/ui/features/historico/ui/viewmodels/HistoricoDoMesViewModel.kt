@@ -3,8 +3,8 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
-import com.migueldk17.breeze.domain.GetParcelaPorIdUseCase
-import com.migueldk17.breeze.domain.ObservarContasDoMesUseCase
+import com.migueldk17.breeze.usecases.GetParcelaPorIdUseCase
+import com.migueldk17.breeze.usecases.ObservarContasDoMesUseCase
 import com.migueldk17.breeze.ui.features.historico.model.HistoricoDoDia
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.uistate.UiState

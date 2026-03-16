@@ -1,4 +1,4 @@
-package com.migueldk17.breeze.domain
+package com.migueldk17.breeze.usecases
 
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.converters.toLocalDateTime

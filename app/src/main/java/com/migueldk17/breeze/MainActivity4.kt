@@ -31,8 +31,10 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.BreezeFABMenu
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.HistoricoDoMesComparativo
 import com.migueldk17.breeze.ui.features.historico.ui.conta.HistoricoDoMesConta
 import com.migueldk17.breeze.ui.features.historico.ui.receita.HistoricoDoMesReceita
+import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.ui.theme.BreezeTheme
@@ -43,6 +45,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity4: ComponentActivity() {
     private val viewModelContas by viewModels<HistoricoDoMesViewModel>()
     private val viewModelReceitas by viewModels<HistoricoReceitaViewModel>()
+    private val viewModelComparacao by viewModels<HistoricoComparativoViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -64,6 +68,7 @@ class MainActivity4: ComponentActivity() {
             if (dataFormatada != null) {
                 viewModelContas.setData(dataFormatada)
                 viewModelReceitas.setData(dataFormatada)
+                viewModelComparacao.setData(dataFormatada)
             }
             val categories = listOf("Contas", "Receitas")
             var selectedCategory by remember { mutableStateOf(categories[0]) }
@@ -99,18 +104,25 @@ class MainActivity4: ComponentActivity() {
                     floatingActionButtonPosition = FabPosition.End,
 
                 ) { paddingValues ->
-
-                    if (selectedCategory == "Contas") {
-                        HistoricoDoMesConta(
-                            viewModelContas,
-                            modifier = Modifier.padding(paddingValues),
-                        )
-                    }
-                    else {
-                        HistoricoDoMesReceita(
-                            viewModelReceita = viewModelReceitas,
-                            modifier = Modifier.padding(paddingValues),
+                    when(selectedCategory) {
+                        "Contas" -> {
+                            HistoricoDoMesConta(
+                                viewModelContas,
+                                modifier = Modifier.padding(paddingValues),
                             )
+                        }
+                        "Receitas" -> {
+                            HistoricoDoMesReceita(
+                                viewModelReceita = viewModelReceitas,
+                                modifier = Modifier.padding(paddingValues),
+                            )
+                        }
+                        else -> {
+                            HistoricoDoMesComparativo(
+                                modifier = Modifier.padding(paddingValues)
+                            )
+
+                        }
                     }
 
                 }
