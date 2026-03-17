@@ -3,8 +3,10 @@ package com.migueldk17.breeze.usecases
 import com.migueldk17.breeze.data.local.repository.MovimentacaoRepository
 import com.migueldk17.breeze.domain.MovimentacaoDomain
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetMovimentacoesDoMesUseCase constructor(
+
+class GetMovimentacoesDoMesUseCase @Inject constructor(
     private val movimentacaoRepository: MovimentacaoRepository
 ) {
     operator fun invoke(mes: String): Flow<List<MovimentacaoDomain>> {

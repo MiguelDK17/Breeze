@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,17 +35,24 @@ import kotlinx.collections.immutable.toImmutableList
 import java.math.BigDecimal
 import java.time.LocalDate
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.enums.TipoComparacao
+import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
+import com.migueldk17.breeze.ui.utils.ToastManager
+import com.migueldk17.breeze.uistate.UiState
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun HistoricoDoMesComparativo(
     modifier: Modifier = Modifier,
     viewModel: HistoricoComparativoViewModel = hiltViewModel()
 ){
-
-    val observeMovimentacao = viewModel.observaContasPoMes()
-    val scroll = rememberScrollState()
+    val context = LocalContext.current
+    val observeMovimentacao = viewModel.movimentacaoMes.collectAsStateWithLifecycle().value
 
     val primeiraData = LocalDate.of( 2026,  2, 8)
     val segundaData = LocalDate.of(2026, 2, 5)
@@ -76,7 +85,39 @@ fun HistoricoDoMesComparativo(
         )
     )
 
-    LaunchedEffect() { }
+    LaunchedEffect(observeMovimentacao) {
+        viewModel.observaContasPoMes()
+    }
+
+    when(observeMovimentacao) {
+        is UiState.Empty -> {
+            ToastManager.showToast(context, "Lista vazia")
+        }
+        is UiState.Loading -> {
+            Log.d(TAG, "HistoricoDoMesComparativo: Carregando")
+        }
+        is UiState.Error -> {
+            val error = observeMovimentacao.exception
+            Log.d(TAG, "HistoricoDoMesComparativo: Erro: $error")
+        }
+        is UiState.Success -> {
+
+            val data = observeMovimentacao.data
+
+            HistoricoDoMesComparativoBody(data.toImmutableList())
+
+        }
+    }
+
+
+}
+
+@Composable
+private fun HistoricoDoMesComparativoBody(
+    listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
+    modifier: Modifier = Modifier,
+    ){
+    val scroll = rememberScrollState()
 
     Column(
         modifier = modifier
@@ -96,24 +137,25 @@ fun HistoricoDoMesComparativo(
 
         GastoCard()
 
-        DestaquesCard(
-            nomeDaConta = primeiraMovimentacao.nomeDaConta,
-            valor = primeiraMovimentacao.valor,
-            category = primeiraMovimentacao.category,
-            icon = primeiraMovimentacao.icon,
-            date = primeiraMovimentacao.date,
-            progressBush = primeiraMovimentacao.progressBush
-        )
+        quebraValorPositivo(listMovimentacaoDomain)
 
-        DestaquesCard(
-            nomeDaConta = segundaMovimentacao.nomeDaConta,
-            valor = segundaMovimentacao.valor,
-            category = segundaMovimentacao.category,
-            icon = segundaMovimentacao.icon,
-            date = segundaMovimentacao.date,
-            progressBush = segundaMovimentacao.progressBush
-        )
     }
+}
+
+private fun quebraValorPositivo(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>){
+    var valorPositivo: BigDecimal = BigDecimal.ZERO
+    val listPositiva = mutableListOf<BigDecimal>()
+
+    for (i in listMovimentacaoDomain) {
+        if (i.tipo == TipoMovimentacao.ENTRADA) {
+            Log.d(TAG, "quebraValorPositivo: ${i.valor}")
+            valorPositivo = i.valor
+
+
+        }
+    }
+    listPositiva.add(valorPositivo)
+    Log.d(TAG, "quebraValorPositivo: $listPositiva")
 }
 private data class MovimentacaoTeste(
     val nomeDaConta: String,

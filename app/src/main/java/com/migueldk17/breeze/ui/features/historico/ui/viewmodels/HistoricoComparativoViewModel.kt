@@ -30,7 +30,7 @@ class HistoricoComparativoViewModel @Inject constructor(
     val movimentacaoMes: StateFlow<UiState<List<MovimentacaoDomain>>> = _movimentacaoMesState.asStateFlow()
 
 
-     fun observaContasPoMes(){
+    fun observaContasPoMes(){
          viewModelScope.launch {
              _data
                  .flatMapLatest { mes ->

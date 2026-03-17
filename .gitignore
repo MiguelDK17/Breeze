@@ -17,3 +17,4 @@ local.properties
 /app/Breeze app icon.png
 /.idea/deploymentTargetSelector.xml
 app/google-services.json
+.hotswan/
