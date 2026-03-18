@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Minimize
+import androidx.compose.material.icons.sharp.Minimize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -22,6 +24,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.GradientCard
 import com.migueldk17.breeze.ui.theme.GreenSuccess
@@ -115,17 +119,25 @@ fun SaldoFinal(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            Icons.Default.Add,
-                            contentDescription = "Icone de saldo final",
-                            tint = GreenSuccess,
-                            modifier = Modifier.size(14.dp)
-                        )
+                        if (saldoFinal.startsWith("-")){
+                            BreezeIcon(
+                                BreezeIcons.Unspecified.IconUnspecified,
+                                contentDescription = null
+                            )
+                        }
+                        else {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Icone de saldo final",
+                                tint = GreenSuccess,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
                         DescriptionText(
                             text = saldoFinal,
                             fontWeight = FontWeight.SemiBold,
-                            color = GreenSuccess
-                        )
+                            color = if (saldoFinal.startsWith("-")) RedError else GreenSuccess,)
+
 
                     }
                 }

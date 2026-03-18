@@ -160,14 +160,16 @@ private fun retornaValoresFinais(listMovimentacaoDomain: ImmutableList<Movimenta
 
     val totalEntradas = listPositiva.sumOf { it }
     val totalSaidas = listNegativa.sumOf { it }
-    val valorTotal = totalEntradas.minus(totalSaidas)
+    val valorTotal = totalEntradas + totalSaidas
+
 
     val totalEntradasEmReais = totalEntradas.formatarValorEmReal()
     val totalSaidasEmReais = totalSaidas.formatarValorEmReal()
     val valorTotalEmReais = valorTotal.formatarValorEmReal()
 
-    Log.d(TAG, "quebraValorPositivo: $totalEntradasEmReais")
-    Log.d(TAG, "quebraValorPositivo: $totalSaidasEmReais")
+    Log.d(TAG, "retornaValoresFinais: $totalEntradasEmReais")
+    Log.d(TAG, "retornaValoresFinais: $totalSaidasEmReais")
+    Log.d(TAG, "retornaValoresFinais: $valorTotalEmReais")
 
 
     val listaFinal = persistentListOf<String>(totalEntradasEmReais, totalSaidasEmReais, valorTotalEmReais)

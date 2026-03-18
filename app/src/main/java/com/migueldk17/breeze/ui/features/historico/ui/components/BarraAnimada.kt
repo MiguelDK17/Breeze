@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -28,10 +30,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import java.math.BigDecimal
 
 @Composable
 fun BarraAnimada(
-    valor: Float, //Valor da conta
+    valor: BigDecimal, //Valor da conta
     maxValue: Float, //Valor máximo até onde a barra pode ir
     cor: Brush, //Cor em gradiente
     dia: Int, //Dia do mes
@@ -40,8 +43,10 @@ fun BarraAnimada(
 ){
     val alturaAnimada = remember { Animatable(0f) }
     val density = LocalDensity.current
+    val valorFormatadoAbs = valor.abs().toFloat()
+    Log.d(TAG, "BarraAnimada: valor formatado $valorFormatadoAbs")
 
-    val alturaFinal = (valor / maxValue) * 300f //Altura final calculada apartir do valor da conta e o valor máximo
+    val alturaFinal = (valor.abs().toFloat() / maxValue) * 300f //Altura final calculada apartir do valor da conta e o valor máximo
 
     LaunchedEffect(cor) {
         delay(delayAnimacao.toLong())

@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -30,6 +32,7 @@ import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.utils.formataSaldo
+import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -108,12 +111,14 @@ fun GraficoDeBarras(
                         val alturaMaxima = remember(graficoDoDiaModel) {
                             graficoDoDiaModel.maxOfOrNull { it.valor.toFloat() } ?: 1f
                         }
-                        val texto = formataSaldo(grafico.valor)
+                        Log.d(TAG, "GraficoDeBarras: O valor máximo é $alturaMaxima")
+                        Log.d(TAG, "GraficoDeBarras: altura das barras $alturaMaxima")
+                        val texto = grafico.valor.formatarValorEmReal()
                         val listColors = listOf(grafico.colorIcon.toColor(), grafico.colorCard.toColor())
                         val brush = Brush.verticalGradient(colors = listColors)
                         val dayOfMonth = grafico.dateTime.dayOfMonth
                         BarraAnimada(
-                            valor = grafico.valor.toFloat(),
+                            valor = grafico.valor,
                             maxValue = alturaMaxima,
                             cor = brush,
                             dia = dayOfMonth,

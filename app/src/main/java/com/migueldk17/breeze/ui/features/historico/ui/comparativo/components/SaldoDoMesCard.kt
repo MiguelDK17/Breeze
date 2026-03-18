@@ -72,67 +72,15 @@ fun SaldoDoMesCard(
             colorCard = it.colorCard,
             colorIcon = it.colorIcon,
             dateTime = LocalDateTime.now(),
-            tipoComparacao = if (it.tipo == TipoMovimentacao.ENTRADA) TipoComparacao.RECEITA else TipoComparacao.CONTA
+            tipoComparacao = TipoComparacao.COMPARACAO
 
         )
     }.toImmutableList()
 
-    //Modelo de testes que virá a ser substituído por dados do Room
-    val graficoDoDiaModel = persistentListOf(
-        LinhaDoTempoModel(
-            name = "Salário",
-            icon = BreezeIcons.Linear.Money.MoneyRecive.enum.name,
-            valor = BigDecimal("1000.00"),
-            colorCard = Color(0xFFACE1C1).toArgb(),
-            colorIcon = Color(0xFFACE1C1).toArgb(),
-            id = 1,
-            dateTime = firstDate,
-            tipoComparacao = TipoComparacao.RECEITA
-        ),
-        LinhaDoTempoModel(
-            name = "Mercado",
-            icon = BreezeIcons.Linear.Shop.Bag2.enum.name,
-            valor = BigDecimal("200.00"),
-            colorCard = Color(0xFFF69297).toArgb(),
-            colorIcon = Color(0xFFF69297).toArgb(),
-            id = 2,
-            dateTime = secondDate,
-            tipoComparacao = TipoComparacao.CONTA
-        ),
-        LinhaDoTempoModel(
-            name = "Spotify",
-            icon = BreezeIcons.Linear.Company.SpotifyLinear.enum.name,
-            valor = BigDecimal("23.90"),
-            colorCard = Color(0xFFF69297).toArgb(),
-            colorIcon = Color(0xFFF69297).toArgb(),
-            id = 3,
-            dateTime = thirdDate,
-            tipoComparacao = TipoComparacao.CONTA
-    ),
-        LinhaDoTempoModel(
-            name = "Compra na Google Play",
-            icon = BreezeIcons.Linear.Company.GooglePlayLinear.enum.name,
-            valor = BigDecimal("55.90"),
-            colorCard = Color(0xFFF69297).toArgb(),
-            colorIcon = Color(0xFFF69297).toArgb(),
-            id = 4,
-            dateTime = fourthDate,
-            tipoComparacao = TipoComparacao.CONTA
-        ),
-        LinhaDoTempoModel(
-            name = "Freelancer",
-            icon = BreezeIcons.Linear.Money.MoneyRecive.enum.name,
-            valor = BigDecimal("200.00"),
-            colorCard = Color(0xFFACE1C1).toArgb(),
-            colorIcon = Color(0xFFACE1C1).toArgb(),
-            id = 5,
-            dateTime = fifthDate,
-            tipoComparacao = TipoComparacao.RECEITA
-        )
-    )
-
     //Elevated Card Pai
-    BreezeElevatedCard() {
+    BreezeElevatedCard(
+        modifier = modifier
+    ) {
         Column(
             modifier = Modifier
                 .padding(10.dp),
