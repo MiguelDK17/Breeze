@@ -5,7 +5,7 @@ enum class TipoMovimentacao(val valor: Int) {
     SAIDA(1); //Despesa
 
     companion object {
-        fun fromInt(value: Int) = values().first { it.valor == value }
+        fun fromInt(value: Int) = entries.first { it.valor == value }
         fun toInt(tipoMovimentacao: TipoMovimentacao) = tipoMovimentacao.valor
     }
 }

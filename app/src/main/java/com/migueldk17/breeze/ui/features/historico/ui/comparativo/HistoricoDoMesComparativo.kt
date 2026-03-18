@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,11 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -24,17 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
-import com.migueldk17.breeze.ui.components.BreezeButtonGroup
-import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.DestaquesCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import java.math.BigDecimal
 import java.time.LocalDate
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,8 +37,10 @@ import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.ui.utils.ToastManager
+import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HistoricoDoMesComparativo(
@@ -104,7 +100,10 @@ fun HistoricoDoMesComparativo(
 
             val data = observeMovimentacao.data
 
-            HistoricoDoMesComparativoBody(data.toImmutableList())
+            HistoricoDoMesComparativoBody(
+                modifier = modifier,
+                listMovimentacaoDomain = data.toImmutableList()
+            )
 
         }
     }
@@ -118,6 +117,7 @@ private fun HistoricoDoMesComparativoBody(
     modifier: Modifier = Modifier,
     ){
     val scroll = rememberScrollState()
+    val listRetornaValores = retornaValoresFinais(listMovimentacaoDomain, context = LocalContext.current)
 
     Column(
         modifier = modifier
@@ -133,29 +133,48 @@ private fun HistoricoDoMesComparativoBody(
                 .height(10.dp)
         )
 
-        SaldoDoMesCard()
+        SaldoDoMesCard(
+            totalDeReceitas = listRetornaValores[0],
+            totalDeDespesas = listRetornaValores[1],
+            saldoFinal = listRetornaValores[2],
+            listMovimentacaoDomain = listMovimentacaoDomain
+        )
 
         GastoCard()
 
-        quebraValorPositivo(listMovimentacaoDomain)
+
 
     }
 }
 
-private fun quebraValorPositivo(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>){
-    var valorPositivo: BigDecimal = BigDecimal.ZERO
+
+private fun retornaValoresFinais(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>, context: Context): ImmutableList<String>{
     val listPositiva = mutableListOf<BigDecimal>()
+    val listNegativa = mutableListOf<BigDecimal>()
 
     for (i in listMovimentacaoDomain) {
-        if (i.tipo == TipoMovimentacao.ENTRADA) {
-            Log.d(TAG, "quebraValorPositivo: ${i.valor}")
-            valorPositivo = i.valor
+        if (i.tipo == TipoMovimentacao.ENTRADA) listPositiva.add(i.valor) else listNegativa.add(i.valor)
 
-
-        }
     }
-    listPositiva.add(valorPositivo)
-    Log.d(TAG, "quebraValorPositivo: $listPositiva")
+    Log.d(TAG, "quebraValorPositivo: Lista cheia: $listPositiva")
+
+    val totalEntradas = listPositiva.sumOf { it }
+    val totalSaidas = listNegativa.sumOf { it }
+    val valorTotal = totalEntradas.minus(totalSaidas)
+
+    val totalEntradasEmReais = totalEntradas.formatarValorEmReal()
+    val totalSaidasEmReais = totalSaidas.formatarValorEmReal()
+    val valorTotalEmReais = valorTotal.formatarValorEmReal()
+
+    Log.d(TAG, "quebraValorPositivo: $totalEntradasEmReais")
+    Log.d(TAG, "quebraValorPositivo: $totalSaidasEmReais")
+
+
+    val listaFinal = persistentListOf<String>(totalEntradasEmReais, totalSaidasEmReais, valorTotalEmReais)
+    return listaFinal
+
+
+
 }
 private data class MovimentacaoTeste(
     val nomeDaConta: String,

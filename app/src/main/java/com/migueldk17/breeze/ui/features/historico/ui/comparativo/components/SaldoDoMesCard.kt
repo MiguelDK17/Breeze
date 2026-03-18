@@ -21,13 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.domain.MovimentacaoDomain
 import com.migueldk17.breeze.enums.TipoComparacao
+import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
 import com.migueldk17.breeze.ui.features.historico.model.LinhaDoTempoModel
 import com.migueldk17.breeze.ui.features.historico.ui.components.GraficoDeBarras
 import com.migueldk17.breeze.ui.theme.NavyBlue
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
@@ -37,6 +40,10 @@ import java.time.LocalDateTime
 
 @Composable
 fun SaldoDoMesCard(
+    totalDeReceitas: String,
+    totalDeDespesas: String,
+    saldoFinal: String,
+    listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     modifier: Modifier = Modifier
 ){
     val optionsLinear = mapOf(
@@ -55,6 +62,20 @@ fun SaldoDoMesCard(
     val thirdDate = LocalDate.of(2026, 2, 25).atStartOfDay()
     val fourthDate = LocalDate.of(2026, 2, 26).atStartOfDay()
     val fifthDate = LocalDate.of(2026, 2, 27).atStartOfDay()
+
+    val listLinhaDoTempoModel = listMovimentacaoDomain.map {
+        LinhaDoTempoModel(
+            id = it.id,
+            name = it.descricao,
+            icon = it.icon,
+            valor = it.valor,
+            colorCard = it.colorCard,
+            colorIcon = it.colorIcon,
+            dateTime = LocalDateTime.now(),
+            tipoComparacao = if (it.tipo == TipoMovimentacao.ENTRADA) TipoComparacao.RECEITA else TipoComparacao.CONTA
+
+        )
+    }.toImmutableList()
 
     //Modelo de testes que virá a ser substituído por dados do Room
     val graficoDoDiaModel = persistentListOf(
@@ -123,7 +144,12 @@ fun SaldoDoMesCard(
                 modifier = Modifier
             )
             //Card de Saldo Final
-            SaldoFinal()
+            SaldoFinal(
+                totalDeReceitas = totalDeReceitas,
+                totalDeDespesas = totalDeDespesas,
+                saldoFinal = saldoFinal,
+
+            )
 
             //Button Group de opções
             BreezeButtonGroup(
@@ -137,7 +163,7 @@ fun SaldoDoMesCard(
             GraficoDeBarras(
                 modifier = Modifier
                     .height(290.dp),
-                graficoDoDiaModel = graficoDoDiaModel
+                graficoDoDiaModel = listLinhaDoTempoModel
             )
             Row(
                 modifier = Modifier
