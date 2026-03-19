@@ -29,13 +29,13 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun BreezeButtonGroup(
     options: ImmutableList<String>,
-    unCheckedIcons: ImmutableList<BreezeIconsType>,
-    checkedIcons: ImmutableList<BreezeIconsType>,
     onChangeSelectedIndex: (Int) -> Unit,
-    hasIcon: Boolean = true,
-    modifier: Modifier = Modifier
-){
-    var selectedIndex by remember { mutableIntStateOf(0) }
+    modifier: Modifier = Modifier,
+    checkedIcons: ImmutableList<BreezeIconsType>? = null,
+    unCheckedIcons: ImmutableList<BreezeIconsType>? = null,
+    initialSelectedIcon: Int = 0
+    ){
+    var selectedIndex by remember { mutableIntStateOf(initialSelectedIcon) }
 
     Row(
         modifier.padding(horizontal = 8.dp),
@@ -59,12 +59,19 @@ fun BreezeButtonGroup(
                         else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                     },
             ) {
-                val condicaoIcon = if (selectedIndex == index) checkedIcons[index] else unCheckedIcons[index]
+                val icon = when {
+                    checkedIcons == null -> null
+                    selectedIndex == index -> checkedIcons[index]
+                    else -> unCheckedIcons?.get(index)
 
-                BreezeIcon(
-                    if (hasIcon) condicaoIcon else BreezeIcons.Unspecified.IconUnspecified,
-                    contentDescription = label,
-                )
+                }
+                icon?.let {
+                    BreezeIcon(
+                        icon,
+                        contentDescription = label,
+                    )
+
+                }
                 Spacer(Modifier.size(ToggleButtonDefaults.IconSpacing))
                 DescriptionText(label)
             }

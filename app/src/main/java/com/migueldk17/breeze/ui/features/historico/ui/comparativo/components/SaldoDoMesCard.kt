@@ -36,6 +36,7 @@ import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import androidx.compose.runtime.remember
 
 
 @Composable
@@ -46,36 +47,23 @@ fun SaldoDoMesCard(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     modifier: Modifier = Modifier
 ){
-    val optionsLinear = mapOf(
-        BreezeIcons.Linear.Money.MoneySend to "Dia",
-        BreezeIcons.Linear.Money.MoneyRecive to "Categoria",
-        BreezeIcons.Linear.Like.Heart to "Mês"
-    )
-    val optionsOutlined = mapOf(
-        BreezeIcons.Outlined.Money.MoneySend to "Contas",
-        BreezeIcons.Outlined.Money.MoneyRecive to "Categoria",
-        BreezeIcons.Outlined.All.MoneyRecive to "Mês"
-    )
-    //Datas fixas para o modelo de teste
-    val firstDate = LocalDate.of(2026, 2, 23).atStartOfDay()
-    val secondDate = LocalDate.of(2026, 2, 24).atStartOfDay()
-    val thirdDate = LocalDate.of(2026, 2, 25).atStartOfDay()
-    val fourthDate = LocalDate.of(2026, 2, 26).atStartOfDay()
-    val fifthDate = LocalDate.of(2026, 2, 27).atStartOfDay()
+    val options = persistentListOf("Dia", "Categoria", "Mês")
 
-    val listLinhaDoTempoModel = listMovimentacaoDomain.map {
-        LinhaDoTempoModel(
-            id = it.id,
-            name = it.descricao,
-            icon = it.icon,
-            valor = it.valor,
-            colorCard = it.colorCard,
-            colorIcon = it.colorIcon,
-            dateTime = LocalDateTime.now(),
-            tipoComparacao = TipoComparacao.COMPARACAO
+    val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
+        listMovimentacaoDomain.map {
+            LinhaDoTempoModel(
+                id = it.id,
+                name = it.descricao,
+                icon = it.icon,
+                valor = it.valor,
+                colorCard = it.colorCard.toArgb(),
+                colorIcon = it.colorIcon.toArgb(),
+                dateTime = LocalDateTime.now(),
+                tipoComparacao = TipoComparacao.COMPARACAO
 
-        )
-    }.toImmutableList()
+            )
+        }.toImmutableList()
+    }
 
     //Elevated Card Pai
     BreezeElevatedCard(
@@ -101,12 +89,9 @@ fun SaldoDoMesCard(
 
             //Button Group de opções
             BreezeButtonGroup(
-                options = optionsLinear.values.toImmutableList(),
-                unCheckedIcons = optionsOutlined.keys.toImmutableList(),
-                checkedIcons = optionsLinear.keys.toImmutableList(),
-                hasIcon = false,
-                onChangeSelectedIndex = {
-                }
+                options = options,
+                onChangeSelectedIndex = {},
+                initialSelectedIcon = 2
             )
             GraficoDeBarras(
                 modifier = Modifier

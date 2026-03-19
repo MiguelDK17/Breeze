@@ -108,8 +108,9 @@ fun GraficoDeBarras(
                 ) {
 
                     itemsIndexed(graficoDoDiaModel) { index, grafico ->
+
                         val alturaMaxima = remember(graficoDoDiaModel) {
-                            graficoDoDiaModel.maxOfOrNull { it.valor.toFloat() } ?: 1f
+                            graficoDoDiaModel.maxOfOrNull { it.valor.abs().toFloat() } ?: 1f
                         }
                         Log.d(TAG, "GraficoDeBarras: O valor máximo é $alturaMaxima")
                         Log.d(TAG, "GraficoDeBarras: altura das barras $alturaMaxima")
@@ -118,7 +119,7 @@ fun GraficoDeBarras(
                         val brush = Brush.verticalGradient(colors = listColors)
                         val dayOfMonth = grafico.dateTime.dayOfMonth
                         BarraAnimada(
-                            valor = grafico.valor,
+                            valor = grafico.valor.abs(),
                             maxValue = alturaMaxima,
                             cor = brush,
                             dia = dayOfMonth,
