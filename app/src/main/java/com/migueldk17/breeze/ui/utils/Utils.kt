@@ -11,6 +11,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.pow
 
@@ -28,6 +29,10 @@ fun BigDecimal.formatarValorEmReal(): String {
     Log.d(TAG, "formatarValorEmReal: Antes da formatacao $this")
     val format = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
     return format.format(this)
+}
+
+fun LocalDate.toApiFormat(): String {
+    return format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 }
 
 fun traduzData(mes: String): String {

@@ -68,7 +68,7 @@ class MainActivity4: ComponentActivity() {
             if (dataFormatada != null) {
                 viewModelContas.setData(dataFormatada)
                 viewModelReceitas.setData(dataFormatada)
-                viewModelComparacao.setData(dataFormatada)
+                viewModelComparacao.setMes(dataFormatada)
             }
             val categories = listOf("Contas", "Receitas")
             var selectedCategory by remember { mutableStateOf(categories[0]) }

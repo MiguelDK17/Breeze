@@ -81,9 +81,6 @@ fun HistoricoDoMesComparativo(
         )
     )
 
-    LaunchedEffect(observeMovimentacao) {
-        viewModel.observaContasPoMes()
-    }
 
     when(observeMovimentacao) {
         is UiState.Empty -> {
@@ -102,7 +99,11 @@ fun HistoricoDoMesComparativo(
 
             HistoricoDoMesComparativoBody(
                 modifier = modifier,
-                listMovimentacaoDomain = data.toImmutableList()
+                listMovimentacaoDomain = data.toImmutableList(),
+                setDia = {
+                    viewModel.setDia(it)
+                }
+
             )
 
         }
@@ -115,6 +116,8 @@ fun HistoricoDoMesComparativo(
 private fun HistoricoDoMesComparativoBody(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     modifier: Modifier = Modifier,
+    setDia: (String) -> Unit = {},
+
     ){
     val scroll = rememberScrollState()
     val listRetornaValores = retornaValoresFinais(listMovimentacaoDomain, context = LocalContext.current)
@@ -137,7 +140,8 @@ private fun HistoricoDoMesComparativoBody(
             totalDeReceitas = listRetornaValores[0],
             totalDeDespesas = listRetornaValores[1],
             saldoFinal = listRetornaValores[2],
-            listMovimentacaoDomain = listMovimentacaoDomain
+            listMovimentacaoDomain = listMovimentacaoDomain,
+            setDia = { setDia(it) }
         )
 
         GastoCard()

@@ -15,6 +15,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +40,9 @@ import java.time.LocalDate
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.migueldk17.breeze.ui.utils.toApiFormat
+import java.time.YearMonth
 
 
 @Composable
@@ -45,9 +51,11 @@ fun SaldoDoMesCard(
     totalDeDespesas: String,
     saldoFinal: String,
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    setDia: (String) -> Unit = {}
 ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
+    var selectedIndex by remember { mutableIntStateOf(2) }
 
     val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
         listMovimentacaoDomain.map {
@@ -90,8 +98,18 @@ fun SaldoDoMesCard(
             //Button Group de opções
             BreezeButtonGroup(
                 options = options,
-                onChangeSelectedIndex = {},
-                initialSelectedIcon = 2
+                onChangeSelectedIndex = {
+                    selectedIndex = it
+                },
+                initialSelectedIcon = selectedIndex
+            )
+
+            CalendarDialog(
+                yearMonth = YearMonth.now(),
+                onConfirm = { date ->
+                    setDia(date.toApiFormat())
+                },
+                onDismiss = {  /* Fecha o Dialog */ }
             )
             GraficoDeBarras(
                 modifier = Modifier
