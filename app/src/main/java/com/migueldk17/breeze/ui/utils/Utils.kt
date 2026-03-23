@@ -37,20 +37,20 @@ fun LocalDate.toApiFormat(): String {
 
 fun traduzData(mes: String): String {
 
-    val mesTraduzido = when(mes){
-        "Jan" ->  "Janeiro"
-        "Fev" ->  "Fevereiro"
-        "Mar" ->  "Março"
-        "Abr" ->  "Abril"
-        "Mai" ->  "Maio"
-        "Jun" ->  "Junho"
-        "Jul" ->  "Julho"
-        "Ago" ->  "Agosto"
-        "Set" ->  "Setembro"
-        "Out" ->  "Outubro"
-        "Nov" ->  "Novembro"
-        "Dez" ->  "Dezembro"
-        else -> "Inválido"
+    val mesTraduzido = when (mes) {
+        "Jan", "January" -> "Janeiro"
+        "Fev", "February" -> "Fevereiro"
+        "Mar", "March" -> "Março"
+        "Abr", "April" -> "Abril"
+        "Mai", "May" -> "Maio"
+        "Jun", "June" -> "Junho"
+        "Jul", "July" -> "Julho"
+        "Ago", "August" -> "Agosto"
+        "Set", "September" -> "Setembro"
+        "Out", "October" -> "Outubro"
+        "Nov", "November" -> "Novembro"
+        "Dez", "December" -> "Dezembro"
+        else -> "Inválido, palavra que veio: $mes"
     }
     return mesTraduzido
 }

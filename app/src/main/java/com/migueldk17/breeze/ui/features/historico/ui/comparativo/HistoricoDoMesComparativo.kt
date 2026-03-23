@@ -50,37 +50,6 @@ fun HistoricoDoMesComparativo(
     val context = LocalContext.current
     val observeMovimentacao = viewModel.movimentacaoMes.collectAsStateWithLifecycle().value
 
-    val primeiraData = LocalDate.of( 2026,  2, 8)
-    val segundaData = LocalDate.of(2026, 2, 5)
-
-    val primeiraMovimentacao = MovimentacaoTeste(
-        nomeDaConta = "Transferência Pix",
-        icon = BreezeIcons.Linear.Money.MoneySend,
-        valor = BigDecimal("650.00"),
-        category = "Moradia",
-        date = primeiraData,
-        progressBush = Brush.horizontalGradient(
-            listOf(
-                Color(0xFFF3A7B1),
-                Color(0xFFF09299)
-            )
-        )
-    )
-
-    val segundaMovimentacao = MovimentacaoTeste(
-        nomeDaConta = "Salário",
-        icon = BreezeIcons.Linear.Money.MoneyRecive,
-        valor = BigDecimal("3500.00"),
-        category = "Receita",
-        date = segundaData,
-        progressBush = Brush.horizontalGradient(
-            listOf(
-                Color(0xFFB8DECE),
-                Color(0xFFB0DAC8)
-            )
-        )
-    )
-
 
     when(observeMovimentacao) {
         is UiState.Empty -> {
@@ -145,8 +114,6 @@ private fun HistoricoDoMesComparativoBody(
         )
 
         GastoCard()
-
-
 
     }
 }

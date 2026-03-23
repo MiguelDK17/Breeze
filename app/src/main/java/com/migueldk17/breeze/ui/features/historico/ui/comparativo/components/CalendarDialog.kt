@@ -27,8 +27,11 @@ fun CalendarDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    selectedDate?.let { onConfirm }
-                }
+                    selectedDate?.let { date ->
+                        onConfirm(date)
+                    }
+                },
+                 enabled = selectedDate != null
             ) {
                 Text("Confirmar")
             }

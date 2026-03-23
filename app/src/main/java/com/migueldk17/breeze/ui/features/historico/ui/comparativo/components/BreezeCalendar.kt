@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
+import com.kizitonwose.calendar.core.DayPosition
+import com.migueldk17.breeze.ui.utils.traduzData
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -31,37 +35,49 @@ fun BreezeCalendar(
         endMonth = yearMonth,
         firstVisibleMonth = yearMonth,
     )
+    val mesTraduzido = traduzData(yearMonth.month.name.lowercase().replaceFirstChar { it.uppercase()})
 
     HorizontalCalendar(
         state = state,
+        monthHeader = {
+            Text(
+                text = mesTraduzido +
+                " de ${yearMonth.year}",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        },
         dayContent = { day ->
             val date = day.date
             val isSelected = date == selectedDate
 
-            Box(
-                modifier = modifier
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .background(
-                        if (isSelected) MaterialTheme.colorScheme.primary
-                        else Color.Transparent
+            if (day.position == DayPosition.MonthDate) {
+
+                Box(
+                    modifier = modifier
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
+                        .background(
+                            if (isSelected) MaterialTheme.colorScheme.primary
+                            else Color.Transparent
+                        )
+                        .clickable {
+                            onDateSelect(date)
+                        }
+                        .padding(4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = date.dayOfMonth.toString(),
+                        color = if (isSelected)
+                            MaterialTheme.colorScheme.onPrimary
+                        else
+                            MaterialTheme.colorScheme.onSurface
+
                     )
-                    .clickable {
-                        onDateSelect(date)
-                    }
-                    .padding(4.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = date.dayOfMonth.toString(),
-                    color = if (isSelected)
-                        MaterialTheme.colorScheme.onPrimary
-                    else
-                        MaterialTheme.colorScheme.onSurface
+                }
 
-                )
             }
-
         }
     )
 }

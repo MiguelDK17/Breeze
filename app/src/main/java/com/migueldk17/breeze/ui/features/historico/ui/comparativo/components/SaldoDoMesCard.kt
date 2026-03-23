@@ -56,6 +56,7 @@ fun SaldoDoMesCard(
 ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
     var selectedIndex by remember { mutableIntStateOf(2) }
+    var isCalendarOpen by remember { mutableStateOf(false) }
 
     val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
         listMovimentacaoDomain.map {
@@ -100,17 +101,21 @@ fun SaldoDoMesCard(
                 options = options,
                 onChangeSelectedIndex = {
                     selectedIndex = it
+                    isCalendarOpen = it == 0
                 },
                 initialSelectedIcon = selectedIndex
             )
-
-            CalendarDialog(
-                yearMonth = YearMonth.now(),
-                onConfirm = { date ->
-                    setDia(date.toApiFormat())
-                },
-                onDismiss = {  /* Fecha o Dialog */ }
-            )
+            if (isCalendarOpen) {
+                CalendarDialog(
+                    yearMonth = YearMonth.now(),
+                    onConfirm = { date ->
+                        setDia(date.toApiFormat())
+                    },
+                    onDismiss = {
+                        isCalendarOpen = false
+                    }
+                )
+            }
             GraficoDeBarras(
                 modifier = Modifier
                     .height(290.dp),
