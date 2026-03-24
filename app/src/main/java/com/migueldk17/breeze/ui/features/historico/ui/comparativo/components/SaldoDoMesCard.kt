@@ -110,6 +110,7 @@ fun SaldoDoMesCard(
                     yearMonth = YearMonth.now(),
                     onConfirm = { date ->
                         setDia(date.toApiFormat())
+                        isCalendarOpen = false
                     },
                     onDismiss = {
                         isCalendarOpen = false

@@ -35,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.domain.MovimentacaoDomain
 import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.enums.TipoMovimentacao
+import com.migueldk17.breeze.ui.features.historico.ui.TipoData
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
@@ -49,6 +50,7 @@ fun HistoricoDoMesComparativo(
 ){
     val context = LocalContext.current
     val observeMovimentacao = viewModel.movimentacaoMes.collectAsStateWithLifecycle().value
+    val tipoDeDados = viewModel.tipoDeDados.collectAsStateWithLifecycle().value
 
 
     when(observeMovimentacao) {
@@ -71,7 +73,8 @@ fun HistoricoDoMesComparativo(
                 listMovimentacaoDomain = data.toImmutableList(),
                 setDia = {
                     viewModel.setDia(it)
-                }
+                },
+                tipoDeDados = tipoDeDados
 
             )
 
@@ -84,6 +87,7 @@ fun HistoricoDoMesComparativo(
 @Composable
 private fun HistoricoDoMesComparativoBody(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
+    tipoDeDados: TipoData,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
 

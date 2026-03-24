@@ -52,11 +52,10 @@ fun BreezeCalendar(
     val listDays = persistentListOf("D","S","T","Q","Q", "S","S")
 
     HorizontalCalendar(
+        modifier = modifier,
         state = state,
         monthHeader = {
-            Column(
-                modifier = modifier
-            ) {
+            Column {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),

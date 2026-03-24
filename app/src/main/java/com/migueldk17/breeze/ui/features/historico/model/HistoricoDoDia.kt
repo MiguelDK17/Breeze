@@ -11,3 +11,4 @@ data class HistoricoDoDia(
     val primaryTimeline: LinhaDoTempoModel, //Conta principal
     val otherTimeline: ImmutableList<LinhaDoTempoModel> //Outras contas que ficam escondidas sob o estado do botão ver mais em HistoricoItem
 )
+
