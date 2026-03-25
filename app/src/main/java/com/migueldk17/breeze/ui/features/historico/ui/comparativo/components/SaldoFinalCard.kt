@@ -28,6 +28,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.GradientCard
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoModel
 import com.migueldk17.breeze.ui.theme.GreenSuccess
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.RedError
@@ -35,11 +36,13 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SaldoFinal(
-    totalDeReceitas: String,
-    totalDeDespesas: String,
-    saldoFinal: String,
+    comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier
 ){
+    val totalDeReceitas = comparativoModel.totalDeReceitas.toString()
+    val totalDeDespesas = comparativoModel.totalDeDespesas.toString()
+    val saldoFinal = comparativoModel.saldoFinal.toString()
+
     val listColors = persistentListOf(
         Color(0XFFE9F1FC),
         Color(0xFFF2F6FD)

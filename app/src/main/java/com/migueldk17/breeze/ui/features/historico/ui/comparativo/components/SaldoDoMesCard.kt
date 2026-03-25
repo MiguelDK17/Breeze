@@ -41,22 +41,22 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoModel
 import com.migueldk17.breeze.ui.utils.toApiFormat
 import java.time.YearMonth
 
 
 @Composable
 fun SaldoDoMesCard(
-    totalDeReceitas: String,
-    totalDeDespesas: String,
-    saldoFinal: String,
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
+    comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {}
 ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
     var selectedIndex by remember { mutableIntStateOf(2) }
     var isCalendarOpen by remember { mutableStateOf(false) }
+    var tipoDeDados = comparativoModel.tipoDeDados
 
     val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
         listMovimentacaoDomain.map {
@@ -90,10 +90,7 @@ fun SaldoDoMesCard(
             )
             //Card de Saldo Final
             SaldoFinal(
-                totalDeReceitas = totalDeReceitas,
-                totalDeDespesas = totalDeDespesas,
-                saldoFinal = saldoFinal,
-
+                comparativoModel = comparativoModel
             )
 
             //Button Group de opções

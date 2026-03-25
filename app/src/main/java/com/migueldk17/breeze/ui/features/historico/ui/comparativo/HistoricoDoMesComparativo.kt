@@ -13,14 +13,11 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
@@ -33,7 +30,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.domain.MovimentacaoDomain
-import com.migueldk17.breeze.enums.TipoComparacao
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.features.historico.ui.TipoData
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
@@ -49,11 +45,11 @@ fun HistoricoDoMesComparativo(
     viewModel: HistoricoComparativoViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
-    val observeMovimentacao = viewModel.movimentacaoMes.collectAsStateWithLifecycle().value
-    val tipoDeDados = viewModel.tipoDeDados.collectAsStateWithLifecycle().value
+    val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
+    val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
 
 
-    when(observeMovimentacao) {
+    when(listaDeMovimentacoesMensal) {
         is UiState.Empty -> {
             ToastManager.showToast(context, "Lista vazia")
         }
@@ -61,39 +57,34 @@ fun HistoricoDoMesComparativo(
             Log.d(TAG, "HistoricoDoMesComparativo: Carregando")
         }
         is UiState.Error -> {
-            val error = observeMovimentacao.exception
+            val error = listaDeMovimentacoesMensal.exception
             Log.d(TAG, "HistoricoDoMesComparativo: Erro: $error")
         }
         is UiState.Success -> {
 
-            val data = observeMovimentacao.data
+            val data = listaDeMovimentacoesMensal.data
 
             HistoricoDoMesComparativoBody(
                 modifier = modifier,
                 listMovimentacaoDomain = data.toImmutableList(),
+                comparativoModel = comparativoModel,
                 setDia = {
                     viewModel.setDia(it)
                 },
-                tipoDeDados = tipoDeDados
-
             )
-
         }
     }
-
-
 }
 
 @Composable
 private fun HistoricoDoMesComparativoBody(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
-    tipoDeDados: TipoData,
+    comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
 
     ){
     val scroll = rememberScrollState()
-    val listRetornaValores = retornaValoresFinais(listMovimentacaoDomain, context = LocalContext.current)
 
     Column(
         modifier = modifier
@@ -110,11 +101,9 @@ private fun HistoricoDoMesComparativoBody(
         )
 
         SaldoDoMesCard(
-            totalDeReceitas = listRetornaValores[0],
-            totalDeDespesas = listRetornaValores[1],
-            saldoFinal = listRetornaValores[2],
             listMovimentacaoDomain = listMovimentacaoDomain,
-            setDia = { setDia(it) }
+            comparativoModel = comparativoModel,
+            setDia = { setDia(it) },
         )
 
         GastoCard()
@@ -123,36 +112,6 @@ private fun HistoricoDoMesComparativoBody(
 }
 
 
-private fun retornaValoresFinais(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>, context: Context): ImmutableList<String>{
-    val listPositiva = mutableListOf<BigDecimal>()
-    val listNegativa = mutableListOf<BigDecimal>()
-
-    for (i in listMovimentacaoDomain) {
-        if (i.tipo == TipoMovimentacao.ENTRADA) listPositiva.add(i.valor) else listNegativa.add(i.valor)
-
-    }
-    Log.d(TAG, "quebraValorPositivo: Lista cheia: $listPositiva")
-
-    val totalEntradas = listPositiva.sumOf { it }
-    val totalSaidas = listNegativa.sumOf { it }
-    val valorTotal = totalEntradas + totalSaidas
-
-
-    val totalEntradasEmReais = totalEntradas.formatarValorEmReal()
-    val totalSaidasEmReais = totalSaidas.formatarValorEmReal()
-    val valorTotalEmReais = valorTotal.formatarValorEmReal()
-
-    Log.d(TAG, "retornaValoresFinais: $totalEntradasEmReais")
-    Log.d(TAG, "retornaValoresFinais: $totalSaidasEmReais")
-    Log.d(TAG, "retornaValoresFinais: $valorTotalEmReais")
-
-
-    val listaFinal = persistentListOf<String>(totalEntradasEmReais, totalSaidasEmReais, valorTotalEmReais)
-    return listaFinal
-
-
-
-}
 private data class MovimentacaoTeste(
     val nomeDaConta: String,
     val icon: BreezeIconsType,

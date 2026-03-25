@@ -2,17 +2,24 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.features.historico.ui.ComparativoFiltro
 import com.migueldk17.breeze.ui.features.historico.ui.TipoData
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoModel
+import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import com.migueldk17.breeze.ui.utils.toApiFormat
 import com.migueldk17.breeze.uistate.UiState
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoDiaUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoMesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,6 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -32,13 +40,8 @@ class HistoricoComparativoViewModel @Inject constructor(
     private val getMovimentacoesDoDiaUseCase: GetMovimentacoesDoDiaUseCase
 ): ViewModel() {
     private val _filtro = MutableStateFlow(ComparativoFiltro())
-
-    private val _tipoDeDados = MutableStateFlow(TipoData.MES)
-    val tipoDeDados: StateFlow<TipoData> = _tipoDeDados.asStateFlow()
-
-
-    private val _movimentacaoMesState: MutableStateFlow<UiState<List<MovimentacaoDomain>>> = MutableStateFlow(UiState.Loading)
-    val movimentacaoMes: StateFlow<UiState<List<MovimentacaoDomain>>> = _movimentacaoMesState.asStateFlow()
+    private val _comparativoModel = MutableStateFlow(ComparativoModel(listaDeMovimentacoesMensal = UiState.Loading, listaDeMovimentacoesDiaria = UiState.Loading))
+    val comparativoModel = _comparativoModel.asStateFlow()
 
     init {
         observaContasPoMes()
@@ -46,40 +49,47 @@ class HistoricoComparativoViewModel @Inject constructor(
 
 
     private fun observaContasPoMes(){
-         viewModelScope.launch {
+        var tipoDeDados = _comparativoModel.value.tipoDeDados
+        var listaDeMovimentacoesMensal = _comparativoModel.value.listaDeMovimentacoesMensal
+        var listaDeMovimentacoesDiaria = _comparativoModel.value.listaDeMovimentacoesDiaria
+        viewModelScope.launch {
              _filtro
                  .flatMapLatest { filtro ->
-                     when (filtro.tipoData) {
+                     when (tipoDeDados) {
                          TipoData.MES -> {
-                             _tipoDeDados.value = TipoData.MES
+                             tipoDeDados = TipoData.MES
                              getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
                          }
                          TipoData.DIA -> {
-                             _tipoDeDados.value = TipoData.DIA
+                             tipoDeDados = TipoData.DIA
                              getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
                          }
                      }
                  }
                  .catch { e ->
-                     _movimentacaoMesState.value = UiState.Error(e.message ?: "Erro desconhecido")
-
+                     listaDeMovimentacoesMensal = UiState.Error(e.message ?: "Erro desconhecido")
                  }
                  .collectLatest { list ->
-                     val tipoData = _filtro.value.tipoData
                      val categoria = _filtro.value.categoria
                      when {
-                         list.isEmpty() && tipoData == TipoData.MES -> {
-                             _movimentacaoMesState.value = UiState.Empty
+                         list.isEmpty() && tipoDeDados == TipoData.MES -> {
+                              listaDeMovimentacoesMensal = UiState.Empty
                          }
-                         list.isEmpty() && tipoData == TipoData.DIA -> {
+                         list.isEmpty() && tipoDeDados == TipoData.DIA -> {
                              val data = _filtro.value.data!!.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM"))
 
                              _filtro.update { it.copy(
                                  data = data,
                                  tipoData = TipoData.MES) }
                          }
-                         list.isEmpty() && categoria == null -> _movimentacaoMesState.value = UiState.Empty
-                         else -> _movimentacaoMesState.value = UiState.Success(list)
+                         list.isEmpty() && categoria == null -> listaDeMovimentacoesMensal = UiState.Empty
+                         list.isNotEmpty() && tipoDeDados == TipoData.MES -> {
+                             listaDeMovimentacoesMensal = UiState.Success(list)
+                             retornaValoresFinais(list.toImmutableList())
+                         }
+                         list.isNotEmpty() && tipoDeDados == TipoData.DIA -> {
+                             listaDeMovimentacoesDiaria = UiState.Success(list)
+                         }
                      }
                  }
          }
@@ -112,6 +122,37 @@ class HistoricoComparativoViewModel @Inject constructor(
         _filtro.update {
             it.copy(
                 categoria = categoria
+            )
+        }
+    }
+
+    private fun retornaValoresFinais(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>){
+        val listPositiva = mutableListOf<BigDecimal>()
+        val listNegativa = mutableListOf<BigDecimal>()
+
+        for (i in listMovimentacaoDomain) {
+            if (i.tipo == TipoMovimentacao.ENTRADA) listPositiva.add(i.valor) else listNegativa.add(i.valor)
+
+        }
+
+        val totalEntradas = listPositiva.sumOf { it }
+        val totalSaidas = listNegativa.sumOf { it }
+        val valorTotal = totalEntradas + totalSaidas
+
+
+        val totalEntradasEmReais = totalEntradas.formatarValorEmReal()
+        val totalSaidasEmReais = totalSaidas.formatarValorEmReal()
+        val valorTotalEmReais = valorTotal.formatarValorEmReal()
+
+        Log.d(TAG, "retornaValoresFinais: $totalEntradasEmReais")
+        Log.d(TAG, "retornaValoresFinais: $totalSaidasEmReais")
+        Log.d(TAG, "retornaValoresFinais: $valorTotalEmReais")
+
+        _comparativoModel.update {
+            it.copy(
+                totalDeReceitas = totalEntradas,
+                totalDeDespesas = totalSaidas,
+                saldoFinal = valorTotal,
             )
         }
     }
