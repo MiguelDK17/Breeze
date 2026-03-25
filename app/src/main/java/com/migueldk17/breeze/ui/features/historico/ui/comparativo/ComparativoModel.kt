@@ -6,8 +6,8 @@ import com.migueldk17.breeze.uistate.UiState
 import java.math.BigDecimal
 
 data class ComparativoModel(
-    var listaDeMovimentacoesMensal: UiState<List<MovimentacaoDomain>>,
-    var listaDeMovimentacoesDiaria: UiState<List<MovimentacaoDomain>>,
+    var listaDeMovimentacoesMensal: UiState<List<MovimentacaoDomain>> = UiState.Loading,
+    var listaDeMovimentacoesDiaria: UiState<List<MovimentacaoDomain>> = UiState.Loading,
     var tipoDeDados: TipoData = TipoData.MES,
     var totalDeReceitas: BigDecimal = BigDecimal.ZERO,
     var totalDeDespesas: BigDecimal = BigDecimal.ZERO,

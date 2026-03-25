@@ -40,7 +40,7 @@ class HistoricoComparativoViewModel @Inject constructor(
     private val getMovimentacoesDoDiaUseCase: GetMovimentacoesDoDiaUseCase
 ): ViewModel() {
     private val _filtro = MutableStateFlow(ComparativoFiltro())
-    private val _comparativoModel = MutableStateFlow(ComparativoModel(listaDeMovimentacoesMensal = UiState.Loading, listaDeMovimentacoesDiaria = UiState.Loading))
+    private val _comparativoModel = MutableStateFlow(ComparativoModel())
     val comparativoModel = _comparativoModel.asStateFlow()
 
     init {
@@ -49,9 +49,11 @@ class HistoricoComparativoViewModel @Inject constructor(
 
 
     private fun observaContasPoMes(){
+        Log.d(TAG, "observaContasPoMes: funcao chamada")
         var tipoDeDados = _comparativoModel.value.tipoDeDados
         var listaDeMovimentacoesMensal = _comparativoModel.value.listaDeMovimentacoesMensal
         var listaDeMovimentacoesDiaria = _comparativoModel.value.listaDeMovimentacoesDiaria
+        Log.d(TAG, "observaContasPoMes: variaveis instanciadas")
         viewModelScope.launch {
              _filtro
                  .flatMapLatest { filtro ->
@@ -84,11 +86,16 @@ class HistoricoComparativoViewModel @Inject constructor(
                          }
                          list.isEmpty() && categoria == null -> listaDeMovimentacoesMensal = UiState.Empty
                          list.isNotEmpty() && tipoDeDados == TipoData.MES -> {
+                             Log.d(TAG, "observaContasPoMes: Deu certinho")
                              listaDeMovimentacoesMensal = UiState.Success(list)
+                             Log.d(TAG, "observaContasPoMes: lista tá assim: $listaDeMovimentacoesMensal")
                              retornaValoresFinais(list.toImmutableList())
                          }
                          list.isNotEmpty() && tipoDeDados == TipoData.DIA -> {
                              listaDeMovimentacoesDiaria = UiState.Success(list)
+                         }
+                         else -> {
+                             Log.d(TAG, "observaContasPoMes: Inválido")
                          }
                      }
                  }

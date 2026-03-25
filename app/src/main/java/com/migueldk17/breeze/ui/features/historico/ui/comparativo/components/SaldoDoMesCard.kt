@@ -54,9 +54,9 @@ fun SaldoDoMesCard(
     setDia: (String) -> Unit = {}
 ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
-    var selectedIndex by remember { mutableIntStateOf(2) }
+    val tipoDeDados = comparativoModel.tipoDeDados
+    var selectedIndex by remember { mutableIntStateOf(tipoDeDados.ordinal) }
     var isCalendarOpen by remember { mutableStateOf(false) }
-    var tipoDeDados = comparativoModel.tipoDeDados
 
     val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
         listMovimentacaoDomain.map {

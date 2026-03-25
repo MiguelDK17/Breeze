@@ -44,9 +44,11 @@ fun HistoricoDoMesComparativo(
     modifier: Modifier = Modifier,
     viewModel: HistoricoComparativoViewModel = hiltViewModel()
 ){
+    Log.d(TAG, "HistoricoDoMesComparativo: entramos em comparativo")
     val context = LocalContext.current
     val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
+    Log.d(TAG, "HistoricoDoMesComparativo: variaveis instanciadas")
 
 
     when(listaDeMovimentacoesMensal) {
@@ -61,6 +63,7 @@ fun HistoricoDoMesComparativo(
             Log.d(TAG, "HistoricoDoMesComparativo: Erro: $error")
         }
         is UiState.Success -> {
+            Log.d(TAG, "HistoricoDoMesComparativo: deu success")
 
             val data = listaDeMovimentacoesMensal.data
 
