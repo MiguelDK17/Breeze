@@ -116,7 +116,7 @@ class ConfirmarPagamentoViewModel @Inject constructor(
         viewModelScope.launch {
             val resultado = contaRepository.efetuarPagamentoConta(data, idDaConta, formaDePagamento)
             if (resultado == 1){
-                movimentacaoRepository.adicionarMovimentacao(
+                movimentacaoRepository.insertMovimentacao(
                     MovimentacaoEntity(
                         valor = valor.negate(),
                         descricao = "Pagamento da conta $nome",
@@ -133,6 +133,7 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private fun efetuarPagamentoNasParcelas(){
         val data = _data.value.toDatabaseValue()
         val nomeDaConta = _nomeDaConta.value
+        val valorDaParcela = _valor.value
         val idDaConta = _idDaConta.value
         val idDaParcela = _idDaParcela.value
         val numeroDaParcela = _numeroDaParcela.value
@@ -143,6 +144,15 @@ class ConfirmarPagamentoViewModel @Inject constructor(
         viewModelScope.launch {
             val parcela = parcelaRepository.efetuarPagamentoParcela(data, idDaConta, idDaParcela!!, formaDePagamento) //Parcela está como Int porque o Room devolve booleano como Int
             if (parcela == 1) {
+                val result = movimentacaoRepository.insertMovimentacao(
+                    movimentacaoEntity = MovimentacaoEntity(
+                        valor = valorDaParcela,
+                        descricao = "Pagamento da ${numeroDaParcela}ª parcela da conta $nomeDaConta",
+                        data = data,
+                        contaId = idDaConta,
+                        tipo = TipoMovimentacao.SAIDA,
+                    )
+                )
                 ToastManager.showToast(context, mensagemDeSucesso)
             } else {
                 ToastManager.showToast(context, mensagemDeErro)

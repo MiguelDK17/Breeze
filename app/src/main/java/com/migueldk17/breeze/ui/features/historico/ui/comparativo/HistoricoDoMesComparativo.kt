@@ -2,7 +2,6 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo
 
 import android.util.Log
 import android.content.ContentValues.TAG
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,29 +14,22 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
 import kotlinx.collections.immutable.toImmutableList
-import java.math.BigDecimal
-import java.time.LocalDate
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.domain.MovimentacaoDomain
-import com.migueldk17.breeze.enums.TipoMovimentacao
-import com.migueldk17.breeze.ui.features.historico.ui.TipoData
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.ui.utils.ToastManager
-import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HistoricoDoMesComparativo(
@@ -113,16 +105,6 @@ private fun HistoricoDoMesComparativoBody(
 
     }
 }
-
-
-private data class MovimentacaoTeste(
-    val nomeDaConta: String,
-    val icon: BreezeIconsType,
-    val valor: BigDecimal,
-    val category: String,
-    val date: LocalDate,
-    val progressBush: Brush
-)
 
 
 @Composable

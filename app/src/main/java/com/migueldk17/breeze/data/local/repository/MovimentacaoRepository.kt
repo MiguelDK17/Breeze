@@ -13,8 +13,8 @@ class MovimentacaoRepository @Inject constructor(
     private val movimentacaoDao: MovimentacaoDao
 ) {
     //Adiciona a conta para o Room
-    suspend fun adicionarMovimentacao(movimentacaoEntity: MovimentacaoEntity) {
-        movimentacaoDao.inserirReceita(movimentacaoEntity)
+    suspend fun insertMovimentacao(movimentacaoEntity: MovimentacaoEntity) {
+        movimentacaoDao.insertMovimentacao(movimentacaoEntity)
     }
     //Pega a receita já armazanada no Room
       fun getSaldoTotal(): Flow<BigDecimal?> {

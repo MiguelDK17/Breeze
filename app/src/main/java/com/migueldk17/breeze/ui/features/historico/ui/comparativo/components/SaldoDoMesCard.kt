@@ -41,7 +41,10 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoModel
+import androidx.compose.ui.platform.LocalContext
+import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
+import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.toApiFormat
 import java.time.YearMonth
 
@@ -51,12 +54,14 @@ fun SaldoDoMesCard(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier,
-    setDia: (String) -> Unit = {}
+    setDia: (String) -> Unit = {},
+    setTipoDeDados: (TipoDeDados) -> Unit = {}
 ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
-    val tipoDeDados = comparativoModel.tipoDeDados
+    var tipoDeDados = comparativoModel.tipoDeDados
     var selectedIndex by remember { mutableIntStateOf(tipoDeDados.ordinal) }
     var isCalendarOpen by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
         listMovimentacaoDomain.map {
@@ -67,7 +72,7 @@ fun SaldoDoMesCard(
                 valor = it.valor,
                 colorCard = it.colorCard.toArgb(),
                 colorIcon = it.colorIcon.toArgb(),
-                dateTime = LocalDateTime.now(),
+                dateTime = it.date.atStartOfDay(),
                 tipoComparacao = TipoComparacao.COMPARACAO
 
             )
@@ -98,6 +103,11 @@ fun SaldoDoMesCard(
                 options = options,
                 onChangeSelectedIndex = {
                     selectedIndex = it
+                    when(it){
+                        0 -> isCalendarOpen
+                        1 -> ToastManager.showToast(context, "Função em andamento")
+                        2 -> tipoDeDados = TipoDeDados.MES
+                    }
                     isCalendarOpen = it == 0
                 },
                 initialSelectedIcon = selectedIndex

@@ -38,6 +38,7 @@ import java.time.LocalDate
 fun ConfirmPaymentContent(
     state: ConfirmPaymentModel,
     onConfirm: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: ConfirmarPagamentoViewModel = hiltViewModel()
 ){
     //-------------------Controles de estado---------------------//

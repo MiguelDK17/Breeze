@@ -13,7 +13,7 @@ import java.math.BigDecimal
 interface MovimentacaoDao {
     //Insere um objeto saldo na tabela
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun inserirReceita(movimentacaoEntity: MovimentacaoEntity)
+    suspend fun insertMovimentacao(movimentacaoEntity: MovimentacaoEntity)
 
     //Pega a soma de todos os valores em saldo_table
     @Query("SELECT SUM(valor) FROM movimentacao_entity")

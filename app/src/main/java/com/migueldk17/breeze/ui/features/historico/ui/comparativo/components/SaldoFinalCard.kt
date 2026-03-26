@@ -28,7 +28,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.GradientCard
-import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoModel
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.theme.GreenSuccess
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.theme.RedError
@@ -39,9 +39,9 @@ fun SaldoFinal(
     comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier
 ){
-    val totalDeReceitas = comparativoModel.totalDeReceitas.toString()
-    val totalDeDespesas = comparativoModel.totalDeDespesas.toString()
-    val saldoFinal = comparativoModel.saldoFinal.toString()
+    val totalDeReceitas = comparativoModel.totalDeReceitas
+    val totalDeDespesas = comparativoModel.totalDeDespesas
+    val saldoFinal = comparativoModel.saldoFinal
 
     val listColors = persistentListOf(
         Color(0XFFE9F1FC),

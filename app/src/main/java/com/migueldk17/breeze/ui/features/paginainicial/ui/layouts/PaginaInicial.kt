@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.converters.toDatabaseValue
 import com.migueldk17.breeze.converters.toLocalDateTime
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.domain.ContaComParcelas
@@ -97,6 +98,9 @@ fun PaginaInicial(
         BreezeIcons.Outlined.Money.MoneyRecive to "Receitas"
     )
     var selectedIndexButtonGroup by remember{ mutableIntStateOf(0) }
+
+    Log.d(TAG, "PaginaInicial: enum de recive: ${BreezeIcons.Linear.Money.MoneyRecive.enum.toDatabaseValue()}")
+    Log.d(TAG, "PaginaInicial: enum de send: ${BreezeIcons.Linear.Money.MoneySend.enum.toDatabaseValue()}")
 
 
 
@@ -253,7 +257,11 @@ private fun LazyColumnContas(contasState: UiState<List<ContaComParcelas>>, viewM
                     val modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 2.5.dp)
-                        .border(width = 0.5.dp, color = devolveColor(statusConta), shape = RoundedCornerShape(12.5.dp))
+                        .border(
+                            width = 0.5.dp,
+                            color = devolveColor(statusConta),
+                            shape = RoundedCornerShape(12.5.dp)
+                        )
 
 
 
