@@ -27,9 +27,10 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun InstallmentField(
     state: ConfirmPaymentModel,
+    numeroParcela: Int,
+    modifier: Modifier = Modifier,
     setNomeDaConta: (String) -> Unit,
     setIdParcela: (Long) -> Unit,
-    numeroParcela: Int,
     setNumeroParcela: (Int) -> Unit,
     setIsLatestInstallment: (Boolean) -> Unit
 ) {

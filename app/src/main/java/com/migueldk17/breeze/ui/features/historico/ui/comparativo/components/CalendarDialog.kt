@@ -1,6 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.theme.BreezeTheme
+import com.migueldk17.breeze.ui.theme.DarkBlue
+import com.migueldk17.breeze.ui.theme.NavyBlue
+import com.migueldk17.breeze.ui.theme.NavyPetrol
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -34,7 +38,7 @@ fun CalendarDialog(
     AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        containerColor = Color(0xFFFDFDFD),
+        containerColor = if (!isSystemInDarkTheme()) Color(0xFFFDFDFD) else DarkBlue,
         confirmButton = {
             Button(
                 onClick = {

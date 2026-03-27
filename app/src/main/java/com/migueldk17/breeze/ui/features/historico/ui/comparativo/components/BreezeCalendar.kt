@@ -75,8 +75,7 @@ fun BreezeCalendar(
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
-                        size = 18.sp,
-                        lineHeight = TextUnit(100f, TextUnitType(100L))
+                        size = 16.sp
                     )
                 }
                 Row(
@@ -88,7 +87,6 @@ fun BreezeCalendar(
                     listDays.forEach { day ->
                         Box(
                             modifier = Modifier
-                                .size(5.dp)
                                 .weight(1f)
                                 .aspectRatio(1f),
                             contentAlignment = Alignment.Center
@@ -96,7 +94,8 @@ fun BreezeCalendar(
                             Text(
                                 text = day,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                                style = MaterialTheme.typography.labelMedium
+                                style = MaterialTheme.typography.labelMedium,
+                                fontSize = 16.sp
 
                             )
                         }
@@ -111,7 +110,12 @@ fun BreezeCalendar(
             val isSelected = date == selectedDate
 
             if (day.position == DayPosition.MonthDate) {
-                Column() {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            top = 15.dp
+                        )
+                ) {
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
@@ -123,7 +127,7 @@ fun BreezeCalendar(
                             .clickable {
                                 onDateSelect(date)
                             }
-                            .padding(4.dp),
+                        ,
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
