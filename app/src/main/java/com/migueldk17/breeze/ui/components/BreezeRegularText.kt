@@ -14,12 +14,14 @@ import com.migueldk17.breeze.ui.theme.regularTextModoClaro
 
 @Composable
 fun BreezeRegularText(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     size: TextUnit = 14.sp,
     fontWeight: FontWeight = FontWeight.Normal,
     color: Color = regularTextModoClaro,
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    lineHeight: TextUnit = TextUnit.Unspecified
+
 ){
     Text(
         modifier = modifier,
@@ -27,7 +29,8 @@ fun BreezeRegularText(
         fontSize = size,
         fontWeight = fontWeight,
         color = color,
-        style = style
+        style = style,
+        lineHeight = lineHeight
 
     )
 }

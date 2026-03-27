@@ -45,7 +45,6 @@ class HistoricoComparativoViewModel @Inject constructor(
 
 
     private fun observaContasPoMes(){
-        Log.d(TAG, "observaContasPoMes: funcao chamada")
         viewModelScope.launch {
              _filtro
                  .flatMapLatest { filtro ->

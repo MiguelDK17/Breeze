@@ -55,7 +55,6 @@ fun SaldoDoMesCard(
     comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
-    setTipoDeDados: (TipoDeDados) -> Unit = {}
 ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
     var tipoDeDados = comparativoModel.tipoDeDados

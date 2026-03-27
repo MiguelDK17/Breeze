@@ -4,7 +4,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
@@ -13,35 +15,12 @@ import androidx.compose.ui.unit.sp
 import com.migueldk17.breeze.R
 
 
-val provider = GoogleFont.Provider(
-    providerAuthority = "com.google.android.gms.fonts",
-    providerPackage = "com.google.android.gms",
-    certificates = R.array.com_google_android_gms_fonts_certs
-)
-
-val roboto = GoogleFont("Roboto")
-val poppins = GoogleFont("Poppins")
-
-val robotoTitle = GoogleFont("Roboto Flex")
-
-val fontFamilyRobotoTitle = FontFamily(
-    Font(
-        googleFont = robotoTitle ,
-        fontProvider = provider
-    )
-)
-
-val fontFamilyRoboto = FontFamily(
-    Font(
-        googleFont = roboto,
-        fontProvider = provider
-    )
-)
 val fontFamilyPoppins = FontFamily(
-    Font(
-        googleFont = poppins,
-        fontProvider = provider
-    )
+    Font(R.font.poppins_regular, FontWeight.Normal),
+    Font(R.font.poppins_medium, FontWeight.Medium),
+    Font(R.font.poppins_semibold, FontWeight.SemiBold),
+    Font(R.font.poppins_bold, FontWeight.Bold),
+    Font(R.font.poppins_italic, FontWeight.Normal, FontStyle.Italic)
 )
 
 
@@ -52,25 +31,25 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.2.sp
     ),
     titleMedium = TextStyle(
         fontFamily = fontFamilyPoppins,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 18.sp,
         lineHeight = 20.sp,
-        letterSpacing = 1.sp
+        letterSpacing = 0.3.sp
     ),
     labelSmall = TextStyle(
         fontFamily = fontFamilyPoppins,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.3.sp
     ),
     titleLarge = TextStyle(
         fontFamily = fontFamilyPoppins,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
@@ -85,34 +64,17 @@ val Typography = Typography(
 
     bodySmall = TextStyle(
         fontFamily = fontFamilyPoppins,
-        fontWeight = FontWeight.Light,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 1.sp,
+        letterSpacing = 0.2.sp,
 
     ),
     labelLarge = TextStyle(
         fontFamily = fontFamilyPoppins,
-        fontWeight = FontWeight.W400,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 20.sp,
-        letterSpacing = 1.sp
+        letterSpacing = 0.3.sp
     )
-
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
 )

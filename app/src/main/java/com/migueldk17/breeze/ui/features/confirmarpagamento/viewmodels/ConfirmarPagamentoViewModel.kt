@@ -142,9 +142,14 @@ class ConfirmarPagamentoViewModel @Inject constructor(
         val mensagemDeSucesso = "Pagamento da ${numeroDaParcela}ª parcela da conta $nomeDaConta"
 
         viewModelScope.launch {
-            val parcela = parcelaRepository.efetuarPagamentoParcela(data, idDaConta, idDaParcela!!, formaDePagamento) //Parcela está como Int porque o Room devolve booleano como Int
+            val parcela = parcelaRepository.efetuarPagamentoParcela(
+                data,
+                idDaConta,
+                idDaParcela!!,
+                formaDePagamento
+            ) //Parcela está como Int porque o Room devolve booleano como Int
             if (parcela == 1) {
-                val result = movimentacaoRepository.insertMovimentacao(
+                movimentacaoRepository.insertMovimentacao(
                     movimentacaoEntity = MovimentacaoEntity(
                         valor = valorDaParcela,
                         descricao = "Pagamento da ${numeroDaParcela}ª parcela da conta $nomeDaConta",
