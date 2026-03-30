@@ -76,7 +76,6 @@ class MainActivity4: ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            modifier = Modifier.border(width = 1.dp, color = Color(0xFFD1D0CA), shape = RoundedCornerShape(1.dp)),
                             title = {
                                 Text("Mês de $mes")
                             },

@@ -75,16 +75,16 @@ fun BreezeCalendar(
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
-                        size = 16.sp
+                        size = 17.sp
                     )
                 }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 10.dp),
+                        .padding(top = 7.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    listDays.forEach { day ->
+                    listDays.forEach { day -> //Dias da semana(D,S,T,Q,Q,S,S) para o header
                         Box(
                             modifier = Modifier
                                 .weight(1f)
@@ -113,7 +113,7 @@ fun BreezeCalendar(
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = 15.dp
+                            top = 2.5.dp
                         )
                 ) {
                     Box(

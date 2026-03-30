@@ -34,11 +34,11 @@ fun CalendarDialog(
     modifier: Modifier = Modifier
 ){
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-
+    //AlertDialog que serve como container para o calendario mensal
     AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        containerColor = if (!isSystemInDarkTheme()) Color(0xFFFDFDFD) else DarkBlue,
+        containerColor = if (!isSystemInDarkTheme()) Color(0xFFFDFDFD) else DarkBlue, //Caso o tema seja diurno branco, senão DarkBlue
         confirmButton = {
             Button(
                 onClick = {

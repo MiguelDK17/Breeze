@@ -66,6 +66,9 @@ fun HistoricoDoMesComparativo(
                 setDia = {
                     viewModel.setDia(it)
                 },
+                converteDiaEmMes = {
+                    viewModel.converteDiaEmMes()
+                }
             )
         }
     }
@@ -77,6 +80,7 @@ private fun HistoricoDoMesComparativoBody(
     comparativoModel: ComparativoModel,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
+    converteDiaEmMes : (Boolean) -> Unit = {}
 
     ){
     val scroll = rememberScrollState()
@@ -99,6 +103,7 @@ private fun HistoricoDoMesComparativoBody(
             listMovimentacaoDomain = listMovimentacaoDomain,
             comparativoModel = comparativoModel,
             setDia = { setDia(it) },
+            converteDiaEmMes = { converteDiaEmMes(it) }
         )
 
         GastoCard()

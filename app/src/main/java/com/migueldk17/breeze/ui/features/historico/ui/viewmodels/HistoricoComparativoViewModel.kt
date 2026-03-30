@@ -38,6 +38,7 @@ class HistoricoComparativoViewModel @Inject constructor(
     private val _filtro = MutableStateFlow(ComparativoFiltro())
     private val _comparativoModel = MutableStateFlow(ComparativoModel())
     val comparativoModel = _comparativoModel.asStateFlow()
+
     
     init {
         observaContasPoMes()
@@ -115,6 +116,19 @@ class HistoricoComparativoViewModel @Inject constructor(
         Log.d(TAG, "setDia: valor da data depois do upgrade: ${_filtro.value}")
     }
 
+    fun converteDiaEmMes() {
+        val teste = _filtro.value.data?.dropLast(1)
+        Log.d(TAG, "converteDiaEmMes: $teste")
+        if (teste != null) {
+            val data = teste.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM"))
+            _filtro.update {
+                it.copy(
+                    data = data,
+                    tipoDeDados = TipoDeDados.MES
+                )
+            }
+        }
+    }
     fun setCategoria(categoria: String) {
         _filtro.update {
             it.copy(

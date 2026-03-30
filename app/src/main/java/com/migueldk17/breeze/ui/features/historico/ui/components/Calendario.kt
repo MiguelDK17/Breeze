@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoViewModel
 import com.migueldk17.breeze.ui.utils.retornaDataFormatadaParaPesquisaNoRoom
 import com.migueldk17.breeze.ui.utils.traduzData
@@ -40,10 +41,12 @@ import java.time.LocalDate
 
 @Composable
 fun Calendario(
-    viewModel: HistoricoViewModel){
+    modifier: Modifier = Modifier,
+    viewModel: HistoricoViewModel = hiltViewModel()
+){
     val ano = LocalDate.now().year
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(26.dp),
         shape = RoundedCornerShape(16.dp),
@@ -114,11 +117,12 @@ fun GridMes(viewModel: HistoricoViewModel, ano: Int){
 fun MesItem(
     mes: String,
     isSelected: Boolean,
-    onClick: () -> Unit){
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+){
 
     Box(
         modifier = Modifier
-            .padding(4.dp)
             .size(64.dp)
             .clip(RoundedCornerShape(12.dp)) //Tamanho de cada item
             .background(
@@ -134,6 +138,8 @@ fun MesItem(
                 //Salva o mes clicado na variavel mesSelecionado
                 onClick()
             }
+            .padding(4.dp)
+
     ){
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,

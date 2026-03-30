@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,11 +55,13 @@ import java.time.YearMonth
 fun SaldoDoMesCard(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     comparativoModel: ComparativoModel,
+    setDia: (String) -> Unit,
+    converteDiaEmMes: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    setDia: (String) -> Unit = {},
-){
+
+    ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
-    var tipoDeDados = comparativoModel.tipoDeDados
+    val tipoDeDados = comparativoModel.tipoDeDados
     var selectedIndex by remember { mutableIntStateOf(tipoDeDados.ordinal) }
     var isCalendarOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -102,12 +106,13 @@ fun SaldoDoMesCard(
                 options = options,
                 onChangeSelectedIndex = {
                     selectedIndex = it
-                    when(it){
-                        0 -> isCalendarOpen
-                        1 -> ToastManager.showToast(context, "Função em andamento")
-                        2 -> tipoDeDados = TipoDeDados.MES
+                    when (selectedIndex) {
+                        0 -> isCalendarOpen = true
+                        1 -> ToastManager.showToast(context, "Função em desenvolvimento")
+                        2 -> converteDiaEmMes(true)
+
+                        else -> Log.d(TAG, "SaldoDoMesCard: teste")
                     }
-                    isCalendarOpen = it == 0
                 },
                 initialSelectedIcon = selectedIndex
             )
@@ -156,4 +161,8 @@ fun SaldoDoMesCard(
             }
         }
     }
+}
+
+private fun onChangedSelectedIndex(selectIndex: Boolean) {
+
 }

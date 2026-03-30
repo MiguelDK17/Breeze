@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,7 +19,9 @@ import com.migueldk17.breeze.uistate.UiState
 
 @Suppress("EffectKeys")
 @Composable
-fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
+fun Historico(
+    modifier: Modifier = Modifier,
+    viewModel: HistoricoViewModel = hiltViewModel()){
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -32,6 +35,6 @@ fun Historico(viewModel: HistoricoViewModel = hiltViewModel()){
         }
     }
 
-    Calendario(viewModel)
+    Calendario(modifier = modifier,viewModel)
 
 }
