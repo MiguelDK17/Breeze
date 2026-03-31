@@ -14,8 +14,6 @@ import javax.inject.Inject
 class ContaRepository @Inject constructor(
     private val contaDao: ContaDao
 ){
-    fun getContas(): Flow<List<Conta>> =  contaDao.getContas()
-
     fun getContasMes(mesAno: String): Flow<List<Conta>>{
         Log.d(TAG, "getContasMes: $mesAno")
         return contaDao.getContasMes(mesAno)

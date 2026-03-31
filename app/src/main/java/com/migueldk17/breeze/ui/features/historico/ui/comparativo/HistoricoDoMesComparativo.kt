@@ -40,6 +40,7 @@ fun HistoricoDoMesComparativo(
     val context = LocalContext.current
     val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
+    val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
     Log.d(TAG, "HistoricoDoMesComparativo: variaveis instanciadas")
 
 
@@ -68,7 +69,8 @@ fun HistoricoDoMesComparativo(
                 },
                 converteDiaEmMes = {
                     viewModel.converteDiaEmMes()
-                }
+                },
+                mesBackup = mesBackup
             )
         }
     }
@@ -78,9 +80,11 @@ fun HistoricoDoMesComparativo(
 private fun HistoricoDoMesComparativoBody(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     comparativoModel: ComparativoModel,
+    mesBackup: String,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
-    converteDiaEmMes : (Boolean) -> Unit = {}
+    converteDiaEmMes : () -> Unit = {},
+
 
     ){
     val scroll = rememberScrollState()
@@ -103,7 +107,8 @@ private fun HistoricoDoMesComparativoBody(
             listMovimentacaoDomain = listMovimentacaoDomain,
             comparativoModel = comparativoModel,
             setDia = { setDia(it) },
-            converteDiaEmMes = { converteDiaEmMes(it) }
+            converteDiaEmMes = { converteDiaEmMes() },
+            mesBackup = mesBackup
         )
 
         GastoCard()

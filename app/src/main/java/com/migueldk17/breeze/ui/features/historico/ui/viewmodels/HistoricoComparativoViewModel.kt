@@ -39,6 +39,9 @@ class HistoricoComparativoViewModel @Inject constructor(
     private val _comparativoModel = MutableStateFlow(ComparativoModel())
     val comparativoModel = _comparativoModel.asStateFlow()
 
+    private val _mesBackup = MutableStateFlow("")
+    val mes = _mesBackup.asStateFlow()
+
     
     init {
         observaContasPoMes()
@@ -51,12 +54,14 @@ class HistoricoComparativoViewModel @Inject constructor(
                  .flatMapLatest { filtro ->
                      when (_comparativoModel.value.tipoDeDados) {
                          TipoDeDados.MES -> {
-                             _comparativoModel.value.tipoDeDados = TipoDeDados.MES
                              getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
                          }
                          TipoDeDados.DIA -> {
-                             _comparativoModel.value.tipoDeDados = TipoDeDados.DIA
                              getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
+                         }
+
+                         TipoDeDados.CATEGORIA -> {
+                             getMovimentacoesDoMesUseCase(filtro.data.orEmpty()) // Está aqui temporariamente enquanto essa função não é feita
                          }
                      }
                  }
@@ -70,11 +75,11 @@ class HistoricoComparativoViewModel @Inject constructor(
                              _comparativoModel.value.listaDeMovimentacoesMensal = UiState.Empty
                          }
                          list.isEmpty() && _comparativoModel.value.tipoDeDados == TipoDeDados.DIA -> {
-                             val data = _filtro.value.data!!.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM"))
+                             val data = _mesBackup.value
 
                              _filtro.update { it.copy(
-                                 data = data,
-                                 tipoDeDados = TipoDeDados.MES) }
+                                 data = data) }
+                             _comparativoModel.value.tipoDeDados = TipoDeDados.MES
                          }
                          list.isEmpty() && categoria == null -> _comparativoModel.value.listaDeMovimentacoesMensal = UiState.Empty
                          list.isNotEmpty() && _comparativoModel.value.tipoDeDados == TipoDeDados.MES -> {
@@ -97,37 +102,35 @@ class HistoricoComparativoViewModel @Inject constructor(
     }
 
     fun setMes (mes: String) {
+        _mesBackup.value = mes
+        Log.d(TAG, "setMes: mesBackup tá assim: ${_mesBackup.value}")
         _filtro.update {
             it.copy(
                 data = mes,
-                tipoDeDados = TipoDeDados.MES
             )
         }
+
     }
 
     fun setDia(dia: String) {
         Log.d(TAG, "setDia: valor da data antes do update: ${_filtro.value}")
         _filtro.update {
             it.copy(
-                data = dia,
-                tipoDeDados = TipoDeDados.DIA
+                data = dia
             )
         }
+        _comparativoModel.value.tipoDeDados = TipoDeDados.DIA
         Log.d(TAG, "setDia: valor da data depois do upgrade: ${_filtro.value}")
     }
 
     fun converteDiaEmMes() {
-        val teste = _filtro.value.data?.dropLast(1)
-        Log.d(TAG, "converteDiaEmMes: $teste")
-        if (teste != null) {
-            val data = teste.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM"))
-            _filtro.update {
-                it.copy(
-                    data = data,
-                    tipoDeDados = TipoDeDados.MES
-                )
-            }
+        _filtro.update {
+            it.copy(
+                data = _mesBackup.value
+            )
         }
+        _comparativoModel.value.tipoDeDados = TipoDeDados.MES
+
     }
     fun setCategoria(categoria: String) {
         _filtro.update {

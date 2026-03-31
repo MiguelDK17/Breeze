@@ -44,6 +44,8 @@ import java.time.LocalDateTime
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import com.kizitonwose.calendar.core.yearMonth
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.utils.ToastManager
@@ -55,16 +57,18 @@ import java.time.YearMonth
 fun SaldoDoMesCard(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     comparativoModel: ComparativoModel,
+    mesBackup: String,
     setDia: (String) -> Unit,
-    converteDiaEmMes: (Boolean) -> Unit,
+    converteDiaEmMes: () -> Unit,
     modifier: Modifier = Modifier,
-
     ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
-    val tipoDeDados = comparativoModel.tipoDeDados
-    var selectedIndex by remember { mutableIntStateOf(tipoDeDados.ordinal) }
+    Log.d(TAG, "SaldoDoMesCard: mes atual ${YearMonth.now()}")
+    var selectedIndex by remember { mutableIntStateOf(comparativoModel.tipoDeDados.ordinal) }
+    Log.d(TAG, "SaldoDoMesCard: select index tá assim: ${comparativoModel.tipoDeDados} - $selectedIndex")
     var isCalendarOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val dataConvertida = "${mesBackup.dropLast(1)}-01"
 
     val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
         listMovimentacaoDomain.map {
@@ -109,16 +113,14 @@ fun SaldoDoMesCard(
                     when (selectedIndex) {
                         0 -> isCalendarOpen = true
                         1 -> ToastManager.showToast(context, "Função em desenvolvimento")
-                        2 -> converteDiaEmMes(true)
-
-                        else -> Log.d(TAG, "SaldoDoMesCard: teste")
+                        2 -> converteDiaEmMes()
                     }
                 },
                 initialSelectedIcon = selectedIndex
             )
             if (isCalendarOpen) {
                 CalendarDialog(
-                    yearMonth = YearMonth.now(),
+                    yearMonth = dataConvertida.toLocalDate().yearMonth,
                     onConfirm = { date ->
                         setDia(date.toApiFormat())
                         isCalendarOpen = false
@@ -161,8 +163,4 @@ fun SaldoDoMesCard(
             }
         }
     }
-}
-
-private fun onChangedSelectedIndex(selectIndex: Boolean) {
-
 }

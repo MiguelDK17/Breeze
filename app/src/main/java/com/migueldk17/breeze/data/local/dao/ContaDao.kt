@@ -12,10 +12,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContaDao {
-    @Query("SELECT * FROM conta_table")
-    fun getContas(): Flow<List<Conta>>
 
-    @Query("SELECT * FROM conta_table")
+    @Query("SELECT * FROM conta_table WHERE data_pagamento IS NULL")
     fun getContasComParcelas(): Flow<List<ContaComParcelas>>
 
      //Pega as contas de um mes
