@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.ui.utils.ToastManager
@@ -36,15 +37,16 @@ fun HistoricoDoMesComparativo(
     modifier: Modifier = Modifier,
     viewModel: HistoricoComparativoViewModel = hiltViewModel()
 ){
-    Log.d(TAG, "HistoricoDoMesComparativo: entramos em comparativo")
     val context = LocalContext.current
     val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
+    val listaDeMovimentacoesDiaria = comparativoModel.listaDeMovimentacoesDiaria
+    val listaSelecionada = if (comparativoModel.tipoDeDados == TipoDeDados.MES) listaDeMovimentacoesMensal else listaDeMovimentacoesDiaria
+    Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
-    Log.d(TAG, "HistoricoDoMesComparativo: variaveis instanciadas")
 
 
-    when(listaDeMovimentacoesMensal) {
+    when(listaSelecionada) {
         is UiState.Empty -> {
             ToastManager.showToast(context, "Lista vazia")
         }
@@ -52,13 +54,11 @@ fun HistoricoDoMesComparativo(
             Log.d(TAG, "HistoricoDoMesComparativo: Carregando")
         }
         is UiState.Error -> {
-            val error = listaDeMovimentacoesMensal.exception
+            val error = listaSelecionada.exception
             Log.d(TAG, "HistoricoDoMesComparativo: Erro: $error")
         }
         is UiState.Success -> {
-            Log.d(TAG, "HistoricoDoMesComparativo: deu success")
-
-            val data = listaDeMovimentacoesMensal.data
+            val data = listaSelecionada.data
 
             HistoricoDoMesComparativoBody(
                 modifier = modifier,

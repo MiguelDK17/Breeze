@@ -63,9 +63,7 @@ fun SaldoDoMesCard(
     modifier: Modifier = Modifier,
     ){
     val options = persistentListOf("Dia", "Categoria", "Mês")
-    Log.d(TAG, "SaldoDoMesCard: mes atual ${YearMonth.now()}")
     var selectedIndex by remember { mutableIntStateOf(comparativoModel.tipoDeDados.ordinal) }
-    Log.d(TAG, "SaldoDoMesCard: select index tá assim: ${comparativoModel.tipoDeDados} - $selectedIndex")
     var isCalendarOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val dataConvertida = "${mesBackup.dropLast(1)}-01"

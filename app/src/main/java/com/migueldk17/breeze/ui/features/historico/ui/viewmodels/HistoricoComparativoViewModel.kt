@@ -54,9 +54,11 @@ class HistoricoComparativoViewModel @Inject constructor(
                  .flatMapLatest { filtro ->
                      when (_comparativoModel.value.tipoDeDados) {
                          TipoDeDados.MES -> {
+                             Log.d(TAG, "observaContasPoMes: mes chamado")
                              getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
                          }
                          TipoDeDados.DIA -> {
+                             Log.d(TAG, "observaContasPoMes: dia chamado")
                              getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
                          }
 
@@ -66,32 +68,54 @@ class HistoricoComparativoViewModel @Inject constructor(
                      }
                  }
                  .catch { e ->
-                     _comparativoModel.value.listaDeMovimentacoesMensal = UiState.Error(e.message ?: "Erro desconhecido")
+                     _comparativoModel.update {
+                         it.copy(
+                             listaDeMovimentacoesMensal = UiState.Error(e.message ?: "Erro desconhecido")
+
+                         )
+                     }
                  }
                  .collectLatest { list ->
                      val categoria = _filtro.value.categoria
                      when {
                          list.isEmpty() && _comparativoModel.value.tipoDeDados == TipoDeDados.MES -> {
-                             _comparativoModel.value.listaDeMovimentacoesMensal = UiState.Empty
+                             _comparativoModel.update {
+                                 it.copy(
+                                     listaDeMovimentacoesMensal = UiState.Empty
+                                 )
+                             }
                          }
                          list.isEmpty() && _comparativoModel.value.tipoDeDados == TipoDeDados.DIA -> {
                              val data = _mesBackup.value
 
                              _filtro.update { it.copy(
                                  data = data) }
-                             _comparativoModel.value.tipoDeDados = TipoDeDados.MES
+                             Log.d(TAG, "observaContasPoMes: caiu em dia porém não há nenhuma conta registrada nesse dia, retornando para mês")
                          }
-                         list.isEmpty() && categoria == null -> _comparativoModel.value.listaDeMovimentacoesMensal = UiState.Empty
-                         list.isNotEmpty() && _comparativoModel.value.tipoDeDados == TipoDeDados.MES -> {
-                             Log.d(TAG, "observaContasPoMes: Deu certinho")
-                             _comparativoModel.value.listaDeMovimentacoesMensal = UiState.Success(list)
-                             Log.d(TAG, "observaContasPoMes: lista tá assim: ${_comparativoModel.value.listaDeMovimentacoesMensal}")
+                         list.isEmpty() && categoria == null -> {
+                             _comparativoModel.update {
+                                 it.copy(
+                                     listaDeMovimentacoesMensal = UiState.Empty
+                                 )
+                             }
+                         }
+                         list.isNotEmpty() && _filtro.value.tipoDeDados == TipoDeDados.MES -> {
+                             _comparativoModel.update {
+                                 it.copy(
+                                     listaDeMovimentacoesMensal = UiState.Success(list)
+                                 )
+                             }
                              retornaValoresFinais(list.toImmutableList())
+                             Log.d(TAG, "observaContasPoMes: lista não tá vazia e caiu em mes")
                          }
-                         list.isNotEmpty() && _comparativoModel.value.tipoDeDados == TipoDeDados.DIA -> {
-                             Log.d(TAG, "observaContasPoMes: caiu em dia")
-                             _comparativoModel.value.listaDeMovimentacoesDiaria = UiState.Success(list)
-                         }
+                         list.isNotEmpty() && _filtro.value.tipoDeDados == TipoDeDados.DIA -> {
+                             _comparativoModel.update {
+                                 it.copy(
+                                     listaDeMovimentacoesDiaria = UiState.Success(list)
+                                 )
+                             }
+                             Log.d(TAG, "observaContasPoMes: lista não tá vazia e caiu em DIA")
+                             }
                          else -> {
                              Log.d(TAG, "observaContasPoMes: Inválido")
                          }
@@ -107,6 +131,8 @@ class HistoricoComparativoViewModel @Inject constructor(
         _filtro.update {
             it.copy(
                 data = mes,
+                tipoDeDados = TipoDeDados.MES
+
             )
         }
 
@@ -116,26 +142,27 @@ class HistoricoComparativoViewModel @Inject constructor(
         Log.d(TAG, "setDia: valor da data antes do update: ${_filtro.value}")
         _filtro.update {
             it.copy(
-                data = dia
+                data = dia,
+                tipoDeDados = TipoDeDados.DIA
             )
         }
-        _comparativoModel.value.tipoDeDados = TipoDeDados.DIA
         Log.d(TAG, "setDia: valor da data depois do upgrade: ${_filtro.value}")
     }
 
     fun converteDiaEmMes() {
+        Log.d(TAG, "converteDiaEmMes: função chamada")
         _filtro.update {
             it.copy(
-                data = _mesBackup.value
+                data = _mesBackup.value,
+                tipoDeDados = TipoDeDados.DIA
             )
         }
-        _comparativoModel.value.tipoDeDados = TipoDeDados.MES
 
     }
     fun setCategoria(categoria: String) {
         _filtro.update {
             it.copy(
-                categoria = categoria
+                categoria = categoria,
             )
         }
     }

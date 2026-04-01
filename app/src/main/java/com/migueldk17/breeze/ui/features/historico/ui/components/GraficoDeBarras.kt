@@ -112,8 +112,6 @@ fun GraficoDeBarras(
                         val alturaMaxima = remember(graficoDoDiaModel) {
                             graficoDoDiaModel.maxOfOrNull { it.valor.abs().toFloat() } ?: 1f
                         }
-                        Log.d(TAG, "GraficoDeBarras: O valor máximo é $alturaMaxima")
-                        Log.d(TAG, "GraficoDeBarras: altura das barras $alturaMaxima")
                         val texto = grafico.valor.formatarValorEmReal()
                         val listColors = listOf(grafico.colorIcon.toColor(), grafico.colorCard.toColor())
                         val brush = Brush.verticalGradient(colors = listColors)

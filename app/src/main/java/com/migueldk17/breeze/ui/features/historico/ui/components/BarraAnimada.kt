@@ -1,7 +1,6 @@
 package com.migueldk17.breeze.ui.features.historico.ui.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
+
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -39,12 +38,11 @@ fun BarraAnimada(
     cor: Brush, //Cor em gradiente
     dia: Int, //Dia do mes
     delayAnimacao: Int, //Delay que cada barra terá para aparecer
-    valorFormatado: String //Valor da conta já formatado para monetário
+    valorFormatado: String, //Valor da conta já formatado para monetário
+    modifier: Modifier = Modifier
 ){
     val alturaAnimada = remember { Animatable(0f) }
     val density = LocalDensity.current
-    val valorFormatadoAbs = valor.toFloat()
-    Log.d(TAG, "BarraAnimada: valor formatado $valorFormatadoAbs")
 
     val alturaFinal = (valor.toFloat() / maxValue) * 300f //Altura final calculada apartir do valor da conta e o valor máximo
 
@@ -66,7 +64,7 @@ fun BarraAnimada(
     val offsetY = alturaEmDp + if (valorFormatado.length > 6) 10.dp else 0.dp
 
     Column(
-        modifier = Modifier.wrapContentHeight()
+        modifier = modifier.wrapContentHeight()
     ) {
         Box(
             modifier = Modifier
