@@ -41,7 +41,13 @@ fun HistoricoDoMesComparativo(
     val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
     val listaDeMovimentacoesDiaria = comparativoModel.listaDeMovimentacoesDiaria
-    val listaSelecionada = if (comparativoModel.tipoDeDados == TipoDeDados.MES) listaDeMovimentacoesMensal else listaDeMovimentacoesDiaria
+    val listaSelecionada = if (comparativoModel.tipoDeDados == TipoDeDados.MES) {
+        Log.d(TAG, "HistoricoDoMesComparativo: lista mensal chamada")
+        listaDeMovimentacoesMensal
+    } else {
+        Log.d(TAG, "HistoricoDoMesComparativo: lista diaria chamada")
+        listaDeMovimentacoesDiaria
+    }
     Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
 
@@ -68,7 +74,7 @@ fun HistoricoDoMesComparativo(
                     viewModel.setDia(it)
                 },
                 converteDiaEmMes = {
-                    viewModel.converteDiaEmMes()
+                    viewModel.voltarParaMes()
                 },
                 mesBackup = mesBackup
             )
