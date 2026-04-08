@@ -61,6 +61,17 @@ object MoneyUtils {
             .setScale(casasDecimais, RoundingMode.HALF_EVEN)
 
     }
+
+    fun calcularPorcentagem(
+        valorCategoria: BigDecimal,
+        valorTotal: BigDecimal
+    ): BigDecimal {
+        if (valorTotal == BigDecimal.ZERO) return BigDecimal.ZERO
+
+        return valorCategoria
+            .divide(valorTotal, 4, RoundingMode.HALF_UP)
+            .multiply(BigDecimal(100))
+    }
 }
 
 
