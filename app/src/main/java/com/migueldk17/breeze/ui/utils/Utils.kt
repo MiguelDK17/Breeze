@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -115,6 +116,15 @@ fun retornaDataFormatadaParaPesquisaNoRoom(mes: String, ano: Int): String {
     )
     val dataFormatada = "$ano-${mesesMap[mes]}%"
     return dataFormatada
+}
+
+fun Color.soften(): Color {
+    return Color(
+        red = red + (1f - red) * 0.35f,
+        green = green + (1f - green) * 0.35f,
+        blue = blue + (1f - blue) * 0.35f,
+        alpha = 1f
+    )
 }
 
 

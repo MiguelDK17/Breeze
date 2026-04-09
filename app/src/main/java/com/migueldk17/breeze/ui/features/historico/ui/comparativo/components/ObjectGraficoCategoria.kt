@@ -37,6 +37,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
+import com.migueldk17.breeze.ui.utils.soften
 import kotlinx.collections.immutable.persistentListOf
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -50,9 +51,9 @@ fun ObjectGraficoCategoria(
     valorConta: BigDecimal,
     porcentagem: String,
     progress: Float,
+    progressBrush: Brush,
     modifier: Modifier = Modifier
 ){
-    val listColors = persistentListOf(iconColor, colorCard)
     //Row pai
     Row(
         modifier = modifier
@@ -117,7 +118,7 @@ fun ObjectGraficoCategoria(
             }
             HighlightProgressBar(
                 progress = progress,
-                progressBrush = Brush.horizontalGradient(listColors),
+                progressBrush = progressBrush,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -182,7 +183,8 @@ data class CategoriaObject(
     val porcentagem: String,
     val colorCard: Color,
     val icon: BreezeIconsType,
-    val iconColor: Color
+    val iconColor: Color,
+    val progressBrush: Brush
 )
 
 @Composable
@@ -195,7 +197,8 @@ private fun Preview(){
             porcentagem = "31%",
             colorCard = Color(0xFFFCE3D0),
             icon = BreezeIcons.Linear.FoodKitchen.ChefHat,
-            iconColor = Color(0xFF87480F)
+            iconColor = Color(0xFF87480F),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFFFC9438), Color(0xFFFC9438).soften()))
         )
         val transporte = CategoriaObject(
             nomeCategoria = "Transporte",
@@ -203,7 +206,9 @@ private fun Preview(){
             porcentagem = "20%",
             colorCard = Color(0xFFFEEFCE),
             icon = BreezeIcons.Linear.Mobility.CarLinear,
-            iconColor = Color(0xFF742E01)
+            iconColor = Color(0xFF742E01),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFF742E01), Color(0xFF742E01).soften()))
+
         )
         val moradia = CategoriaObject(
             nomeCategoria = "Moradia",
@@ -211,7 +216,9 @@ private fun Preview(){
             porcentagem = "16%",
             colorCard = Color(0xFFDCF5F4),
             icon = BreezeIcons.Linear.Building.HomeLinear,
-            iconColor = Color(0xFF3BC2BE)
+            iconColor = Color(0xFF3BC2BE),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFF3BC2BE), Color(0xFF3BC2BE).soften()))
+
         )
         val lazer = CategoriaObject(
             nomeCategoria = "Lazer",
@@ -219,7 +226,9 @@ private fun Preview(){
             porcentagem = "13%",
             colorCard = Color(0xFFEAE3FD),
             icon = BreezeIcons.Linear.All.Heart,
-            iconColor = Color(0xFF5333E9)
+            iconColor = Color(0xFF5333E9),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFF5333E9), Color(0xFF5333E9).soften()))
+
         )
 
         val saude = CategoriaObject(
@@ -228,7 +237,9 @@ private fun Preview(){
             porcentagem = "9%",
             colorCard = Color(0xFFDDEEFD),
             icon = BreezeIcons.Linear.All.Heart,
-            iconColor = Color(0xFF1A68DC)
+            iconColor = Color(0xFF1A68DC),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFF1A68DC), Color(0xFF1A68DC).soften()))
+
         )
 
         val compras = CategoriaObject(
@@ -237,7 +248,9 @@ private fun Preview(){
             porcentagem = "7%",
             colorCard = Color(0xFFFEEAF3),
             icon = BreezeIcons.Linear.Shop.Bag2,
-            iconColor = Color(0xFFD61350)
+            iconColor = Color(0xFFD61350),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFFD61350), Color(0xFFD61350).soften()))
+
         )
 
         val assinaturas = CategoriaObject(
@@ -246,7 +259,9 @@ private fun Preview(){
             porcentagem = "5%",
             colorCard = Color(0xFFEAE3FD),
             icon = BreezeIcons.Linear.VideoAudioImage.VideoCircleLinear,
-            iconColor = Color(0xFF5328DC)
+            iconColor = Color(0xFF5328DC),
+            progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFF5328DC), Color(0xFFFC9438).copy(alpha = 0.15f)))
+
         )
         val list = persistentListOf(alimentacao, transporte, moradia, lazer, saude, compras, assinaturas)
 
@@ -279,6 +294,7 @@ private fun Preview(){
                             valorConta = categoria.valorConta,
                             porcentagem = categoria.porcentagem,
                             progress = categoria.valorConta.divide(BigDecimal(2820.00), 4, RoundingMode.HALF_UP).toFloat(),
+                            progressBrush = categoria.progressBrush
                         )
                         Spacer(modifier = Modifier.size(25.dp))
                     }
