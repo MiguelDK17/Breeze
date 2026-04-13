@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieConstants
 import com.migueldk17.breeze.R
@@ -101,6 +101,7 @@ fun PaginaInicial(
 
     Log.d(TAG, "PaginaInicial: enum de recive: ${BreezeIcons.Linear.Money.MoneyRecive.enum.toDatabaseValue()}")
     Log.d(TAG, "PaginaInicial: enum de send: ${BreezeIcons.Linear.Money.MoneySend.enum.toDatabaseValue()}")
+    BreezeIcons.Linear.All.
 
 
 
