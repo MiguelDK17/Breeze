@@ -101,7 +101,6 @@ fun PaginaInicial(
 
     Log.d(TAG, "PaginaInicial: enum de recive: ${BreezeIcons.Linear.Money.MoneyRecive.enum.toDatabaseValue()}")
     Log.d(TAG, "PaginaInicial: enum de send: ${BreezeIcons.Linear.Money.MoneySend.enum.toDatabaseValue()}")
-    BreezeIcons.Linear.All.
 
 
 
