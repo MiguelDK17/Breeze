@@ -204,7 +204,7 @@ private fun Preview(){
             nomeCategoria = "Transporte",
             valorConta = BigDecimal(570.00),
             porcentagem = "20%",
-            colorCard = Color(0xFFFEBF39),
+            colorCard = Color(0xFFFEEFCB),
             icon = BreezeIcons.Linear.Mobility.CarLinear,
             iconColor = Color(0xFF742E01),
             progressBrush = Brush.horizontalGradient(persistentListOf(Color(0xFFFEBF39), Color(0xFFFEBF39).soften()))

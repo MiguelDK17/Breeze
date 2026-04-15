@@ -45,7 +45,7 @@ fun HighlightProgressBar(
         label = "track_alpha"
     )
 
-    LaunchedEffect(animatedProgress) {
+    LaunchedEffect(startAnimation) {
         startAnimation = true
     }
 
