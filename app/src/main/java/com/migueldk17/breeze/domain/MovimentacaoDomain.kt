@@ -34,6 +34,7 @@ data class MovimentacaoDomain(
 
     val contaId: Long? = null,
     val totalAmount: BigDecimal = BigDecimal.ZERO,
+    val totalPercentage: Float,
 )
 
 private fun returnColorIcon(tipoMovimentacao: TipoMovimentacao): Color {

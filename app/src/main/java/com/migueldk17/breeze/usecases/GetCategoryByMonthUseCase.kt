@@ -7,6 +7,7 @@ import com.migueldk17.breeze.dto.CategoryTotalDto
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
@@ -16,15 +17,19 @@ class GetCategoryTotalByMonthUseCase @Inject constructor(
 ) {
     operator fun invoke(mesAno: String): Flow<List<MovimentacaoDomain>> {
         return repository.getCategoryTotalByMonth(mesAno).map { list ->
+            val totalGeral = list.sumOf { it.totalAmount }
+
             list.map {
                 MovimentacaoDomain(
                     id = UUID.randomUUID().toString().toLong(),
-                    valor = it.totalAmount.toBigDecimal(),
+                    valor = it.totalAmount,
                     descricao = "",
                     categoria = it.category,
                     date = LocalDate.now(),
                     icon = BreezeIcons.Unspecified.IconUnspecified.enum.name,
                     tipo = TipoMovimentacao.SAIDA,
+                    totalAmount = totalGeral,
+                    totalPercentage = (it.totalAmount.divide(totalGeral)).toFloat()
                 )
             }
         }

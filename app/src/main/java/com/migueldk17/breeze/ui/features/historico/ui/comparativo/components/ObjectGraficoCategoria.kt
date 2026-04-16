@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -74,7 +76,8 @@ fun ObjectGraficoCategoria(
             }
         )
         Column(
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .fillMaxHeight()
                 .weight(1f),
         ) {
             Row(
@@ -178,13 +181,13 @@ private fun BoxPorcentagem(
 }
 
 data class CategoriaObject(
-    val nomeCategoria: String,
-    val valorConta: BigDecimal,
-    val porcentagem: String,
-    val colorCard: Color,
-    val icon: BreezeIconsType,
-    val iconColor: Color,
-    val progressBrush: Brush
+    val nomeCategoria: String, //Variavel
+    val valorConta: BigDecimal, //Variavel
+    val porcentagem: String, //Variável(calculavel no UseCase)
+    val colorCard: Color, //Fixo
+    val icon: BreezeIconsType, //Fixo(Colocar no UseCase)
+    val iconColor: Color, //Fixo
+    val progressBrush: Brush //Fixo
 )
 
 @Composable
@@ -304,6 +307,18 @@ private fun Preview(){
                     .width(349.dp)
 
             ) {
+                Log.d(TAG, "Preview: ${listOf(
+                    BreezeIcons.Linear.All.Donut.enum.name,
+                    BreezeIcons.Linear.All.CarLinear.enum.name,
+                    BreezeIcons.Linear.All.House.enum.name,
+                    BreezeIcons.Linear.All.Game.enum.name,
+                    BreezeIcons.Linear.All.Heart.enum.name,
+                    BreezeIcons.Linear.All.Bag2.enum.name,
+                    BreezeIcons.Linear.All.VideoCircleLinear.enum.name,
+                    BreezeIcons.Linear.All.SquareAcademicCap2.enum.name,
+                    BreezeIcons.Linear.All.Paw.enum.name,
+                    BreezeIcons.Linear.All.GlobeLinear.enum.name
+                )}")
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
