@@ -58,6 +58,7 @@ fun SaldoDoMesCard(
     listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
     comparativoModel: ComparativoModel,
     mesBackup: String,
+    setCategoria: () -> Unit,
     setDia: (String) -> Unit,
     converteDiaEmMes: () -> Unit,
     modifier: Modifier = Modifier,
@@ -110,7 +111,7 @@ fun SaldoDoMesCard(
                     selectedIndex = it
                     when (selectedIndex) {
                         0 -> isCalendarOpen = true
-                        1 -> ToastManager.showToast(context, "Função em desenvolvimento")
+                        1 -> setCategoria()
                         2 -> converteDiaEmMes()
                     }
                 },
@@ -128,37 +129,46 @@ fun SaldoDoMesCard(
                     }
                 )
             }
-            GraficoDeBarras(
-                modifier = Modifier
-                    .height(290.dp),
-                graficoDoDiaModel = listLinhaDoTempoModel
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    Icons.Default.Circle,
-                    contentDescription = null,
-                    tint = Color(0xFFACE1C1)
+            if (comparativoModel.tipoDeDados != TipoDeDados.CATEGORIA){
+                GraficoDeBarras(
+                    modifier = Modifier
+                        .height(290.dp),
+                    graficoDoDiaModel = listLinhaDoTempoModel
                 )
-                DescriptionText(
-                    text = "Receitas",
-                    color = Color(0xFF26595C)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    Icons.Default.Circle,
-                    contentDescription = null,
-                    tint = Color(0xFFF69297)
-                )
-                DescriptionText(
-                    text = "Despesas",
-                    color = Color(0xFFD3374D)
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        Icons.Default.Circle,
+                        contentDescription = null,
+                        tint = Color(0xFFACE1C1)
+                    )
+                    DescriptionText(
+                        text = "Receitas",
+                        color = Color(0xFF26595C)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Icon(
+                        Icons.Default.Circle,
+                        contentDescription = null,
+                        tint = Color(0xFFF69297)
+                    )
+                    DescriptionText(
+                        text = "Despesas",
+                        color = Color(0xFFD3374D)
+                    )
+                }
+            } else {
+
             }
         }
     }
+}
+
+@Composable
+private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>) {
+
 }

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
+import com.migueldk17.breeze.dto.CategoryTotalDto
 import kotlinx.coroutines.flow.Flow
 import java.math.BigDecimal
 
@@ -31,6 +32,20 @@ interface MovimentacaoDao {
 
     @Query("SELECT * FROM movimentacao_entity WHERE data LIKE :diaMesAno || '%'")
     fun getMovimentacoesDoDia(diaMesAno: String): Flow<List<MovimentacaoEntity>>
+
+    @Query("""
+        SELECT c.category, SUM(m.valor) as totalAmount
+        FROM movimentacao_entity m
+        INNER JOIN conta_table c ON m.contaId = c.id
+        WHERE m.data LIKE :mesAno || '%'
+        GROUP BY c.category
+        ORDER BY totalAmount DESC
+    """
+    )
+
+    fun getCategoryTotalsByMonth(
+        mesAno: String
+    ): Flow<List<CategoryTotalDto>>
 
     @Delete
     fun apagaMovimentacao(movimentacaoEntity: MovimentacaoEntity)

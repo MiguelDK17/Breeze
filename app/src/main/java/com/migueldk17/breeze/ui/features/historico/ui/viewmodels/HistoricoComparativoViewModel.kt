@@ -11,6 +11,7 @@ import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import com.migueldk17.breeze.uistate.UiState
+import com.migueldk17.breeze.usecases.GetCategoryTotalByMonthUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoDiaUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoMesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +33,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoricoComparativoViewModel @Inject constructor(
     private val getMovimentacoesDoMesUseCase: GetMovimentacoesDoMesUseCase,
-    private val getMovimentacoesDoDiaUseCase: GetMovimentacoesDoDiaUseCase
+    private val getMovimentacoesDoDiaUseCase: GetMovimentacoesDoDiaUseCase,
+    private val getCategoryTotalByMonthUseCase: GetCategoryTotalByMonthUseCase
 ): ViewModel() {
     private val _filtro = MutableStateFlow(ComparativoFiltro())
     private val _comparativoModel = MutableStateFlow(ComparativoModel())
@@ -55,7 +57,7 @@ class HistoricoComparativoViewModel @Inject constructor(
                  when (tipo) {
                      TipoDeDados.MES -> getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
                      TipoDeDados.DIA -> getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
-                     else -> throw IllegalArgumentException("Tipo de dados inválido: $tipo")
+                     TipoDeDados.CATEGORIA -> getCategoryTotalByMonthUseCase(filtro.data.orEmpty())
                  }
              }
                  .catch { e ->
@@ -115,10 +117,10 @@ class HistoricoComparativoViewModel @Inject constructor(
 
     }
 
-    fun setCategoria(categoria: String) {
-        _filtro.update {
+    fun setCategoria() {
+        _comparativoModel.update {
             it.copy(
-                categoria = categoria,
+                tipoDeDados = TipoDeDados.CATEGORIA
             )
         }
     }
@@ -156,7 +158,10 @@ class HistoricoComparativoViewModel @Inject constructor(
             TipoDeDados.DIA -> {
                 updateDiaria(UiState.Success(list))
             }
-            else -> Unit
+
+            TipoDeDados.CATEGORIA -> {
+                updateCategoria(UiState.Success(list))
+            }
         }
     }
 
@@ -171,6 +176,14 @@ class HistoricoComparativoViewModel @Inject constructor(
         _comparativoModel.update {
             it.copy(
                 listaDeMovimentacoesDiaria = state
+            )
+        }
+    }
+
+    private fun updateCategoria(state: UiState<List<MovimentacaoDomain>>) {
+        _comparativoModel.update {
+            it.copy(
+                listaDeMovimentacoesCategoria = state
             )
         }
     }

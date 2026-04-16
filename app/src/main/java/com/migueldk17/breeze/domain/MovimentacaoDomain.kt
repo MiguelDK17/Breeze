@@ -20,6 +20,8 @@ data class MovimentacaoDomain(
 
     val descricao: String,
 
+    val categoria: String = "",
+
     val date: LocalDate,
 
     val icon: String,
@@ -30,7 +32,8 @@ data class MovimentacaoDomain(
     val colorCard: Color = returnColorCard(tipo), // Valor padrão remete ao SoftBlue do BreezeIcons
 
 
-    val contaId: Long? = null
+    val contaId: Long? = null,
+    val totalAmount: BigDecimal = BigDecimal.ZERO,
 )
 
 private fun returnColorIcon(tipoMovimentacao: TipoMovimentacao): Color {

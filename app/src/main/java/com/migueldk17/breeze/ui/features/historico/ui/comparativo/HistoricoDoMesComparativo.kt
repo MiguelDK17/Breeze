@@ -41,13 +41,14 @@ fun HistoricoDoMesComparativo(
     val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
     val listaDeMovimentacoesDiaria = comparativoModel.listaDeMovimentacoesDiaria
-    val listaSelecionada = if (comparativoModel.tipoDeDados == TipoDeDados.MES) {
-        Log.d(TAG, "HistoricoDoMesComparativo: lista mensal chamada")
-        listaDeMovimentacoesMensal
-    } else {
-        Log.d(TAG, "HistoricoDoMesComparativo: lista diaria chamada")
-        listaDeMovimentacoesDiaria
+    val listaDeMovimentacoesCategoria = comparativoModel.listaDeMovimentacoesCategoria
+
+    val listaSelecionada = when (comparativoModel.tipoDeDados) {
+        TipoDeDados.MES -> listaDeMovimentacoesMensal
+        TipoDeDados.DIA -> listaDeMovimentacoesDiaria
+        TipoDeDados.CATEGORIA -> listaDeMovimentacoesCategoria
     }
+
     Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
 
@@ -76,6 +77,9 @@ fun HistoricoDoMesComparativo(
                 converteDiaEmMes = {
                     viewModel.voltarParaMes()
                 },
+                setCategoria = {
+                    viewModel.setCategoria()
+                },
                 mesBackup = mesBackup
             )
         }
@@ -89,9 +93,8 @@ private fun HistoricoDoMesComparativoBody(
     mesBackup: String,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
+    setCategoria: () -> Unit = {},
     converteDiaEmMes : () -> Unit = {},
-
-
     ){
     val scroll = rememberScrollState()
 
@@ -113,6 +116,7 @@ private fun HistoricoDoMesComparativoBody(
             listMovimentacaoDomain = listMovimentacaoDomain,
             comparativoModel = comparativoModel,
             setDia = { setDia(it) },
+            setCategoria = { setCategoria() },
             converteDiaEmMes = { converteDiaEmMes() },
             mesBackup = mesBackup
         )

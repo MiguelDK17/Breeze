@@ -3,7 +3,8 @@ package com.migueldk17.breeze.data.local.repository
 import com.migueldk17.breeze.data.local.dao.MovimentacaoDao
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.domain.MovimentacaoDomain
-import com.migueldk17.breeze.ui.features.historico.ui.comparativo.mapper.entity.toDomain
+import com.migueldk17.breeze.dto.CategoryTotalDto
+import com.migueldk17.breeze.mapper.entity.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.math.BigDecimal
@@ -45,5 +46,9 @@ class MovimentacaoRepository @Inject constructor(
                 it.toDomain()
             }
         }
+    }
+
+    fun getCategoryTotalByMonth(mesAno: String): Flow<List<CategoryTotalDto>> {
+        return movimentacaoDao.getCategoryTotalsByMonth(mesAno)
     }
 }

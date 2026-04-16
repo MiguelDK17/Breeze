@@ -1,17 +1,18 @@
-package com.migueldk17.breeze.ui.features.historico.ui.comparativo.mapper.domain
+package com.migueldk17.breeze.mapper.entity
 
-import com.migueldk17.breeze.converters.toDatabaseValue
+import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.domain.MovimentacaoDomain
 
-fun MovimentacaoDomain.toEntity(): MovimentacaoEntity {
-    return MovimentacaoEntity(
+fun MovimentacaoEntity.toDomain(): MovimentacaoDomain {
+    return MovimentacaoDomain(
         id = id,
         valor = valor,
         descricao = descricao,
-        data = date.toDatabaseValue(),
+        date = data.toLocalDate(),
         icon = icon,
         tipo = tipo,
         contaId = contaId
+
     )
 }
