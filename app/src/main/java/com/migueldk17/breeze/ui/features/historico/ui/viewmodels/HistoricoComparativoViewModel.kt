@@ -2,6 +2,8 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.domain.MovimentacaoDomain
@@ -10,15 +12,18 @@ import com.migueldk17.breeze.ui.features.historico.ui.ComparativoFiltro
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
+import com.migueldk17.breeze.ui.utils.soften
 import com.migueldk17.breeze.uistate.UiState
 import com.migueldk17.breeze.usecases.GetCategoryTotalByMonthUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoDiaUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoMesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -43,6 +48,23 @@ class HistoricoComparativoViewModel @Inject constructor(
     private val _mesBackup = MutableStateFlow("")
     val mes = _mesBackup.asStateFlow()
 
+    private val _totalPercentage = MutableStateFlow("")
+    val totalPercentage: StateFlow<String> = _totalPercentage.asStateFlow()
+
+    private val _progress = MutableStateFlow(0f)
+    val progress: StateFlow<Float> = _progress.asStateFlow()
+
+    private val _progressBrush = MutableStateFlow(Brush.horizontalGradient(persistentListOf()))
+    val progressBrush: StateFlow<Brush> = _progressBrush.asStateFlow()
+
+    private val _colorCard = MutableStateFlow(Color.Transparent)
+    val colorCard: StateFlow<Color> = _colorCard.asStateFlow()
+
+    private val _colorIcon = MutableStateFlow(Color.Transparent)
+    val colorIcon: StateFlow<Color> = _colorIcon.asStateFlow()
+
+    private val _iconCategoria = MutableStateFlow(0f)
+    val iconCategoria: StateFlow<Float> = _iconCategoria.asStateFlow()
     
     init {
         observaContasPoMes()
@@ -125,6 +147,67 @@ class HistoricoComparativoViewModel @Inject constructor(
         }
     }
 
+    private fun setBrush(category: String){
+        _progressBrush.value = returnBrush(category)
+    }
+
+    private fun setColorCard(category: String){
+        _colorCard.value = returnCardColor(category)
+    }
+
+    private fun setColorIcon(category: String){
+        _colorIcon.value = returnIconColor(category)
+    }
+
+
+    private fun returnBrush(category: String): Brush {
+        return when(category) {
+            "Alimentação" -> Brush.horizontalGradient(persistentListOf(Color(0xFFFC9438), Color(0xFFFC9438).soften()))
+            "Transporte" -> Brush.horizontalGradient(persistentListOf(Color(0xFFFEBF39), Color(0xFFFEBF39).soften()))
+            "Educação" -> Brush.horizontalGradient(persistentListOf(Color(0xFF6BCF92), Color(0xFF6BCF92).soften()))
+            "Moradia" -> Brush.horizontalGradient(persistentListOf(Color(0xFF3BC2BE), Color(0xFF3BC2BE).soften()))
+            "Lazer" -> Brush.horizontalGradient(persistentListOf(Color(0xFF5333E9), Color(0xFF5333E9).soften()))
+            "Saúde" -> Brush.horizontalGradient(persistentListOf(Color(0xFF5DA3EC), Color(0xFF5DA3EC).soften()))
+            "Trabalho/Negócios" -> Brush.horizontalGradient(persistentListOf(Color(0xFF2F94F4), Color(0xFF2F94F4).soften()))
+            "Pets" -> Brush.horizontalGradient(persistentListOf(Color(0xFFFE9C36), Color(0xFFFE9C36).soften()))
+            "Pessoais" -> Brush.horizontalGradient(persistentListOf(Color(0xFFD61350), Color(0xFFD61350).soften()))
+            "Outros" -> Brush.horizontalGradient(persistentListOf(Color(0xFF304E99), Color(0xFF304E99).soften()))
+            else -> Brush.horizontalGradient(persistentListOf(Color(0xFF304E99), Color(0xFF304E99).soften()))
+        }
+    }
+
+    private fun returnCardColor(category: String): Color {
+        return when(category) {
+            "Alimentação" -> Color(0xFFFCE3D0)
+            "Transporte" -> Color(0xFFFEEFCB)
+            "Educação" -> Color(0xFFE0F6E2)
+            "Moradia" -> Color(0xFFDCF5F4)
+            "Lazer" -> Color(0xFFEAE3FD)
+            "Saúde" -> Color(0xFFDDEEFD)
+            "Trabalho/Negócios" -> Color(0xFFDFEBFC)
+            "Pets" -> Color(0xFFFEE9D8)
+            "Pessoais" -> Color(0xFFFCD0E7)
+            "Outros" -> Color(0xFFEFEFFA)
+            else -> Color.White
+        }
+    }
+
+    private fun returnIconColor(category: String): Color {
+        return when(category) {
+            "Alimentação" -> Color(0xFF87480F)
+            "Transporte" -> Color(0xFF742E01)
+            "Educação" -> Color(0xFF05A542)
+            "Moradia" -> Color(0xFF3BC2BE)
+            "Lazer" -> Color(0xFF5333E9)
+            "Saúde" -> Color(0xFF1A68DC)
+            "Trabalho/Negócios" -> Color(0xFF2F94F4)
+            "Pets" -> Color(0xFFEA3B00)
+            "Pessoais" -> Color(0xFFD61350)
+            "Outros" -> Color(0xFF304E99)
+            else -> Color.White
+        }
+    }
+
     private fun handleMovimentacoesResult(list: List<MovimentacaoDomain>) {
         val tipo = _comparativoModel.value.tipoDeDados
 
@@ -161,6 +244,11 @@ class HistoricoComparativoViewModel @Inject constructor(
 
             TipoDeDados.CATEGORIA -> {
                 updateCategoria(UiState.Success(list))
+                list.forEach {
+                    setBrush(it.descricao)
+                    setColorCard(it.descricao)
+                    setColorIcon(it.descricao)
+                }
             }
         }
     }
@@ -186,8 +274,8 @@ class HistoricoComparativoViewModel @Inject constructor(
                 listaDeMovimentacoesCategoria = state
             )
         }
-    }
 
+    }
 
     private fun retornaValoresFinais(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>){
         val listPositiva = mutableListOf<BigDecimal>()

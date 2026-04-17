@@ -307,7 +307,7 @@ private fun Preview(){
                     .width(349.dp)
 
             ) {
-                Log.d(TAG, "Preview: ${listOf(
+                Log.d(TAG, "PreviewGraficoCategoria: Lista ${listOf(
                     BreezeIcons.Linear.All.Donut.enum.name,
                     BreezeIcons.Linear.All.CarLinear.enum.name,
                     BreezeIcons.Linear.All.House.enum.name,

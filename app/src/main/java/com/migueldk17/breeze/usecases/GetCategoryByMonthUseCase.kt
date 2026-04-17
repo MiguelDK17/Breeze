@@ -29,7 +29,8 @@ class GetCategoryTotalByMonthUseCase @Inject constructor(
                     icon = BreezeIcons.Unspecified.IconUnspecified.enum.name,
                     tipo = TipoMovimentacao.SAIDA,
                     totalAmount = totalGeral,
-                    totalPercentage = (it.totalAmount.divide(totalGeral)).toFloat()
+                    totalPercentage = (it.totalAmount.divide(totalGeral)).toFloat(),
+
                 )
             }
         }

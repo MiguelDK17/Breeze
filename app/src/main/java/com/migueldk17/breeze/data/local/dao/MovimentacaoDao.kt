@@ -42,7 +42,6 @@ interface MovimentacaoDao {
         ORDER BY totalAmount DESC
     """
     )
-
     fun getCategoryTotalsByMonth(
         mesAno: String
     ): Flow<List<CategoryTotalDto>>

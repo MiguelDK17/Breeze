@@ -1,5 +1,6 @@
 package com.migueldk17.breeze.domain
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.room.ColumnInfo
@@ -34,7 +35,10 @@ data class MovimentacaoDomain(
 
     val contaId: Long? = null,
     val totalAmount: BigDecimal = BigDecimal.ZERO,
-    val totalPercentage: Float,
+    val totalPercentage: Float = 0f,
+    val progress: Float = 0f,
+    val progressBrush: Brush = Brush.horizontalGradient(listOf(Color.Transparent, Color.Transparent)),
+
 )
 
 private fun returnColorIcon(tipoMovimentacao: TipoMovimentacao): Color {
