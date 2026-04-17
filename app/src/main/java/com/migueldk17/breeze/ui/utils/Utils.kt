@@ -5,8 +5,11 @@ import android.content.Context
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -125,6 +128,80 @@ fun Color.soften(): Color {
         blue = blue + (1f - blue) * 0.35f,
         alpha = 1f
     )
+}
+
+object CategoryColorProvider {
+     fun returnIconColor(category: String): Color {
+        return when(category) {
+            "Alimentação" -> Color(0xFF87480F)
+            "Transporte" -> Color(0xFF742E01)
+            "Educação" -> Color(0xFF05A542)
+            "Moradia" -> Color(0xFF3BC2BE)
+            "Lazer" -> Color(0xFF5333E9)
+            "Saúde" -> Color(0xFF1A68DC)
+            "Trabalho/Negócios" -> Color(0xFF2F94F4)
+            "Pets" -> Color(0xFFEA3B00)
+            "Pessoais" -> Color(0xFFD61350)
+            "Outros" -> Color(0xFF304E99)
+            else -> Color.White
+        }
+    }
+
+    fun returnCardColor(category: String): Color {
+        return when(category) {
+            "Alimentação" -> Color(0xFFFCE3D0)
+            "Transporte" -> Color(0xFFFEEFCB)
+            "Educação" -> Color(0xFFE0F6E2)
+            "Moradia" -> Color(0xFFDCF5F4)
+            "Lazer" -> Color(0xFFEAE3FD)
+            "Saúde" -> Color(0xFFDDEEFD)
+            "Trabalho/Negócios" -> Color(0xFFDFEBFC)
+            "Pets" -> Color(0xFFFEE9D8)
+            "Pessoais" -> Color(0xFFFCD0E7)
+            "Outros" -> Color(0xFFEFEFFA)
+            else -> Color.White
+        }
+    }
+     fun returnBrush(category: String): Brush {
+        return when(category) {
+            "Alimentação" -> Brush.horizontalGradient(persistentListOf(Color(0xFFFC9438), Color(0xFFFC9438).soften()))
+            "Transporte" -> Brush.horizontalGradient(persistentListOf(Color(0xFFFEBF39), Color(0xFFFEBF39).soften()))
+            "Educação" -> Brush.horizontalGradient(persistentListOf(Color(0xFF6BCF92), Color(0xFF6BCF92).soften()))
+            "Moradia" -> Brush.horizontalGradient(persistentListOf(Color(0xFF3BC2BE), Color(0xFF3BC2BE).soften()))
+            "Lazer" -> Brush.horizontalGradient(persistentListOf(Color(0xFF5333E9), Color(0xFF5333E9).soften()))
+            "Saúde" -> Brush.horizontalGradient(persistentListOf(Color(0xFF5DA3EC), Color(0xFF5DA3EC).soften()))
+            "Trabalho/Negócios" -> Brush.horizontalGradient(persistentListOf(Color(0xFF2F94F4), Color(0xFF2F94F4).soften()))
+            "Pets" -> Brush.horizontalGradient(persistentListOf(Color(0xFFFE9C36), Color(0xFFFE9C36).soften()))
+            "Pessoais" -> Brush.horizontalGradient(persistentListOf(Color(0xFFD61350), Color(0xFFD61350).soften()))
+            "Outros" -> Brush.horizontalGradient(persistentListOf(Color(0xFF304E99), Color(0xFF304E99).soften()))
+            else -> Brush.horizontalGradient(persistentListOf(Color(0xFF304E99), Color(0xFF304E99).soften()))
+        }
+    }
+
+
+
+
+
+}
+
+object CategoryIconProvider {
+
+    val icons = persistentMapOf(
+        "Alimentação" to "DONUT",
+        "Transporte" to "CAR_LINEAR",
+        "Moradia" to "HOUSE_LINEAR",
+        "Lazer" to "GAME_LINEAR",
+        "Saúde" to "HEART_LINEAR",
+        "Trabalho/Negocios" to "BAG2_LINEAR",
+        "Entretenimento" to "VIDEO_CIRCLE_LINEAR",
+        "Educação" to "SQUARE_ACADEMIC_CAP_2_LINEAR",
+        "Pets" to "PAW",
+        "Outros" to "GLOBE_LINEAR"
+    )
+
+    fun getIcon(category: String): String {
+        return icons[category] ?: "GLOBE_LINEAR"
+    }
 }
 
 
