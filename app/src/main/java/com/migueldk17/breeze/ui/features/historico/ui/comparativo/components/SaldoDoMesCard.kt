@@ -2,6 +2,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,7 +47,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.kizitonwose.calendar.core.yearMonth
 import com.migueldk17.breeze.converters.toLocalDate
+import com.migueldk17.breeze.domain.CategoryExpense
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoData
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.toApiFormat
@@ -55,7 +58,7 @@ import java.time.YearMonth
 
 @Composable
 fun SaldoDoMesCard(
-    listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
+    data: ComparativoData,
     comparativoModel: ComparativoModel,
     mesBackup: String,
     setCategoria: () -> Unit,
@@ -63,27 +66,13 @@ fun SaldoDoMesCard(
     converteDiaEmMes: () -> Unit,
     modifier: Modifier = Modifier,
     ){
+
     val options = persistentListOf("Dia", "Categoria", "Mês")
     var selectedIndex by remember { mutableIntStateOf(comparativoModel.tipoDeDados.ordinal) }
     var isCalendarOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val dataConvertida = "${mesBackup.dropLast(1)}-01"
 
-    val listLinhaDoTempoModel = remember(listMovimentacaoDomain) {
-        listMovimentacaoDomain.map {
-            LinhaDoTempoModel(
-                id = it.id,
-                name = it.descricao,
-                icon = it.icon,
-                valor = it.valor,
-                colorCard = it.colorCard.toArgb(),
-                colorIcon = it.colorIcon.toArgb(),
-                dateTime = it.date.atStartOfDay(),
-                tipoComparacao = TipoComparacao.COMPARACAO
-
-            )
-        }.toImmutableList()
-    }
 
     //Elevated Card Pai
     BreezeElevatedCard(
@@ -129,46 +118,69 @@ fun SaldoDoMesCard(
                     }
                 )
             }
-            if (comparativoModel.tipoDeDados != TipoDeDados.CATEGORIA){
-                GraficoDeBarras(
-                    modifier = Modifier
-                        .height(290.dp),
-                    graficoDoDiaModel = listLinhaDoTempoModel
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        Icons.Default.Circle,
-                        contentDescription = null,
-                        tint = Color(0xFFACE1C1)
+            when (data) {
+                is ComparativoData.Movimentacoes -> {
+                    val listLinhaDoTempoModel = remember(data.list) {
+                        data.list.map {
+                            LinhaDoTempoModel(
+                                id = it.id,
+                                name = it.descricao,
+                                icon = it.icon,
+                                valor = it.valor,
+                                colorCard = it.colorCard.toArgb(),
+                                colorIcon = it.colorIcon.toArgb(),
+                                dateTime = it.date.atStartOfDay(),
+                                tipoComparacao = TipoComparacao.COMPARACAO
+                            )
+                        }.toImmutableList()
+                    }
+                    GraficoDeBarras(
+                        modifier = Modifier
+                            .height(290.dp),
+                        graficoDoDiaModel = listLinhaDoTempoModel
                     )
-                    DescriptionText(
-                        text = "Receitas",
-                        color = Color(0xFF26595C)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Icon(
-                        Icons.Default.Circle,
-                        contentDescription = null,
-                        tint = Color(0xFFF69297)
-                    )
-                    DescriptionText(
-                        text = "Despesas",
-                        color = Color(0xFFD3374D)
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Circle,
+                            contentDescription = null,
+                            tint = Color(0xFFACE1C1)
+                        )
+                        DescriptionText(
+                            text = "Receitas",
+                            color = Color(0xFF26595C)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Icon(
+                            Icons.Default.Circle,
+                            contentDescription = null,
+                            tint = Color(0xFFF69297)
+                        )
+                        DescriptionText(
+                            text = "Despesas",
+                            color = Color(0xFFD3374D)
+                        )
+                    }
+                }
+                is ComparativoData.Categoria -> {
+                    GraficoHorizontalCategoria(
+                        listMovimentacaoDomain = data.list.toImmutableList()
                     )
                 }
-            } else {
-
             }
         }
     }
 }
 
 @Composable
-private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>) {
-
+private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<CategoryExpense>) {
+    Column(
+        modifier = Modifier
+            .background(Color.Yellow)
+    ) { }
 }

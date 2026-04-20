@@ -21,12 +21,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -46,39 +48,59 @@ class HistoricoComparativoViewModel @Inject constructor(
     private val _mesBackup = MutableStateFlow("")
     val mes = _mesBackup.asStateFlow()
 
-    init {
-        observaContasPoMes()
-    }
 
+    val uiState: StateFlow<UiState<ComparativoData>> = _filtro
+        .flatMapLatest { filtro ->
+            val data = filtro.data.orEmpty()
+            when (filtro.tipoDeDados) {
+                TipoDeDados.MES -> getMovimentacoesDoMesUseCase(data).map { processaMovimentacoes(it) }
+                TipoDeDados.DIA -> getMovimentacoesDoDiaUseCase(data).map { processaMovimentacoes(it) }
+                TipoDeDados.CATEGORIA -> getCategoryTotalByMonthUseCase(data).map { ComparativoData.Categoria(it) }
+            }
+        }
+        .map { data ->
+            UiState.Success(data) as UiState<ComparativoData>
+        }
+        .catch { emit(UiState.Error(it.message ?: "Erro desconhecido")) }
+        .stateIn(
+            scope = viewModelScope,
+            started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+            initialValue = UiState.Loading
+        )
 
-    private fun observaContasPoMes(){
-        viewModelScope.launch {
-             combine(_filtro, comparativoModel) {filtro, comparativo ->
-                 filtro to comparativo.tipoDeDados
-             }.flatMapLatest { (filtro, tipo) ->
-                 when (tipo) {
-                     TipoDeDados.MES -> getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
-                         .map { ComparativoData.Movimentacoes(it) }
-                     TipoDeDados.DIA -> getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
-                         .map { ComparativoData.Movimentacoes(it) }
-                     TipoDeDados.CATEGORIA -> getCategoryTotalByMonthUseCase(filtro.data.orEmpty())
-                         .map { ComparativoData.Categoria(it) }
-                 }
-             }
-                 .catch { e ->
-                     _comparativoModel.update {
-                         it.copy(
-                             listaDeMovimentacoesMensal = UiState.Error(e.message ?: "Erro desconhecido")
-
-                         )
-                     }
-                 }
-                 .collectLatest { list ->
-                     handleData(list)
-                 }
-         }
-
-    }
+//    init {
+//        observaContasPoMes()
+//    }
+//
+//
+//    private fun observaContasPoMes(){
+//        viewModelScope.launch {
+//             combine(_filtro, comparativoModel) {filtro, comparativo ->
+//                 filtro to comparativo.tipoDeDados
+//             }.flatMapLatest { (filtro, tipo) ->
+//                 when (tipo) {
+//                     TipoDeDados.MES -> getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
+//                         .map { ComparativoData.Movimentacoes(it) }
+//                     TipoDeDados.DIA -> getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
+//                         .map { ComparativoData.Movimentacoes(it) }
+//                     TipoDeDados.CATEGORIA -> getCategoryTotalByMonthUseCase(filtro.data.orEmpty())
+//                         .map { ComparativoData.Categoria(it) }
+//                 }
+//             }
+//                 .catch { e ->
+//                     _comparativoModel.update {
+//                         it.copy(
+//                             listaDeMovimentacoesMensal = UiState.Error(e.message ?: "Erro desconhecido")
+//
+//                         )
+//                     }
+//                 }
+//                 .collectLatest { list ->
+//                     handleData(list)
+//                 }
+//         }
+//
+//    }
 
     fun setMes (mes: String) {
         _mesBackup.value = mes
@@ -128,6 +150,19 @@ class HistoricoComparativoViewModel @Inject constructor(
                 tipoDeDados = TipoDeDados.CATEGORIA
             )
         }
+    }
+
+    private fun processaMovimentacoes(list: List<MovimentacaoDomain>): ComparativoData {
+        val (entradas, saidas) = list.partition { it.tipo == TipoMovimentacao.ENTRADA }
+        val totalEntradas = entradas.sumOf { it.valor }
+        val totalSaidas = saidas.sumOf { it.valor }
+
+        return ComparativoData.Movimentacoes(
+            list = list,
+            totalReceitas = totalEntradas.formatarValorEmReal(),
+            totalDespesas = totalSaidas.formatarValorEmReal(),
+            saldoFinal = (totalEntradas + totalSaidas).formatarValorEmReal()
+        )
     }
 
     private fun handleData(data: ComparativoData) {

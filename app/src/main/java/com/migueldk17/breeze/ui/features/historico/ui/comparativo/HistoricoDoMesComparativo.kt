@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +45,8 @@ fun HistoricoDoMesComparativo(
     val listaDeMovimentacoesDiaria = comparativoModel.listaDeMovimentacoesDiaria
     val listaDeMovimentacoesCategoria = comparativoModel.listaDeMovimentacoesCategoria
 
+    val state = viewModel.uiState.collectAsStateWithLifecycle().value
+
     val listaSelecionada = when (comparativoModel.tipoDeDados) {
         TipoDeDados.MES -> listaDeMovimentacoesMensal
         TipoDeDados.DIA -> listaDeMovimentacoesDiaria
@@ -51,44 +55,36 @@ fun HistoricoDoMesComparativo(
 
     Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
-
-
-    when(listaSelecionada) {
+    when (state){
+        is UiState.Loading -> CircularProgressIndicator()
         is UiState.Empty -> {
-            ToastManager.showToast(context, "Lista vazia")
-        }
-        is UiState.Loading -> {
-            Log.d(TAG, "HistoricoDoMesComparativo: Carregando")
-        }
-        is UiState.Error -> {
-            val error = listaSelecionada.exception
-            Log.d(TAG, "HistoricoDoMesComparativo: Erro: $error")
+            Log.d(TAG, "HistoricoDoMesComparativo: Lista vazia")
         }
         is UiState.Success -> {
-            val data = listaSelecionada.data
-
+            val data = state.data
             HistoricoDoMesComparativoBody(
-                modifier = modifier,
-                listMovimentacaoDomain = data.toImmutableList(),
+                data = data,
                 comparativoModel = comparativoModel,
-                setDia = {
-                    viewModel.setDia(it)
-                },
-                converteDiaEmMes = {
-                    viewModel.voltarParaMes()
-                },
-                setCategoria = {
-                    viewModel.setCategoria()
-                },
-                mesBackup = mesBackup
+                mesBackup = mesBackup,
+                setDia = { viewModel.setDia(it) },
+                setCategoria = { viewModel.setCategoria() },
+                converteDiaEmMes = { viewModel.voltarParaMes() },
+                modifier = modifier
             )
         }
+        is UiState.Error -> {
+            val error = state.exception
+            Log.d(TAG, "HistoricoDoMesComparativo: erro detectado: $error")
+        }
     }
+
 }
+
+
 
 @Composable
 private fun HistoricoDoMesComparativoBody(
-    listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>,
+    data: ComparativoData,
     comparativoModel: ComparativoModel,
     mesBackup: String,
     modifier: Modifier = Modifier,
@@ -113,12 +109,12 @@ private fun HistoricoDoMesComparativoBody(
         )
 
         SaldoDoMesCard(
-            listMovimentacaoDomain = listMovimentacaoDomain,
+            data = data,
             comparativoModel = comparativoModel,
-            setDia = { setDia(it) },
-            setCategoria = { setCategoria() },
-            converteDiaEmMes = { converteDiaEmMes() },
-            mesBackup = mesBackup
+            mesBackup = mesBackup,
+            setCategoria = setCategoria,
+            setDia = setDia,
+            converteDiaEmMes = converteDiaEmMes
         )
 
         GastoCard()
