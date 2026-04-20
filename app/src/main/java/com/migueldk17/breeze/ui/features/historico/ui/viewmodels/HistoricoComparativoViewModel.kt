@@ -21,6 +21,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -59,12 +60,20 @@ class HistoricoComparativoViewModel @Inject constructor(
             }
         }
         .map { data ->
-            UiState.Success(data) as UiState<ComparativoData>
+            val isEmpty = when (data) {
+                is ComparativoData.Movimentacoes -> data.list.isEmpty()
+                is ComparativoData.Categoria -> data.list.isEmpty()
+            }
+            if (isEmpty) {
+                UiState.Empty
+            } else {
+                UiState.Success(data)
+            }
         }
         .catch { emit(UiState.Error(it.message ?: "Erro desconhecido")) }
         .stateIn(
             scope = viewModelScope,
-            started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = UiState.Loading
         )
 

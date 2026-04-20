@@ -36,13 +36,11 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SaldoFinal(
-    comparativoModel: ComparativoModel,
+    receitas: String,
+    despesas: String,
+    saldoFinal: String,
     modifier: Modifier = Modifier
 ){
-    val totalDeReceitas = comparativoModel.totalDeReceitas
-    val totalDeDespesas = comparativoModel.totalDeDespesas
-    val saldoFinal = comparativoModel.saldoFinal
-
     val listColors = persistentListOf(
         Color(0XFFE9F1FC),
         Color(0xFFF2F6FD)
@@ -75,7 +73,7 @@ fun SaldoFinal(
                 )
 
                 DescriptionText(
-                    text = totalDeReceitas,
+                    text = receitas,
                     fontWeight = FontWeight.SemiBold,
                     color = NavyBlue
                 )
@@ -93,7 +91,7 @@ fun SaldoFinal(
                     text = "Despesas"
                 )
                 DescriptionText(
-                    text = totalDeDespesas,
+                    text = despesas,
                     fontWeight = FontWeight.SemiBold,
                     color = RedError
                 )

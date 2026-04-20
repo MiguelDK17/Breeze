@@ -1,21 +1,17 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
-import android.util.Log
-import android.content.ContentValues.TAG
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,10 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.github.migueldk17.breezeicons.icons.BreezeIcons
-import com.migueldk17.breeze.domain.MovimentacaoDomain
 import com.migueldk17.breeze.enums.TipoComparacao
-import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.components.BreezeButtonGroup
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.components.TitleText
@@ -39,21 +32,15 @@ import com.migueldk17.breeze.ui.theme.NavyBlue
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDate
-import java.math.BigDecimal
-import java.time.LocalDateTime
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.kizitonwose.calendar.core.yearMonth
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.domain.CategoryExpense
-import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoData
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
-import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.ui.utils.toApiFormat
-import java.time.YearMonth
 
 
 @Composable
@@ -88,9 +75,15 @@ fun SaldoDoMesCard(
                 color = NavyBlue,
                 modifier = Modifier
             )
+
+            val receitas = (data as? ComparativoData.Movimentacoes)?.totalReceitas ?: "R$ 0,00"
+            val despesas = (data as? ComparativoData.Movimentacoes)?.totalDespesas ?: "R$ 0,00"
+            val saldoFinal = (data as? ComparativoData.Movimentacoes)?.saldoFinal ?: "R$ 0,00"
             //Card de Saldo Final
             SaldoFinal(
-                comparativoModel = comparativoModel
+                receitas = receitas,
+                despesas = despesas,
+                saldoFinal = saldoFinal
             )
 
             //Button Group de opções
