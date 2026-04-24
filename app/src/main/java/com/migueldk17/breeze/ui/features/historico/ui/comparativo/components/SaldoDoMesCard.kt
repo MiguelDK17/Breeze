@@ -45,6 +45,8 @@ import com.migueldk17.breeze.domain.CategoryExpense
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoData
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.utils.toApiFormat
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 @Composable
@@ -182,7 +184,6 @@ private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<Cat
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .background(Color.Yellow)
     ) {
         LazyColumn {
             items(
@@ -191,7 +192,20 @@ private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<Cat
                 val nomeCategoria = wrapper.category
                 val valorConta = wrapper.totalAmount
                 val porcentagem = wrapper.percentage
+                val colorCard = wrapper.colorCard
+                val colorIcon = wrapper.iconColor
+                val icon = wrapper.icon
+                val progress = valorConta.divide(valorConta, 4, RoundingMode.HALF_UP)
+                val progressBrush = wrapper.progressBrush
                 ObjectGraficoCategoria(
+                    colorCard = colorCard,
+                    icon = icon,
+                    iconColor = colorIcon,
+                    nomeCategoria = nomeCategoria,
+                    valorConta = valorConta,
+                    porcentagem = porcentagem.toString(),
+                    progress = progress.toFloat(),
+                    progressBrush = progressBrush
 
                 )
             }
