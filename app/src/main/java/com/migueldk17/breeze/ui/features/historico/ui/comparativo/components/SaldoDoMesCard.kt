@@ -1,6 +1,8 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.Icon
@@ -113,6 +117,7 @@ fun SaldoDoMesCard(
             }
             when (data) {
                 is ComparativoData.Movimentacoes -> {
+                    Log.d(TAG, "SaldoDoMesCard: caiu em Movimentacoes")
                     val listLinhaDoTempoModel = remember(data.list) {
                         data.list.map {
                             LinhaDoTempoModel(
@@ -161,6 +166,7 @@ fun SaldoDoMesCard(
                     }
                 }
                 is ComparativoData.Categoria -> {
+                    Log.d(TAG, "SaldoDoMesCard: Caiu em Categoria")
                     GraficoHorizontalCategoria(
                         listMovimentacaoDomain = data.list.toImmutableList()
                     )
@@ -174,6 +180,21 @@ fun SaldoDoMesCard(
 private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<CategoryExpense>) {
     Column(
         modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
             .background(Color.Yellow)
-    ) { }
+    ) {
+        LazyColumn {
+            items(
+                items = listMovimentacaoDomain,
+                key = { it.totalAmount }) { wrapper ->
+                val nomeCategoria = wrapper.category
+                val valorConta = wrapper.totalAmount
+                val porcentagem = wrapper.percentage
+                ObjectGraficoCategoria(
+
+                )
+            }
+        }
+    }
 }

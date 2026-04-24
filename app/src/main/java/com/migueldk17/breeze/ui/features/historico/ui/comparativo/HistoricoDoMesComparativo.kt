@@ -2,8 +2,21 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +30,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -34,26 +46,19 @@ import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.Gas
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
 import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
-import kotlinx.collections.immutable.toImmutableList
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.R
-import com.migueldk17.breeze.domain.MovimentacaoDomain
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
-import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
-import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.uistate.UiState
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun HistoricoDoMesComparativo(
@@ -75,44 +80,72 @@ fun HistoricoDoMesComparativo(
 
     Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
-    when (state){
-        is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Empty -> {
-            EmptyStateLayout()
-        }
-        is UiState.Success -> {
-            val data = state.data
-            HistoricoDoMesComparativoBody(
-                data = data,
-                comparativoModel = comparativoModel,
-                mesBackup = mesBackup,
-                setDia = { viewModel.setDia(it) },
-                setCategoria = { viewModel.setCategoria() },
-                converteDiaEmMes = { viewModel.voltarParaMes() },
-                modifier = modifier
-            )
-        }
-        is UiState.Error -> {
-            val error = state.exception
-            Log.d(TAG, "HistoricoDoMesComparativo: erro detectado: $error")
+
+    AnimatedContent(
+        targetState = state,
+        transitionSpec = {
+            fadeIn(tween(300)) + scaleIn(initialScale = 0.95f) togetherWith fadeOut(tween(200))
+        },
+        label = "transicao_de_estados"
+    ) { state ->
+        when (state){
+            is UiState.Loading -> CircularProgressIndicator()
+            is UiState.Empty -> {
+                EmptyStateLayout(
+                    voltarParaMes = {
+                        viewModel.voltarParaMes()
+                    }
+                )
+            }
+            is UiState.Success -> {
+                val data = state.data
+                HistoricoDoMesComparativoBody(
+                    data = data,
+                    comparativoModel = comparativoModel,
+                    mesBackup = mesBackup,
+                    setDia = { viewModel.setDia(it) },
+                    setCategoria = { viewModel.setCategoria() },
+                    voltarParaMes = { viewModel.voltarParaMes() },
+                    modifier = modifier
+                )
+            }
+            is UiState.Error -> {
+                val error = state.exception
+                Log.d(TAG, "HistoricoDoMesComparativo: erro detectado: $error")
+            }
         }
     }
+
 
 }
 
 @Composable
 private fun EmptyStateLayout(
-    modifier: Modifier = Modifier
+    voltarParaMes: () -> Unit,
+    modifier: Modifier = Modifier,
+
 ){
     val backgroundColor = Color(0xFFD8E6EE)
     val iconSize = 120.dp
     val halfIconSize = iconSize / 2
+
+    val infiniteTransition = rememberInfiniteTransition(label = "breeze_float")
+    val offsetY by infiniteTransition.animateFloat(
+        initialValue = -10f,
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 2500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "breeze_float_y"
+    )
 
     Column(
         modifier = modifier
             .background(backgroundColor)
             .fillMaxSize()
             .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -121,16 +154,14 @@ private fun EmptyStateLayout(
             contentDescription = "Nenhum gasto hoje",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp),
+                .height(250.dp)
+                .offset(y = offsetY.dp),
             contentScale = ContentScale.Fit
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = halfIconSize),
+                .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ){
             ElevatedCard(
@@ -158,6 +189,15 @@ private fun EmptyStateLayout(
                         "Dia tranquilo...",
                         color = Color(0xFF798FA0)
                     )
+                    Spacer(modifier = Modifier
+                        .height(20.dp))
+
+                    BreezeButton(
+                        onClick = {
+                            voltarParaMes()
+                        },
+                        text = "Tudo bem!"
+                    )
                 }
             }
 
@@ -171,10 +211,7 @@ private fun EmptyStateLayout(
             )
         }
 
-        BreezeButton(
-            onClick = {},
-            text = "Tudo bem!"
-        )
+
 
     }
 }
@@ -189,7 +226,7 @@ private fun HistoricoDoMesComparativoBody(
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
     setCategoria: () -> Unit = {},
-    converteDiaEmMes : () -> Unit = {},
+    voltarParaMes : () -> Unit = {},
     ){
     val scroll = rememberScrollState()
 
@@ -213,20 +250,10 @@ private fun HistoricoDoMesComparativoBody(
             mesBackup = mesBackup,
             setCategoria = setCategoria,
             setDia = setDia,
-            converteDiaEmMes = converteDiaEmMes
+            converteDiaEmMes = voltarParaMes
         )
 
         GastoCard()
 
-    }
-}
-
-
-
-@Composable
-@Preview
-private fun Preview(){
-    BreezeTheme() {
-        EmptyStateLayout()
     }
 }

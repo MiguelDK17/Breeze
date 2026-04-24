@@ -77,39 +77,6 @@ class HistoricoComparativoViewModel @Inject constructor(
             initialValue = UiState.Loading
         )
 
-//    init {
-//        observaContasPoMes()
-//    }
-//
-//
-//    private fun observaContasPoMes(){
-//        viewModelScope.launch {
-//             combine(_filtro, comparativoModel) {filtro, comparativo ->
-//                 filtro to comparativo.tipoDeDados
-//             }.flatMapLatest { (filtro, tipo) ->
-//                 when (tipo) {
-//                     TipoDeDados.MES -> getMovimentacoesDoMesUseCase(filtro.data.orEmpty())
-//                         .map { ComparativoData.Movimentacoes(it) }
-//                     TipoDeDados.DIA -> getMovimentacoesDoDiaUseCase(filtro.data.orEmpty())
-//                         .map { ComparativoData.Movimentacoes(it) }
-//                     TipoDeDados.CATEGORIA -> getCategoryTotalByMonthUseCase(filtro.data.orEmpty())
-//                         .map { ComparativoData.Categoria(it) }
-//                 }
-//             }
-//                 .catch { e ->
-//                     _comparativoModel.update {
-//                         it.copy(
-//                             listaDeMovimentacoesMensal = UiState.Error(e.message ?: "Erro desconhecido")
-//
-//                         )
-//                     }
-//                 }
-//                 .collectLatest { list ->
-//                     handleData(list)
-//                 }
-//         }
-//
-//    }
 
     fun setMes (mes: String) {
         _mesBackup.value = mes
@@ -147,13 +114,23 @@ class HistoricoComparativoViewModel @Inject constructor(
         _filtro.update {
             it.copy(
                 data = _mesBackup.value,
-                tipoDeDados = TipoDeDados.DIA
+                tipoDeDados = TipoDeDados.MES
+            )
+        }
+        _comparativoModel.update {
+            it.copy(
+                tipoDeDados = TipoDeDados.MES
             )
         }
 
     }
 
     fun setCategoria() {
+        _filtro.update {
+            it.copy(
+                tipoDeDados = TipoDeDados.CATEGORIA
+            )
+        }
         _comparativoModel.update {
             it.copy(
                 tipoDeDados = TipoDeDados.CATEGORIA
@@ -172,127 +149,5 @@ class HistoricoComparativoViewModel @Inject constructor(
             totalDespesas = totalSaidas.formatarValorEmReal(),
             saldoFinal = (totalEntradas + totalSaidas).formatarValorEmReal()
         )
-    }
-
-    private fun handleData(data: ComparativoData) {
-        when (data) {
-            is ComparativoData.Movimentacoes -> {
-                handleMovimentacoesResult(data.list)
-            }
-            is ComparativoData.Categoria -> {
-                handleCategoriasResult(data.list)
-            }
-        }
-    }
-
-    private fun handleMovimentacoesResult(list: List<MovimentacaoDomain>) {
-        val tipo = _comparativoModel.value.tipoDeDados
-        handleResult(
-            list = list,
-            onEmpty = { handleEmptyState(tipo) },
-            onSuccess = { handleSuccessState(it, tipo) }
-        )
-    }
-
-    private fun handleCategoriasResult(list: List<CategoryExpense>) {
-        handleResult(
-            list = list,
-            onEmpty = { updateCategoria(UiState.Empty) },
-            onSuccess = { updateCategoria(UiState.Success(it)) }
-        )
-    }
-
-    private fun handleEmptyState(tipo: TipoDeDados) {
-        when (tipo) {
-            TipoDeDados.MES -> {
-                updateMensal(UiState.Empty)
-            }
-            TipoDeDados.DIA -> {
-                voltarParaMes()
-            }
-            else -> {
-                updateMensal(UiState.Empty)
-            }
-        }
-    }
-
-    private fun handleSuccessState(list: List<MovimentacaoDomain>, tipo: TipoDeDados) {
-        when (tipo) {
-            TipoDeDados.MES -> {
-                updateMensal(UiState.Success(list))
-                retornaValoresFinais(list.toImmutableList())
-            }
-            TipoDeDados.DIA -> {
-                updateDiaria(UiState.Success(list))
-            }
-            else -> Unit
-        }
-    }
-
-    private fun updateMensal(state: UiState<List<MovimentacaoDomain>>) {
-        _comparativoModel.update {
-            it.copy(
-                listaDeMovimentacoesMensal = state
-            )
-        }
-    }
-    private fun updateDiaria(state: UiState<List<MovimentacaoDomain>>) {
-        _comparativoModel.update {
-            it.copy(
-                listaDeMovimentacoesDiaria = state
-            )
-        }
-    }
-
-    private fun updateCategoria(state: UiState<List<CategoryExpense>>) {
-        _comparativoModel.update {
-            it.copy(
-                listaDeMovimentacoesCategoria = state
-            )
-        }
-
-    }
-
-    private fun retornaValoresFinais(listMovimentacaoDomain: ImmutableList<MovimentacaoDomain>){
-        val listPositiva = mutableListOf<BigDecimal>()
-        val listNegativa = mutableListOf<BigDecimal>()
-
-        for (i in listMovimentacaoDomain) {
-            if (i.tipo == TipoMovimentacao.ENTRADA) listPositiva.add(i.valor) else listNegativa.add(i.valor)
-
-        }
-
-        val totalEntradas = listPositiva.sumOf { it }
-        val totalSaidas = listNegativa.sumOf { it }
-        val valorTotal = totalEntradas + totalSaidas
-
-
-        val totalEntradasEmReais = totalEntradas.formatarValorEmReal()
-        val totalSaidasEmReais = totalSaidas.formatarValorEmReal()
-        val valorTotalEmReais = valorTotal.formatarValorEmReal()
-
-        Log.d(TAG, "retornaValoresFinais: $totalEntradasEmReais")
-        Log.d(TAG, "retornaValoresFinais: $totalSaidasEmReais")
-        Log.d(TAG, "retornaValoresFinais: $valorTotalEmReais")
-
-        _comparativoModel.update {
-            it.copy(
-                totalDeReceitas = totalEntradasEmReais,
-                totalDeDespesas = totalSaidasEmReais,
-                saldoFinal = valorTotalEmReais,
-            )
-        }
-    }
-
-    private fun <T> handleResult(
-        list: List<T>,
-        onEmpty: () -> Unit,
-        onSuccess: (List<T>) -> Unit
-    ) {
-        if (list.isEmpty()) {
-            onEmpty()
-        } else {
-            onSuccess(list)
-        }
     }
 }
