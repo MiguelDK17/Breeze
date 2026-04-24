@@ -2,20 +2,32 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
@@ -24,12 +36,21 @@ import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.migueldk17.breeze.R
 import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.ui.components.BreezeButton
+import com.migueldk17.breeze.ui.components.BreezeRegularText
+import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.ToastManager
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.ImmutableList
@@ -39,7 +60,6 @@ fun HistoricoDoMesComparativo(
     modifier: Modifier = Modifier,
     viewModel: HistoricoComparativoViewModel = hiltViewModel()
 ){
-    val context = LocalContext.current
     val comparativoModel = viewModel.comparativoModel.collectAsStateWithLifecycle().value
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
     val listaDeMovimentacoesDiaria = comparativoModel.listaDeMovimentacoesDiaria
@@ -58,7 +78,7 @@ fun HistoricoDoMesComparativo(
     when (state){
         is UiState.Loading -> CircularProgressIndicator()
         is UiState.Empty -> {
-            Log.d(TAG, "HistoricoDoMesComparativo: Lista vazia")
+            EmptyStateLayout()
         }
         is UiState.Success -> {
             val data = state.data
@@ -78,6 +98,85 @@ fun HistoricoDoMesComparativo(
         }
     }
 
+}
+
+@Composable
+private fun EmptyStateLayout(
+    modifier: Modifier = Modifier
+){
+    val backgroundColor = Color(0xFFD8E6EE)
+    val iconSize = 120.dp
+    val halfIconSize = iconSize / 2
+
+    Column(
+        modifier = modifier
+            .background(backgroundColor)
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.breeze_empty_state),
+            contentDescription = "Nenhum gasto hoje",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp),
+            contentScale = ContentScale.Fit
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = halfIconSize),
+            contentAlignment = Alignment.Center
+        ){
+            ElevatedCard(
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = Color(0xFFEBF4F8)
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            top = halfIconSize,
+                            start = 12.dp,
+                            end = 12.dp,
+                            bottom = 24.dp
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    BreezeRegularText(
+                        text = "Nenhum gasto hoje!",
+                        fontWeight = FontWeight.SemiBold,
+                        size = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    DescriptionText(
+                        "Dia tranquilo...",
+                        color = Color(0xFF798FA0)
+                    )
+                }
+            }
+
+            Image(
+                painter = painterResource(R.drawable.calendario_check_removebg_preview),
+                contentDescription = "Calendário",
+                modifier = Modifier
+                    .size(iconSize)
+                    .align(Alignment.TopCenter)
+                    .offset(y = -halfIconSize)
+            )
+        }
+
+        BreezeButton(
+            onClick = {},
+            text = "Tudo bem!"
+        )
+
+    }
 }
 
 
@@ -123,10 +222,11 @@ private fun HistoricoDoMesComparativoBody(
 }
 
 
+
 @Composable
 @Preview
 private fun Preview(){
     BreezeTheme() {
-        HistoricoDoMesComparativo()
+        EmptyStateLayout()
     }
 }
