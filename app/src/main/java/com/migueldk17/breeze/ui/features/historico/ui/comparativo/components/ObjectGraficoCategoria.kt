@@ -128,8 +128,11 @@ fun ObjectGraficoCategoria(
                         start = 10.dp
                     ),
             )
+
+
         }
     }
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
 @Composable

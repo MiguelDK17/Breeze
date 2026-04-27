@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.usecases
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.data.local.repository.MovimentacaoRepository
 import com.migueldk17.breeze.domain.CategoryExpense
@@ -19,6 +21,7 @@ class GetCategoryTotalByMonthUseCase @Inject constructor(
 ) {
     operator fun invoke(mesAno: String): Flow<List<CategoryExpense>> {
         return repository.getCategoryTotalByMonth(mesAno).map { list ->
+            Log.d(TAG, "usecase: a lista $list")
             list.toDomain()
         }
     }

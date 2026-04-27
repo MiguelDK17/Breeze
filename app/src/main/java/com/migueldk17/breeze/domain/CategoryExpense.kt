@@ -10,7 +10,6 @@ data class CategoryExpense(
     val totalAmount: BigDecimal,
     val percentage: Float,
     val colorCard: Color,
-    val icon: BreezeIconsType,
     val iconColor: Color,
     val progressBrush: Brush
 )

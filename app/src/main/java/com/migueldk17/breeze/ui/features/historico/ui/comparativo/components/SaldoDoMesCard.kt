@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -39,6 +40,8 @@ import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.kizitonwose.calendar.core.yearMonth
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.domain.CategoryExpense
@@ -168,10 +171,14 @@ fun SaldoDoMesCard(
                     }
                 }
                 is ComparativoData.Categoria -> {
+                    Spacer(modifier = Modifier.height(25.dp))
                     Log.d(TAG, "SaldoDoMesCard: Caiu em Categoria")
-                    GraficoHorizontalCategoria(
-                        listMovimentacaoDomain = data.list.toImmutableList()
-                    )
+                    BreezeElevatedCard() {
+                        GraficoHorizontalCategoria(
+                            listMovimentacaoDomain = data.list.toImmutableList()
+                        )
+                    }
+
                 }
             }
         }
@@ -180,35 +187,49 @@ fun SaldoDoMesCard(
 
 @Composable
 private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<CategoryExpense>) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
     ) {
-        LazyColumn {
-            items(
-                items = listMovimentacaoDomain,
-                key = { it.totalAmount }) { wrapper ->
-                val nomeCategoria = wrapper.category
-                val valorConta = wrapper.totalAmount
-                val porcentagem = wrapper.percentage
-                val colorCard = wrapper.colorCard
-                val colorIcon = wrapper.iconColor
-                val icon = wrapper.icon
-                val progress = valorConta.divide(valorConta, 4, RoundingMode.HALF_UP)
-                val progressBrush = wrapper.progressBrush
-                ObjectGraficoCategoria(
-                    colorCard = colorCard,
-                    icon = icon,
-                    iconColor = colorIcon,
-                    nomeCategoria = nomeCategoria,
-                    valorConta = valorConta,
-                    porcentagem = porcentagem.toString(),
-                    progress = progress.toFloat(),
-                    progressBrush = progressBrush
+        listMovimentacaoDomain.forEach { wrapper ->
+            val nomeCategoria = wrapper.category
+            val valorConta = wrapper.totalAmount
+            val porcentagem = wrapper.percentage
+            val colorCard = wrapper.colorCard
+            val colorIcon = wrapper.iconColor
+            val icon = returnIcon(nomeCategoria)
+            val progress = valorConta.divide(valorConta, 4, RoundingMode.HALF_UP)
+            val progressBrush = wrapper.progressBrush
 
-                )
-            }
+            ObjectGraficoCategoria(
+                colorCard = colorCard,
+                icon = icon,
+                iconColor = colorIcon,
+                nomeCategoria = nomeCategoria,
+                valorConta = valorConta,
+                porcentagem = porcentagem.toString(),
+                progress = progress.toFloat(),
+                progressBrush = progressBrush
+            )
         }
+    }
+}
+
+
+@Composable
+private fun returnIcon(category: String): BreezeIconsType {
+    return when(category) {
+        "Alimentação" -> BreezeIcons.Linear.FoodKitchen.Donut
+        "Transporte" -> BreezeIcons.Linear.Mobility.CarLinear
+        "Moradia" -> BreezeIcons.Linear.Building.House
+        "Lazer" -> BreezeIcons.Linear.All.Game
+        "Saúde" -> BreezeIcons.Linear.All.Heart
+        "Trabalho/Negócios" -> BreezeIcons.Linear.All.Bag2
+        "Entretenimento" -> BreezeIcons.Linear.All.VideoCircleLinear
+        "Educação" -> BreezeIcons.Linear.All.SquareAcademicCap2
+        "Pets" -> BreezeIcons.Linear.All.Paw
+        "Outros" -> BreezeIcons.Linear.All.GlobeLinear
+        else -> BreezeIcons.Unspecified.IconUnspecified
     }
 }

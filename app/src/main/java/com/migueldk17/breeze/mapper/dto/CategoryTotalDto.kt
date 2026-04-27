@@ -21,7 +21,6 @@ fun List<CategoryTotalDto>.toDomain(): List<CategoryExpense> {
             category = it.category,
             totalAmount = it.totalAmount,
             percentage = it.totalAmount.divide(totalGeral,2, RoundingMode.HALF_UP).toFloat(),
-            icon = BreezeIcons.Unspecified.IconUnspecified,
             progressBrush = returnBrush(it.category),
             colorCard = returnCardColor(it.category),
             iconColor = returnIconColor(it.category)
