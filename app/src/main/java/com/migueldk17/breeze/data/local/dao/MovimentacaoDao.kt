@@ -34,7 +34,7 @@ interface MovimentacaoDao {
     fun getMovimentacoesDoDia(diaMesAno: String): Flow<List<MovimentacaoEntity>>
 
     @Query("""
-        SELECT c.category, SUM(m.valor) as totalAmount
+        SELECT c.category, SUM(c.valor) as totalAmount
         FROM movimentacao_entity m
         INNER JOIN conta_table c ON m.contaId = c.id
         WHERE m.data LIKE :mesAno || '%'

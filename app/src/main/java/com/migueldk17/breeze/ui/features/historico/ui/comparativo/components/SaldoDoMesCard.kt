@@ -192,14 +192,16 @@ private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<Cat
         modifier = Modifier
             .fillMaxWidth()
     ) {
+        val valorTotal =
+            remember(listMovimentacaoDomain) { listMovimentacaoDomain.sumOf { it.totalAmount } }
         listMovimentacaoDomain.forEach { wrapper ->
             val nomeCategoria = wrapper.category
             val valorConta = wrapper.totalAmount
-            val porcentagem = wrapper.percentage
+            val porcentagem = wrapper.percentage.times(100).toInt()
             val colorCard = wrapper.colorCard
             val colorIcon = wrapper.iconColor
             val icon = returnIcon(nomeCategoria)
-            val progress = valorConta.divide(valorConta, 4, RoundingMode.HALF_UP)
+            val progress = valorConta.divide(valorTotal, 4, RoundingMode.HALF_UP).toFloat()
             val progressBrush = wrapper.progressBrush
 
             ObjectGraficoCategoria(
@@ -208,8 +210,8 @@ private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<Cat
                 iconColor = colorIcon,
                 nomeCategoria = nomeCategoria,
                 valorConta = valorConta,
-                porcentagem = porcentagem.toString(),
-                progress = progress.toFloat(),
+                porcentagem = "$porcentagem%",
+                progress = progress,
                 progressBrush = progressBrush
             )
         }
@@ -229,6 +231,7 @@ private fun returnIcon(category: String): BreezeIconsType {
         "Entretenimento" -> BreezeIcons.Linear.All.VideoCircleLinear
         "Educação" -> BreezeIcons.Linear.All.SquareAcademicCap2
         "Pets" -> BreezeIcons.Linear.All.Paw
+        "Pessoais" -> BreezeIcons.Linear.Essetional.TShirt
         "Outros" -> BreezeIcons.Linear.All.GlobeLinear
         else -> BreezeIcons.Unspecified.IconUnspecified
     }

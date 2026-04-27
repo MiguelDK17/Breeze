@@ -21,7 +21,7 @@ class GetCategoryTotalByMonthUseCase @Inject constructor(
 ) {
     operator fun invoke(mesAno: String): Flow<List<CategoryExpense>> {
         return repository.getCategoryTotalByMonth(mesAno).map { list ->
-            Log.d(TAG, "usecase: a lista $list")
+            Log.d(TAG, "GetCategoryTotalByMonthUseCase: a lista $list")
             list.toDomain()
         }
     }

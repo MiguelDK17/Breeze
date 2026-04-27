@@ -151,7 +151,7 @@ class ConfirmarPagamentoViewModel @Inject constructor(
             if (parcela == 1) {
                 movimentacaoRepository.insertMovimentacao(
                     movimentacaoEntity = MovimentacaoEntity(
-                        valor = valorDaParcela,
+                        valor = valorDaParcela.negate(),
                         descricao = "Pagamento da ${numeroDaParcela}ª parcela da conta $nomeDaConta",
                         data = data,
                         contaId = idDaConta,
