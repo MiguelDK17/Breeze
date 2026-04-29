@@ -90,14 +90,14 @@ fun GastoCard(
                     maxLines = if (isEllipsisCategoria) 1 else Int.MAX_VALUE
                 )
             }
-            IconButton(
-                onClick = {}
-            ) {
-                BreezeIcon(
-                    breezeIcon = BreezeIcons.Linear.Arrows.AltArrowRight,
-                    contentDescription = "Ir para histórico"
-                )
-            }
+//            IconButton(
+//                onClick = {}
+//            ) {
+//                BreezeIcon(
+//                    breezeIcon = BreezeIcons.Linear.Arrows.AltArrowRight,
+//                    contentDescription = "Ir para histórico"
+//                )
+//            }
 
         }
     }

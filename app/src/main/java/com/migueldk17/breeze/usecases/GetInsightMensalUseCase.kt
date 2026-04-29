@@ -6,7 +6,10 @@ import com.migueldk17.breeze.data.local.repository.MovimentacaoRepository
 import com.migueldk17.breeze.domain.model.BreezeInsight
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import java.math.BigDecimal
+import java.math.RoundingMode
+import java.time.DateTimeException
 import java.time.YearMonth
 import javax.inject.Inject
 import kotlin.math.abs
@@ -14,11 +17,23 @@ import kotlin.math.abs
 class GetInsightMensalUseCase @Inject constructor(
     private val repository: MovimentacaoRepository
 ) {
-    operator fun invoke(): Flow<BreezeInsight> {
-        val mesAtualStr = YearMonth.now().toString()
-        Log.d(TAG, "GetCategoryTotalByMonthUseCase: O mes atual é: $mesAtualStr")
-        val mesAnteriorStr = YearMonth.now().minusMonths(1).toString()
-        Log.d(TAG, "GetCategoryTotalByMonthUseCase: O mes anterior é: $mesAnteriorStr")
+    operator fun invoke(mesReferencia: String): Flow<BreezeInsight> {
+        if (mesReferencia.isBlank() || !mesReferencia.contains("-")){
+            Log.d(TAG, "GetCategoryTotalByMonthUseCase: Aguardando um mês válido")
+            return flowOf(BreezeInsight("Calculando...", "Aguarde um momento."))
+        }
+        val dataReferencia = try {
+            YearMonth.parse(mesReferencia)
+        } catch (e: DateTimeException) {
+            Log.d(TAG, "GetCategoryTotalByMonthUseCase: Erro no parse de data: $mesReferencia", e)
+            YearMonth.now()
+        }
+        val mesAtualStr = dataReferencia.toString()
+        val mesAnteriorStr = dataReferencia.minusMonths(1).toString()
+
+        Log.d(TAG, "GetCategoryTotalByMonthUseCase: O mes atual é $mesAtualStr")
+        Log.d(TAG, "GetCategoryTotalByMonthUseCase: Teste abaixo de mes atual")
+        Log.d(TAG, "GetCategoryTotalByMonthUseCase: O mes anterior é $mesAnteriorStr")
 
 
         val totaisMesAtual = repository.getCategoryTotalByMonth(mesAtualStr)
@@ -34,7 +49,12 @@ class GetInsightMensalUseCase @Inject constructor(
 
             if (totalAnterior > BigDecimal.ZERO) {
                 val diferenca = totalAtual - totalAnterior
-                val porcentagem = ((diferenca / totalAnterior) * BigDecimal(100)).toInt()
+                val porcentagem = diferenca
+                    .divide(totalAnterior, 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal(100))
+                    .toInt()
+
+                Log.d(TAG, "invoke: A porcentagem é $porcentagem")
 
                 when {
                     porcentagem > 0 -> BreezeInsight(

@@ -31,6 +31,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -82,7 +84,12 @@ class HistoricoComparativoViewModel @Inject constructor(
             initialValue = UiState.Loading
         )
 
-    val insightDoMes: StateFlow<BreezeInsight?> = getInsightMensalUseCase()
+    val insightDoMes: StateFlow<BreezeInsight?> = mes
+        .filter { it.isNotBlank() }
+        .drop(1)
+        .flatMapLatest { mesSelecionado ->
+            getInsightMensalUseCase(mesSelecionado)
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -106,6 +113,7 @@ class HistoricoComparativoViewModel @Inject constructor(
         }
 
     }
+
 
     fun setDia(dia: String) {
         _filtro.update {
