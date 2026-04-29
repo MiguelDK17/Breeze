@@ -12,7 +12,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,11 +39,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
-import com.migueldk17.breeze.ui.theme.BreezeTheme
 import com.migueldk17.breeze.ui.theme.RedError
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.R
+import com.migueldk17.breeze.domain.model.BreezeInsight
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
@@ -80,6 +78,7 @@ fun HistoricoDoMesComparativo(
 
     Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
+    val insight by viewModel.insightDoMes.collectAsStateWithLifecycle()
 
     AnimatedContent(
         targetState = state,
@@ -103,6 +102,7 @@ fun HistoricoDoMesComparativo(
                     data = data,
                     comparativoModel = comparativoModel,
                     mesBackup = mesBackup,
+                    insight = insight,
                     setDia = { viewModel.setDia(it) },
                     setCategoria = { viewModel.setCategoria() },
                     voltarParaMes = { viewModel.voltarParaMes() },
@@ -223,12 +223,14 @@ private fun HistoricoDoMesComparativoBody(
     data: ComparativoData,
     comparativoModel: ComparativoModel,
     mesBackup: String,
+    insight: BreezeInsight?,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
     setCategoria: () -> Unit = {},
     voltarParaMes : () -> Unit = {},
     ){
     val scroll = rememberScrollState()
+
 
     Column(
         modifier = modifier
@@ -252,8 +254,13 @@ private fun HistoricoDoMesComparativoBody(
             setDia = setDia,
             converteDiaEmMes = voltarParaMes
         )
+        insight?.let { dica ->
+            GastoCard(
+                titulo = dica.titulo,
+                subTitulo = dica.subTitulo
+            )
+        }
 
-        GastoCard()
 
     }
 }

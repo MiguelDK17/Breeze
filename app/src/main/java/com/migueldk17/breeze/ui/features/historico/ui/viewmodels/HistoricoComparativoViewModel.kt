@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.domain.CategoryExpense
 import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.domain.model.BreezeInsight
+import com.migueldk17.breeze.dto.CategoryTotalDto
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.features.historico.ui.ComparativoFiltro
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
@@ -14,12 +16,14 @@ import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.Comparat
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import com.migueldk17.breeze.uistate.UiState
 import com.migueldk17.breeze.usecases.GetCategoryTotalByMonthUseCase
+import com.migueldk17.breeze.usecases.GetInsightMensalUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoDiaUseCase
 import com.migueldk17.breeze.usecases.GetMovimentacoesDoMesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +37,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,7 +45,8 @@ import javax.inject.Inject
 class HistoricoComparativoViewModel @Inject constructor(
     private val getMovimentacoesDoMesUseCase: GetMovimentacoesDoMesUseCase,
     private val getMovimentacoesDoDiaUseCase: GetMovimentacoesDoDiaUseCase,
-    private val getCategoryTotalByMonthUseCase: GetCategoryTotalByMonthUseCase
+    private val getCategoryTotalByMonthUseCase: GetCategoryTotalByMonthUseCase,
+    private val getInsightMensalUseCase: GetInsightMensalUseCase
 ): ViewModel() {
     private val _filtro = MutableStateFlow(ComparativoFiltro())
     private val _comparativoModel = MutableStateFlow(ComparativoModel())
@@ -48,7 +54,6 @@ class HistoricoComparativoViewModel @Inject constructor(
 
     private val _mesBackup = MutableStateFlow("")
     val mes = _mesBackup.asStateFlow()
-
 
     val uiState: StateFlow<UiState<ComparativoData>> = _filtro
         .flatMapLatest { filtro ->
@@ -75,6 +80,13 @@ class HistoricoComparativoViewModel @Inject constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = UiState.Loading
+        )
+
+    val insightDoMes: StateFlow<BreezeInsight?> = getInsightMensalUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
         )
 
 
