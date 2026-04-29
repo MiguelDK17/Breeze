@@ -125,10 +125,10 @@ fun ObjectGraficoCategoria(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 10.dp
+                        start = 10.dp,
+                        top = 5.dp
                     ),
             )
-
 
         }
     }

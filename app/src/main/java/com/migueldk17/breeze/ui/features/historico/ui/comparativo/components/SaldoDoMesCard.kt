@@ -88,6 +88,8 @@ fun SaldoDoMesCard(
             val receitas = (data as? ComparativoData.Movimentacoes)?.totalReceitas ?: "R$ 0,00"
             val despesas = (data as? ComparativoData.Movimentacoes)?.totalDespesas ?: "R$ 0,00"
             val saldoFinal = (data as? ComparativoData.Movimentacoes)?.saldoFinal ?: "R$ 0,00"
+
+
             //Card de Saldo Final
             SaldoFinal(
                 receitas = receitas,
@@ -191,6 +193,7 @@ private fun GraficoHorizontalCategoria(listMovimentacaoDomain: ImmutableList<Cat
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(10.dp)
     ) {
         val valorTotal =
             remember(listMovimentacaoDomain) { listMovimentacaoDomain.sumOf { it.totalAmount } }
@@ -231,7 +234,7 @@ private fun returnIcon(category: String): BreezeIconsType {
         "Entretenimento" -> BreezeIcons.Linear.All.VideoCircleLinear
         "Educação" -> BreezeIcons.Linear.All.SquareAcademicCap2
         "Pets" -> BreezeIcons.Linear.All.Paw
-        "Pessoais" -> BreezeIcons.Linear.Essetional.TShirt
+        "Pessoais" -> BreezeIcons.Linear.All.Profile
         "Outros" -> BreezeIcons.Linear.All.GlobeLinear
         else -> BreezeIcons.Unspecified.IconUnspecified
     }
