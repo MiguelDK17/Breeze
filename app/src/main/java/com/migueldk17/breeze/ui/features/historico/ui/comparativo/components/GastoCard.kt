@@ -32,6 +32,8 @@ import com.migueldk17.breeze.ui.components.DescriptionText
 
 @Composable
 fun GastoCard(
+    titulo: String,
+    subTitulo: String,
     modifier: Modifier = Modifier
 ){
     var isEllipsisGastoActive by remember { mutableStateOf(true) }
@@ -62,7 +64,7 @@ fun GastoCard(
                 horizontalAlignment = Alignment.Start
             ) {
                 DescriptionText(
-                    text = "Você gastou 15% a mais que mês passado",
+                    text = titulo,
                     fontWeight = FontWeight.SemiBold,
                     size = 12.sp,
                     modifier = Modifier
@@ -74,7 +76,7 @@ fun GastoCard(
                     maxLines = if (isEllipsisGastoActive) 1 else Int.MAX_VALUE
                 )
                 DescriptionText(
-                    "Alimentação foi sua maior despesa",
+                    subTitulo,
                     size = 12.sp,
                     modifier = Modifier
                         .clickable(true, onClick = {

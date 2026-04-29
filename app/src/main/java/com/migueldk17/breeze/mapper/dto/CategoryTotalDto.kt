@@ -52,7 +52,7 @@ private fun returnCardColor(category: String): Color {
         "Moradia" -> Color(0xFFDCF5F4)
         "Lazer" -> Color(0xFFEAE3FD)
         "Saúde" -> Color(0xFFDDEEFD)
-        "Trabalho/Negócios" -> Color(0xFFDFEBFC)
+        "Trabalho/Negócios" -> Color(0xFFE3E7FC)
         "Pets" -> Color(0xFFFEE9D8)
         "Pessoais" -> Color(0xFFFCD0E7)
         "Outros" -> Color(0xFFEFEFFA)
@@ -71,6 +71,8 @@ private fun returnIconColor(category: String): Color {
         "Assinaturas" -> Color(0xFF5328DC)
         "Educação" -> Color(0xFF05A542)
         "Pets" -> Color(0xFFEA3B00)
+        "Pessoais" -> Color(0xFFD43872)
+        "Trabalho/Negócios" -> Color(0xFF2126F4)
         "Outros" -> Color(0xFF304E99)
         else -> Color.Unspecified
     }
