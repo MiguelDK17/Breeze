@@ -10,6 +10,6 @@ import kotlinx.collections.immutable.persistentListOf
 import java.math.BigDecimal
 
 data class CategoryTotalDto(
-    val category: String, //Vem do Room
-    val totalAmount: BigDecimal, //Vem do Room
+    val category: String, //Categoria das contas
+    val totalAmount: BigDecimal, //Valor total da categoria
 )

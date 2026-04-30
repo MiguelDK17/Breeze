@@ -254,6 +254,7 @@ private fun HistoricoDoMesComparativoBody(
             setDia = setDia,
             converteDiaEmMes = voltarParaMes
         )
+
         insight?.let { dica ->
             GastoCard(
                 titulo = dica.titulo,
