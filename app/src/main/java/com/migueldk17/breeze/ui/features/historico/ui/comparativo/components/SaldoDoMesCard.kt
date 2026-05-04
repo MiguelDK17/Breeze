@@ -3,7 +3,6 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
 import android.util.Log
 import android.content.ContentValues.TAG
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,12 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,7 +44,6 @@ import com.migueldk17.breeze.domain.CategoryExpense
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoData
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.utils.toApiFormat
-import java.math.BigDecimal
 import java.math.RoundingMode
 
 

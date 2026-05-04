@@ -138,7 +138,7 @@ class HistoricoComparativoViewModel @Inject constructor(
     private fun processaMovimentacoes(list: List<MovimentacaoDomain>): ComparativoData {
         val (entradas, saidas) = list.partition { it.tipo == TipoMovimentacao.ENTRADA }
         val totalEntradas = entradas.sumOf { it.valor }
-        val totalSaidas = saidas.sumOf { it.valor }
+        val totalSaidas = saidas.sumOf { it.valor.abs() }
 
         return ComparativoData.Movimentacoes(
             list = list,
