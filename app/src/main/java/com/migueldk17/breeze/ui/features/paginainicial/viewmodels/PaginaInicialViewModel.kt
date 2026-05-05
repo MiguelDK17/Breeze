@@ -2,7 +2,7 @@ package com.migueldk17.breeze.ui.features.paginainicial.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.enums.TipoMovimentacao
@@ -52,8 +52,8 @@ class PaginaInicialViewModel @Inject constructor(
     val contaComParcelas: StateFlow<List<ContaComParcelas>> = _contaComParcelas
 
 
-    private val _contaComParcelasSelecionada = MutableStateFlow<Conta?>(null)
-    val contaComParcelasSelecionada: StateFlow<Conta?> = _contaComParcelasSelecionada.asStateFlow()
+    private val _contaEntityComParcelasSelecionada = MutableStateFlow<ContaEntity?>(null)
+    val contaEntityComParcelasSelecionada: StateFlow<ContaEntity?> = _contaEntityComParcelasSelecionada.asStateFlow()
 
     private val _showBottomSheet = MutableStateFlow(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
@@ -122,7 +122,7 @@ class PaginaInicialViewModel @Inject constructor(
             val movimentacaoEntity = MovimentacaoEntity(
                 valor = valor.div(BigDecimal(100)),
                 descricao = descricao,
-                data = data.toString(),
+                date = data.toString(),
                 tipo = TipoMovimentacao.ENTRADA,
                 icon = icon
             )
@@ -133,13 +133,13 @@ class PaginaInicialViewModel @Inject constructor(
     //Pega as informações da conta selecionada em PaginaInicial baseada no ID fornecido
     fun pegaContaSelecionada(id: Long){
         viewModelScope.launch {
-            _contaComParcelasSelecionada.value = contaRepository.getContaById(id)
+            _contaEntityComParcelasSelecionada.value = contaRepository.getContaById(id)
         }
     }
     //Apaga a conta selecionada
-     fun apagaConta(contaComParcelas: Conta) {
+     fun apagaConta(contaEntityComParcelas: ContaEntity) {
          viewModelScope.launch {
-             contaRepository.apagaConta(contaComParcelas)
+             contaRepository.apagaConta(contaEntityComParcelas)
          }
     }
     //Apaga a receita selecionada
@@ -154,5 +154,6 @@ class PaginaInicialViewModel @Inject constructor(
          }
 
     }
+
 
 }

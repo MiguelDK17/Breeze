@@ -32,6 +32,7 @@ class MovimentacaoRepository @Inject constructor(
         movimentacaoDao.apagaMovimentacao(movimentacaoEntity)
     }
 
+
     fun getMovimentacoesDoDia(diaMesAno: String): Flow<List<MovimentacaoDomain>> {
         return movimentacaoDao.getMovimentacoesDoDia(diaMesAno).map { list ->
             list.map {

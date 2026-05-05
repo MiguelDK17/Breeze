@@ -2,12 +2,26 @@ package com.migueldk17.breeze.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import java.math.BigDecimal
 
-@Entity(tableName = "movimentacao_entity")
+@Entity(
+    tableName = "movimentacao",
+    foreignKeys = [
+        ForeignKey(
+            entity = ContaEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["contaId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [
+        Index(value = ["contaId"])
+    ]
+)
 data class MovimentacaoEntity(
     //Chave primária do banco de dados
     @PrimaryKey(autoGenerate = true)
@@ -19,8 +33,8 @@ data class MovimentacaoEntity(
     @ColumnInfo(name = "descricao")
     val descricao: String,
 
-    @ColumnInfo(name = "data")
-    val data: String, //Está sendo salvo como LocalDate.toString()
+    @ColumnInfo(name = "date")
+    val date: String, //Está sendo salvo como LocalDate.toString()
 
     @ColumnInfo("tipo")
     val tipo: TipoMovimentacao,

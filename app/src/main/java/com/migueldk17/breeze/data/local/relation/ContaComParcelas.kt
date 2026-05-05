@@ -5,13 +5,13 @@ import android.content.ContentValues.TAG
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.migueldk17.breeze.converters.toLocalDate
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.enums.StatusConta
 import java.time.LocalDate
 
 data class ContaComParcelas(
-    @Embedded val conta: Conta,
+    @Embedded val contaEntity: ContaEntity,
 
     @Relation(
         parentColumn = "id",

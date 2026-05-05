@@ -52,25 +52,25 @@ import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.MoneyVisualTransformation
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.converters.toColor
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.ui.features.paginainicial.ui.animation.ColorTransitionFromCenter
 import com.migueldk17.breeze.ui.theme.DeepSkyBlue
 import com.migueldk17.breeze.ui.theme.blackPoppinsLightMode
 
 @Composable
 fun EditarValorConta(
-    conta: Conta,
+    contaEntity: ContaEntity,
     modifier: Modifier = Modifier
 ){
-    val cardColor = conta.colorCard.toColor()
-    val nome = conta.name
-    val valorAtual = conta.valor
-    val categoria = conta.categoria
-    val subCategoria = conta.subCategoria
+    val cardColor = contaEntity.colorCard.toColor()
+    val nome = contaEntity.name
+    val valorAtual = contaEntity.valor
+    val categoria = contaEntity.categoria
+    val subCategoria = contaEntity.subCategoria
     Log.d(TAG, "EditarValorConta: $nome")
     Log.d(TAG, "EditarValorConta: $categoria")
     Log.d(TAG, "EditarValorConta: $subCategoria")
-    Log.d(TAG, "EditarValorConta: ${conta.isContaParcelada}")
+    Log.d(TAG, "EditarValorConta: ${contaEntity.isContaParcelada}")
 
 
 
@@ -88,7 +88,7 @@ fun EditarValorConta(
             .padding(horizontal = 16.dp), //Margem lateral
          verticalArrangement = Arrangement.SpaceAround,   // Espaçamento proporcional
         horizontalAlignment = Alignment.CenterHorizontally) {
-        IconColumn(conta)
+        IconColumn(contaEntity)
 
             Box(
                 modifier = Modifier
@@ -152,7 +152,7 @@ fun EditarValorConta(
     }
 }
 @Composable
-private fun IconColumn(conta: Conta ){
+private fun IconColumn(contaEntity: ContaEntity ){
     //Estado para controlar a animação
     val animatedAlpha = remember { Animatable(0f) }
     val animatedOffset = remember { Animatable(50f) }
@@ -181,11 +181,11 @@ private fun IconColumn(conta: Conta ){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BreezeIcon(
-            conta.icon.toBreezeIconsType(),
+            contaEntity.icon.toBreezeIconsType(),
             contentDescription = null,
-            color = conta.colorIcon.toColor()
+            color = contaEntity.colorIcon.toColor()
         )
-        Text(conta.name,
+        Text(contaEntity.name,
             style = MaterialTheme.typography.titleMedium,
             color = if (isSystemInDarkTheme()) DeepSkyBlue else blackPoppinsLightMode
         )

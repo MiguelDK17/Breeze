@@ -47,7 +47,7 @@ class MainActivity2: ComponentActivity() {
                 //Pega a conta uma vez
                 LaunchedEffect(id) { viewModel.pegaContaSelecionada(id)}
 
-                val conta by viewModel.contaComParcelasSelecionada.collectAsStateWithLifecycle()
+                val conta by viewModel.contaEntityComParcelasSelecionada.collectAsStateWithLifecycle()
 
                 if (conta != null) conta?.let { EditarValorConta(it) } else Carregando()
 

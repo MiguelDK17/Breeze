@@ -201,9 +201,9 @@ private fun LazyColumnContas(contasState: UiState<List<ContaComParcelas>>, viewM
             LazyColumn {
                 items(
                     items = contas,
-                    key = { it.conta.id }) { wrapper ->
+                    key = { it.contaEntity.id }) { wrapper ->
                     //Pega a lista de parcelas
-                    val conta = wrapper.conta
+                    val conta = wrapper.contaEntity
                     val parcelas = wrapper.parcelas
                     val status = wrapper.status
 

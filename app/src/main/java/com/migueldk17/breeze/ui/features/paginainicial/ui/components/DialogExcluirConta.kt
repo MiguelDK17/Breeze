@@ -63,7 +63,7 @@ fun DialogExcluirConta(
                     }
                     TextButton(onClick = {
                         apagarConta()
-                        apagarParcelas()
+                        //apagarParcelas()
                         openDialogExcluirConta(false) //Botão de confirmar
                     }) {
                         Text("Confirmar")

@@ -21,7 +21,7 @@ class GetContasUseCase @Inject constructor(
             .map { lista ->
                 val today = dateProvider.today() // Provider já vem com LocalDate.now()
                 lista.map { wrapper ->
-                    val conta = wrapper.conta
+                    val conta = wrapper.contaEntity
                     val parcelas = wrapper.parcelas
 
                     val dataPagamento = conta.dataPagamento
@@ -40,7 +40,7 @@ class GetContasUseCase @Inject constructor(
 
                     Log.d(TAG, "invoke: status está retornando como $status")
                     ContaComParcelas(
-                        conta = conta,
+                        contaEntity = conta,
                         parcelas = parcelas,
                         status = status
                     )

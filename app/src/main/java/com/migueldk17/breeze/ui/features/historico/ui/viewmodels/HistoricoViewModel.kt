@@ -2,8 +2,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.migueldk17.breeze.data.local.entity.Conta
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +12,8 @@ import kotlinx.coroutines.launch
 
 class HistoricoViewModel: ViewModel(){
     //Pega as contas registradas no Room
-    private val _contas = MutableStateFlow<List<Conta>>(emptyList())
-    val contas: StateFlow<List<Conta>> = _contas.asStateFlow()
+    private val _contas = MutableStateFlow<List<ContaEntity>>(emptyList())
+    val contas: StateFlow<List<ContaEntity>> = _contas.asStateFlow()
     //Armazena a data já traduzida
     private val _dataTraduzida = MutableStateFlow<String>("")
     val dataTraduzida: StateFlow<String> = _dataTraduzida.asStateFlow()

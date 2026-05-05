@@ -11,8 +11,8 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 
-@Entity(tableName = "conta_table")
-data class Conta(
+@Entity(tableName = "conta")
+data class ContaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0, //Id da conta
 
@@ -53,7 +53,7 @@ data class Conta(
     val isContaParcelada: Boolean = false // Booleano pra saber se a conta é parcelada ou não
 )
 
-fun Conta.calcularStatus(today: LocalDate, dataPagamento: String?, dataVencimento: String?): StatusConta {
+fun ContaEntity.calcularStatus(today: LocalDate, dataPagamento: String?, dataVencimento: String?): StatusConta {
 
      return when {
         dataPagamento != null -> {

@@ -8,12 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.converters.toDatabaseValue
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.data.local.repository.ContaRepository
 import com.migueldk17.breeze.data.local.repository.ParcelaRepository
 import com.migueldk17.breeze.ui.features.adicionarconta.models.DadosContaUI
-import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.ui.utils.parseCentavos
 import com.migueldk17.breeze.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +29,6 @@ import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.math.pow
 
 @HiltViewModel
 class AdicionarContaViewModel @Inject constructor(
@@ -267,7 +265,7 @@ class AdicionarContaViewModel @Inject constructor(
 
 
 
-            val conta = Conta(
+            val contaEntity = ContaEntity(
                 name = name,
                 categoria = categoria,
                 subCategoria = subCategoria,
@@ -280,7 +278,7 @@ class AdicionarContaViewModel @Inject constructor(
                 isContaParcelada = isContaParcelada,
             )
             try {
-                val idContaPai = contaRepository.adicionarConta(conta)
+                val idContaPai = contaRepository.adicionarConta(contaEntity)
 
                 if (isContaParcelada) salvaParcelasDatabase(idContaPai)
 

@@ -9,8 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Carregando(){
-    Column(modifier = Modifier.fillMaxSize(),
+fun Carregando(
+    modifier: Modifier = Modifier
+){
+    Column(modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Carregando...")

@@ -2,10 +2,25 @@ package com.migueldk17.breeze.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.math.BigDecimal
 
-@Entity(tableName = "parcela_entity")
+@Entity(
+    tableName = "parcela",
+    foreignKeys = [
+        ForeignKey(
+            entity = ContaEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["id_conta_pai"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [
+        Index(value = ["id_conta_pai"])
+    ]
+    )
 data class ParcelaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0, //Id da parcela

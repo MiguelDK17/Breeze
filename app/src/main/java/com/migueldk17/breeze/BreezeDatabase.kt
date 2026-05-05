@@ -8,12 +8,12 @@ import com.migueldk17.breeze.converters.TipoMovimentacaoConverter
 import com.migueldk17.breeze.data.local.dao.ContaDao
 import com.migueldk17.breeze.data.local.dao.ParcelaDao
 import com.migueldk17.breeze.data.local.dao.MovimentacaoDao
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 
 
-@Database(entities = [Conta::class, MovimentacaoEntity::class, ParcelaEntity::class], version = 20, exportSchema = true)
+@Database(entities = [ContaEntity::class, MovimentacaoEntity::class, ParcelaEntity::class], version = 21, exportSchema = true)
 @TypeConverters(TipoMovimentacaoConverter::class, BigDecimalConverter::class)
 abstract class BreezeDatabase: RoomDatabase() {
 

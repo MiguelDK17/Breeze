@@ -6,7 +6,7 @@ import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.converters.toDatabaseValue
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.data.local.entity.MovimentacaoEntity
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.data.local.repository.ContaRepository
@@ -30,8 +30,8 @@ class ConfirmarPagamentoViewModel @Inject constructor(
     private val movimentacaoRepository: MovimentacaoRepository,
     @ApplicationContext private val context: Context
 ): ViewModel() {
-    private val _conta = MutableStateFlow<Conta?>(null)
-    val conta: StateFlow<Conta?> = _conta.asStateFlow()
+    private val _contaEntity = MutableStateFlow<ContaEntity?>(null)
+    val contaEntity: StateFlow<ContaEntity?> = _contaEntity.asStateFlow()
 
     private val _nomeDaConta = MutableStateFlow("")
     val nomeDaConta: StateFlow<String> = _nomeDaConta.asStateFlow()
@@ -120,7 +120,7 @@ class ConfirmarPagamentoViewModel @Inject constructor(
                     MovimentacaoEntity(
                         valor = valor.negate(),
                         descricao = "Pagamento da conta $nome",
-                        data = data,
+                        date = data,
                         contaId = idDaConta,
                         tipo = TipoMovimentacao.SAIDA
                     )
@@ -153,7 +153,7 @@ class ConfirmarPagamentoViewModel @Inject constructor(
                     movimentacaoEntity = MovimentacaoEntity(
                         valor = valorDaParcela.negate(),
                         descricao = "Pagamento da ${numeroDaParcela}ª parcela da conta $nomeDaConta",
-                        data = data,
+                        date = data,
                         contaId = idDaConta,
                         tipo = TipoMovimentacao.SAIDA,
                     )

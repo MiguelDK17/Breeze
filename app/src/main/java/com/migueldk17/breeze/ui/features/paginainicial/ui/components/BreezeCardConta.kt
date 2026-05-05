@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.converters.toBreezeIconsType
-import com.migueldk17.breeze.data.local.entity.Conta
+import com.migueldk17.breeze.data.local.entity.ContaEntity
 import com.migueldk17.breeze.converters.toColor
 import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.data.local.entity.ParcelaEntity
@@ -48,18 +48,18 @@ import java.math.BigDecimal
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BreezeCardConta(
-    conta: Conta,
+    contaEntity: ContaEntity,
     listaDeParcelas: ImmutableList<ParcelaEntity>,
     haveInstallment: Boolean,
     modifier: Modifier = Modifier
 ){
     val parcela = if (haveInstallment) listaDeParcelas.first() else null
-    val name = conta.name
-    val preco = parcela?.valor ?: conta.valor
-    val icon = conta.icon.toBreezeIconsType()
-    val isContaParcelada = conta.isContaParcelada
+    val name = contaEntity.name
+    val preco = parcela?.valor ?: contaEntity.valor
+    val icon = contaEntity.icon.toBreezeIconsType()
+    val isContaParcelada = contaEntity.isContaParcelada
     val juros = parcela?.porcentagemJuros ?: BigDecimal.ZERO
-    val idDaConta = conta.id
+    val idDaConta = contaEntity.id
     val parcelasMutable = mutableListOf<ParcelaUI>()
 
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
@@ -102,7 +102,7 @@ fun BreezeCardConta(
 
     OutlinedCard (
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = conta.colorCard.toColor())
+        colors = CardDefaults.cardColors(containerColor = contaEntity.colorCard.toColor())
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -115,9 +115,9 @@ fun BreezeCardConta(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BreezeIcon(
-                    breezeIcon = conta.icon.toBreezeIconsType(),
+                    breezeIcon = contaEntity.icon.toBreezeIconsType(),
                     contentDescription = null,
-                    color = conta.colorIcon.toColor(),
+                    color = contaEntity.colorIcon.toColor(),
                     modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.size(20.dp))
