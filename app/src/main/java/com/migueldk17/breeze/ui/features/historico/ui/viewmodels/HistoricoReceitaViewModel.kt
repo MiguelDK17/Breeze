@@ -47,7 +47,7 @@ class HistoricoReceitaViewModel @Inject constructor(
                                         id = receita.id,
                                         name = receita.descricao,
                                         valor = receita.valor,
-                                        dateTime = receita.data.toLocalDate().atStartOfDay(),
+                                        dateTime = receita.date.toLocalDate().atStartOfDay(),
                                         icon = receita.icon,
                                         tipoComparacao = TipoComparacao.RECEITA
                                     )

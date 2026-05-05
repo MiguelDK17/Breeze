@@ -9,7 +9,7 @@ fun MovimentacaoEntity.toDomain(): MovimentacaoDomain {
         id = id,
         valor = valor,
         descricao = descricao,
-        date = data.toLocalDate(),
+        date = date.toLocalDate(),
         icon = icon,
         tipo = tipo,
         contaId = contaId
