@@ -48,8 +48,8 @@ class AdicionarContaViewModel @Inject constructor(
     private val _isContaParcelada = MutableStateFlow(false)
     val isContaParcelada: StateFlow<Boolean> = _isContaParcelada.asStateFlow()
 
-    private val _dataDaConta = MutableStateFlow(LocalDate.now())
-    val dataDaConta: StateFlow<LocalDate> = _dataDaConta.asStateFlow()
+    private val _dataDeVencimento = MutableStateFlow(LocalDate.now())
+    val dataDeVencimento: StateFlow<LocalDate> = _dataDeVencimento.asStateFlow()
 
     private val _quantidadeDeParcelas = MutableStateFlow(0)
     val quantidadeDeParcelas: StateFlow<Int> = _quantidadeDeParcelas.asStateFlow()
@@ -88,7 +88,7 @@ class AdicionarContaViewModel @Inject constructor(
             subcategoriaConta,
             valorDasParcelas,
             quantidadeDeParcelas,
-            dataDaConta,
+            dataDeVencimento,
             isContaParcelada,
             taxaDeJurosMensal
         )
@@ -181,7 +181,7 @@ class AdicionarContaViewModel @Inject constructor(
 
     //Guarda a data da primeira parcela da conta
     fun guardaDataConta(data: LocalDate){
-        _dataDaConta.value = data
+        _dataDeVencimento.value = data
     }
 
     fun guardaPorcentagemJuros(string: String){
@@ -261,7 +261,7 @@ class AdicionarContaViewModel @Inject constructor(
             val colorCard = _corCard.value.toDatabaseValue()
             val dateTime = LocalDateTime.now().toDatabaseValue()
             val isContaParcelada = _isContaParcelada.value
-            val dataVencimento = if (!isContaParcelada) _dataDaConta.value.toDatabaseValue() else null
+            val dataVencimento = if (!isContaParcelada) _dataDeVencimento.value.toDatabaseValue() else null
 
 
 
@@ -300,7 +300,7 @@ class AdicionarContaViewModel @Inject constructor(
                 val valor = valorDasParcelas.value.setScale(2, RoundingMode.HALF_EVEN)
                 val porcentagemJuros = _taxaDeJurosMensal.value
                 val totalParcelas = _quantidadeDeParcelas.value
-                val dataInicial = _dataDaConta.value
+                val dataInicial = _dataDeVencimento.value
 
                 val listaParcelas = mutableListOf<ParcelaEntity>()
 

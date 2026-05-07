@@ -38,6 +38,7 @@ fun DestaquesCard(
     icon: BreezeIconsType,
     date: LocalDate,
     progressBush: Brush,
+    nomeDoDestaque: String,
     modifier: Modifier = Modifier,
 ){
     BreezeElevatedCard(
@@ -102,7 +103,7 @@ fun DestaquesCard(
                         ) {
                             //Texto de maior despesa
                             DescriptionText(
-                                text = "Maior despesa do mês",
+                                text = nomeDoDestaque,
                                 fontWeight = FontWeight.SemiBold,
                                 maxLines = 1,
                                 size = 13.5.sp,
@@ -127,7 +128,6 @@ fun DestaquesCard(
                         DescriptionText(
                             text = "$dataFormatada - $nomeDaConta",
                             size = 11.5.sp,
-                            color = Color(0xFF5F748F),
                             modifier = Modifier.padding(top = 5.dp),
                         )
 

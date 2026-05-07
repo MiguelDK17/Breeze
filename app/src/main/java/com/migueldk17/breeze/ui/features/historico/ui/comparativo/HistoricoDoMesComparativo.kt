@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -48,15 +49,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.R
+import com.migueldk17.breeze.converters.toBreezeIconsType
+import com.migueldk17.breeze.domain.model.BreezeDestaques
 import com.migueldk17.breeze.domain.model.BreezeInsight
 import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.DestaquesCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.uistate.UiState
+import java.math.BigDecimal
+import java.time.LocalDate
 
 @Composable
 fun HistoricoDoMesComparativo(
@@ -79,6 +86,7 @@ fun HistoricoDoMesComparativo(
     Log.d(TAG, "HistoricoDoMesComparativo:listaSelecionada: $listaSelecionada")
     val mesBackup = viewModel.mes.collectAsStateWithLifecycle().value
     val insight by viewModel.insightDoMes.collectAsStateWithLifecycle()
+    val destaques by viewModel.breezeDestaques.collectAsStateWithLifecycle()
 
     AnimatedContent(
         targetState = state,
@@ -103,6 +111,7 @@ fun HistoricoDoMesComparativo(
                     comparativoModel = comparativoModel,
                     mesBackup = mesBackup,
                     insight = insight,
+                    destaques = destaques,
                     setDia = { viewModel.setDia(it) },
                     setCategoria = { viewModel.setCategoria() },
                     voltarParaMes = { viewModel.voltarParaMes() },
@@ -115,7 +124,6 @@ fun HistoricoDoMesComparativo(
             }
         }
     }
-
 
 }
 
@@ -216,14 +224,13 @@ private fun EmptyStateLayout(
     }
 }
 
-
-
 @Composable
 private fun HistoricoDoMesComparativoBody(
     data: ComparativoData,
     comparativoModel: ComparativoModel,
     mesBackup: String,
     insight: BreezeInsight?,
+    destaques: BreezeDestaques?,
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
     setCategoria: () -> Unit = {},
@@ -261,6 +268,39 @@ private fun HistoricoDoMesComparativoBody(
                 subTitulo = dica.subTitulo
             )
         }
+        destaques?.let { destaque ->
+            destaque.maiorDespesa.let {
+                DestaquesCard(
+                    nomeDaConta = it.descricao,
+                    valor = it.valor,
+                    category = it.categoria,
+                    icon = it.icon.toBreezeIconsType(),
+                    date = it.date,
+                    progressBush = Brush.horizontalGradient(listOf(it.colorIcon, it.colorIcon.copy(alpha = 0.25f))),
+                    nomeDoDestaque = "Maior despesa do mês"
+                )
+            }
+            destaque.maiorReceita.let {
+                DestaquesCard(
+                    nomeDaConta = it.descricao,
+                    valor = it.valor,
+                    category = it.categoria,
+                    icon = it.icon.toBreezeIconsType(),
+                    date = it.date,
+                    progressBush = Brush.horizontalGradient(listOf(it.colorIcon, it.colorIcon.copy(alpha = 0.25f))),
+                    nomeDoDestaque = "Maior receita do mês"
+                )
+            }
+        }
+        DestaquesCard(
+            nomeDaConta = "EA Sports FC 26",
+            valor = BigDecimal(360.0),
+            category = "Pessoais",
+            icon = BreezeIcons.Linear.All.Game,
+            date = LocalDate.now(),
+            progressBush = Brush.horizontalGradient(listOf(Color.Cyan, Color.Cyan, Color.Magenta)),
+            nomeDoDestaque = "Maior despesa do mês"
+        )
 
 
     }

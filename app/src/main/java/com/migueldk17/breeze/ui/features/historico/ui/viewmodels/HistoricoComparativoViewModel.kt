@@ -1,8 +1,11 @@
 package com.migueldk17.breeze.ui.features.historico.ui.viewmodels
 
+import android.util.Log
+import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.migueldk17.breeze.domain.MovimentacaoDomain
+import com.migueldk17.breeze.domain.model.BreezeDestaques
 import com.migueldk17.breeze.domain.model.BreezeInsight
 import com.migueldk17.breeze.enums.TipoMovimentacao
 import com.migueldk17.breeze.ui.features.historico.ui.ComparativoFiltro
@@ -101,6 +104,9 @@ class HistoricoComparativoViewModel @Inject constructor(
             initialValue = null
         )
 
+        private val _breezeDestaques= MutableStateFlow<BreezeDestaques?>(null)
+        val breezeDestaques: StateFlow<BreezeDestaques?> = _breezeDestaques.asStateFlow()
+
     // =========================================================================
     // INTENTS DA UI (Ações disparadas pelo usuário na View)
     // =========================================================================
@@ -127,6 +133,11 @@ class HistoricoComparativoViewModel @Inject constructor(
         _comparativoModel.update { it.copy(tipoDeDados = TipoDeDados.CATEGORIA) }
     }
 
+    private fun setDestaques(maiorDespesa: MovimentacaoDomain, maiorReceita: MovimentacaoDomain){
+       _breezeDestaques.value = BreezeDestaques(maiorDespesa = maiorDespesa, maiorReceita = maiorReceita)
+
+    }
+
     // =========================================================================
     // HELPER METHODS (Lógica de Negócio do ViewModel)
     // =========================================================================
@@ -139,6 +150,13 @@ class HistoricoComparativoViewModel @Inject constructor(
         val (entradas, saidas) = list.partition { it.tipo == TipoMovimentacao.ENTRADA }
         val totalEntradas = entradas.sumOf { it.valor }
         val totalSaidas = saidas.sumOf { it.valor.abs() }
+
+        val maiorDespesa = saidas.maxByOrNull { it.valor }
+        val maiorReceita = entradas.maxByOrNull { it.valor }
+
+        Log.d(TAG, "processaMovimentacoes: maior despesa: $maiorDespesa, maior receita: $maiorReceita")
+
+        setDestaques(maiorDespesa = maiorDespesa , maiorReceita = maiorReceita)
 
         return ComparativoData.Movimentacoes(
             list = list,
