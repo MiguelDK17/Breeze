@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import java.math.BigDecimal
 import javax.inject.Inject
 
 
@@ -133,7 +134,8 @@ class HistoricoComparativoViewModel @Inject constructor(
         _comparativoModel.update { it.copy(tipoDeDados = TipoDeDados.CATEGORIA) }
     }
 
-    private fun setDestaques(maiorDespesa: MovimentacaoDomain, maiorReceita: MovimentacaoDomain){
+    private fun setDestaques(maiorDespesa: MovimentacaoDomain?, maiorReceita: MovimentacaoDomain?){
+        if (maiorDespesa != null && maiorReceita != null)
        _breezeDestaques.value = BreezeDestaques(maiorDespesa = maiorDespesa, maiorReceita = maiorReceita)
 
     }
@@ -149,9 +151,10 @@ class HistoricoComparativoViewModel @Inject constructor(
     private fun processaMovimentacoes(list: List<MovimentacaoDomain>): ComparativoData {
         val (entradas, saidas) = list.partition { it.tipo == TipoMovimentacao.ENTRADA }
         val totalEntradas = entradas.sumOf { it.valor }
+        Log.d(TAG, "processaMovimentacoes: Total de entradas: $totalEntradas")
         val totalSaidas = saidas.sumOf { it.valor.abs() }
 
-        val maiorDespesa = saidas.maxByOrNull { it.valor }
+        val maiorDespesa = saidas.maxByOrNull { it.valor.abs()}
         val maiorReceita = entradas.maxByOrNull { it.valor }
 
         Log.d(TAG, "processaMovimentacoes: maior despesa: $maiorDespesa, maior receita: $maiorReceita")

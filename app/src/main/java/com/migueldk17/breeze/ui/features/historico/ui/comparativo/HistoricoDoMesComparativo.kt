@@ -292,15 +292,6 @@ private fun HistoricoDoMesComparativoBody(
                 )
             }
         }
-        DestaquesCard(
-            nomeDaConta = "EA Sports FC 26",
-            valor = BigDecimal(360.0),
-            category = "Pessoais",
-            icon = BreezeIcons.Linear.All.Game,
-            date = LocalDate.now(),
-            progressBush = Brush.horizontalGradient(listOf(Color.Cyan, Color.Cyan, Color.Magenta)),
-            nomeDoDestaque = "Maior despesa do mês"
-        )
 
 
     }
