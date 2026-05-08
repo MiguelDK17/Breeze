@@ -261,6 +261,7 @@ private fun HistoricoDoMesComparativoBody(
             setDia = setDia,
             converteDiaEmMes = voltarParaMes
         )
+        Spacer(modifier = Modifier.height(10.dp))
 
         insight?.let { dica ->
             GastoCard(
@@ -268,6 +269,8 @@ private fun HistoricoDoMesComparativoBody(
                 subTitulo = dica.subTitulo
             )
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
         destaques?.let { destaque ->
             destaque.maiorDespesa.let {
                 DestaquesCard(
