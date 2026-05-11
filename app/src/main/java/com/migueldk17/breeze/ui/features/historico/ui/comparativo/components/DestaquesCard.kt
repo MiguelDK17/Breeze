@@ -40,124 +40,97 @@ fun DestaquesCard(
     progressBush: Brush,
     nomeDoDestaque: String,
     modifier: Modifier = Modifier,
-){
-    BreezeElevatedCard(
+) {
+
+    Column(
         modifier = modifier
+            .fillMaxWidth()
     ) {
-        Column(
+
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = 123.dp)
+                .padding(top = 10.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ),
+            border = BorderStroke(0.1.dp, Color.LightGray)
         ) {
             Row(
                 modifier = Modifier
+                    .padding(
+                        top = 15.dp,
+                        start = 15.dp
+                    )
                     .fillMaxWidth()
-                    .padding(start = 10.dp)
             ) {
                 BreezeIcon(
-                    breezeIcon = BreezeIcons.Linear.All.NotificationLinear, //Icone de Destaques
-                    contentDescription = null
+                    breezeIcon = icon, //Icone de movimentacao
+                    contentDescription = "Icone",
+                    modifier = Modifier.size(30.dp)
                 )
-                BreezeRegularText(
-                    text = "Destaques",
-                    modifier = Modifier
-                        .padding(start = 10.dp),
-                    size = 16.sp
-                )
-            }
-                Card(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 123.dp)
-                        .padding(top = 10.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    ),
-                    border = BorderStroke(0.1.dp, Color.LightGray)
+                        .padding(
+                            start = 15.dp,
+                            end = 15.dp
+                        )
+                        .weight(1f)
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(
-                                top = 15.dp,
-                                start = 15.dp
-                            )
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                    BreezeIcon(
-                        breezeIcon = icon, //Icone de movimentacao
-                        contentDescription = "Icone",
-                        modifier = Modifier.size(30.dp)
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = 15.dp,
-                                end = 15.dp
-                            )
-                            .weight(1f)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            //Texto de maior despesa
-                            DescriptionText(
-                                text = nomeDoDestaque,
-                                fontWeight = FontWeight.SemiBold,
-                                maxLines = 1,
-                                size = 13.5.sp,
-                                overflow = TextOverflow.Ellipsis,
-                                color = NavyBlue
-                            )
-                            val valorFormatado = MoneyUtils.arredondarValor(valor)
-
-                            Log.d(TAG, "DestaquesCard: $valorFormatado")
-
-
-                            //Valor da conta
-                            TextValue(
-                                value = valorFormatado,
-                                size = 15.sp,
-                                colors = NavyBlue
-                            )
-
-                        }
-                        val dataFormatada = "${date.dayOfMonth} / ${date.monthValue}"
-                        //Localização
+                        //Texto de maior despesa
                         DescriptionText(
-                            text = "$dataFormatada - $nomeDaConta",
-                            size = 11.5.sp,
-                            modifier = Modifier.padding(top = 5.dp),
+                            text = nomeDoDestaque,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            size = 13.5.sp,
+                            overflow = TextOverflow.Ellipsis,
+                            color = NavyBlue
+                        )
+                        val valorFormatado = MoneyUtils.arredondarValor(valor)
+
+                        Log.d(TAG, "DestaquesCard: $valorFormatado")
+
+
+                        //Valor da conta
+                        TextValue(
+                            value = valorFormatado,
+                            size = 15.sp,
+                            colors = NavyBlue
                         )
 
-                        //Barra de progresso
-                        HighlightProgressBar(
-                            modifier = Modifier.padding(top= 12.dp),
-                            progress = 0.55f,
-                            progressBrush = progressBush
-                        )
-
-                        //Categoria da conta
-                        DescriptionText(
-                            text = category,
-                            size = 11.sp,
-                            color = Color(0xFF5F748F),
-                            modifier = Modifier
-                                .padding(top = 5.dp)
-                        )
                     }
+                    val dataFormatada = "${date.dayOfMonth} / ${date.monthValue}"
+                    //Localização
+                    DescriptionText(
+                        text = "$dataFormatada - $nomeDaConta.dow",
+                        size = 11.5.sp,
+                        modifier = Modifier.padding(top = 5.dp),
+                    )
+
+                    //Barra de progresso
+                    HighlightProgressBar(
+                        modifier = Modifier.padding(top = 12.dp),
+                        progress = 0.55f,
+                        progressBrush = progressBush
+                    )
+
+                    //Categoria da conta
+                    DescriptionText(
+                        text = category,
+                        size = 11.sp,
+                        color = Color(0xFF5F748F),
+                        modifier = Modifier
+                            .padding(top = 5.dp)
+                    )
                 }
             }
         }
     }
 }
-
-private data class MovimentacaoTeste(
-    val nomeDaConta: String,
-    val icon: BreezeIconsType,
-    val valor: BigDecimal,
-    val category: String,
-    val date: LocalDate,
-    val progressBush: Brush
-)

@@ -18,6 +18,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.converters.toBreezeIconsType
@@ -58,6 +60,7 @@ import com.migueldk17.breeze.ui.components.BreezeButton
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
+import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.BreezeElevatedCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.DestaquesCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
@@ -234,8 +237,8 @@ private fun HistoricoDoMesComparativoBody(
     modifier: Modifier = Modifier,
     setDia: (String) -> Unit = {},
     setCategoria: () -> Unit = {},
-    voltarParaMes : () -> Unit = {},
-    ){
+    voltarParaMes: () -> Unit = {},
+) {
     val scroll = rememberScrollState()
 
 
@@ -271,31 +274,63 @@ private fun HistoricoDoMesComparativoBody(
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        destaques?.let { destaque ->
-            destaque.maiorDespesa.let {
-                DestaquesCard(
-                    nomeDaConta = it.descricao,
-                    valor = it.valor,
-                    category = it.categoria,
-                    icon = it.icon.toBreezeIconsType(),
-                    date = it.date,
-                    progressBush = Brush.horizontalGradient(listOf(it.colorIcon, it.colorIcon.copy(alpha = 0.25f))),
-                    nomeDoDestaque = "Maior despesa do mês"
-                )
-            }
-            destaque.maiorReceita.let {
-                DestaquesCard(
-                    nomeDaConta = it.descricao,
-                    valor = it.valor,
-                    category = it.categoria,
-                    icon = it.icon.toBreezeIconsType(),
-                    date = it.date,
-                    progressBush = Brush.horizontalGradient(listOf(it.colorIcon, it.colorIcon.copy(alpha = 0.25f))),
-                    nomeDoDestaque = "Maior receita do mês"
-                )
+
+        BreezeElevatedCard {
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                ) {
+                    BreezeIcon(
+                        breezeIcon = BreezeIcons.Linear.All.NotificationLinear, //Icone de Destaques
+                        contentDescription = null
+                    )
+                    BreezeRegularText(
+                        text = "Destaques",
+                        modifier = Modifier
+                            .padding(start = 10.dp),
+                        size = 16.sp
+                    )
+                }
+                destaques?.let { destaque ->
+                    destaque.maiorDespesa.let {
+                        DestaquesCard(
+                            nomeDaConta = it.descricao.dropLast(4),
+                            valor = it.valor,
+                            category = it.categoria,
+                            icon = it.icon.toBreezeIconsType(),
+                            date = it.date,
+                            progressBush = Brush.horizontalGradient(
+                                listOf(
+                                    it.colorIcon,
+                                    it.colorIcon.copy(alpha = 0.25f)
+                                )
+                            ),
+                            nomeDoDestaque = "Maior despesa do mês"
+                        )
+                    }
+                    destaque.maiorReceita.let {
+                        DestaquesCard(
+                            nomeDaConta = it.descricao,
+                            valor = it.valor,
+                            category = it.categoria,
+                            icon = it.icon.toBreezeIconsType(),
+                            date = it.date,
+                            progressBush = Brush.horizontalGradient(
+                                listOf(
+                                    it.colorIcon,
+                                    it.colorIcon.copy(alpha = 0.25f)
+                                )
+                            ),
+                            nomeDoDestaque = "Maior receita do mês"
+                        )
+                    }
+                }
             }
         }
-
-
     }
 }
