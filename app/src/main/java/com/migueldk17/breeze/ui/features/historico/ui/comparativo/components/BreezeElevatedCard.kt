@@ -13,9 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.migueldk17.breeze.ui.theme.DarkBlue
-import com.migueldk17.breeze.ui.theme.MidnightBlue
-import com.migueldk17.breeze.ui.theme.NavyPetrol
+
 
 @Composable
 fun BreezeElevatedCard(
@@ -23,7 +21,7 @@ fun BreezeElevatedCard(
     containerColor: Color = if (!isSystemInDarkTheme()) Color(0xFFFFFFFF) else Color(0xFF091F3F),
     shape: Shape = MaterialTheme.shapes.large,
     elevation: Dp = 6.dp,
-    outlineColor: Color = Color(0xFF152E55),
+    outlineColor: Color = if (!isSystemInDarkTheme()) Color(0xFFE1E5EB) else  Color(0xFF152E55),
     outlineWidth: Dp = 1.dp,
     content: @Composable () -> Unit
 ) {

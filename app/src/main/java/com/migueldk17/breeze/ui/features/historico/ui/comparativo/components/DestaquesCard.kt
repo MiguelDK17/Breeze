@@ -3,15 +3,18 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 import android.util.Log
 import android.content.ContentValues.TAG
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -25,6 +28,7 @@ import com.github.migueldk17.breezeicons.icons.BreezeIcons
 import com.github.migueldk17.breezeicons.icons.BreezeIconsType
 import com.migueldk17.breeze.ui.components.BreezeRegularText
 import com.migueldk17.breeze.ui.components.DescriptionText
+import com.migueldk17.breeze.ui.theme.DarkBlue
 import com.migueldk17.breeze.ui.theme.NavyBlue
 import com.migueldk17.breeze.ui.utils.MoneyUtils
 import java.math.BigDecimal
@@ -41,19 +45,20 @@ fun DestaquesCard(
     nomeDoDestaque: String,
     modifier: Modifier = Modifier,
 ) {
+    val colorCard = if (!isSystemInDarkTheme()) Color.White else DarkBlue
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
 
         Card(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .heightIn(min = 123.dp)
-                .padding(top = 10.dp),
+                ,
             colors = CardDefaults.cardColors(
-                containerColor = Color.White
+                containerColor = colorCard
             ),
             border = BorderStroke(0.1.dp, Color.LightGray)
         ) {

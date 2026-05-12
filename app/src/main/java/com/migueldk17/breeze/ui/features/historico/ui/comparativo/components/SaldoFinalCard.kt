@@ -1,5 +1,7 @@
 package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,10 +43,13 @@ fun SaldoFinal(
     saldoFinal: String,
     modifier: Modifier = Modifier
 ){
-    val listColors = persistentListOf(
+    val listColors = if (!isSystemInDarkTheme())persistentListOf(
         Color(0XFFE9F1FC),
         Color(0xFFF2F6FD)
-    )
+    ) else persistentListOf(Color.Transparent, Color.Transparent)
+
+    val saldoFinalRowColor = if (!isSystemInDarkTheme()) Color.Transparent else Color(0xFF0B244A)
+
     //Card do saldo final
     GradientCard(
         modifier =  modifier
@@ -107,6 +112,7 @@ fun SaldoFinal(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .background(saldoFinalRowColor)
                         .padding(
                             vertical = 5.dp,
                             horizontal = 10.dp,

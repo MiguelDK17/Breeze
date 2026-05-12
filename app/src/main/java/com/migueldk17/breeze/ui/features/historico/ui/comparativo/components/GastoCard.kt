@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -35,14 +36,11 @@ fun GastoCard(
     BreezeElevatedCard(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 80.dp)
-            .padding(
-                vertical = 5.dp
-            )
+
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
