@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.historico.ui.conta.components.HistoricoDoMesContaBody
-import com.migueldk17.breeze.ui.features.historico.ui.layouts.ListaVaziaHistorico
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.AnimatedEmptyState
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoDoMesViewModel
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.toImmutableList
@@ -57,7 +57,7 @@ fun HistoricoDoMesConta(
 
         }
         is UiState.Empty -> {
-            ListaVaziaHistorico(
+            AnimatedEmptyState(
                 animationRes = R.raw.empty_ghost,
                 titleText = "Nenhuma conta por aqui... 👻",
                 descriptionText1 = "Parece que suas contas ainda estão no mundo dos fantasmas.",

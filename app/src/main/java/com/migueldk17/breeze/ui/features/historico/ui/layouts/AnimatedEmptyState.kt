@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 
 @Suppress("EffectKeys") //Efeito da animação deve permanecer na tela
 @Composable
-fun ListaVaziaHistorico(
+fun AnimatedEmptyState(
     animationRes: Int,
     titleText: String,
     descriptionText1: String,

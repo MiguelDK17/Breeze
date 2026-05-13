@@ -16,7 +16,7 @@ import com.migueldk17.breeze.MainActivity
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.ui.animation.LottieAnimation
 import com.migueldk17.breeze.ui.features.historico.ui.receita.components.HistoricoDoMesReceitaBody
-import com.migueldk17.breeze.ui.features.historico.ui.layouts.ListaVaziaHistorico
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.AnimatedEmptyState
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoReceitaViewModel
 import com.migueldk17.breeze.uistate.UiState
 import kotlinx.collections.immutable.toImmutableList
@@ -51,7 +51,7 @@ fun HistoricoDoMesReceita(
             }
 
         }
-        is UiState.Empty -> ListaVaziaHistorico(
+        is UiState.Empty -> AnimatedEmptyState(
             animationRes = R.raw.piggy_saving_money,
             titleText = "Sem Receitas por Aqui!",
             descriptionText1 = "Ainda não há nenhuma receita cadastrada neste mês!",

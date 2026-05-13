@@ -2,6 +2,8 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -40,7 +42,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.GastoCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.SaldoDoMesCard
@@ -52,6 +56,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.migueldk17.breezeicons.icons.BreezeIcon
 import com.github.migueldk17.breezeicons.icons.BreezeIcons
+import com.migueldk17.breeze.MainActivity3
 import com.migueldk17.breeze.R
 import com.migueldk17.breeze.converters.toBreezeIconsType
 import com.migueldk17.breeze.domain.model.BreezeDestaques
@@ -63,10 +68,9 @@ import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.BreezeElevatedCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.DestaquesCard
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
+import com.migueldk17.breeze.ui.features.historico.ui.layouts.AnimatedEmptyState
 import com.migueldk17.breeze.ui.features.historico.ui.viewmodels.HistoricoComparativoViewModel
 import com.migueldk17.breeze.uistate.UiState
-import java.math.BigDecimal
-import java.time.LocalDate
 
 @Composable
 fun HistoricoDoMesComparativo(
@@ -77,6 +81,8 @@ fun HistoricoDoMesComparativo(
     val listaDeMovimentacoesMensal = comparativoModel.listaDeMovimentacoesMensal
     val listaDeMovimentacoesDiaria = comparativoModel.listaDeMovimentacoesDiaria
     val listaDeMovimentacoesCategoria = comparativoModel.listaDeMovimentacoesCategoria
+    val context = LocalContext.current
+    val activity = LocalActivity.current
 
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -101,11 +107,46 @@ fun HistoricoDoMesComparativo(
         when (state){
             is UiState.Loading -> CircularProgressIndicator()
             is UiState.Empty -> {
-                EmptyStateLayout(
-                    voltarParaMes = {
-                        viewModel.voltarParaMes()
+                when(comparativoModel.tipoDeDados){
+                    TipoDeDados.DIA -> {
+                        EmptyStateLayout(
+                            image = painterResource(R.drawable.nina_no_calendar),
+                            title = "Nenhum gasto hoje!",
+                            subTitle = "Dia tranquilo...",
+                            voltarPara = {
+                                viewModel.voltarParaMes()
+                            }
+                        )
                     }
-                )
+
+                    TipoDeDados.MES -> {
+                        AnimatedEmptyState(
+                            animationRes = R.raw.empty_ghost,
+                            titleText = "Nenhuma conta por aqui... 👻",
+                            descriptionText1 = "Parece que suas contas ainda estão no mundo dos fantasmas.",
+                            descriptionText2 = "Crie uma pra começar a organizar tudo certinho!",
+                            buttonText = "Criar Conta",
+                            onClick = {
+                                val intent = Intent(context, MainActivity3::class.java)
+                                context.startActivity(intent)
+                                activity?.finish()
+                            }
+                        )
+                    }
+
+                    TipoDeDados.CATEGORIA -> {
+                        EmptyStateLayout(
+                            image = painterResource(R.drawable.nina_no_calendar),
+                            title = "Nada de categorias por aqui...",
+                            subTitle = "Por que não tenta criar uma conta?",
+                            voltarPara = {
+                                val intent = Intent(context, MainActivity3::class.java)
+                                context.startActivity(intent)
+                                activity?.finish()
+                            }
+                        )
+                    }
+                }
             }
             is UiState.Success -> {
                 val data = state.data
@@ -132,10 +173,13 @@ fun HistoricoDoMesComparativo(
 
 @Composable
 private fun EmptyStateLayout(
-    voltarParaMes: () -> Unit,
+    image: Painter,
+    title: String,
+    subTitle: String,
+    voltarPara: () -> Unit,
     modifier: Modifier = Modifier,
 
-){
+    ){
     val backgroundColor = Color(0xFFD8E6EE)
     val iconSize = 120.dp
     val halfIconSize = iconSize / 2
@@ -161,8 +205,8 @@ private fun EmptyStateLayout(
 
     ) {
         Image(
-            painter = painterResource(id = R.drawable.breeze_empty_state),
-            contentDescription = "Nenhum gasto hoje",
+            painter = image,
+            contentDescription = subTitle,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
@@ -191,13 +235,13 @@ private fun EmptyStateLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     BreezeRegularText(
-                        text = "Nenhum gasto hoje!",
+                        text = title,
                         fontWeight = FontWeight.SemiBold,
                         size = 16.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     DescriptionText(
-                        "Dia tranquilo...",
+                        subTitle,
                         color = Color(0xFF798FA0)
                     )
                     Spacer(modifier = Modifier
@@ -205,7 +249,7 @@ private fun EmptyStateLayout(
 
                     BreezeButton(
                         onClick = {
-                            voltarParaMes()
+                            voltarPara()
                         },
                         text = "Tudo bem!"
                     )
