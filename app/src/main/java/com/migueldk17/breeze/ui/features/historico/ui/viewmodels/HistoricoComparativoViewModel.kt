@@ -151,13 +151,10 @@ class HistoricoComparativoViewModel @Inject constructor(
     private fun processaMovimentacoes(list: List<MovimentacaoDomain>): ComparativoData {
         val (entradas, saidas) = list.partition { it.tipo == TipoMovimentacao.ENTRADA }
         val totalEntradas = entradas.sumOf { it.valor }
-        Log.d(TAG, "processaMovimentacoes: Total de entradas: $totalEntradas")
         val totalSaidas = saidas.sumOf { it.valor.abs() }
 
         val maiorDespesa = saidas.maxByOrNull { it.valor.abs()}
         val maiorReceita = entradas.maxByOrNull { it.valor }
-
-        Log.d(TAG, "processaMovimentacoes: maior despesa: $maiorDespesa, maior receita: $maiorReceita")
 
         setDestaques(maiorDespesa = maiorDespesa , maiorReceita = maiorReceita)
 

@@ -51,6 +51,7 @@ import com.migueldk17.breeze.ui.features.historico.ui.comparativo.components.Sal
 import com.migueldk17.breeze.ui.theme.RedError
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -105,7 +106,14 @@ fun HistoricoDoMesComparativo(
         label = "transicao_de_estados"
     ) { state ->
         when (state){
-            is UiState.Loading -> CircularProgressIndicator()
+            is UiState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
+
+            }
             is UiState.Empty -> {
                 when(comparativoModel.tipoDeDados){
                     TipoDeDados.DIA -> {
@@ -136,9 +144,9 @@ fun HistoricoDoMesComparativo(
 
                     TipoDeDados.CATEGORIA -> {
                         EmptyStateLayout(
-                            image = painterResource(R.drawable.nina_no_calendar),
-                            title = "Nada de categorias por aqui...",
-                            subTitle = "Por que não tenta criar uma conta?",
+                            image = painterResource(R.drawable.empty_state_categoria),
+                            title = "Ainda não há categorias para colorir",
+                            subTitle = "Adicione movimentações para revelar seu fluxo",
                             voltarPara = {
                                 val intent = Intent(context, MainActivity3::class.java)
                                 context.startActivity(intent)
@@ -269,6 +277,17 @@ private fun EmptyStateLayout(
 
 
     }
+}
+
+@Composable
+@Preview
+private fun Preview(){
+    EmptyStateLayout(
+        image = painterResource(R.drawable.empty_state_categoria),
+        title = "Ainda não há categorias para colorir",
+        subTitle = "Adicione movimentações para revelar seu fluxo",
+        voltarPara = {}
+    )
 }
 
 @Composable
