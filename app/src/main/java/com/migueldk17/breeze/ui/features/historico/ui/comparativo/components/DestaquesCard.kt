@@ -46,6 +46,7 @@ fun DestaquesCard(
     modifier: Modifier = Modifier,
 ) {
     val colorCard = if (!isSystemInDarkTheme()) Color.White else DarkBlue
+    val colorBorder = if (!isSystemInDarkTheme()) Color.LightGray else Color.Transparent
 
     Column(
         modifier = modifier
@@ -60,7 +61,7 @@ fun DestaquesCard(
             colors = CardDefaults.cardColors(
                 containerColor = colorCard
             ),
-            border = BorderStroke(0.1.dp, Color.LightGray)
+            border = BorderStroke(0.1.dp, colorBorder)
         ) {
             Row(
                 modifier = Modifier
@@ -96,7 +97,7 @@ fun DestaquesCard(
                             maxLines = 1,
                             size = 13.5.sp,
                             overflow = TextOverflow.Ellipsis,
-                            color = NavyBlue
+                            color = if (!isSystemInDarkTheme()) NavyBlue else Color(0xFF628DC4)
                         )
                         val valorFormatado = MoneyUtils.arredondarValor(valor)
 
@@ -107,14 +108,14 @@ fun DestaquesCard(
                         TextValue(
                             value = valorFormatado,
                             size = 15.sp,
-                            colors = NavyBlue
+                            colors = if (!isSystemInDarkTheme()) NavyBlue else Color(0xFF628DC4)
                         )
 
                     }
                     val dataFormatada = "${date.dayOfMonth} / ${date.monthValue}"
                     //Localização
                     DescriptionText(
-                        text = "$dataFormatada - $nomeDaConta.dow",
+                        text = "$dataFormatada - $nomeDaConta",
                         size = 11.5.sp,
                         modifier = Modifier.padding(top = 5.dp),
                     )

@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 val SkyBlue = Color(0xFF47B9ED)
 val Blue = Color(0xFF2564B1)
 val PastelLightBlue = Color(0xFFDCEDFF)
-val NavyBlue = Color(0xFF1D4576)
+val NavyBlue = Color(0xFF1B7AE3)
 val Branco = Color(0xFFFFFFFF)
 
 val RedError = Color(0xFFDF4258)

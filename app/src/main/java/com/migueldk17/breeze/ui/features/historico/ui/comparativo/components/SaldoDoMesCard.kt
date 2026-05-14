@@ -3,6 +3,7 @@ package com.migueldk17.breeze.ui.features.historico.ui.comparativo.components
 
 import android.util.Log
 import android.content.ContentValues.TAG
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,6 +44,8 @@ import com.migueldk17.breeze.converters.toLocalDate
 import com.migueldk17.breeze.domain.CategoryExpense
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoData
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsDarkMode
+import com.migueldk17.breeze.ui.theme.greyTextMediumPoppinsLightMode
 import com.migueldk17.breeze.ui.utils.toApiFormat
 import java.math.RoundingMode
 
@@ -76,7 +79,7 @@ fun SaldoDoMesCard(
         ) {
             TitleText(
                 text = "Saldo do mês",
-                color = NavyBlue,
+                color = if (!isSystemInDarkTheme()) NavyBlue else Color(0xFFF7F6F7),
                 modifier = Modifier
             )
 

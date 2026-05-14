@@ -350,19 +350,22 @@ private fun HistoricoDoMesComparativoBody(
                 ) {
                     BreezeIcon(
                         breezeIcon = BreezeIcons.Linear.All.NotificationLinear, //Icone de Destaques
-                        contentDescription = null
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(2.dp)
                     )
                     BreezeRegularText(
                         text = "Destaques",
                         modifier = Modifier
-                            .padding(start = 10.dp),
+                            .padding(2.dp),
                         size = 16.sp
                     )
                 }
+                Spacer(modifier = Modifier.height(5.dp))
                 destaques?.let { destaque ->
                     destaque.maiorDespesa.let {
                         DestaquesCard(
-                            nomeDaConta = it.descricao.dropLast(4),
+                            nomeDaConta = it.descricao,
                             valor = it.valor,
                             category = it.categoria,
                             icon = it.icon.toBreezeIconsType(),
@@ -376,6 +379,7 @@ private fun HistoricoDoMesComparativoBody(
                             nomeDoDestaque = "Maior despesa do mês"
                         )
                     }
+                    Spacer(modifier = Modifier.height(15.dp))
                     destaque.maiorReceita.let {
                         DestaquesCard(
                             nomeDaConta = it.descricao,
