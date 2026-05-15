@@ -12,6 +12,7 @@ import com.migueldk17.breeze.ui.features.historico.ui.ComparativoFiltro
 import com.migueldk17.breeze.ui.features.historico.ui.TipoDeDados
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.ComparativoData
 import com.migueldk17.breeze.ui.features.historico.ui.comparativo.model.ComparativoModel
+import com.migueldk17.breeze.ui.utils.MoneyUtils
 import com.migueldk17.breeze.ui.utils.formatarValorEmReal
 import com.migueldk17.breeze.uistate.UiState
 import com.migueldk17.breeze.usecases.GetCategoryTotalByMonthUseCase
@@ -134,9 +135,8 @@ class HistoricoComparativoViewModel @Inject constructor(
         _comparativoModel.update { it.copy(tipoDeDados = TipoDeDados.CATEGORIA) }
     }
 
-    private fun setDestaques(maiorDespesa: MovimentacaoDomain?, maiorReceita: MovimentacaoDomain?){
-        if (maiorDespesa != null && maiorReceita != null)
-       _breezeDestaques.value = BreezeDestaques(maiorDespesa = maiorDespesa, maiorReceita = maiorReceita)
+    private fun setDestaques(breeezeDestaques: BreezeDestaques){
+       _breezeDestaques.value = breeezeDestaques
 
     }
 
@@ -154,9 +154,33 @@ class HistoricoComparativoViewModel @Inject constructor(
         val totalSaidas = saidas.sumOf { it.valor.abs() }
 
         val maiorDespesa = saidas.maxByOrNull { it.valor.abs()}
-        val maiorReceita = entradas.maxByOrNull { it.valor }
+        var totalCategoria = BigDecimal.ZERO
+        
+        for (i in saidas) {
+            if (maiorDespesa!!.categoria == i.categoria){
+                val valorPositivo = i.valor.negate() //Inverte o valor original que é negativo
+                totalCategoria += valorPositivo
+            }
+        }
 
-        setDestaques(maiorDespesa = maiorDespesa , maiorReceita = maiorReceita)
+        Log.d(TAG, "processaMovimentacoes: $totalCategoria")
+        val maiorReceita = entradas.maxByOrNull { it.valor }
+        Log.d(TAG, "processaMovimentacoes: maior despesa ${maiorDespesa?.valor} e total categoria $totalCategoria")
+
+        val progressDespesa = MoneyUtils.calcularPorcentagem(maiorDespesa!!.valor.negate(), totalCategoria).toFloat()
+        Log.d(TAG, "processaMovimentacoes: progress de despesa $progressDespesa")
+
+        val progressReceita = MoneyUtils.calcularPorcentagem(maiorReceita!!.valor, totalEntradas).toFloat()
+        Log.d(TAG, "processaMovimentacoes: progress de receita $progressReceita")
+
+        val breezeDestaque = BreezeDestaques(
+            maiorDespesa = maiorDespesa,
+            maiorReceita = maiorReceita,
+            progressDespesa = progressDespesa,
+            progressReceita = progressReceita
+        )
+
+        setDestaques(breeezeDestaques = breezeDestaque)
 
         return ComparativoData.Movimentacoes(
             list = list,

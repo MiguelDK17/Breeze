@@ -352,16 +352,20 @@ private fun HistoricoDoMesComparativoBody(
                         breezeIcon = BreezeIcons.Linear.All.NotificationLinear, //Icone de Destaques
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(2.dp)
+                            .padding(top = 2.dp)
                     )
                     BreezeRegularText(
                         text = "Destaques",
                         modifier = Modifier
-                            .padding(2.dp),
+                            .padding(top = 2.dp),
                         size = 16.sp
                     )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
+
+                val progressDespesa = destaques?.progressDespesa
+                val progressReceita = destaques?.progressReceita
+
                 destaques?.let { destaque ->
                     destaque.maiorDespesa.let {
                         DestaquesCard(
@@ -376,11 +380,15 @@ private fun HistoricoDoMesComparativoBody(
                                     it.colorIcon.copy(alpha = 0.25f)
                                 )
                             ),
+                            progress = progressDespesa!!.div(100),
                             nomeDoDestaque = "Maior despesa do mês"
                         )
                     }
+
                     Spacer(modifier = Modifier.height(15.dp))
+
                     destaque.maiorReceita.let {
+
                         DestaquesCard(
                             nomeDaConta = it.descricao,
                             valor = it.valor,
@@ -393,6 +401,7 @@ private fun HistoricoDoMesComparativoBody(
                                     it.colorIcon.copy(alpha = 0.25f)
                                 )
                             ),
+                            progress = progressReceita!!.div(100),
                             nomeDoDestaque = "Maior receita do mês"
                         )
                     }

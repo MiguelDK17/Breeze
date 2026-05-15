@@ -5,5 +5,7 @@ import com.migueldk17.breeze.domain.MovimentacaoDomain
 
 data class BreezeDestaques(
     val maiorDespesa: MovimentacaoDomain,
-    val maiorReceita: MovimentacaoDomain
+    val maiorReceita: MovimentacaoDomain,
+    val progressDespesa: Float,
+    val progressReceita: Float
 )

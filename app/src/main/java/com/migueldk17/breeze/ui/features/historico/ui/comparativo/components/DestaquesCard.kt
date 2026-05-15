@@ -43,6 +43,7 @@ fun DestaquesCard(
     date: LocalDate,
     progressBush: Brush,
     nomeDoDestaque: String,
+    progress: Float,
     modifier: Modifier = Modifier,
 ) {
     val colorCard = if (!isSystemInDarkTheme()) Color.White else DarkBlue
@@ -123,7 +124,7 @@ fun DestaquesCard(
                     //Barra de progresso
                     HighlightProgressBar(
                         modifier = Modifier.padding(top = 12.dp),
-                        progress = 0.55f,
+                        progress = progress,
                         progressBrush = progressBush
                     )
 

@@ -73,7 +73,7 @@ object MoneyUtils {
         if (valorTotal == BigDecimal.ZERO) return BigDecimal.ZERO
 
         return valorCategoria
-            .divide(valorTotal, 4, RoundingMode.HALF_UP)
+            .divide(valorTotal, 2, RoundingMode.HALF_UP)
             .multiply(BigDecimal(100))
     }
 }
